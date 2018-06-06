@@ -17,6 +17,15 @@ th {
   text-align: center
 }
 
+
+#jumbotron_home {
+    background-image: url('https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/itCjTBE/blue-tech-circuit-board-technology-animated-background-video-graphic-design-hd-1920x1080_ewva7rwie__F0000.png');
+}
+
+
+#jumbotron_cad {
+    background-image: url('https://images.unsplash.com/uploads/141103282695035fa1380/95cdfeef?ixlib=rb-0.3.5&s=d6f82cfe462f2803e692c9e4f4944e0d&auto=format&fit=crop&w=1948&q=80');
+}
 /* tr:nth-child(even) {
     background-color: #dddddd;
 } */

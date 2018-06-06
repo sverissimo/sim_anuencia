@@ -94,8 +94,8 @@ class CadastroEmpreend extends React.Component {
 
     render() {
         return (
-
-            <div className="tab-pane fade show active" id="empreend" role="tabpanel" aria-labelledby="empreend-tab">
+<div className="container">
+<div className="tab-pane fade show active" id="empreend" role="tabpanel" aria-labelledby="empreend-tab">
 
                 <form onSubmit={this.handleSubmit}>
                     <fieldset className="form-group">
@@ -180,6 +180,8 @@ class CadastroEmpreend extends React.Component {
                 </form>
 
             </div>
+</div>
+            
 
 
         )

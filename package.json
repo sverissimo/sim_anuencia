@@ -10,10 +10,9 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "engines":{
-    "node":"8.11.1"
+  "engines": {
+    "node": "8.11.1"
   },
-
   "author": "sandro_verissimo",
   "license": "ISC",
   "dependencies": {

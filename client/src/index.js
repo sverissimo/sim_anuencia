@@ -12,16 +12,16 @@ const App = () => {
     return (
         <div>
 
-            <div className="container">
+            <div >
 
                 <BrowserRouter>
                     <div>
                         <header>
                             <Header />
                         </header>
-                        <SubHeader>
+                        
                             <Routes />
-                        </SubHeader>
+                        
                     </div>
                 </BrowserRouter>
 

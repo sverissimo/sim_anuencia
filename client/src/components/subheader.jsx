@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 const SubHeader = (props) => {
 
     return (
-        <div>
+
+        <div className="container" >
             <ul className="nav nav-tabs" id="myTab" role="tablist">
                 <li className="nav-item">
                     <span className="nav-link" id="empreend-tab" role="tab" aria-controls="empreend" aria-selected="true">
@@ -31,6 +32,8 @@ const SubHeader = (props) => {
             </div>
 
         </div>
+
+
     )
 };
 
