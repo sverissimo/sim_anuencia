@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 //COMPONENTS
 import Routes from './routes';
 import Header from './components/header';
-import SubHeader from './components/subheader';
+
 
 const App = () => {
 

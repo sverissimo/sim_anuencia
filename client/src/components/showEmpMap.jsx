@@ -14,13 +14,16 @@ const ShowEmpMap = (props) => {
     //console.log(object)
     return (
 
-        <tr key={props.object._id} onClick={handleClick}>
+        <tr key={object._id} onClick={handleClick}>
             <td>{object.nome}</td>
+            <td>{object.cpf}</td>
+            <td>{object.rua}, {object.numero} {object.complemento}</td>
+            <td>{object.bairro}</td>
+            <td>{object.cep}</td>
+            <td>{object.cidade}, {object.uf}</td>
             <td>{object.email}</td>
             <td>{object.phone}</td>
-            <td>{object.rua}</td>
-            <td>{object.cidade}</td>
-            <td>{object.uf}</td>
+            
         </tr>
     )
 

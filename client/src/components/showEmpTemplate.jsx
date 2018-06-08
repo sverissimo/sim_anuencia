@@ -7,15 +7,17 @@ const ShowEmpTemplate = (props) => {
         <div className="container">
         <h3>Empreendedores Cadastrados</h3>
         <hr/>
-            <table className="table table-hover" >
+            <table className="table-sm table-hover" >
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>Telefone</th>
-                        <th>Rua</th>
+                        <th> Nome</th>
+                        <th>CPF / CNPJ</th>
+                        <th>Endereço</th>
+                        <th>Bairro</th>
+                        <th>CEP</th>
                         <th>Cidade</th>
-                        <th>UF</th>
+                        <th>Telefone</th>
+                        <th>E-mail</th>
                     </tr>
                 </thead>
 
