@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', err => {
-    if(err) {
+    if (err) {
         console.log(err);
     }
 });
@@ -21,24 +21,24 @@ app.get('/api/showEmpreend', (req, res) => {
     let order = req.query.order;
 
     Empreend.find().exec((err, doc) => {
-        if(err) return err;
+        if (err) return err;
         res.send(doc);
     });
-    
-   /*  Empreend.find().skip(skip).sort({_id:order}).limit(limit).exec((err, doc) => {
-        if(err) return err;
-        res.send(doc)
-    }) */
+
+    /*  Empreend.find().skip(skip).sort({_id:order}).limit(limit).exec((err, doc) => {
+         if(err) return err;
+         res.send(doc)
+     }) */
 });
-    
+
 
 
 app.post('/api/cadastro_emp', (req, res) => {
-   
-    const empreend = new Empreend(req.body); 
-    
+
+    const empreend = new Empreend(req.body);
+
     empreend.save((err, doc) => {
-        if(err) return res.status(400).send(err);
+        if (err) return res.status(400).send(err);
         res.status(200).json({
             post: true,
             Empreend_id: doc._id
@@ -47,15 +47,30 @@ app.post('/api/cadastro_emp', (req, res) => {
 
 });
 
-app.post('/api/empreend_update', (req, res) =>{
+/* app.post('/api/empreend_update', (req, res) =>{
     Empreend.findByIdAndUpdate(req.body._id, req.body, (err, doc) )
+}); */
+
+
+app.post('/api/findEmpreend/:id', (req, res) => {
+    Empreend.findById(req.param._id, (err, doc) => {
+        !err ? res.send(doc) : console.log(err);
+    })
 });
 
-
-
+app.get("/api/delEmpreend/:id", function (req, res) {
+    Empreend.findByIdAndRemove(req.params.id, function (err) {
+        if (err) {
+            console.log(err);
+            res.redirect("/");
+        } else {
+            res.redirect("/");
+        }
+    });
+});
 
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
-console.log(`Hell ya Running...`)
+    console.log(`Hell ya Running...`)
 });

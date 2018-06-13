@@ -1,22 +1,22 @@
 
-table {
+/* table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
-
-td, th {
+ */
+/* td, th {
     border: 1px solid #dddddd;
     text-align: left;
     padding: 8px;
     width: auto
-}
+} */
 
-th {
+/* th {
   background-color: azure;
   text-align: center
 }
-
+ */
 
 #jumbotron_home {
     background-image: url('https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/itCjTBE/blue-tech-circuit-board-technology-animated-background-video-graphic-design-hd-1920x1080_ewva7rwie__F0000.png');

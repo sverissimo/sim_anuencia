@@ -1,20 +1,14 @@
 import React from 'react';
 import './css/styles.css';
 
-const ShowEmpMap = (props) => {
+const ShowEmpRow = (props) => {
 
     const object = props.object
-
-    const handleClick = () => {
-
-        const myWindow = window.open("", "MsgWindow", "width=800,height=200");
-        myWindow.document.write(JSON.stringify(object))
-    };
-
-    //console.log(object)
-    return (
-
-        <tr key={object._id} onClick={handleClick}>
+     /*      const myWindow = window.open("", "MsgWindow", "width=800,height=200");
+         myWindow.document.write(JSON.stringify(object))  }; */
+     return (
+        <tr key={object._id} id={object._id}>
+            <th scope="row">1</th>
             <td>{object.nome}</td>
             <td>{object.cpf}</td>
             <td>{object.rua}, {object.numero} {object.complemento}</td>
@@ -23,10 +17,9 @@ const ShowEmpMap = (props) => {
             <td>{object.cidade}, {object.uf}</td>
             <td>{object.email}</td>
             <td>{object.phone}</td>
-            
+            <td style={{ border: 0 }}><button className="btn btn-danger btn-rounded btn-sm my-0" onClick={props.delete}>Apagar</button></td>
         </tr>
     )
-
 }
 
-export default ShowEmpMap;
+export default ShowEmpRow;

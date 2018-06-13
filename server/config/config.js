@@ -4,8 +4,8 @@ const config = {
         DATABASE: process.env.MONGODB_URI
     },
     default:{
-        SECRET: 'SUPERSECRETPASSWORD123',
-        DATABASE: 'mongodb://localhost:27017/booksShelf'
+        SECRET: 'flamengo',
+        DATABASE: 'mongodb://localhost:27017/sim_anuencia_db'
     }
 }
 
