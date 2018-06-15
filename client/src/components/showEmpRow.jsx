@@ -8,15 +8,15 @@ const ShowEmpRow = (props) => {
          myWindow.document.write(JSON.stringify(object))  }; */
      return (
         <tr key={object._id} id={object._id}>
-            <th scope="row">1</th>
+            <th scope="row">{props.i}</th>
             <td>{object.nome}</td>
             <td>{object.cpf}</td>
             <td>{object.rua}, {object.numero} {object.complemento}</td>
             <td>{object.bairro}</td>
             <td>{object.cep}</td>
             <td>{object.cidade}, {object.uf}</td>
-            <td>{object.email}</td>
             <td>{object.phone}</td>
+            <td>{object.email}</td>
             <td style={{ border: 0 }}><button className="btn btn-danger btn-rounded btn-sm my-0" onClick={props.delete}>Apagar</button></td>
         </tr>
     )
