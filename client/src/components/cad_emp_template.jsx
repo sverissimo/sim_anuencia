@@ -1,10 +1,12 @@
 import React from 'react';
 
+
+
 const CadEmpTemplate = (props) => {
 
     return (
 
-        <div style={{ marginLeft: 40, marginRight: 40 }} >
+        <div style={{ marginLeft: 40, marginRight: 40  }} >
             <div className="tab-pane fade show active" id="empreend" role="tabpanel" aria-labelledby="empreend-tab">
                 <form onSubmit={props.handleSubmit}>
                     <fieldset className="input-field">
@@ -67,13 +69,12 @@ const CadEmpTemplate = (props) => {
 
                             <input type="text" className="validate" name="ibge" id="ibge" style={{ display: 'none' }} />
                         </div>
-
                     </fieldset>
+
                     <fieldset className="input-field">
                         <legend className="input-field">
                             <strong> Responsável Técnico </strong>
                         </legend>
-
                         <div className="row">
                             <div className="input-field col s4">
                                 <input type="text" className="validate" name="nomeRt" onChange={props.handleChange} value={props.data.nomeRt} />
@@ -87,13 +88,18 @@ const CadEmpTemplate = (props) => {
                                 <input type="text" className="validate" name="emailRt" onChange={props.handleChange} value={props.data.emailRt} />
                                 <label className="active" htmlFor="emailRt">E-mail:</label>
                             </div>
-
+                           
                         </div>
 
                     </fieldset>
 
+
+                        <div>
+                            {props.children}
+                        </div>
+
                     <div>
-                        <input type="submit" value="Salvar" />
+                        <input className="btn right" type="submit" value="Salvar" style={{marginTop: '10px'}} />
                     </div>
 
                 </form>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Header = () => {
 
     return (
-        <nav>
+        <nav style={{ marginBottom: 20}} >
             <div className="nav-wrapper teal darken-3" style={{ paddingLeft: 30, paddingRight: 30 }} >
                 <Link to="/" className="brand-logo">SIM - Anuência</Link>
                 <Link to="" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></Link>

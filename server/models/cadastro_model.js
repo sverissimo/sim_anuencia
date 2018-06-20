@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const cadastroSchema = mongoose.Schema({
+const cadastroEmpSchema = mongoose.Schema({
     nome: {
         type: String,
         trim: true
@@ -49,21 +49,9 @@ const cadastroSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    nomeRt: {
-        type: String,
-        trim: true
-    },
-    emailRt: {
-        type: String,
-        trim: true
-    },
-    phoneRt: {
-        type: String,
-        trim: true
-    },
-
+  
 }, {timestamps: true} );
 
-const Cadastro = mongoose.model('Cadastro', cadastroSchema);
+const empreendedor = mongoose.model('Empreendedore', cadastroEmpSchema);
 
-module.exports = { Cadastro }
+module.exports = { empreendedor }
