@@ -37,6 +37,7 @@ class ShowEmpContainer extends Component {
         let empreendedores = this.state.items,
             searchString = this.state.search.trim().toLowerCase();
         if (this.state.search) {
+            console.log(this.state.search)
             empreendedores = this.state.items.filter((el) => el.nome.toLowerCase().match(searchString))
         }
         return (

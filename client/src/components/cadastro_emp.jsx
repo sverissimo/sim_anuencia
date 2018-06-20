@@ -61,6 +61,10 @@ class CadastroEmpreend extends React.Component {
             bairro: this.state.bairro,
             cidade: this.state.cidade,
             uf: this.state.uf,
+            nomeRt: this.state.nomeRt,
+            emailRt: this.state.emailRt,
+            phoneRt: this.state.phoneRt
+
         })
             .then(alert('alright, bro!')
             )
@@ -78,6 +82,9 @@ class CadastroEmpreend extends React.Component {
                     bairro: '',
                     cidade: '',
                     uf: '',
+                    nomeRt: '',
+                    emailRt: '',
+                    phoneRt: ''
                 })
             )
             .catch(err => {

@@ -5,48 +5,28 @@ import { Link } from 'react-router-dom';
 const Header = () => {
 
     return (
-
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{ marginBottom: '20px' }}>
-            <div className="row">
-
-                <div className="col-sm-2">
-                    <span className="navbar-brand">
-                        <strong> <Link to="/"> SIM - Anuência</Link></strong>
-                    </span>
-                </div>
-                <button className="navbar-toggler float-right" type="button" data-toggle="collapse" data-target="#navbar9">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="navbar-collapse collapse col-sm-9 float-right" id="navbar9">
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item">
-                            <span className="nav-link">
-                                <Link to="/home_cadastro" style={{ color: 'white' }}> Cadastro</Link>
-                            </span>
-                        </li>
-                        <li className="nav-item">
-                            <span className="nav-link">
-                                <Link to="/analises" style={{ color: 'white' }}>Análise</Link>
-                            </span>
-                        </li>
-                        <li className="nav-item">
-                            <span className="nav-link">
-                                <Link to="/showEmpreend" style={{ color: 'white' }}> Relatórios </Link>
-                            </span>
-                        </li>
-                        <li className="nav-item">
-                            <span className="nav-link">
-                                <Link to="/signIn" style={{ color: 'white' }}> Sign In </Link>
-                            </span>
-                        </li>
-                    </ul>
-                </div>
+        <nav>
+            <div className="nav-wrapper teal darken-3" style={{ paddingLeft: 30, paddingRight: 30 }} >
+                <Link to="/" className="brand-logo">SIM - Anuência</Link>
+                <Link to="" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></Link>
+                <ul className="right hide-on-med-and-down">
+                    <li><Link to="/cadastro_emp">Cadastro</Link></li>
+                    <li><Link to="">Diretrizes</Link></li>
+                    <li><Link to="">Anuência Prévia</Link></li>
+                    <li><Link to="/showEmpreend">Buscar</Link></li>
+                    <li><Link to="">Login <i className="material-icons left">person</i></Link></li>
+                    <li><Link to="">Contato <i className="material-icons left">mail</i></Link></li>
+                </ul>
+                <ul className="side-nav" id="mobile-demo">
+                    <li><Link to="/cadastro_emp">Cadastro</Link></li>
+                    <li><Link to="">Diretrizes</Link></li>
+                    <li><Link to="">Anuência Prévia</Link></li>
+                    <li><Link to="/showEmpreend">Buscar</Link></li>
+                    <li><Link to="">Login</Link></li>
+                    <li><Link to="">Contato</Link></li>
+                </ul>
             </div>
-
-            
-
-        </nav >
-
+        </nav>
     )
 
 };

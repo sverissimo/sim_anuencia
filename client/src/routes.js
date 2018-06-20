@@ -9,7 +9,7 @@ import CadastroRT from './components/cadastro_rt';
 import Triagem from './components/triagem';
 import CadastroProcess from './components/cadastro_process';
 import ShowEmpContainer from './components/showEmpContainer';
-import SubHeader from './components/subheader';
+/* import SubHeader from './components/subheader'; */
 
 
 const Routes = () => {
@@ -18,12 +18,11 @@ const Routes = () => {
             <Route path='/' exact component={Home} />
             <Route path='/home_cadastro' exact component={HomeCadastro} />
             <Route path='/showEmpreend' component={ShowEmpContainer} />
-            <SubHeader>
             <Route path='/cadastro_emp' component={CadastroEmpreend} />
             <Route path='/cadastro_rt' component={CadastroRT} />
             <Route path='/triagem' component={Triagem} />
             <Route path='/cadastro_process' component={CadastroProcess} />
-            </SubHeader>
+           
             
         </Switch>
     );

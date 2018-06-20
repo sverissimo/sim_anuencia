@@ -2,103 +2,103 @@ import React from 'react';
 
 const CadEmpTemplate = (props) => {
 
-  /*   const changeProps = (event, id) => {
-const newState = props.data;
-newState[id].value = event.target.value;
-    } */
-
     return (
-       
-<div className="container">
-<div className="tab-pane fade show active" id="empreend" role="tabpanel" aria-labelledby="empreend-tab">
 
+        <div style={{ marginLeft: 40, marginRight: 40 }} >
+            <div className="tab-pane fade show active" id="empreend" role="tabpanel" aria-labelledby="empreend-tab">
                 <form onSubmit={props.handleSubmit}>
-                    <fieldset className="form-group">
-                        <legend className="form-group">
+                    <fieldset className="input-field">
+                        <legend className="input-field">
                             <strong> Empreendedor Responsável </strong>
                         </legend>
 
                         <div className="row">
-
-                            <div className="form-group col-sm-6">
-                                <label htmlFor="nome">Nome</label>
-                                <input type="text" className="form-control" name="nome" onChange={props.handleChange} value={props.data.nome} />
+                            <div className="input-field col s3">
+                                <input type="text" className="validate" name="nome" onChange={props.handleChange} value={props.data.nome} />
+                                <label className="active" htmlFor="nome">Nome</label>
                             </div>
-                            <div className="form-group col-sm-2">
-                                <label htmlFor="cpf">CPF / CNPJ:</label>
-                                <input type="number" className="form-control" name="cpf" onChange={props.handleChange} value={props.data.cpf} />
-                            </div>
-                            <div className="form-group col-sm-2">
-                                <label htmlFor="birth">Birth</label>
-                                <input type="date" className="form-control" name="birth" onChange={props.handleChange} value={props.data.birth} />
-                            </div>
-                            <div className="form-group col-sm-2">
-                                <label htmlFor="phone">Telefone:</label>
-                                <input type="number" className="form-control" name="phone" onChange={props.handleChange} value={props.data.phone} />
+                            <div className="input-field col s2">
+                                <input type="number" className="validate" name="cpf" onChange={props.handleChange} value={props.data.cpf} />
+                                <label className="active" htmlFor="cpf">CPF / CNPJ:</label>
                             </div>
 
+                            <div className="input-field col s2">
+                                <input type="number" className="validate" name="phone" onChange={props.handleChange} value={props.data.phone} />
+                                <label className="active" htmlFor="phone">Telefone:</label>
+                            </div>
+                            <div className="input-field col">
+                                <input type="text" className="validate" name="email" onChange={props.handleChange} value={props.data.email} />
+                                <label className="active" htmlFor="email">E-mail:</label>
+                            </div>
+                            <div className="row">
+                                <div className="input-field col s2">
+                                    <input type="text" className="validate" name="cep" id="cep" maxLength="9" onChange={props.handleChange} onBlur={props.handleBlur} value={props.data.cep} />
+                                    <label className="active" htmlFor="cep">CEP:</label>
+                                </div>
+                            </div>
+
+
+                            <div className="input-field col s1">
+                                <input type="text" className="validate" placeholder=" " name="numero" onChange={props.handleChange} value={props.data.numero} />
+                                <label className="active" htmlFor="numero">Número:</label>
+                            </div>
+                            <div className="input-field col s2">
+                                <input type="text" className="validate" placeholder=" " name="complemento" onChange={props.handleChange} value={props.data.complemento} />
+                                <label className="active" htmlFor="complemento">Complemento:</label>
+                            </div>
+
+
+                            <div className="input-field col s3">
+                                <input type="text" className="validate" placeholder=" " name="rua" onChange={props.handleChange} value={props.data.rua} />
+                                <label className="active" htmlFor="rua">Rua:</label>
+                            </div>
+                            <div className="input-field col s2">
+                                <input type="text" className="validate" placeholder=" " name="bairro" onChange={props.handleChange} value={props.data.bairro} />
+                                <label className="active" htmlFor="bairro">Bairro:</label>
+                            </div>
+                            <div className="input-field col s2">
+                                <input type="text" className="validate" placeholder=" " name="cidade" onChange={props.handleChange} value={props.data.cidade} />
+                                <label className="active" htmlFor="cidade">Cidade:</label>
+                            </div>
+                            <div className="input-field col s1">
+                                <input type="text" className="validate" placeholder=" " name="uf" onChange={props.handleChange} value={props.data.uf} />
+                                <label className="active" htmlFor="uf">Estado:</label>
+                            </div>
+
+                            <input type="text" className="validate" name="ibge" id="ibge" style={{ display: 'none' }} />
                         </div>
 
+                    </fieldset>
+                    <fieldset className="input-field">
+                        <legend className="input-field">
+                            <strong> Responsável Técnico </strong>
+                        </legend>
 
                         <div className="row">
-                            <div className="form-group col-sm-2">
-                                <label htmlFor="cep">CEP:</label>
-                                <input type="text" className="form-control" name="cep" id="cep" maxLength="9" onChange={props.handleChange} onBlur={props.handleBlur} value={props.data.cep} />
+                            <div className="input-field col s4">
+                                <input type="text" className="validate" name="nomeRt" onChange={props.handleChange} value={props.data.nomeRt} />
+                                <label className="active" htmlFor="nomeRt">Nome</label>
                             </div>
-
-                            <div className="form-group col-sm-2">
-                                <label htmlFor="numero">Número:</label>
-                                <input type="text" className="form-control" name="numero" onChange={props.handleChange} value={props.data.numero} />
+                            <div className="input-field col s2">
+                                <input type="number" className="validate" name="phoneRt" onChange={props.handleChange} value={props.data.phoneRt} />
+                                <label className="active" htmlFor="phoneRt">Telefone:</label>
                             </div>
-                            <div className="form-group col-sm-2">
-                                <label htmlFor="complemento">Complemento:</label>
-                                <input type="text" className="form-control" name="complemento" onChange={props.handleChange} value={props.data.complemento} />
+                            <div className="input-field col s4 ">
+                                <input type="text" className="validate" name="emailRt" onChange={props.handleChange} value={props.data.emailRt} />
+                                <label className="active" htmlFor="emailRt">E-mail:</label>
                             </div>
-
-                            <div className="form-group col">
-                                <label htmlFor="email">E-mail:</label>
-                                <input type="text" className="form-control" name="email" onChange={props.handleChange} value={props.data.email} />
-                            </div>
-                            <div className="form-group col-sm-6">
-                                <label htmlFor="rua">Rua:</label>
-                                <input type="text" className="form-control" name="rua" onChange={props.handleChange} value={props.data.rua} />
-                            </div>
-                            <div className="form-group col-sm-5">
-                                <label htmlFor="bairro">Bairro:</label>
-                                <input type="text" className="form-control" name="bairro" onChange={props.handleChange} value={props.data.bairro} />
-                            </div>
-                            <div className="form-group col-sm-6">
-                                <label htmlFor="cidade">Cidade:</label>
-                                <input type="text" className="form-control" name="cidade" onChange={props.handleChange} value={props.data.cidade} />
-                            </div>
-                            <div className="form-group col-sm-2">
-                                <label htmlFor="uf">Estado:</label>
-                                <input type="text" className="form-control" name="uf" onChange={props.handleChange} value={props.data.uf} />
-                            </div>
-
-
-                            <input type="text" className="form-control" name="ibge" id="ibge" style={{ display: 'none' }} />
-
-
 
                         </div>
-
-
 
                     </fieldset>
 
                     <div>
-                        <input type="submit" value="salvar" />
+                        <input type="submit" value="Salvar" />
                     </div>
+
                 </form>
-
             </div>
-</div>
-            
-
-
-
-
+        </div>
     );
 };
 

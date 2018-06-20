@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const config = require('./config/config').get(process.env.NODE_ENV);
-const { Empreend } = require('./models/cadastro_emp_model');
+const { Cadastro } = require('./models/cadastro_model');
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,10 +19,12 @@ app.get('/api/showEmpreend', (req, res) => {
     let skip = parseInt(req.query.skip);
     let limit = parseInt(req.query.limit);
     let order = req.query.order;
-
-    Empreend.find().exec((err, doc) => {
+    
+    Cadastro.find().exec((err, doc) => {
         if (err) return err;
         res.send(doc);
+        
+        
     });
 
     /*  Empreend.find().skip(skip).sort({_id:order}).limit(limit).exec((err, doc) => {
@@ -35,13 +37,13 @@ app.get('/api/showEmpreend', (req, res) => {
 
 app.post('/api/cadastro_emp', (req, res) => {
 
-    const empreend = new Empreend(req.body);
+    const cadastro = new Cadastro(req.body);
 
-    empreend.save((err, doc) => {
+    cadastro.save((err, doc) => {
         if (err) return res.status(400).send(err);
         res.status(200).json({
             post: true,
-            Empreend_id: doc._id
+            Cadastro_id: doc._id
         })
     });
 
@@ -59,7 +61,7 @@ app.post('/api/findEmpreend/:id', (req, res) => {
 });
 
 app.get("/api/delEmpreend/:id", function (req, res) {
-    Empreend.findByIdAndRemove(req.params.id, function (err) {
+    Cadastro.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             console.log(err);
             res.redirect("/");

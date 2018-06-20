@@ -12,7 +12,7 @@ const App = () => {
     return (
         <div>
 
-            <div >
+            
 
                 <BrowserRouter>
                     <div>
@@ -25,7 +25,7 @@ const App = () => {
                     </div>
                 </BrowserRouter>
 
-            </div>
+            
         </div>
     )
 
