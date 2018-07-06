@@ -23,8 +23,14 @@ class CadastroEmpreend extends React.Component {
         emailRt: '',
         phoneRt: '',
         openProcess: false,
-        nProcesso: ''
+        nProcesso: '',
+        loadedData: []
+    }
 
+    componentWillMount() {
+        axios.get('/api/showEmpreend')
+            .then(res => this.setState({ items: res.data }))
+            .catch(err => console.log(err))
     }
 
     handleBlur = cep => {
@@ -42,10 +48,22 @@ class CadastroEmpreend extends React.Component {
 
     handleChange = event => {
         event.preventDefault();
-        this.setState({
-            [event.target.name]: event.target.value
-        })
-        console.log(this.state)
+        let autoComplete = event.target.value
+        if (autoComplete) {
+            let newData = []
+            newData = this.state.items.filter(el => el.nome.toLowerCase().match(autoComplete.toLowerCase())) 
+
+            this.setState({
+                ...this.state.items, [event.target.name]: event.target.value, newData
+            })
+            console.log(this.state.newData)
+        } else {
+            this.setState({
+                ...this.state.items, [event.target.name]: event.target.value, newData: []
+            })
+        }
+
+
     };
 
     handleSubmit = (event) => {
@@ -53,11 +71,10 @@ class CadastroEmpreend extends React.Component {
         this.setState({
             [event.target.name]: event.target.value
         });
-        
+
         axios.post('/api/cadastro_emp', {
             nome: this.state.nome,
             cpf: this.state.cpf,
-            birth: this.state.birth,
             phone: this.state.phone,
             cep: this.state.cep,
             numero: this.state.numero,
@@ -81,25 +98,34 @@ class CadastroEmpreend extends React.Component {
         //window.location.href = '/';
     }
 
+    handleBlurName = () => {
+        this.setState({
+            ...this.state,
+            phone: this.state.newData[0].phone
+        })
+        
+    }
+
     render() {
         return (
-<div>
-            <CadEmpTemplate
-                data={this.state}
-                handleChange={(change) => this.handleChange(change)}
-                handleSubmit={(submit) => this.handleSubmit(submit)}
-                handleBlur={(cep) => this.handleBlur(cep)}
-            >
+            <div>
+                <CadEmpTemplate
+                    data={this.state}
+                    handleChange={(change) => this.handleChange(change)}
+                    handleBlurName={this.handleBlurName}
+                    handleSubmit={(submit) => this.handleSubmit(submit)}
+                    handleBlur={(cep) => this.handleBlur(cep)}
+                >
 
-            <OpenProcess
-                data={this.state}
-                handleChange={(change) => this.handleChange(change)}
-                handleSubmit={(submit) => this.handleSubmit(submit)}
-                handleBlur={(cep) => this.handleBlur(cep)}
-                
-            />
-            </CadEmpTemplate>
-     </div>       
+                    <OpenProcess
+                        data={this.state}
+                        handleChange={(change) => this.handleChange(change)}
+                        handleSubmit={(submit) => this.handleSubmit(submit)}
+                        handleBlur={(cep) => this.handleBlur(cep)}
+
+                    />
+                </CadEmpTemplate>
+            </div>
         )
     }
 }

@@ -11,9 +11,9 @@ const ShowEmpTemplate = (props) => {
 
             <form className="input-field inline" id="search_form">
                 <input className="form-control mr-sm-2" value={props.search} onChange={props.change} type="search" placeholder="procurar..." aria-label="Search" />
-                {/* 
-                         {<button className="btn btn-outline-success my-2 my-sm-0" type="submit" >Busca</button>}
- */}
+                 
+                         
+ 
             </form>
 
             <hr />

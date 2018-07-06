@@ -28,7 +28,7 @@ const CadEmpTemplate = (props) => {
 
                         <div className="row">
                             <div className="input-field col s3">
-                                <input type="text" className="validate" name="nome" onChange={props.handleChange} value={props.data.nome} disabled={enableInput.enable}/>
+                                <input type="text" className="validate" name="nome" onChange={props.handleChange} value={props.data.nome} onBlur={props.handleBlurName} disabled={enableInput.enable}/>
                                 <label className="active" htmlFor="nome">Nome</label>
                             </div>
                             <div className="input-field col s2">

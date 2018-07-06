@@ -9,10 +9,6 @@ const cadastroEmpSchema = mongoose.Schema({
         type: Number,
         trim: true
     },
-    birth: {
-        type: Date,
-        trim: true
-    },
     phone: {
         type: Number,
         trim: true
@@ -49,8 +45,8 @@ const cadastroEmpSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-  
-}, {timestamps: true} );
+
+}, { timestamps: true });
 
 const empreendedor = mongoose.model('Empreendedore', cadastroEmpSchema);
 
