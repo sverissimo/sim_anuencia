@@ -24,7 +24,8 @@ class CadastroEmpreend extends React.Component {
         phoneRt: '',
         openProcess: false,
         nProcesso: '',
-        loadedData: []
+        loadedData: [],
+
     }
 
     componentWillMount() {
@@ -49,21 +50,23 @@ class CadastroEmpreend extends React.Component {
     handleChange = event => {
         event.preventDefault();
         let autoComplete = event.target.value
-        if (autoComplete) {
-            let newData = []
-            newData = this.state.items.filter(el => el.nome.toLowerCase().match(autoComplete.toLowerCase())) 
 
+        let dataMatch = []
+        dataMatch = this.state.items.filter(el => el.nome.toLowerCase().match(autoComplete.toLowerCase()))
+        if (autoComplete !== '' && dataMatch[0]) 
+        {
             this.setState({
-                ...this.state.items, [event.target.name]: event.target.value, newData
+                ...this.state.items, [event.target.name]: event.target.value, dataMatch: dataMatch
             })
-            console.log(this.state.newData)
+        
         } else {
+            dataMatch = ''
             this.setState({
-                ...this.state.items, [event.target.name]: event.target.value, newData: []
+                ...this.state.items, [event.target.name]: event.target.value, dataMatch: dataMatch
             })
         }
 
-
+        console.log(this.state)
     };
 
     handleSubmit = (event) => {
@@ -99,12 +102,20 @@ class CadastroEmpreend extends React.Component {
     }
 
     handleBlurName = () => {
-        this.setState({
-            ...this.state,
-            phone: this.state.newData[0].phone
-        })
-        
+
+        if (this.state.dataMatch !== '') {
+            this.setState({
+                ...this.state,
+                phone: this.state.dataMatch[0].phone
+            })
+        } else {
+            this.setState({
+                ...this.state,
+                phone: ''
+            })
+        }
     }
+
 
     render() {
         return (
@@ -125,6 +136,7 @@ class CadastroEmpreend extends React.Component {
 
                     />
                 </CadEmpTemplate>
+
             </div>
         )
     }
