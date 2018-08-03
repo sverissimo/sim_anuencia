@@ -1,7 +1,4 @@
 import React from 'react';
-import { Autocomplete } from 'react-materialize';
-/* import { Button, Card, Col, Input, Row } from 'react-materialize'; */
-
 
 const CadEmpTemplate = (props) => {
 
@@ -18,22 +15,22 @@ const CadEmpTemplate = (props) => {
             alt: ""
         }
     }
-    /* 
-        const AutoComp = () => {
-            if (props.data.dataMatch !== null) {
-                props.data.dataMatch.map(item => {
-                    return (
-                        <div>
-                            {item.nome}
-                        </div>
-                    )
-                }
-               )
-            } else {
-                return null
-            }
+
+
+    const dataList = props.data.items
+    let list = []
+    const Run = () => {
+        if (props.data.nome.length > 2) {
+            dataList.forEach(i => {
+                list.push(i.nome)
+                console.log(list)
+                /* return (
+                    <option value={i.nome}></option>
     
-        } */
+                ) */
+            })
+        }
+    }
 
     return (
         <div style={{ marginLeft: 40, marginRight: 40 }} >
@@ -51,14 +48,21 @@ const CadEmpTemplate = (props) => {
                             <div className="input-field col s2">
                                 <input
                                     type="text"
+                                    list="empreendList"
                                     className="validate"
                                     name="nome"
                                     onChange={props.handleChange}
                                     value={props.data.nome}
                                     onBlur={props.handleBlurName}
                                     disabled={enableInput.enable}
+
                                 />
                                 <label className="active" htmlFor="nome">Nome</label>
+                                <datalist id="empreendList">
+
+                                    {Run()}
+                                </datalist>
+
                             </div>
                             <div className="input-field col s2">
                                 <input type="number" className="validate" name="cpf" onChange={props.handleChange} value={props.data.cpf} disabled={enableInput.enable} />
@@ -79,7 +83,7 @@ const CadEmpTemplate = (props) => {
                                     <label className="active" htmlFor="cep">CEP:</label>
                                 </div>
                             </div>
-                            {/*  <div><AutoComp /></div> */}
+
 
                             <div className="input-field col s1">
                                 <input type="text" className="validate" placeholder=" " name="numero" onChange={props.handleChange} value={props.data.numero} disabled={enableInput.enable} />
@@ -143,11 +147,12 @@ const CadEmpTemplate = (props) => {
                         {props.children}
                     </div>
 
-
-
                 </form>
             </div>
+
         </div>
+
+
     );
 };
 

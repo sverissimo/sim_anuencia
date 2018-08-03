@@ -53,12 +53,11 @@ class CadastroEmpreend extends React.Component {
 
         let dataMatch = []
         dataMatch = this.state.items.filter(el => el.nome.toLowerCase().match(autoComplete.toLowerCase()))
-        if (autoComplete !== '' && dataMatch[0]) 
-        {
+        if (autoComplete !== '' && dataMatch[0]) {
             this.setState({
                 ...this.state.items, [event.target.name]: event.target.value, dataMatch: dataMatch
             })
-        
+
         } else {
             dataMatch = ''
             this.setState({
@@ -66,7 +65,7 @@ class CadastroEmpreend extends React.Component {
             })
         }
 
-        console.log(this.state)
+        /* console.log(this.state) */
     };
 
     handleSubmit = (event) => {
@@ -94,7 +93,7 @@ class CadastroEmpreend extends React.Component {
             phoneRt: this.state.phoneRt
         })
             .then(this.setState({ ...this.state, openProcess: true }))
-            .then(console.log(this.state))
+            .then(console.log(this.state)) 
             .catch(err => {
                 alert(err)
             })
@@ -116,7 +115,6 @@ class CadastroEmpreend extends React.Component {
         }
     }
 
-
     render() {
         return (
             <div>
@@ -127,7 +125,14 @@ class CadastroEmpreend extends React.Component {
                     handleSubmit={(submit) => this.handleSubmit(submit)}
                     handleBlur={(cep) => this.handleBlur(cep)}
                 >
-
+                 {/*    <AutoCompleteName
+                        data={this.state}
+                        handleChange={(change) => this.handleChange(change)}
+                        handleBlurName={this.handleBlurName}
+                        handleSubmit={(submit) => this.handleSubmit(submit)}
+                        handleBlur={(cep) => this.handleBlur(cep)}
+                    />
+ */}
                     <OpenProcess
                         data={this.state}
                         handleChange={(change) => this.handleChange(change)}
