@@ -1,11 +1,10 @@
 import React from 'react';
 
 const AutoComplete = (props) => {
+
     return (
-        <div>
-             <option value={props.empreendList}> </option>
-        </div>
-    );
-};
+        <option key={props.data.id}>{props.data.nome}</option>
+    )
+}
 
 export default AutoComplete;

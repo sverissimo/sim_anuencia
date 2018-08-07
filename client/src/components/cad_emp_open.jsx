@@ -3,6 +3,7 @@ import React from 'react';
 
 let enableInput;
 const voltarEmpRT = () => {
+    
     enableInput = {
 ...enableInput, enable: "disabled"
     }
@@ -29,8 +30,9 @@ const OpenProcess = (props) => {
     }
     return (
 
-        <div style={{ marginBottom: '10px' }} >
-            <fieldset className="input-field">
+        <div style={{ marginLeft: 40, marginRight: 40, marginBottom: '10px' }} >
+             <form action="">
+             <fieldset className="input-field">
                 <legend className="input-field">
                     <strong> Dados do Empreendimento </strong>
                 </legend>
@@ -59,7 +61,9 @@ const OpenProcess = (props) => {
                 <input className="btn red darken-3 left" type="submit" disabled={enableInput.enable} value="Editar dados interessado e RT" style={{ marginTop: '10px' }} onSubmit={voltarEmpRT}/>
                 <input className="btn right" type="submit" disabled={enableInput.enable} value="Cadastrar processo" style={{ marginTop: '10px' }} />
             </div>
-        </div>
+
+             </form>
+                    </div>
 
     )
 }

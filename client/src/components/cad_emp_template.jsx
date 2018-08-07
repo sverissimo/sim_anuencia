@@ -14,23 +14,26 @@ const CadEmpTemplate = (props) => {
             enable: "",
             alt: ""
         }
+    };
+
+const dataLogic = ()=> {
+
+    if (props.data.nome.length > 2) {
+        return (
+            <datalist id='empreendList'>
+                {props.children}
+            </datalist>
+            )
+    } else {
+        return 
     }
 
 
-    const dataList = props.data.items
-    let list = []
-    const Run = () => {
-        if (props.data.nome.length > 2) {
-            dataList.forEach(i => {
-                list.push(i.nome)
-                console.log(list)
-                /* return (
-                    <option value={i.nome}></option>
     
-                ) */
-            })
-        }
-    }
+}
+
+   
+   
 
     return (
         <div style={{ marginLeft: 40, marginRight: 40 }} >
@@ -41,7 +44,6 @@ const CadEmpTemplate = (props) => {
                         <legend className="input-field">
                             <strong> Interessado </strong>
                         </legend>
-
 
                         <div className="row">
 
@@ -58,14 +60,12 @@ const CadEmpTemplate = (props) => {
 
                                 />
                                 <label className="active" htmlFor="nome">Nome</label>
-                                <datalist id="empreendList">
 
-                                    {Run()}
-                                </datalist>
+                              {dataLogic()}
 
                             </div>
                             <div className="input-field col s2">
-                                <input type="number" className="validate" name="cpf" onChange={props.handleChange} value={props.data.cpf} disabled={enableInput.enable} />
+                                <input type="text" className="validate" name="cpf" onChange={props.handleChange} value={props.data.cpf} placeholder=" " disabled={enableInput.enable} />
                                 <label className="active" htmlFor="cpf">CPF / CNPJ:</label>
                             </div>
 
@@ -74,16 +74,15 @@ const CadEmpTemplate = (props) => {
                                 <label className="active" htmlFor="phone">Telefone:</label>
                             </div>
                             <div className="input-field col">
-                                <input type="text" className="validate" name="email" onChange={props.handleChange} value={props.data.email} disabled={enableInput.enable} />
+                                <input type="text" className="validate" name="email" onChange={props.handleChange} value={props.data.email} placeholder=" " disabled={enableInput.enable} />
                                 <label className="active" htmlFor="email">E-mail:</label>
                             </div>
                             <div className="row">
                                 <div className="input-field col s2">
-                                    <input type="text" className="validate" name="cep" id="cep" maxLength="9" onChange={props.handleChange} onBlur={props.handleBlur} value={props.data.cep} disabled={enableInput.enable} />
+                                    <input type="text" className="validate" name="cep" id="cep" maxLength="9" onChange={props.handleChange} onBlur={props.handleBlur} value={props.data.cep} placeholder=" " disabled={enableInput.enable} />
                                     <label className="active" htmlFor="cep">CEP:</label>
                                 </div>
                             </div>
-
 
                             <div className="input-field col s1">
                                 <input type="text" className="validate" placeholder=" " name="numero" onChange={props.handleChange} value={props.data.numero} disabled={enableInput.enable} />
@@ -93,7 +92,6 @@ const CadEmpTemplate = (props) => {
                                 <input type="text" className="validate" placeholder=" " name="complemento" onChange={props.handleChange} value={props.data.complemento} disabled={enableInput.enable} />
                                 <label className="active" htmlFor="complemento">Complemento:</label>
                             </div>
-
 
                             <div className="input-field col s3">
                                 <input type="text" className="validate" placeholder=" " name="rua" onChange={props.handleChange} value={props.data.rua} disabled={enableInput.enable} />
@@ -133,26 +131,17 @@ const CadEmpTemplate = (props) => {
                                 <input type="text" className="validate" name="emailRt" onChange={props.handleChange} value={props.data.emailRt} disabled={enableInput.enable} />
                                 <label className="active" htmlFor="emailRt">E-mail:</label>
                             </div>
-
                         </div>
 
                     </fieldset>
-
                     <div>
                         <input className="btn left" type="submit" value="Confirma" style={{ marginTop: '10px' }} disabled={enableInput.enable} />
                     </div>
                     <br />
                     <br />
-                    <div>
-                        {props.children}
-                    </div>
-
                 </form>
             </div>
-
         </div>
-
-
     );
 };
 
