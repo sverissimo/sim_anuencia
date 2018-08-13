@@ -16,24 +16,18 @@ const CadEmpTemplate = (props) => {
         }
     };
 
-const dataLogic = ()=> {
+    const dataLogic = () => {
 
-    if (props.data.nome.length > 2) {
-        return (
-            <datalist id='empreendList'>
-                {props.children}
-            </datalist>
+        if (props.data.nome.length > 2) {
+            return (
+                <datalist id='empreendList'>
+                    {props.children}
+                </datalist>
             )
-    } else {
-        return 
+        } else {
+            return
+        }
     }
-
-
-    
-}
-
-   
-   
 
     return (
         <div style={{ marginLeft: 40, marginRight: 40 }} >
@@ -61,25 +55,29 @@ const dataLogic = ()=> {
                                 />
                                 <label className="active" htmlFor="nome">Nome</label>
 
-                              {dataLogic()}
+                                {dataLogic()}
 
                             </div>
                             <div className="input-field col s2">
-                                <input type="text" className="validate" name="cpf" onChange={props.handleChange} value={props.data.cpf} placeholder=" " disabled={enableInput.enable} />
+                                <input type="text" className="validate" name="cpf" 
+                                onChange={props.handleChange} value={props.data.cpf} placeholder=" " disabled={enableInput.enable} />
                                 <label className="active" htmlFor="cpf">CPF / CNPJ:</label>
                             </div>
 
                             <div className="input-field col s2">
-                                <input type="number" id="phone" className="validate" name="phone" onChange={props.handleChange} value={props.data.phone} disabled={enableInput.enable} placeholder=" " />
+                                <input type="text" id="phone" className="validate" name="phone" 
+                                onChange={props.handleChange} value={props.data.phone} disabled={enableInput.enable} placeholder=" " />
                                 <label className="active" htmlFor="phone">Telefone:</label>
                             </div>
                             <div className="input-field col">
-                                <input type="text" className="validate" name="email" onChange={props.handleChange} value={props.data.email} placeholder=" " disabled={enableInput.enable} />
+                                <input type="text" className="validate" name="email" 
+                                onChange={props.handleChange} value={props.data.email} placeholder=" " disabled={enableInput.enable} />
                                 <label className="active" htmlFor="email">E-mail:</label>
                             </div>
                             <div className="row">
                                 <div className="input-field col s2">
-                                    <input type="text" className="validate" name="cep" id="cep" maxLength="9" onChange={props.handleChange} onBlur={props.handleBlur} value={props.data.cep} placeholder=" " disabled={enableInput.enable} />
+                                    <input type="text" className="validate" name="cep" id="cep" maxLength="10" 
+                                    onChange={props.handleChange} onBlur={props.handleBlur} value={props.data.cep} placeholder=" " disabled={enableInput.enable} />
                                     <label className="active" htmlFor="cep">CEP:</label>
                                 </div>
                             </div>

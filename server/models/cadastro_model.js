@@ -1,20 +1,21 @@
 const mongoose = require('mongoose');
 
 const cadastroEmpSchema = mongoose.Schema({
+   
     nome: {
         type: String,
         trim: true
     },
     cpf: {
-        type: Number,
+        type: String,
         trim: true
     },
     phone: {
-        type: Number,
+        type: String,
         trim: true
     },
     cep: {
-        type: Number,
+        type: String,
         trim: true
     },
     numero: {

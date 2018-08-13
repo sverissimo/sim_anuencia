@@ -10,7 +10,7 @@ const Home = () => {
         <div className="container">
           <h1 className="display-3"> <strong> <span style={{ color: 'white' }} >Bem-vindo ao SIM</span> </strong> </h1>
           <h4 style={{ color: 'white' }}>
-            Módulo Experimental Anuência Prévia (versão beta).
+            Módulo Anuência Prévia (versão beta)
           </h4>
           <p className="btn btn-primary btn-lg" href="" role="button">Saiba mais &raquo;</p>
         </div>

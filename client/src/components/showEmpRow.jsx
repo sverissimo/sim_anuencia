@@ -4,9 +4,12 @@ import './css/styles.css';
 const ShowEmpRow = (props) => {
 
     const object = props.object
+   
+    
      /*      const myWindow = window.open("", "MsgWindow", "width=800,height=200");
          myWindow.document.write(JSON.stringify(object))  }; */
-     return (
+     console.log()
+         return (
         <tr key={object._id} id={object._id}>
             <th scope="row">{props.i}</th>
             <td>{object.nome}</td>

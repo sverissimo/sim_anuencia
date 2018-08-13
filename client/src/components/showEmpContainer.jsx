@@ -37,22 +37,21 @@ class ShowEmpContainer extends Component {
         let empreendedores = this.state.items,
             searchString = this.state.search.trim().toLowerCase();
         if (this.state.search) {
-            console.log(this.state.search)
             empreendedores = this.state.items.filter((el) => el.nome.toLowerCase().match(searchString))
         }
-        console.log(this.state.items)
+
         return (
             <div>
                 <ShowEmpTemplate
                     search={this.state.search}
                     change={e => this.handleChange(e)}>
                     {
-                        empreendedores.map(item => {
+                        empreendedores.map((item, index) => {
                             return (
 
                                 <ShowEmpRow
                                     object={item}
-                                    key={item._id}
+                                    key={index}
                                     delete={this.deleteHandler.bind(this, item._id)}
                                     i={i = i + 1}
                                 />

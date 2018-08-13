@@ -8,6 +8,7 @@ class CadastroEmpreend extends React.Component {
 
     state = {
 
+        id: '',
         nome: '',
         cpf: '',
         birth: '',
@@ -67,8 +68,6 @@ class CadastroEmpreend extends React.Component {
                 ...this.state.items, [event.target.name]: event.target.value, dataMatch: dataMatch
             })
         }
-
-        /* console.log(this.state) */
     };
 
     handleSubmit = (event) => {
@@ -76,8 +75,9 @@ class CadastroEmpreend extends React.Component {
         this.setState({
             [event.target.name]: event.target.value
         });
-
-        axios.post('/api/cadastro_emp', {
+        
+        axios.post(('/api/cadastro_emp/'), {
+            id: this.state.id,
             nome: this.state.nome,
             cpf: this.state.cpf,
             phone: this.state.phone,
@@ -95,11 +95,10 @@ class CadastroEmpreend extends React.Component {
             emailRt: this.state.emailRt,
             phoneRt: this.state.phoneRt
         })
-            .then(this.setState({ ...this.state, openProcess: true }))            
+            .then(this.setState({ ...this.state, openProcess: true }))
             .catch(err => {
                 alert(err)
             })
-        //window.location.href = '/';
     }
 
     handleBlurName = () => {
@@ -107,9 +106,9 @@ class CadastroEmpreend extends React.Component {
         if (this.state.dataMatch !== '') {
             this.setState({
                 ...this.state,
+                id: this.state.dataMatch[0].id,
                 phone: this.state.dataMatch[0].phone,
                 cpf: this.state.dataMatch[0].cpf,
-                birth: this.state.dataMatch[0].birth,
                 cep: this.state.dataMatch[0].cep,
                 numero: this.state.dataMatch[0].numero,
                 complemento: this.state.dataMatch[0].complemento,
@@ -119,9 +118,11 @@ class CadastroEmpreend extends React.Component {
                 cidade: this.state.dataMatch[0].cidade
 
             })
+
         } else {
             this.setState({
                 ...this.state,
+                id: '',
                 phone: '',
                 cpf: '',
                 birth: '',
@@ -133,13 +134,13 @@ class CadastroEmpreend extends React.Component {
                 bairro: '',
                 cidade: '',
 
-                
+
             })
         }
     }
 
     render() {
-        
+
         return (
             <div>
                 <CadEmpTemplate
@@ -150,11 +151,11 @@ class CadastroEmpreend extends React.Component {
                     handleBlur={(cep) => this.handleBlur(cep)}
                 >
                     {
-                        this.state.items.map(item => {
+                        this.state.items.map((item, index) => {
                             return (
                                 <AutoComplete
                                     data={item}
-                                    key={item.id}
+                                    key={index}
                                 />
                             )
 
