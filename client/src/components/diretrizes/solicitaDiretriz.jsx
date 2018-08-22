@@ -17,6 +17,7 @@ class solicitaDiretriz extends Component {
                 label: 'Comprovante de pagamento da DAE',
                 tooltip: 'Comprovante de pagamento da DAE'
             },
+            
         ],
     }
 

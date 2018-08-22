@@ -17,6 +17,32 @@
     margin-top: '30px'
 }
 
+fieldset {
+    padding: 20px;
+    margin-bottom: 10px
+}
+
+legend {
+    font-weight: bold
+}
+
+.btn-small {
+    color: white;
+    background-color: rgb(20, 83, 59);
+    border: none;
+    border-radius: 10px;
+    display: inline-flex ;
+    height: 28px;
+    line-height: 28px;
+    padding-left: 14px;
+    padding-right: 14px;
+    text-transform: uppercase;
+    font-size: 12px;
+    min-inline-size: 12pt;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+}
+
 /*  */
     
 
