@@ -161,8 +161,6 @@ class CadastroEmpreend extends React.Component {
                             )
 
                         })}
-                         <CadastroForm 
-                                data={this.state}/>
                 </CadEmpTemplate>
 
                 <OpenProcess
