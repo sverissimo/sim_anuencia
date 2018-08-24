@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolicitaAnuenciaRow from './solicitaAnuenciaRow';
-import SolicitaAnuenciaRow2 from './solicitaAnuenciaRow2';
-import Tst from './Tst';
 
 class SolicitaAnuencia extends Component {
     state =
@@ -54,7 +52,7 @@ class SolicitaAnuencia extends Component {
                 },
 
 
-                
+
             ],
             config2: [
                 {
@@ -81,36 +79,19 @@ class SolicitaAnuencia extends Component {
         }
 
     render() {
-        const config = this.state.config.map((item, i) => {
-            return (
-                <SolicitaAnuenciaRow
-                    object={item}
-                    key={i}
-                />
-            )
-        })
-        const config2 = this.state.config2.map((item, i) => {
-                return (
-                    <SolicitaAnuenciaRow2
-                        object={item}
-                        key={i}
-                    />
-                )
-            })
-        
-let array = []
-array = this.state.config2
+
+        let array = []
+        let array2 = []
+        array = this.state.config
+        array2 = this.state.config2
+        console.log(array)
         return (
             <div>
                 <SolicitaAnuenciaTemplate data={this.state}>
-
-                    {config}
-                    {config2}
-                   
+                    <SolicitaAnuenciaRow
+                        array={array}
+                        array2={array2} />
                 </SolicitaAnuenciaTemplate>
-                <Tst
-                    array={array}
-                    />
             </div>
         );
     }

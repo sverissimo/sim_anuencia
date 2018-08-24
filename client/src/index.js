@@ -6,26 +6,18 @@ import { BrowserRouter } from 'react-router-dom';
 import Routes from './routes';
 import Header from './components/header';
 
-
 const App = () => {
 
     return (
         <div>
-
-            
-
-                <BrowserRouter>
-                    <div>
-                        <header>
-                            <Header />
-                        </header>
-                        
-                            <Routes />
-                        
-                    </div>
-                </BrowserRouter>
-
-            
+            <BrowserRouter>
+                <div>
+                    <header>
+                        <Header />
+                    </header>
+                    <Routes />
+                </div>
+            </BrowserRouter>
         </div>
     )
 

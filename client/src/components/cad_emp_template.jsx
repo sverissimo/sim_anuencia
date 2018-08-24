@@ -2,6 +2,121 @@ import React from 'react';
 
 const CadEmpTemplate = (props) => {
 
+    const configForm = {
+
+        cpf: {
+            divClassName: 'input-field col s2',
+            type: 'text',
+            name: 'cpf',
+            value: props.data.cpf,
+            label: 'CPF / CNPJ',
+            onBlur: null
+        },
+        phone: {
+            divClassName: 'input-field col s2',
+            type: 'text',
+            name: 'phone',
+            label: 'Telefone',
+            value: props.data.phone,
+            onBlur: null
+        },
+        email: {
+            divClassName: 'input-field col s3',
+            type: 'text',
+            name: 'email',
+            label: 'E-mail',
+            value: props.data.email,
+            onBlur: null
+        },
+        CEP: {
+            divClassName: 'input-field col s1',
+            type: 'text',
+            name: 'cep',
+            label: 'CEP',
+            value: props.data.cep,
+            onBlur: props.handleBlur
+        },
+        numero: {
+            divClassName: 'input-field col s1',
+            type: 'text',
+            name: 'numero',
+            label: 'Número',
+            value: props.data.numero,
+            onBlur: null
+        },
+        complemento: {
+            divClassName: 'input-field col s2',
+            type: 'text',
+            name: 'complemento',
+            label: 'Complemento',
+            value: props.data.complemento,
+            onBlur: null
+        },
+        rua: {
+            divClassName: 'input-field col s3',
+            type: 'text',
+            name: 'rua',
+            label: 'Rua',
+            value: props.data.rua,
+            onBlur: null
+        },
+        bairro: {
+            divClassName: 'input-field col s2',
+            type: 'text',
+            name: 'bairro',
+            label: 'Bairro',
+            value: props.data.bairro,
+            onBlur: null
+        },
+        cidade: {
+            divClassName: 'input-field col s2',
+            type: 'text',
+            name: 'cidade',
+            label: 'Cidade',
+            value: props.data.cidade,
+            onBlur: null
+        },
+        uf: {
+            divClassName: 'input-field col s1',
+            type: 'text',
+            name: 'uf',
+            label: 'Estado',
+            value: props.data.uf,
+            onBlur: null
+        }
+    }
+    const renderFields = () => {
+        let configArray = [];
+        for (let keys in configForm) {
+            configArray.push({
+                id: keys,
+                settings: configForm[keys]
+            })
+        }
+        return configArray.map((item, i) => {
+            let config = item.settings
+            return (
+                <div key={i} className={config.divClassName}>
+                    <input type={config.type}
+                        className="active"
+                        name={config.name}
+                        onChange={props.handleChange}
+                        value={config.value}
+                        placeholder=" "
+                        disabled={enableInput.enable}
+                        onBlur={config.onBlur}
+                    />
+                    <label className="active"
+                        htmlFor={config.name}>
+                        {config.label}
+                    </label>
+                </div>
+
+            )
+        })
+
+    }
+
     const view = props.data.openProcess;
     let enableInput;
     if (view === true) {
@@ -15,9 +130,7 @@ const CadEmpTemplate = (props) => {
             alt: ""
         }
     };
-
     const dataLogic = () => {
-
         if (props.data.nome.length > 2) {
             return (
                 <datalist id='empreendList'>
@@ -28,20 +141,16 @@ const CadEmpTemplate = (props) => {
             return
         }
     }
-
     return (
-        <div style={{ marginLeft: 40, marginRight: 40 }} >
+        <div style={{ marginLeft: 50, marginRight: 50 }} >
             <div className="tab-pane fade show active" id="empreend" role="tabpanel" aria-labelledby="empreend-tab">
                 <p>Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.</p>
                 <form onSubmit={props.handleSubmit}>
                     <fieldset className="input-field">
-                        <legend className="input-field">
-                            <strong> Interessado </strong>
-                        </legend>
+                        <legend className="input-field"><strong> Interessado </strong></legend>
 
                         <div className="row">
-
-                            <div className="input-field col s2">
+                            <div className="input-field col s4">
                                 <input
                                     type="text"
                                     list="empreendList"
@@ -51,61 +160,12 @@ const CadEmpTemplate = (props) => {
                                     value={props.data.nome}
                                     onBlur={props.handleBlurName}
                                     disabled={enableInput.enable}
-
                                 />
                                 <label className="active" htmlFor="nome">Nome</label>
-
                                 {dataLogic()}
-
                             </div>
-                            <div className="input-field col s2">
-                                <input type="text" className="validate" name="cpf" 
-                                onChange={props.handleChange} value={props.data.cpf} placeholder=" " disabled={enableInput.enable} />
-                                <label className="active" htmlFor="cpf">CPF / CNPJ:</label>
-                            </div>
-
-                            <div className="input-field col s2">
-                                <input type="text" id="phone" className="validate" name="phone" 
-                                onChange={props.handleChange} value={props.data.phone} disabled={enableInput.enable} placeholder=" " />
-                                <label className="active" htmlFor="phone">Telefone:</label>
-                            </div>
-                            <div className="input-field col">
-                                <input type="text" className="validate" name="email" 
-                                onChange={props.handleChange} value={props.data.email} placeholder=" " disabled={enableInput.enable} />
-                                <label className="active" htmlFor="email">E-mail:</label>
-                            </div>
-                            <div className="row">
-                                <div className="input-field col s2">
-                                    <input type="text" className="validate" name="cep" id="cep" maxLength="10" 
-                                    onChange={props.handleChange} onBlur={props.handleBlur} value={props.data.cep} placeholder=" " disabled={enableInput.enable} />
-                                    <label className="active" htmlFor="cep">CEP:</label>
-                                </div>
-                            </div>
-
-                            <div className="input-field col s1">
-                                <input type="text" className="validate" placeholder=" " name="numero" onChange={props.handleChange} value={props.data.numero} disabled={enableInput.enable} />
-                                <label className="active" htmlFor="numero">Número:</label>
-                            </div>
-                            <div className="input-field col s2">
-                                <input type="text" className="validate" placeholder=" " name="complemento" onChange={props.handleChange} value={props.data.complemento} disabled={enableInput.enable} />
-                                <label className="active" htmlFor="complemento">Complemento:</label>
-                            </div>
-
-                            <div className="input-field col s3">
-                                <input type="text" className="validate" placeholder=" " name="rua" onChange={props.handleChange} value={props.data.rua} disabled={enableInput.enable} />
-                                <label className="active" htmlFor="rua">Rua:</label>
-                            </div>
-                            <div className="input-field col s2">
-                                <input type="text" className="validate" placeholder=" " name="bairro" onChange={props.handleChange} value={props.data.bairro} disabled={enableInput.enable} />
-                                <label className="active" htmlFor="bairro">Bairro:</label>
-                            </div>
-                            <div className="input-field col s2">
-                                <input type="text" className="validate" placeholder=" " name="cidade" onChange={props.handleChange} value={props.data.cidade} disabled={enableInput.enable} />
-                                <label className="active" htmlFor="cidade">Cidade:</label>
-                            </div>
-                            <div className="input-field col s1">
-                                <input type="text" className="validate" placeholder=" " name="uf" onChange={props.handleChange} value={props.data.uf} disabled={enableInput.enable} />
-                                <label className="active" htmlFor="uf">Estado:</label>
+                            <div>
+                                {renderFields()}
                             </div>
 
                             <input type="text" className="validate" name="ibge" id="ibge" style={{ display: 'none' }} />
