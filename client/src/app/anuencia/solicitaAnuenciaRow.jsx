@@ -1,5 +1,5 @@
 import React from 'react';
-import UploadButton from './../widgets/uploadButton';
+import UploadButton from '../common/uploadButton';
 
 const SolicitaAnuenciaRow2 = (props) => {
 

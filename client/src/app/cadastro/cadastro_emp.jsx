@@ -1,5 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import processFormActions from './processFormActions';
+
 import CadEmpTemplate from './cad_emp_template';
 import OpenProcess from './cad_emp_open';
 import AutoComplete from './auto_complete';
@@ -75,7 +80,7 @@ class CadastroEmpreend extends React.Component {
         this.setState({
             [event.target.name]: event.target.value
         });
-        
+
         axios.post(('/api/cadastro_emp/'), {
             id: this.state.id,
             nome: this.state.nome,
@@ -141,11 +146,11 @@ class CadastroEmpreend extends React.Component {
     }
 
     render() {
-
         return (
             <div>
                 <CadEmpTemplate
                     data={this.state}
+                    config={this.props.empreendForm}
                     handleChange={(change) => this.handleChange(change)}
                     handleBlurName={this.handleBlurName}
                     handleSubmit={(submit) => this.handleSubmit(submit)}
@@ -159,21 +164,34 @@ class CadastroEmpreend extends React.Component {
                                     key={index}
                                 />
                             )
-
                         })}
                 </CadEmpTemplate>
 
                 <OpenProcess
+                    config={this.props.processForm}
                     data={this.state}
                     handleChange={(change) => this.handleChange(change)}
                     handleSubmit={(submit) => this.handleSubmit(submit)}
                     handleBlur={(cep) => this.handleBlur(cep)}
-
                 />
-
             </div>
         )
     }
 }
 
-export default CadastroEmpreend;
+function mapStateToProps(state) {
+    return {
+        processForm: state.processForm,
+        empreendForm: state.empreendForm
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ processFormActions }, dispatch)
+}
+
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CadastroEmpreend);
+

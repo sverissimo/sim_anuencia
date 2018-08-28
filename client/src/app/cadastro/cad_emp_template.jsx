@@ -2,91 +2,9 @@ import React from 'react';
 
 const CadEmpTemplate = (props) => {
 
-    const configForm = {
-
-        cpf: {
-            divClassName: 'input-field col s2',
-            type: 'text',
-            name: 'cpf',
-            value: props.data.cpf,
-            label: 'CPF / CNPJ',
-            onBlur: null
-        },
-        phone: {
-            divClassName: 'input-field col s2',
-            type: 'text',
-            name: 'phone',
-            label: 'Telefone',
-            value: props.data.phone,
-            onBlur: null
-        },
-        email: {
-            divClassName: 'input-field col s3',
-            type: 'text',
-            name: 'email',
-            label: 'E-mail',
-            value: props.data.email,
-            onBlur: null
-        },
-        CEP: {
-            divClassName: 'input-field col s1',
-            type: 'text',
-            name: 'cep',
-            label: 'CEP',
-            value: props.data.cep,
-            onBlur: props.handleBlur
-        },
-        numero: {
-            divClassName: 'input-field col s1',
-            type: 'text',
-            name: 'numero',
-            label: 'Número',
-            value: props.data.numero,
-            onBlur: null
-        },
-        complemento: {
-            divClassName: 'input-field col s2',
-            type: 'text',
-            name: 'complemento',
-            label: 'Complemento',
-            value: props.data.complemento,
-            onBlur: null
-        },
-        rua: {
-            divClassName: 'input-field col s3',
-            type: 'text',
-            name: 'rua',
-            label: 'Rua',
-            value: props.data.rua,
-            onBlur: null
-        },
-        bairro: {
-            divClassName: 'input-field col s2',
-            type: 'text',
-            name: 'bairro',
-            label: 'Bairro',
-            value: props.data.bairro,
-            onBlur: null
-        },
-        cidade: {
-            divClassName: 'input-field col s2',
-            type: 'text',
-            name: 'cidade',
-            label: 'Cidade',
-            value: props.data.cidade,
-            onBlur: null
-        },
-        uf: {
-            divClassName: 'input-field col s1',
-            type: 'text',
-            name: 'uf',
-            label: 'Estado',
-            value: props.data.uf,
-            onBlur: null
-        }
-    }
     const renderFields = () => {
         let configArray = [];
+        const configForm = props.config;
         for (let keys in configForm) {
             configArray.push({
                 id: keys,
@@ -141,6 +59,7 @@ const CadEmpTemplate = (props) => {
             return
         }
     }
+    console.log(props.config)
     return (
         <div style={{ marginLeft: 50, marginRight: 50 }} >
             <div className="tab-pane fade show active" id="empreend" role="tabpanel" aria-labelledby="empreend-tab">

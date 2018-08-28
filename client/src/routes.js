@@ -1,11 +1,11 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Home from './components/home';
-import CadastroEmpreend from './components/cadastro_emp';
-import ShowEmpContainer from './components/showEmpContainer';
-import SolicitaDiretriz from './components/diretrizes/solicitaDiretriz';
-import SolicitaAnuencia from './components/anuencia/solicitaAnuencia';
+import Home from './app/home';
+import CadastroEmpreend from './app/cadastro/cadastro_emp';
+import ShowEmpContainer from './app/buscar/showEmpContainer';
+import SolicitaDiretriz from './app/diretrizes/solicitaDiretriz';
+import SolicitaAnuencia from './app/anuencia/solicitaAnuencia';
 
 
 

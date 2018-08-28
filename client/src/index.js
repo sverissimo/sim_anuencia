@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 
-//COMPONENTS
+import rootReducer from './rootReducer';
 import Routes from './routes';
-import Header from './components/header';
+import Header from './app/common/header';
+
+const store = applyMiddleware()(createStore);
 
 const App = () => {
 
     return (
-        <div>
+        <Provider store={store(rootReducer)}>
             <BrowserRouter>
                 <div>
                     <header>
@@ -18,7 +22,7 @@ const App = () => {
                     <Routes />
                 </div>
             </BrowserRouter>
-        </div>
+        </Provider>
     )
 
 };
