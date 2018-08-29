@@ -4,11 +4,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 
+import promise from 'redux-promise';
+
 import rootReducer from './rootReducer';
 import Routes from './routes';
 import Header from './app/common/header';
 
-const store = applyMiddleware()(createStore);
+const store = applyMiddleware(promise)(createStore);
 
 const App = () => {
 

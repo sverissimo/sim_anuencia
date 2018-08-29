@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import processFormActions from './processFormActions';
+import { loadEmpData } from './cadActions';
 
 import CadEmpTemplate from './cad_emp_template';
 import OpenProcess from './cad_emp_open';
@@ -38,9 +38,7 @@ class CadastroEmpreend extends React.Component {
     }
 
     componentWillMount() {
-        axios.get('/api/showEmpreend')
-            .then(res => this.setState({ items: res.data }))
-            .catch(err => console.log(err))
+        this.props.loadEmpData()
     }
 
     handleBlur = cep => {
@@ -146,11 +144,12 @@ class CadastroEmpreend extends React.Component {
     }
 
     render() {
+        console.log(this.props.cadastro)
         return (
             <div>
                 <CadEmpTemplate
                     data={this.state}
-                    config={this.props.empreendForm}
+                    config={this.props.cadastro.empreendForm}
                     handleChange={(change) => this.handleChange(change)}
                     handleBlurName={this.handleBlurName}
                     handleSubmit={(submit) => this.handleSubmit(submit)}
@@ -168,7 +167,7 @@ class CadastroEmpreend extends React.Component {
                 </CadEmpTemplate>
 
                 <OpenProcess
-                    config={this.props.processForm}
+                    config={this.props.cadastro.processForm}
                     data={this.state}
                     handleChange={(change) => this.handleChange(change)}
                     handleSubmit={(submit) => this.handleSubmit(submit)}
@@ -181,13 +180,12 @@ class CadastroEmpreend extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        processForm: state.processForm,
-        empreendForm: state.empreendForm
+        cadastro: state.cadastro
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ processFormActions }, dispatch)
+    return bindActionCreators({ loadEmpData }, dispatch)
 }
 
 

@@ -59,7 +59,7 @@ const CadEmpTemplate = (props) => {
             return
         }
     }
-    console.log(props.config)
+    
     return (
         <div style={{ marginLeft: 50, marginRight: 50 }} >
             <div className="tab-pane fade show active" id="empreend" role="tabpanel" aria-labelledby="empreend-tab">
