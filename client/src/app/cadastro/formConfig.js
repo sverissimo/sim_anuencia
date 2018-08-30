@@ -3,7 +3,6 @@ export const processForm = {
         divClassName: 'input-field col s4',
         type: 'text',
         name: 'nomeEmpreendimento',
-       /*  value: props.data.nomeEmpreendimento, */
         label: 'Nome do Empreendimento:',
         onBlur: null
     },
@@ -11,7 +10,6 @@ export const processForm = {
         divClassName: 'input-field col s2',
         type: 'text',
         name: 'area',
-       /*  value: props.data.nomeEmpreendimento, */
         label: 'Área total da Gleba (m²):',
         onBlur: null
     },
@@ -19,7 +17,6 @@ export const processForm = {
         divClassName: 'input-field col s2',
         type: 'text',
         name: 'modalidade',
-       /*  value: props.data.nomeEmpreendimento, */
         label: 'Modalidade:',
         onBlur: null
     },
@@ -27,7 +24,6 @@ export const processForm = {
         divClassName: 'input-field col s2',
         type: 'text',
         name: 'munEmpreendimento',
-       /*  value: props.data.nomeEmpreendimento, */
         label: 'Município:',
         onBlur: null
     }
@@ -36,9 +32,30 @@ export const processForm = {
 
 
 
+export const rtForm = {
 
-
-
+    nomeRt: {
+        divClassName: 'input-field col s4',
+        type: 'text',
+        name: 'nomeRt',
+        label: 'Nome',
+        onBlur: null
+    },
+    phoneRt: {
+        divClassName: 'input-field col s2',
+        type: 'text',
+        name: 'phoneRt',
+        label: 'Telefone',
+        onBlur: null
+    },
+    emailRt: {
+        divClassName: 'input-field col s4',
+        type: 'text',
+        name: 'emailRt',
+        label: 'E-mail',
+        onBlur: null
+    }
+}
 
 
 
@@ -48,7 +65,6 @@ export const empreendForm = {
         divClassName: 'input-field col s2',
         type: 'text',
         name: 'cpf',
-       /*  value: props.data.cpf, */
         label: 'CPF / CNPJ',
         onBlur: null
     },
@@ -57,7 +73,6 @@ export const empreendForm = {
         type: 'text',
         name: 'phone',
         label: 'Telefone',
-       /*  value: props.data.phone, */
         onBlur: null
     },
     email: {
@@ -65,7 +80,6 @@ export const empreendForm = {
         type: 'text',
         name: 'email',
         label: 'E-mail',
-        /* value: props.data.email, */
         onBlur: null
     },
     CEP: {
@@ -73,7 +87,6 @@ export const empreendForm = {
         type: 'text',
         name: 'cep',
         label: 'CEP',
-        /* value: props.data.cep, */
         //onBlur: props.handleBlur
     },
     numero: {
@@ -81,7 +94,6 @@ export const empreendForm = {
         type: 'text',
         name: 'numero',
         label: 'Número',
-        //value: props.data.numero,
         onBlur: null
     },
     complemento: {
@@ -89,7 +101,6 @@ export const empreendForm = {
         type: 'text',
         name: 'complemento',
         label: 'Complemento',
-        //value: props.data.complemento,
         onBlur: null
     },
     rua: {
@@ -97,7 +108,6 @@ export const empreendForm = {
         type: 'text',
         name: 'rua',
         label: 'Rua',
-        //value: props.data.rua,
         onBlur: null
     },
     bairro: {
@@ -105,7 +115,6 @@ export const empreendForm = {
         type: 'text',
         name: 'bairro',
         label: 'Bairro',
-        //value: props.data.bairro,
         onBlur: null
     },
     cidade: {
@@ -113,7 +122,6 @@ export const empreendForm = {
         type: 'text',
         name: 'cidade',
         label: 'Cidade',
-        //value: props.data.cidade,
         onBlur: null
     },
     uf: {
@@ -121,7 +129,6 @@ export const empreendForm = {
         type: 'text',
         name: 'uf',
         label: 'Estado',
-        //value: props.data.uf,
         onBlur: null
     }
 }

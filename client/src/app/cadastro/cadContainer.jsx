@@ -3,13 +3,12 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadEmpData } from './cadActions';
+import { loadEmpData, changeHandler } from './cadActions';
 
-import CadEmpTemplate from './cad_emp_template';
-import OpenProcess from './cad_emp_open';
-import AutoComplete from './auto_complete';
+import CadTemplate from './cadTemplate';
 
-class CadastroEmpreend extends React.Component {
+
+class CadastroContainer extends React.Component {
 
     state = {
 
@@ -29,8 +28,10 @@ class CadastroEmpreend extends React.Component {
         nomeRt: '',
         emailRt: '',
         phoneRt: '',
-        openProcess: false,
-        nProcesso: '',
+        enableEmp: '',
+        enableRt: 'disabled',
+        enableProcess: 'disabled',
+        nProcesso: 0,
         loadedData: [],
         dataMatch: '',
         items: []
@@ -38,7 +39,32 @@ class CadastroEmpreend extends React.Component {
     }
 
     componentWillMount() {
-        this.props.loadEmpData()
+        axios.get('/api/showEmpreend')
+            .then(res => {
+                this.setState({ items: res.data })
+            })
+            .catch(err => console.log(err))
+    }
+    enableRtInput(e) {
+        this.setState({
+            enableEmp: 'disabled',
+            enableRt: '',
+            enableProcess: 'disabled',
+        })
+    }
+    enableProcessInput(e) {
+        this.setState({
+            enableEmp: 'disabled',
+            enableRt: 'disabled',
+            enableProcess: '',
+        })
+    }
+    enableEmpInput(e) {
+        this.setState({
+            enableEmp: '',
+            enableRt: 'disabled',
+            enableProcess: 'disabled',
+        })
     }
 
     handleBlur = cep => {
@@ -73,8 +99,7 @@ class CadastroEmpreend extends React.Component {
         }
     };
 
-    handleSubmit = (event) => {
-        event.preventDefault();
+    handleSubmit = event => {
         this.setState({
             [event.target.name]: event.target.value
         });
@@ -119,9 +144,8 @@ class CadastroEmpreend extends React.Component {
                 rua: this.state.dataMatch[0].rua,
                 bairro: this.state.dataMatch[0].bairro,
                 cidade: this.state.dataMatch[0].cidade,
-                openProcess: true
-
             })
+            this.enableRtInput()
 
         } else {
             this.setState({
@@ -144,34 +168,19 @@ class CadastroEmpreend extends React.Component {
     }
 
     render() {
-        console.log(this.props.cadastro)
+        console.log(this.state)
         return (
             <div>
-                <CadEmpTemplate
+                <CadTemplate
                     data={this.state}
-                    config={this.props.cadastro.empreendForm}
+                    config={this.props.cadastro}
                     handleChange={(change) => this.handleChange(change)}
                     handleBlurName={this.handleBlurName}
                     handleSubmit={(submit) => this.handleSubmit(submit)}
                     handleBlur={(cep) => this.handleBlur(cep)}
-                >
-                    {
-                        this.state.items.map((item, index) => {
-                            return (
-                                <AutoComplete
-                                    data={item}
-                                    key={index}
-                                />
-                            )
-                        })}
-                </CadEmpTemplate>
-
-                <OpenProcess
-                    config={this.props.cadastro.processForm}
-                    data={this.state}
-                    handleChange={(change) => this.handleChange(change)}
-                    handleSubmit={(submit) => this.handleSubmit(submit)}
-                    handleBlur={(cep) => this.handleBlur(cep)}
+                    enableRtInput={e => this.enableRtInput(e)}
+                    enableProcessInput={e => this.enableProcessInput(e)}
+                    enableEmpInput={e => this.enableEmpInput(e)}
                 />
             </div>
         )
@@ -185,11 +194,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData }, dispatch)
+    return bindActionCreators({ loadEmpData, changeHandler }, dispatch)
 }
 
-
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(CadastroEmpreend);
-
+export default connect(mapStateToProps, mapDispatchToProps)(CadastroContainer);

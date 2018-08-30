@@ -1,8 +1,9 @@
-import { empreendForm, processForm } from './formConfig';
+import { empreendForm, processForm, rtForm } from './formConfig';
 
 const initState = {
     empreendForm: empreendForm,
     processForm: processForm,
+    rtForm: rtForm,
     items: [],
     id: '',
     nome: '',
@@ -24,23 +25,22 @@ const initState = {
     nProcesso: '',
     loadedData: [],
     dataMatch: '',
-   
+
 }
-
-
 
 const CadReducer = (state = initState, action) => {
 
     switch (action.type) {
-       
+
         case 'LOAD_EMP_DATA':
-            
             return { ...state, items: action.payload }
+        case 'CHANGED_VALUE':
+            
+            return {...state, nome:action.payload}
+            
         default:
             return state
     }
 }
-
-
 
 export default CadReducer;

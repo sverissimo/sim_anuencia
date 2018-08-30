@@ -43,6 +43,36 @@ legend {
     -webkit-tap-highlight-color: transparent;
 }
 
+#buttons {
+    
+    margin-top: 10px;
+    border-radius: 100%;
+    width: 10px;
+    padding: 20px;
+    display: inline-block ;
+    vertical-align: middle;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    box-align: center;
+    align-self: center
+    
+}
+
+#icons {
+    
+    margin-top: 10px;
+    border-radius: 100%;
+    width: 10px;
+    display: inline-block ;
+    vertical-align: middle;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    box-align: center;
+    align-self: center
+    
+}
 /*  */
     
 
