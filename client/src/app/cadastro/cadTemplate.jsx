@@ -15,7 +15,6 @@ const CadTemplate = (props) => {
 
         return configArray.map((item, i) => {
             let config = item.settings
-
             return (
                 <div key={i} className={config.divClassName}>
                     <input type={config.type}
@@ -36,15 +35,14 @@ const CadTemplate = (props) => {
         })
     }
 
-    const autoComplete = () => {
-        if (props.data.nome.length > 2) {
+    const autoComplete = (collection, datalist, name) => {
+        if (name.length > 2) {
             return (
-                <datalist id='empreendList'>
+                <datalist id={datalist}>
                     {
-                        props.data.items.map((item, index) => {
+                        collection.map((item, index) => {
                             return (
                                 <option key={index}>{item.nome}</option>
-
                             )
                         })}
                 </datalist>
@@ -53,10 +51,32 @@ const CadTemplate = (props) => {
             return
         }
     }
+    const autoCompleteRt = (collection, datalist, name) => {
+        if (name.length > 2) {
+            return (
+                <datalist id={datalist}>
+                    {
+                        collection.map((item, index) => {
+                            return (
+                                <option key={index}>{item.nomeRt}</option>
+                            )
+                        })}
+                </datalist>
+            )
+        } else {
+            return
+        }
+    }
+    
     return (
         <div style={{ marginLeft: 50, marginRight: 50 }} >
             <div className="tab-pane fade show active" id="empreend">
-                <p>Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.</p>
+                <div className="valign-wrapper" >
+                   
+                        <i className="material-icons small teal-text">error_outline</i>
+                        <strong style={{ marginLeft: 5, fontFamily: 'tahoma' }}>Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.</strong>
+                   
+                </div>
                 <form onSubmit={props.handleSubmit}>
                     <fieldset className="input-field"><legend className="input-field"><strong> Interessado </strong></legend>
                         <div className="row">
@@ -70,9 +90,10 @@ const CadTemplate = (props) => {
                                     value={props.data.nome}
                                     onBlur={props.handleBlurName}
                                     disabled={props.data.enableEmp}
+                                    autoFocus="true"
                                 />
                                 <label className="active" htmlFor="nome">Nome</label>
-                                {autoComplete()}
+                                {autoComplete(props.data.empCollection, 'empreendList', props.data.nome)}
                             </div>
                             {renderFields(props.config.empreendForm, props.data.enableEmp)}
                         </div>
@@ -80,6 +101,21 @@ const CadTemplate = (props) => {
                     <ConfirmButton data={props.data} enableInput={props.enableRtInput} enable={props.data.enableEmp} />
                     <fieldset className="input-field"><legend className="input-field"><strong> Responsável Técnico </strong></legend>
                         <div className="row">
+                            <div className="input-field col s4">
+                                <input
+                                    type="text"
+                                    list="rtList"
+                                    className="validate"
+                                    name="nomeRt"
+                                    onChange={props.handleChange}
+                                    value={props.data.nomeRt}
+                                    onBlur={props.handleBlurRtName}
+                                    disabled={props.data.enableRt}
+                                    autoFocus={props.data.autoFocusRt}
+                                />
+                                <label className="active" htmlFor="nome">Nome</label>
+                                {autoCompleteRt(props.config.rtCollection, 'rtList', props.data.nomeRt)}
+                            </div>
                             {renderFields(props.config.rtForm, props.data.enableRt)}
                         </div>
                     </fieldset>

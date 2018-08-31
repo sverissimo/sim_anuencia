@@ -4,7 +4,8 @@ const initState = {
     empreendForm: empreendForm,
     processForm: processForm,
     rtForm: rtForm,
-    items: [],
+    empCollection: [],
+    rtCollection: [],
     id: '',
     nome: '',
     cpf: '',
@@ -24,7 +25,8 @@ const initState = {
     openProcess: false,
     nProcesso: '',
     loadedData: [],
-    dataMatch: '',
+    empMatch: '',
+    rtMatch: ''
 
 }
 
@@ -32,8 +34,8 @@ const CadReducer = (state = initState, action) => {
 
     switch (action.type) {
 
-        case 'LOAD_EMP_DATA':
-            return { ...state, items: action.payload }
+        case 'LOAD_RT_DATA':
+            return { ...state, rtCollection: action.payload }
         case 'CHANGED_VALUE':
             
             return {...state, nome:action.payload}

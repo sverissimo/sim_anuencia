@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const ConfirmButton = (props) => {
-    console.log(props.enable)
+    
     return (
         <div className="row">
             <div>
@@ -9,7 +9,7 @@ export const ConfirmButton = (props) => {
                     disabled={props.enable}
                     title="Avançar"
                     onClick={props.enableInput}>
-                    <i class="material-icons">arrow_forward</i>
+                    <i className="material-icons">arrow_forward</i>
                 </button>
             </div>
         </div>
@@ -25,7 +25,7 @@ export const BackButton = (props) => {
                     disabled={props.enable}
                     title="Voltar"
                     onClick={props.enableInput}>
-                    <i class="material-icons">arrow_back</i>
+                    <i className="material-icons">arrow_back</i>
                 </button>
             </div>
         </div>

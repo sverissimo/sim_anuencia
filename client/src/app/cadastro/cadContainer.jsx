@@ -3,16 +3,15 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadEmpData, changeHandler } from './cadActions';
+import { loadRtData } from './cadActions';
 
 import CadTemplate from './cadTemplate';
-
 
 class CadastroContainer extends React.Component {
 
     state = {
 
-        id: '',
+        _id: '',
         nome: '',
         cpf: '',
         birth: '',
@@ -31,25 +30,31 @@ class CadastroContainer extends React.Component {
         enableEmp: '',
         enableRt: 'disabled',
         enableProcess: 'disabled',
+        autoFocusRt: 'false',
+        autoFocusProcess: 'false',
         nProcesso: 0,
         loadedData: [],
-        dataMatch: '',
-        items: []
-
+        empMatch: '',
+        empCollection: [],
+        rtCollection: []
     }
 
     componentWillMount() {
         axios.get('/api/showEmpreend')
             .then(res => {
-                this.setState({ items: res.data })
+                this.setState({ empCollection: res.data })
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
+            this.props.loadRtData()
     }
+
     enableRtInput(e) {
         this.setState({
+            
             enableEmp: 'disabled',
             enableRt: '',
             enableProcess: 'disabled',
+            
         })
     }
     enableProcessInput(e) {
@@ -84,19 +89,33 @@ class CadastroContainer extends React.Component {
         event.preventDefault();
         let autoComplete = event.target.value
 
-        let dataMatch = []
-        dataMatch = this.state.items.filter(el => el.nome.toLowerCase().match(autoComplete.toLowerCase()))
-        if (autoComplete && dataMatch[0]) {
+        let empMatch = []
+        empMatch = this.state.empCollection.filter(el => el.nome.toLowerCase().match(autoComplete.toLowerCase()))
+        if (autoComplete && empMatch[0]) {
             this.setState({
-                ...this.state.items, [event.target.name]: event.target.value, dataMatch: dataMatch
+                ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
             })
 
         } else {
-            dataMatch = ''
+            empMatch = ''
             this.setState({
-                ...this.state.items, [event.target.name]: event.target.value, dataMatch: dataMatch
+                ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
             })
         }
+         let rtMatch = []
+         rtMatch = this.props.cadastro.rtCollection.filter(el => el.nomeRt.toLowerCase().match(autoComplete.toLowerCase()))
+         if (autoComplete && rtMatch[0]) {
+             this.setState({
+                 ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+             })
+ 
+         } else {
+             rtMatch = ''
+             this.setState({
+                 ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+             })
+         }
+
     };
 
     handleSubmit = event => {
@@ -105,7 +124,7 @@ class CadastroContainer extends React.Component {
         });
 
         axios.post(('/api/cadastro_emp/'), {
-            id: this.state.id,
+            
             nome: this.state.nome,
             cpf: this.state.cpf,
             phone: this.state.phone,
@@ -131,26 +150,27 @@ class CadastroContainer extends React.Component {
 
     handleBlurName = () => {
 
-        if (this.state.dataMatch !== '') {
+        if (this.state.empMatch !== '') {
             this.setState({
                 ...this.state,
-                id: this.state.dataMatch[0].id,
-                phone: this.state.dataMatch[0].phone,
-                cpf: this.state.dataMatch[0].cpf,
-                cep: this.state.dataMatch[0].cep,
-                numero: this.state.dataMatch[0].numero,
-                complemento: this.state.dataMatch[0].complemento,
-                email: this.state.dataMatch[0].email,
-                rua: this.state.dataMatch[0].rua,
-                bairro: this.state.dataMatch[0].bairro,
-                cidade: this.state.dataMatch[0].cidade,
+                _id: this.state.empMatch[0]._id,
+                phone: this.state.empMatch[0].phone,
+                cpf: this.state.empMatch[0].cpf,
+                cep: this.state.empMatch[0].cep,
+                numero: this.state.empMatch[0].numero,
+                complemento: this.state.empMatch[0].complemento,
+                email: this.state.empMatch[0].email,
+                rua: this.state.empMatch[0].rua,
+                bairro: this.state.empMatch[0].bairro,
+                cidade: this.state.empMatch[0].cidade,
+                
             })
-            this.enableRtInput()
+            this.enableRtInput();
 
         } else {
             this.setState({
                 ...this.state,
-                id: '',
+                _id: '',
                 phone: '',
                 cpf: '',
                 birth: '',
@@ -161,14 +181,32 @@ class CadastroContainer extends React.Component {
                 rua: '',
                 bairro: '',
                 cidade: '',
+            })
+        }
+    }
 
+    handleBlurRtName = () => {
+        if (this.state.rtMatch !== '') {
+            this.setState({
+                ...this.state,
+                phoneRt: this.state.rtMatch[0].phoneRt,
+                emailRt: this.state.rtMatch[0].emailRt,
+                
+            })
+            this.enableProcessInput()
+
+        } else {
+            this.setState({
+                ...this.state,
+                phoneRt: '',
+                emailRt: '',
 
             })
         }
     }
 
     render() {
-        console.log(this.state)
+        console.log(this.state._id)
         return (
             <div>
                 <CadTemplate
@@ -176,6 +214,7 @@ class CadastroContainer extends React.Component {
                     config={this.props.cadastro}
                     handleChange={(change) => this.handleChange(change)}
                     handleBlurName={this.handleBlurName}
+                    handleBlurRtName={this.handleBlurRtName}
                     handleSubmit={(submit) => this.handleSubmit(submit)}
                     handleBlur={(cep) => this.handleBlur(cep)}
                     enableRtInput={e => this.enableRtInput(e)}
@@ -194,7 +233,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, changeHandler }, dispatch)
+    return bindActionCreators({ loadRtData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CadastroContainer);

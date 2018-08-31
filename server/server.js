@@ -20,20 +20,20 @@ app.get('/api/showEmpreend', (req, res) => {
     let skip = parseInt(req.query.skip);
     let limit = parseInt(req.query.limit);
     let order = req.query.order;
-    
+   
     empreendedor.find().sort({nome: 1}).exec((err, doc) => {
         if (err) return err;
         res.send(doc);
-        
-        
     });
-
-    /*  Empreend.find().skip(skip).sort({_id:order}).limit(limit).exec((err, doc) => {
-         if(err) return err;
-         res.send(doc)
-     }) */
 });
 
+app.get('/api/showRt', (req, res) => {
+       
+    CadastroRt.find().sort({nomeRt: 1}).exec((err, doc) => {
+        if (err) return err;
+        res.send(doc);
+    });
+});
 
 
 app.post('/api/cadastro_emp', (req, res) => {

@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 
-export function loadEmpData() {
+export function loadRtData() {
 
-    const request = axios.get('/api/showEmpreend')
+    const request = axios.get('/api/showRt')
         .then(res => res.data)
         .catch(err => console.log(err))
     return {
-        type: 'LOAD_EMP_DATA',
+        type: 'LOAD_RT_DATA',
         payload: request
     }
 };

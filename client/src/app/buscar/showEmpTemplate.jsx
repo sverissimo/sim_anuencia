@@ -11,10 +11,7 @@ const ShowEmpTemplate = (props) => {
 
             <form className="input-field inline" id="search_form">
                 <input className="form-control mr-sm-2" value={props.search} onChange={props.change} type="search" placeholder="procurar..." aria-label="Search" />
-                 
-                         
- 
-            </form>
+             </form>
 
             <hr />
             <div>
