@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadRtData } from './cadActions';
+import { loadRtData, loadProcessData } from './cadActions';
 
 import CadTemplate from './cadTemplate';
 
@@ -11,7 +11,8 @@ class CadastroContainer extends React.Component {
 
     state = {
 
-        _id: '',
+        empId: '',
+        rtId: '',
         nome: '',
         cpf: '',
         birth: '',
@@ -27,13 +28,13 @@ class CadastroContainer extends React.Component {
         nomeRt: '',
         emailRt: '',
         phoneRt: '',
+        nomeEmpreendimento: '',
+        area: '',
+        modalidade: '',
+        munEmpreendimento: '',
         enableEmp: '',
         enableRt: 'disabled',
         enableProcess: 'disabled',
-        autoFocusRt: 'false',
-        autoFocusProcess: 'false',
-        nProcesso: 0,
-        loadedData: [],
         empMatch: '',
         empCollection: [],
         rtCollection: []
@@ -45,16 +46,17 @@ class CadastroContainer extends React.Component {
                 this.setState({ empCollection: res.data })
             })
             .catch(err => console.log(err));
-            this.props.loadRtData()
+        this.props.loadRtData();
+        this.props.loadProcessData();
     }
 
     enableRtInput(e) {
         this.setState({
-            
+
             enableEmp: 'disabled',
             enableRt: '',
             enableProcess: 'disabled',
-            
+
         })
     }
     enableProcessInput(e) {
@@ -102,29 +104,30 @@ class CadastroContainer extends React.Component {
                 ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
             })
         }
-         let rtMatch = []
-         rtMatch = this.props.cadastro.rtCollection.filter(el => el.nomeRt.toLowerCase().match(autoComplete.toLowerCase()))
-         if (autoComplete && rtMatch[0]) {
-             this.setState({
-                 ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
-             })
- 
-         } else {
-             rtMatch = ''
-             this.setState({
-                 ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
-             })
-         }
+        let rtMatch = []
+        rtMatch = this.props.cadastro.rtCollection.filter(el => el.nomeRt.toLowerCase().match(autoComplete.toLowerCase()))
+        if (autoComplete && rtMatch[0]) {
+            this.setState({
+                ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+            })
+
+        } else {
+            rtMatch = ''
+            this.setState({
+                ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+            })
+        }
 
     };
 
     handleSubmit = event => {
+        event.preventDefault();
         this.setState({
             [event.target.name]: event.target.value
         });
 
         axios.post(('/api/cadastro_emp/'), {
-            
+
             nome: this.state.nome,
             cpf: this.state.cpf,
             phone: this.state.phone,
@@ -136,16 +139,36 @@ class CadastroContainer extends React.Component {
             bairro: this.state.bairro,
             cidade: this.state.cidade,
             uf: this.state.uf,
-        });
-        axios.post('/api/cadastro_rt', {
-            nomeRt: this.state.nomeRt,
-            emailRt: this.state.emailRt,
-            phoneRt: this.state.phoneRt
         })
-            .then(this.setState({ ...this.state, openProcess: true }))
-            .catch(err => {
-                alert(err)
+            .then(res => {
+                this.setState(
+                    { ...this.state, empId: res.data.Cadastro_id }
+                )
             })
+            .then(res => {
+
+                axios.post('/api/cadastro_rt', {
+                    nomeRt: this.state.nomeRt,
+                    emailRt: this.state.emailRt,
+                    phoneRt: this.state.phoneRt
+                })
+                    .then(res => {
+                        this.setState(
+                            { ...this.state, rtId: res.data.RT_id }
+                        )
+                    })
+                    .then(res => {
+                        axios.post('/api/cadastro_process', {
+                            nomeEmpreendimento: this.state.nomeEmpreendimento,
+                            area: this.state.area,
+                            modalidade: this.state.modalidade,
+                            munEmpreendimento: this.state.munEmpreendimento,
+                            empId: this.state.empId,
+                            rtId: this.state.rtId
+                        });
+                    })
+            })
+
     }
 
     handleBlurName = () => {
@@ -163,7 +186,7 @@ class CadastroContainer extends React.Component {
                 rua: this.state.empMatch[0].rua,
                 bairro: this.state.empMatch[0].bairro,
                 cidade: this.state.empMatch[0].cidade,
-                
+
             })
             this.enableRtInput();
 
@@ -191,7 +214,7 @@ class CadastroContainer extends React.Component {
                 ...this.state,
                 phoneRt: this.state.rtMatch[0].phoneRt,
                 emailRt: this.state.rtMatch[0].emailRt,
-                
+
             })
             this.enableProcessInput()
 
@@ -206,7 +229,7 @@ class CadastroContainer extends React.Component {
     }
 
     render() {
-        console.log(this.state._id)
+        console.log(this.state.empId, this.state.rtId)
         return (
             <div>
                 <CadTemplate
@@ -233,7 +256,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadRtData }, dispatch)
+    return bindActionCreators({ loadRtData, loadProcessData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CadastroContainer);

@@ -6,6 +6,7 @@ const initState = {
     rtForm: rtForm,
     empCollection: [],
     rtCollection: [],
+    processCollection: [],
     id: '',
     nome: '',
     cpf: '',
@@ -22,7 +23,6 @@ const initState = {
     nomeRt: '',
     emailRt: '',
     phoneRt: '',
-    openProcess: false,
     nProcesso: '',
     loadedData: [],
     empMatch: '',
@@ -36,10 +36,11 @@ const CadReducer = (state = initState, action) => {
 
         case 'LOAD_RT_DATA':
             return { ...state, rtCollection: action.payload }
-        case 'CHANGED_VALUE':
-            
-            return {...state, nome:action.payload}
-            
+
+        case 'LOAD_PROCESS_DATA':
+            return { ...state, processCollection: action.payload }
+
+
         default:
             return state
     }

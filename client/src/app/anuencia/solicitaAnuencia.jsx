@@ -84,7 +84,7 @@ class SolicitaAnuencia extends Component {
         let array2 = []
         array = this.state.config
         array2 = this.state.config2
-        console.log(array)
+        
         return (
             <div>
                 <SolicitaAnuenciaTemplate data={this.state}>

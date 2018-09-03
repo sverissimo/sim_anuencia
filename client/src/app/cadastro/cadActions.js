@@ -12,14 +12,27 @@ export function loadRtData() {
     }
 };
 
-export function changeHandler(event)  {
+export function loadProcessData() {
+
+    const request = axios.get('/api/showProcess')
+        .then(res => res.data)
+        .catch(err => console.log(err))
+    return {
+        type: 'LOAD_PROCESS_DATA',
+        payload: request
+    }
+};
+
+
+
+/* export function changeHandler(event)  {
     event.preventDefault();
 
     return {
         type: 'CHANGED_VALUE',
         payload: event.target.value
     }
-   /*  let autoComplete = event.target.value
+    let autoComplete = event.target.value
 
     let dataMatch = []
     dataMatch = getstate().items.filter(el => el.nome.toLowerCase().match(autoComplete.toLowerCase()))
@@ -35,5 +48,5 @@ export function changeHandler(event)  {
             type: 'NO_EMP_MATCH',
             payload: {[event.target.name]: event.target.value, dataMatch: ''}
         }
-    } */
-};
+    }
+}; */
