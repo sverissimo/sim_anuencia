@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { loadRtData, loadProcessData } from './../cadastro/cadActions';
-
 import axios from 'axios';
 import ShowEmpTemplate from './showEmpTemplate';
 import ShowEmpRow from './showEmpRow';
@@ -18,8 +14,6 @@ class ShowEmpContainer extends Component {
         axios.get('/api/showEmpreend')
             .then(res => this.setState({ items: res.data }))
             .catch(err => console.log(err))
-        this.props.loadRtData();
-        this.props.loadProcessData();
     }
 
     deleteHandler = (id) => {
@@ -39,12 +33,11 @@ class ShowEmpContainer extends Component {
     }
 
     render() {
-        console.log(this.props)
         let i = 0
-        let empreendedores = [],
+        let empreendedores = this.state.items,
             searchString = this.state.search.trim().toLowerCase();
         if (this.state.search) {
-            empreendedores = this.props.cadastro.rtCollection.filter((el) => el.nomeRt.toLowerCase().match(searchString))
+            empreendedores = this.state.items.filter((el) => el.nome.toLowerCase().match(searchString))
         }
 
         return (
@@ -71,15 +64,4 @@ class ShowEmpContainer extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        cadastro: state.cadastro
-    }
-}
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadRtData, loadProcessData }, dispatch)
-
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShowEmpContainer);
+export default ShowEmpContainer;

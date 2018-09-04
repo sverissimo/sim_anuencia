@@ -6,18 +6,16 @@ const ShowEmpTemplate = (props) => {
 
         <div style={{ marginLeft: '3em', marginRight: '3em' }} >
             <span style={{ fontSize: 18, fontFamily: 'arial', fontWeight: 'bold' }} >
-                Empreendedores Cadastrados
+                Buscar
            </span>
 
-            <form className="input-field inline" id="search_form">
-                <input className="form-control mr-sm-2" value={props.search} onChange={props.change} type="search" placeholder="procurar..." aria-label="Search" />
-             </form>
+
 
             <hr />
             <div>
 
-                <table className="table" >
-                    <thead className="thead-light">
+                {/* <table className="table" > */}
+                {/* <thead className="thead-light">
                         <tr>
                             <th scope="col"> Nº</th>
                             <th scope="col"> Nome</th>
@@ -31,13 +29,38 @@ const ShowEmpTemplate = (props) => {
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody> */}
+                <div class="input-field container">
+
+                    <div className="row">
+                        <label>Selecione o método de Busca</label>
+                        <br />
+                    </div>
+
+                    <div className="col s3">
+                        <select>
+                            <option value="" >Selecione</option>
+                            <option value="emp">Empreendedor</option>
+                            <option value="rt">Responsável Técnico</option>
+                            <option value="process">Processo</option>
+                        </select>
+                    </div>
+                    <div className="col s9">
+
+                        <form className="input-field" >
+                            <input className="form-control" value={props.search} onChange={props.change} type="search" placeholder="procurar..." aria-label="Search" />
+                        </form>
+                    </div>
+
+                    <div className="row col s12">
+
                         {props.children}
-                    </tbody>
+                    </div>
+                    {/* </tbody>
 
-                </table>
+                </table> */}
+                </div>
             </div>
-
         </div>
     )
 }
