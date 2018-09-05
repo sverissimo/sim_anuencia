@@ -69,7 +69,7 @@ const CadTemplate = (props) => {
     }
     
     return (
-        <div style={{ marginLeft: 50, marginRight: 50 }} >
+        <div style={{ marginLeft: 75, marginRight: 75 }} >
             <div className="tab-pane fade show active" id="empreend">
                 <div className="valign-wrapper" >
                    

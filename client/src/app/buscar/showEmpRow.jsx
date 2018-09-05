@@ -2,27 +2,65 @@ import React from 'react';
 import './../css/styles.css';
 
 const ShowEmpRow = (props) => {
+    let n = 0
+    if (props.emps && props.emps[0]) {
+        return props.emps.map((item, i) => {
 
-    const object = props.object
+            n = n + 1
+            return (
 
+                <tr key={i}>
+                    <th scope="row">{n}</th>
+                    <td>{item.nome}</td>
+                    <td>{item.phone}</td>
+                    <td>{item.email}</td>
+                    <td style={{ border: 0 }}>
+                        <button className="btn btn-rounded right red" onClick={props.delete}>Apagar</button>
+                    </td>
+                </tr>
+            )
+        })
+    }
 
-    /*      const myWindow = window.open("", "MsgWindow", "width=800,height=200");
-        myWindow.document.write(JSON.stringify(object))  }; */
+    if (props.rts && props.rts[0]) {
 
-    return (
-        <div className="col s12">
+        return props.rts.map((item, i) => {
+            n = n + 1
+            return (
+                <tr key={i}>
+                    <th scope="row">{n}</th>
+                    <td>{item.nomeRt}</td>
+                    <td>{item.phoneRt}</td>
+                    <td>{item.emailRt}</td>
+                    <td style={{ border: 0 }}>
+                        <button className="btn btn-rounded right red" onClick={props.delete}>Apagar</button>
+                    </td>
+                </tr>
+            )
+        })
+    }
 
-            <tr key={object._id} id={object._id}>
-                <th scope="row">{props.i}</th>
-                <td>{object.nomeRt}</td>
-                <td>{object.phoneRt}</td>
-                <td>{object.emailRt}</td>
-                <td style={{ border: 0 }}>
-                <button className="btn btn-rounded right red" onClick={props.delete}>Apagar</button>
-                </td>
-            </tr>
-        </div>
-    )
+    if (props.process && props.process[0]) {
+
+        return props.process.map((item, i) => {
+            n = n + 1
+            return (
+                <tr key={i}>
+                    <th scope="row">{n}</th>
+                    <td>{item.nomeEmpreendimento}</td>
+                    <td>{item.area}</td>
+                    <td>{item.modalidade}</td>
+                    <td>{item.munEmpreendimento}</td>
+                    <td style={{ border: 0 }}>
+                        <button className="btn btn-rounded right red" onClick={props.delete}>Apagar</button>
+                    </td>
+                </tr>
+            )
+        })
+    }
+    else {
+        return null
+    }
 }
 
 export default ShowEmpRow;

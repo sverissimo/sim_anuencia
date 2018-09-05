@@ -46,8 +46,7 @@ class CadastroContainer extends React.Component {
                 this.setState({ empCollection: res.data })
             })
             .catch(err => console.log(err));
-        this.props.loadRtData();
-        this.props.loadProcessData();
+       
     }
 
     enableRtInput(e) {
@@ -229,7 +228,7 @@ class CadastroContainer extends React.Component {
     }
 
     render() {
-        console.log(this.state.empId, this.state.rtId)
+        console.log(this.props.cadastro)
         return (
             <div>
                 <CadTemplate

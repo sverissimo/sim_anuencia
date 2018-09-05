@@ -33,7 +33,9 @@ const initState = {
 const CadReducer = (state = initState, action) => {
 
     switch (action.type) {
-
+        case 'LOAD_EMP_DATA':
+            return { ...state, empCollection: action.payload }
+            
         case 'LOAD_RT_DATA':
             return { ...state, rtCollection: action.payload }
 

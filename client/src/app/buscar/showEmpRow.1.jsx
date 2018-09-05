@@ -8,7 +8,7 @@ const ShowEmpRow = (props) => {
     
      /*      const myWindow = window.open("", "MsgWindow", "width=800,height=200");
          myWindow.document.write(JSON.stringify(object))  }; */
-     console.log()
+     console.log(props.emp)
          return (
         <tr key={object._id} id={object._id}>
             <th scope="row">{props.i}</th>
