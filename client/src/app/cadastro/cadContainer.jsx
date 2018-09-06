@@ -46,7 +46,7 @@ class CadastroContainer extends React.Component {
                 this.setState({ empCollection: res.data })
             })
             .catch(err => console.log(err));
-       
+
     }
 
     enableRtInput(e) {
@@ -74,16 +74,18 @@ class CadastroContainer extends React.Component {
     }
 
     handleBlur = cep => {
+        if (cep === 'cep') {
 
-        axios.get(`http://apps.widenet.com.br/busca-cep/api/cep.json?code=${this.state.cep}`)
-            .then((res) => {
-                this.setState({
-                    rua: res.data.address,
-                    bairro: res.data.district,
-                    cidade: res.data.city,
-                    uf: res.data.state
+            axios.get(`http://apps.widenet.com.br/busca-cep/api/cep.json?code=${this.state.cep}`)
+                .then((res) => {
+                    this.setState({
+                        rua: res.data.address,
+                        bairro: res.data.district,
+                        cidade: res.data.city,
+                        uf: res.data.state
+                    })
                 })
-            })
+        }
     }
 
     handleChange = event => {
@@ -228,7 +230,7 @@ class CadastroContainer extends React.Component {
     }
 
     render() {
-        console.log(this.props.cadastro)
+        
         return (
             <div>
                 <CadTemplate

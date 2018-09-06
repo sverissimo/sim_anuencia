@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', err => {
 
 
 app.get('/api/showEmpreend', (req, res) => {
-    
+
     empreendedor.find().sort({ nome: 1 }).exec((err, doc) => {
         if (err) return err;
         res.send(doc);
@@ -44,7 +44,7 @@ app.get('/api/showProcess', (req, res) => {
 
 app.get('api/findEmp', (req, res) => {
     empreendedor.find({ nome: { $eq: req.params } }).exec((err, doc) => {
-  if (err) return err;
+        if (err) return err;
         res.send(doc);
     })
 })
@@ -54,7 +54,7 @@ app.post('/api/cadastro_emp', (req, res) => {
     const cadastroEmp = new empreendedor(req.body);
     cadastroEmp.save((err, doc) => {
         if (err) return res.status(400).send(err);
-       
+
         res.status(200).json({
             post: true,
             Cadastro_id: doc._id
@@ -98,15 +98,43 @@ app.post('/api/findEmpreend/:id', (req, res) => {
 });
 
 app.get("/api/delEmpreend/:id", function (req, res) {
+
     empreendedor.findByIdAndRemove(req.params.id, function (err) {
+
         if (err) {
             console.log(err);
-            res.redirect("/");
+
         } else {
-            res.redirect("/");
+            console.log(res)
         }
     });
 });
+
+app.delete('/api/deleteEmp/:id', function (req, res) {
+    empreendedor.deleteOne({ '_id': req.params.id })
+        .exec()
+        .then(result => {
+            res.status(200).json(result)
+        })
+})
+
+app.delete("/api/deleteRt/:id", function (req, res) {
+
+    CadastroRt.deleteOne({ '_id': req.params.id })
+        .exec()
+        .then(result => {
+            res.status(200).json(result)
+        })
+})
+
+app.delete('/api/deleteProcess/:id', function (req, res) {
+
+    processModel.deleteOne({ '_id': req.params.id })
+        .exec()
+        .then(result => {
+            res.status(200).json(result)
+        })
+})
 
 
 const port = process.env.PORT || 3001;

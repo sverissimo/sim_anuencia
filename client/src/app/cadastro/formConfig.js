@@ -66,69 +66,59 @@ export const empreendForm = {
         type: 'text',
         name: 'cpf',
         label: 'CPF / CNPJ',
-        onBlur: null
-    },
+           },
     phone: {
         divClassName: 'input-field col s2',
         type: 'text',
         name: 'phone',
         label: 'Telefone',
-        onBlur: null
-    },
+           },
     email: {
         divClassName: 'input-field col s3',
         type: 'text',
         name: 'email',
         label: 'E-mail',
-        onBlur: null
-    },
+           },
     CEP: {
         divClassName: 'input-field col s1',
         type: 'text',
         name: 'cep',
         label: 'CEP',
-        //onBlur: props.handleBlur
-    },
+         },
     numero: {
         divClassName: 'input-field col s1',
         type: 'text',
         name: 'numero',
         label: 'Número',
-        onBlur: null
-    },
+          },
     complemento: {
         divClassName: 'input-field col s2',
         type: 'text',
         name: 'complemento',
         label: 'Complemento',
-        onBlur: null
-    },
+            },
     rua: {
         divClassName: 'input-field col s3',
         type: 'text',
         name: 'rua',
         label: 'Rua',
-        onBlur: null
-    },
+            },
     bairro: {
         divClassName: 'input-field col s2',
         type: 'text',
         name: 'bairro',
         label: 'Bairro',
-        onBlur: null
-    },
+            },
     cidade: {
         divClassName: 'input-field col s2',
         type: 'text',
         name: 'cidade',
         label: 'Cidade',
-        onBlur: null
-    },
+           },
     uf: {
         divClassName: 'input-field col s1',
         type: 'text',
         name: 'uf',
         label: 'Estado',
-        onBlur: null
-    }
+           }
 }

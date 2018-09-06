@@ -1,49 +1,46 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData } from './../cadastro/cadActions';
+import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions';
+import { deleteEmp, deleteRt, deleteProcess } from './buscaActions';
 
-import axios from 'axios';
-import ShowEmpTemplate from './showEmpTemplate';
-import ShowEmpRow from './showEmpRow';
+import ShowEmpTemplate from './buscaTemplate';
+import ShowEmpRow from './buscaRow';
 
 class ShowEmpContainer extends Component {
 
     state = {
         items: [],
         search: '',
-        select: 'rt'
+        select: ''
     }
 
     componentWillMount() {
-  
+
         this.props.loadEmpData();
         this.props.loadRtData();
         this.props.loadProcessData();
-
     }
 
-    deleteHandler = (id) => {
-        axios.get("/api/delEmpreend/" + id)
-
-            .then(axios.get('/api/showEmpreend')
-                .then(res => this.setState({ items: res.data }))
-                .catch(err => console.log(err)))
-
-            .then(console.log('Deleted'))
-
-            .catch(err => console.log(err));
+    deleteHandler = (item) => {
+        if (this.state.select === 'emp') {
+            this.props.deleteEmp(item)
+        }
+        if (this.state.select === 'rt') {
+            this.props.deleteRt(item)
+        }
+        if (this.state.select === 'process') {
+            this.props.deleteProcess(item);
+        }
     }
 
     handleChange = (e) => {
         this.setState({
             ...this.state, search: e.target.value,
         })
-
     }
 
     handleSelect = (e) => {
-
         this.setState({
             ...this.state, select: e.target.value,
         })
@@ -77,7 +74,6 @@ class ShowEmpContainer extends Component {
                     data={this.props.cadastro}
                     onSelect={this.handleSelect}
                     change={e => this.handleChange(e)}
-
                 />
 
                 <table className="highlight" >
@@ -90,11 +86,8 @@ class ShowEmpContainer extends Component {
                             delete={this.deleteHandler.bind(this)}
                             i={i = i + 1}
                         />
-
                     </tbody>
                 </table>
-
-
             </div>
         )
     }
@@ -107,8 +100,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData }, dispatch)
-
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, deleteEmp, deleteRt, deleteProcess }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShowEmpContainer);

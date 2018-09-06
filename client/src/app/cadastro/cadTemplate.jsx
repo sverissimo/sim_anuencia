@@ -24,7 +24,7 @@ const CadTemplate = (props) => {
                         value={props.data[item.id]}
                         placeholder=" "
                         disabled={item.enableInput}
-                        onBlur={config.onBlur}
+                        onBlur={()=>props.handleBlur(config.name)}
                     />
                     <label className="active"
                         htmlFor={config.name}>

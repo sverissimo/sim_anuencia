@@ -28,10 +28,6 @@ const ShowEmpTemplate = (props) => {
                         <input className="form-control" value={props.search} onChange={props.change} type="search" placeholder="procurar..." aria-label="Search" />
                     </form>
                 </div>
-
-                {/* </tbody>
-
-                </table> */}
             </div>
 
         </div>
