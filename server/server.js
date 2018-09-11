@@ -85,7 +85,7 @@ app.post('/api/cadastro_process', (req, res) => {
         if (err) return res.status(400).send(err);
         res.status(200).json({
             post: true,
-            Cadastro_id: doc._id
+            process_id: doc._id
         })
     });
 
@@ -95,19 +95,6 @@ app.post('/api/findEmpreend/:id', (req, res) => {
     Empreend.findById(req.param._id, (err, doc) => {
         !err ? res.send(doc) : console.log(err);
     })
-});
-
-app.get("/api/delEmpreend/:id", function (req, res) {
-
-    empreendedor.findByIdAndRemove(req.params.id, function (err) {
-
-        if (err) {
-            console.log(err);
-
-        } else {
-            console.log(res)
-        }
-    });
 });
 
 app.delete('/api/deleteEmp/:id', function (req, res) {

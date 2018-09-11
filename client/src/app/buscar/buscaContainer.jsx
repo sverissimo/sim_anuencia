@@ -12,7 +12,7 @@ class ShowEmpContainer extends Component {
     state = {
         items: [],
         search: '',
-        select: ''
+        select: 'emp'
     }
 
     componentWillMount() {

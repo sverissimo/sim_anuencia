@@ -98,7 +98,7 @@ const CadTemplate = (props) => {
                             {renderFields(props.config.empreendForm, props.data.enableEmp)}
                         </div>
                     </fieldset>
-                    <ConfirmButton data={props.data} enableInput={props.enableRtInput} enable={props.data.enableEmp} />
+                    <ConfirmButton enableInput={props.enableRtInput} enable={props.data.enableEmp} />
                     <fieldset className="input-field"><legend className="input-field"><strong> Responsável Técnico </strong></legend>
                         <div className="row">
                             <div className="input-field col s4">
@@ -119,15 +119,15 @@ const CadTemplate = (props) => {
                             {renderFields(props.config.rtForm, props.data.enableRt)}
                         </div>
                     </fieldset>
-                    <BackButton data={props.data} enableInput={props.enableEmpInput} enable={props.data.enableRt} />
-                    <ConfirmButton data={props.data} enableInput={props.enableProcessInput} enable={props.data.enableRt} />
+                    <BackButton enableInput={props.enableEmpInput} enable={props.data.enableRt} />
+                    <ConfirmButton enableInput={props.enableProcessInput} enable={props.data.enableRt} />
                     <fieldset className="input-field"><legend className="input-field"><strong> Dados do Empreendimento </strong></legend>
                         <div className="row" >
                             {renderFields(props.config.processForm, props.data.enableProcess)}
                         </div>
                     </fieldset>
                     <div>
-                        <BackButton data={props.data} enableInput={props.enableRtInput} enable={props.data.enableProcess} />
+                        <BackButton enableInput={props.enableRtInput} enable={props.data.enableProcess} />
                         <input className="btn right" type="submit" disabled={props.data.enableProcess} value="Cadastrar processo" style={{ marginTop: '10px' }} />
                     </div>
                     <br />
