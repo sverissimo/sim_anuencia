@@ -1,4 +1,4 @@
-import { empreendForm, processForm, rtForm } from './formConfig';
+import { empreendForm, processForm, rtForm } from './../common/formConfig';
 
 const initState = {
     empreendForm: empreendForm,
@@ -24,9 +24,12 @@ const initState = {
     emailRt: '',
     phoneRt: '',
     nProcesso: '',
-    loadedData: [],
+    loadedData: {},
     empMatch: '',
-    rtMatch: ''
+    rtMatch: '',
+    empId: '',
+    editItem: false,
+    search: ''
 
 }
 
@@ -35,12 +38,26 @@ const CadReducer = (state = initState, action) => {
     switch (action.type) {
         case 'LOAD_EMP_DATA':
             return { ...state, empCollection: action.payload }
-            
+
         case 'LOAD_RT_DATA':
             return { ...state, rtCollection: action.payload }
 
         case 'LOAD_PROCESS_DATA':
             return { ...state, processCollection: action.payload }
+
+        case 'FIND_EMP_ID':
+            return { ...state, empId: action.payload, editItem: true }
+
+        case 'DISABLE_EDIT':
+            return { ...state, editItem: false }
+
+        case 'CHANGE_SEARCH_VALUE':
+            return { ...state, search: action.payload }
+
+        case 'EDIT_VALUE':
+            return { ...state, loadedData: action.payload }
+
+
 
 
         default:

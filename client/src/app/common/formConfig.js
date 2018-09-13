@@ -29,18 +29,8 @@ export const processForm = {
     }
 }
 
-
-
-
 export const rtForm = {
 
-  /*   nomeRt: {
-        divClassName: 'input-field col s4',
-        type: 'text',
-        name: 'nomeRt',
-        label: 'Nome',
-        onBlur: null
-    }, */
     phoneRt: {
         divClassName: 'input-field col s2',
         type: 'text',
@@ -56,9 +46,6 @@ export const rtForm = {
         onBlur: null
     }
 }
-
-
-
 
 export const empreendForm = {
     cpf: {

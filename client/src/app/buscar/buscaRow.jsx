@@ -2,28 +2,36 @@ import React from 'react';
 import { DeleteButton, EditButton } from './../common/buttons'
 import './../css/styles.css';
 
+
+
 const ShowEmpRow = (props) => {
 
     let n = 0
-    if (props.emps && props.emps[0]) {
+
+    if (props.emps && props.emps[0] && props.redux.editItem === false) {
+
         return props.emps.map((item, i) => {
 
             n = n + 1
 
             return (
-                <tr key={i}>
-                    <th scope="row">{n}</th>
-                    <td>{item.nome}</td>
-                    <td>{item.cpf}</td>
-                    <td>{item.phone}</td>
-                    <td>{item.email}</td>
-                    <td style={{ width: '4%' }}>
-                        <EditButton />
-                    </td>
-                    <td style={{ width: '4%' }}>
-                        <DeleteButton delete={props.delete} id={item._id} />
-                    </td>
-                </tr>
+               
+                    <tr key={i}>
+                        <th scope="row">{n}</th>
+                        <td>{item.nome}</td>
+                        <td>{item.cpf}</td>
+                        <td>{item.phone}</td>
+                        <td>{item.email}</td>
+                        <td style={{ width: '4%' }}>
+                            <EditButton
+                                handleEdit={props.edit} id={item._id} />
+                        </td>
+                        <td style={{ width: '4%' }}>
+                            <DeleteButton delete={props.delete} id={item._id} />
+                        </td>
+                    </tr>
+
+               
             )
         })
     }
