@@ -2,31 +2,35 @@ import React from 'react';
 
 const EditData = (props) => {
 
+    if (props.data.edit && props.data.item.nome) {
+        let itemEdit = props.data.item
 
-    if (props.redux.editItem === true) {
-        let itemEdit = []
-        itemEdit = props.data.empCollection.filter(el => el._id.match(props.redux.empId) )
-        console.log(itemEdit)
-        return (
-            <div>
-                <form action="">
-                    <input
-                        type="text"
-                        name="nome"
-                        
-                        value={props.data.items[props.redux.empId]}
-                        onChange={props.change} />
-                    <div className="input" >
-                        <div>
+        let itemArray = []
 
-                        </div>
-                    </div>
-                </form>
-                <button className="btn-flat waves-effect btn-floating left red darken-3"
-                    title="Voltar"
-                    onClick={props.disableEdit}>
-                    <i className="material-icons">arrow_back</i>
-                </button>
+        for (let keys in itemEdit) {
+            itemArray.push({
+                key: keys,
+                value: itemEdit[keys],
+                config: props.redux.empreendForm
+            })
+        }
+
+        setTimeout(() => {
+            console.log(itemArray)
+        }, 200);
+        itemArray.length === 15 ? itemArray = itemArray.slice(0, 12) : null
+        return itemArray.slice(1).map((item, i) =>
+
+            <div key={i} className="input-field col s3" >
+
+                <label className="active">{item.key.replace(/\w/, c => c.toUpperCase())}</label>
+                <input
+                    type="text"
+                    className="active"
+                    name={item.key}
+                    value={props.data.item[item.key]}
+                    onChange={props.change} />
+
             </div>
         )
 
@@ -38,7 +42,6 @@ const EditData = (props) => {
 
 
 export default EditData;
-
 
 
 

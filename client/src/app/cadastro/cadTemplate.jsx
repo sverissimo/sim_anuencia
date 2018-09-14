@@ -14,6 +14,7 @@ const CadTemplate = (props) => {
         }
 
         return configArray.map((item, i) => {
+console.log(item.settings)
             let config = item.settings
             return (
                 <div key={i} className={config.divClassName}>

@@ -19,21 +19,17 @@ class ShowEmpContainer extends Component {
         edit: false,
         selectId: '',
         itemId: '',
-        item:{}
+        item: {},
+        nome: ''
     }
 
     componentWillMount() {
-
         this.setState({
             ...this.state,
             empCollection: this.props.cadastro.empCollection,
             rtCollection: this.props.cadastro.rtCollection,
             processCollection: this.props.cadastro.processCollection
         });
-        setTimeout(() => {
-            console.log(this.state)    
-        }, 30);
-        
     }
 
     deleteHandler = (item) => {
@@ -67,33 +63,53 @@ class ShowEmpContainer extends Component {
         })
     }
 
-    editHandler = (itemId) => {
-       this.props.handleEdit(itemId)
-        let item = {}
+    enableEdit = (itemId) => {
+        this.props.handleEdit(itemId)
+        let item = []
         item = this.state.empCollection.filter(el => el._id.match(itemId))
-        
-        console.log(item)
-        this.setState({
-           ...this.state, 
-           nome: item[0].nome, 
-           edit:true
-       })
+        let itemObj = Object.assign({}, item)
 
+        //if (itemObj && itemObj[0])
+        this.setState({
+            ...this.state,
+            item: itemObj[0],
+            edit: true
+        })
+        /*   setTimeout(() => {
+              console.log(this.state)
+          }, 400);
+   */
     }
 
     disableEdit = () => {
         this.props.disableEdit()
+        this.setState({...this.state, edit: false})
     }
 
     editValue = (event) => {
-        
-        this.setState({
-            ...this.state,  [event.target.name]: event.target.value
-        })
-       
-        
+        if (this.state.item) {
+            let update = Object.assign({}, this.state.item, { [event.target.name]: event.target.value })
+            this.setState({ ...this.state, item: update })
+        }
+        setTimeout(() => {
+            console.log(this.state)
+        }, 400);
     }
-  
+
+    renderBackButton = () => {
+        if (this.state.edit === true) {
+            return (
+                <button className="btn-flat waves-effect btn-floating left red darken-3"
+                    title="Voltar"
+                    onClick={this.disableEdit}>
+                    <i className="material-icons">arrow_back</i>
+                </button>)
+        } else {
+            return null
+        }
+
+    }
+
     render() {
 
         let i = 0
@@ -101,7 +117,7 @@ class ShowEmpContainer extends Component {
         let rts = []
         let process = []
         let searchString = this.state.search.trim().toLowerCase();
-        
+
         if (this.state.search && this.state.select === 'emp') {
             emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString))
         }
@@ -132,18 +148,27 @@ class ShowEmpContainer extends Component {
                             emps={emps}
                             rts={rts}
                             process={process}
-                            edit={this.editHandler.bind(this)}
+                            edit={this.enableEdit.bind(this)}
                             delete={this.deleteHandler.bind(this)}
                             i={i = i + 1}
                         />
                     </tbody>
                 </table>
+
+                <div className="row">
                 <EditData
                     redux={this.props.cadastro}
                     data={this.state}
                     disableEdit={this.disableEdit.bind(this)}
-                    change={e=> this.editValue(e)} />
+                    change={e => this.editValue(e)} />
+                </div>
+            <div>
+                {this.renderBackButton()}
             </div>
+            </div>
+
+
+
         )
     }
 }
