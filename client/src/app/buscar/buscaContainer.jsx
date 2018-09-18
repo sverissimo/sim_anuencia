@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions';
 import { deleteEmp, deleteRt, deleteProcess, handleEdit, disableEdit, changeHandler } from './buscaActions';
+import { BackButton, UpdateButton } from './../common/buttons';
 
 import EditData from './editData';
 import ShowEmpTemplate from './buscaTemplate';
@@ -21,21 +22,14 @@ class ShowEmpContainer extends Component {
         selectId: '',
         itemId: '',
         item: {},
-        nome: ''
+        nome: '',
     }
 
     componentDidMount() {
         this.props.loadEmpData();
         this.props.loadRtData();
         this.props.loadProcessData();
-       /*  this.setState({
-            ...this.state,
-            empCollection: this.props.cadastro.empCollection,
-            rtCollection: this.props.cadastro.rtCollection,
-            processCollection: this.props.cadastro.processCollection
-        }); */
     }
-
 
     deleteHandler = (item) => {
         if (this.state.select === 'emp') {
@@ -50,7 +44,6 @@ class ShowEmpContainer extends Component {
     }
 
     handleSearchBar = (e) => {
-
         this.setState({
             ...this.state, search: e.target.value,
         })
@@ -58,8 +51,6 @@ class ShowEmpContainer extends Component {
         setTimeout(() => {
             this.props.changeHandler(this.state.search)
         }, 30);
-
-
     }
 
     handleSelect = (e) => {
@@ -71,17 +62,30 @@ class ShowEmpContainer extends Component {
     enableEdit = (itemId) => {
 
         let item = []
-        item = this.props.cadastro.empCollection.filter(el => el._id.match(itemId))
-        let itemObj = Object.assign({}, item)
-        console.log(itemObj)
-        //if (itemObj && itemObj[0])
+        let itemObj = {}
+        if (this.state.select === 'emp') {
+            item = this.props.cadastro.empCollection.filter(el => el._id.match(itemId))
+            itemObj = Object.assign({}, item)
+        }
 
+        if (this.state.select === 'rt') {
+            item = this.props.cadastro.rtCollection.filter(el => el._id.match(itemId))
+            itemObj = Object.assign({}, item)
+        }
+
+        if (this.state.select === 'process') {
+            item = this.props.cadastro.processCollection.filter(el => el._id.match(itemId))
+            itemObj = Object.assign({}, item)
+        }
         this.setState({
             ...this.state,
             item: itemObj[0],
             edit: true
         })
+
+
     }
+
 
     disableEdit = () => {
         this.props.disableEdit()
@@ -97,36 +101,21 @@ class ShowEmpContainer extends Component {
 
     saveEdit = (e) => {
 
-        e.preventDefault()
-        if (this.state.item) {
-            console.log(this.state.item)
+        if (this.state.item && this.state.select === 'emp') {
             axios.put(('/api/editEmp'), {
                 item: this.state.item
             })
         }
-
-    }
-
-    renderButtons = () => {
-        if (this.state.edit === true) {
-            return (
-                <div>
-                    <button className="btn-flat waves-effect btn-floating left red darken-3"
-                        title="Voltar"
-                        onClick={this.disableEdit}>
-                        <i className="material-icons">arrow_back</i>
-                    </button>
-                    <button className="btn-flat waves-effect btn-floating right teal darken-2"
-                        title="Salvar"
-                        form="empFormId" >
-                        <i className="material-icons">save</i>
-                    </button>
-                </div>
-            )
-        } else {
-            return null
+        if (this.state.item && this.state.select === 'rt') {
+            axios.put(('/api/editRt'), {
+                item: this.state.item
+            })
         }
-
+        if (this.state.item && this.state.select === 'process') {
+            axios.put(('/api/editProcess'), {
+                item: this.state.item
+            })
+        }
     }
 
     render() {
@@ -183,12 +172,16 @@ class ShowEmpContainer extends Component {
                         submit={e => this.saveEdit(e)} />
                 </div>
                 <div>
-                    {this.renderButtons()}
+                    {this.state.edit ? <BackButton
+                        enableInput={this.disableEdit}
+                    /> : null}
+
+                    <UpdateButton
+                        form={`${this.state.select}`}
+                        display={this.state.edit}
+                    />
                 </div>
             </div>
-
-
-
         )
     }
 }

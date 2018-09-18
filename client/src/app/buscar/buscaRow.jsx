@@ -15,38 +15,16 @@ const ShowEmpRow = (props) => {
             n = n + 1
 
             return (
-               
-                    <tr key={i}>
-                        <th scope="row">{n}</th>
-                        <td>{item.nome}</td>
-                        <td>{item.cpf}</td>
-                        <td>{item.phone}</td>
-                        <td>{item.email}</td>
-                        <td style={{ width: '4%' }}>
-                            <EditButton
-                                handleEdit={props.edit} id={item._id} />
-                        </td>
-                        <td style={{ width: '4%' }}>
-                            <DeleteButton delete={props.delete} id={item._id} />
-                        </td>
-                    </tr>
 
-               
-            )
-        })
-    }
-
-    if (props.rts && props.rts[0]) {
-        return props.rts.map((item, i) => {
-            n = n + 1
-            return (
                 <tr key={i}>
                     <th scope="row">{n}</th>
-                    <td>{item.nomeRt}</td>
-                    <td>{item.phoneRt}</td>
-                    <td>{item.emailRt}</td>
+                    <td>{item.nome}</td>
+                    <td>{item.cpf}</td>
+                    <td>{item.phone}</td>
+                    <td>{item.email}</td>
                     <td style={{ width: '4%' }}>
-                        <EditButton />
+                        <EditButton
+                            handleEdit={props.edit} id={item._id} />
                     </td>
                     <td style={{ width: '4%' }}>
                         <DeleteButton delete={props.delete} id={item._id} />
@@ -56,7 +34,27 @@ const ShowEmpRow = (props) => {
         })
     }
 
-    if (props.process && props.process[0]) {
+    if (props.rts && props.rts[0] && props.data.edit === false) {
+        return props.rts.map((item, i) => {
+            n = n + 1
+            return (
+                <tr key={i}>
+                    <th scope="row">{n}</th>
+                    <td>{item.nomeRt}</td>
+                    <td>{item.phoneRt}</td>
+                    <td>{item.emailRt}</td>
+                    <td style={{ width: '4%' }}>
+                        <EditButton handleEdit={props.edit} id={item._id} />
+                    </td>
+                    <td style={{ width: '4%' }}>
+                        <DeleteButton delete={props.delete} id={item._id} />
+                    </td>
+                </tr>
+            )
+        })
+    }
+
+    if (props.process && props.process[0] && props.data.edit === false) {
         return props.process.map((item, i) => {
             n = n + 1
             return (
@@ -67,7 +65,7 @@ const ShowEmpRow = (props) => {
                     <td>{item.modalidade}</td>
                     <td>{item.munEmpreendimento}</td>
                     <td style={{ width: '4%' }}>
-                        <EditButton />
+                        <EditButton handleEdit={props.edit} id={item._id} />
                     </td>
                     <td style={{ width: '4%' }}>
                         <DeleteButton delete={props.delete} id={item._id} />

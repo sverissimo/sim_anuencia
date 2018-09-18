@@ -127,9 +127,23 @@ app.put('/api/editEmp/', (req, res) => {
 
     empreendedor.update(
         { '_id': req.body.item._id },
-        {
-            $set:  req.body.item 
-        }
+        { $set: req.body.item }
+    ).then(result => res.json(result))
+})
+
+app.put('/api/editRt/', (req, res) => {
+
+    CadastroRt.update(
+        { '_id': req.body.item._id },
+        { $set: req.body.item }
+    ).then(result => res.json(result))
+})
+
+app.put('/api/editProcess/', (req, res) => {
+
+    processModel.update(
+        { '_id': req.body.item._id },
+        { $set: req.body.item }
     ).then(result => res.json(result))
 })
 
@@ -137,9 +151,3 @@ const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`Running...`)
 });
-
-
-
-/* app.post('/api/empreend_update', (req, res) =>{
-    Empreend.findByIdAndUpdate(req.body._id, req.body, (err, doc) )
-}); */

@@ -18,6 +18,7 @@ export const ConfirmButton = (props) => {
 };
 
 export const BackButton = (props) => {
+    
     return (
         <div className="input" >
             <button className="btn-flat waves-effect btn-floating left red darken-3"
@@ -53,4 +54,38 @@ export const EditButton = (props) => {
 
     );
 }
+
+export const UpdateButton = (props) => {
+
+    if (props.display) {
+        return (
+            <button className="btn-flat waves-effect btn-floating right teal darken-2"
+                title="Salvar"
+                form={props.form} >
+                <i className="material-icons">save</i>
+            </button>
+        )
+    } else {
+        return null
+    }
+}
+
+
+/* renderButtons = () => {
+    if (this.state.edit === true) {
+        return (
+            <div>
+                <button className="btn-flat waves-effect btn-floating left red darken-3"
+                    title="Voltar"
+                    onClick={this.disableEdit}>
+                    <i className="material-icons">arrow_back</i>
+                </button>
+
+            </div>
+        )
+    } else {
+        return null
+    }
+
+} */
 
