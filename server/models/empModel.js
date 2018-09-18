@@ -19,7 +19,7 @@ const cadastroEmpSchema = mongoose.Schema({
         trim: true
     },
     numero: {
-        type: Number,
+        type: String,
         trim: true
     },
     complemento: {

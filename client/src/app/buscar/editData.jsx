@@ -2,42 +2,53 @@ import React from 'react';
 
 const EditData = (props) => {
 
-    if (props.data.edit && props.data.item.nome) {
-        let itemEdit = props.data.item
 
-        let itemArray = []
+    const renderFields = () => {
+        if (props.data.edit && props.data.item.nome) {
+            let itemEdit = props.data.item
 
-        for (let keys in itemEdit) {
-            itemArray.push({
-                key: keys,
-                value: itemEdit[keys],
-                config: props.redux.empreendForm
-            })
+            let itemArray = []
+
+            for (let keys in itemEdit) {
+                itemArray.push({
+                    key: keys,
+                    value: itemEdit[keys],
+                    config: props.redux.empreendForm
+                })
+            }
+
+            itemArray.length === 15 ? itemArray = itemArray.slice(0, 12) : null
+            return itemArray.slice(1).map((item, i) =>
+
+                <div key={i} className="input-field col s3" >
+
+                    <label className="active">{item.key.replace(/\w/, c => c.toUpperCase())}</label>
+                    <input
+                        type="text"
+                        className="active"
+                        name={item.key}
+                        value={props.data.item[item.key]}
+                        onChange={props.change} />
+
+                </div>
+            )
+
+        } else {
+            return null
         }
+    }
 
-        setTimeout(() => {
-            console.log(itemArray)
-        }, 200);
-        itemArray.length === 15 ? itemArray = itemArray.slice(0, 12) : null
-        return itemArray.slice(1).map((item, i) =>
+    if (props.data.edit && props.data.item.nome ) {
 
-            <div key={i} className="input-field col s3" >
-
-                <label className="active">{item.key.replace(/\w/, c => c.toUpperCase())}</label>
-                <input
-                    type="text"
-                    className="active"
-                    name={item.key}
-                    value={props.data.item[item.key]}
-                    onChange={props.change} />
-
-            </div>
+        return (
+            <form onSubmit={props.submit} id="empFormId" >
+                {renderFields()}
+                
+            </form>
         )
-
     } else {
         return null
     }
-
 }
 
 

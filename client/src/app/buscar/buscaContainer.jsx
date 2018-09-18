@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions';
@@ -23,14 +24,18 @@ class ShowEmpContainer extends Component {
         nome: ''
     }
 
-    componentWillMount() {
-        this.setState({
+    componentDidMount() {
+        this.props.loadEmpData();
+        this.props.loadRtData();
+        this.props.loadProcessData();
+       /*  this.setState({
             ...this.state,
             empCollection: this.props.cadastro.empCollection,
             rtCollection: this.props.cadastro.rtCollection,
             processCollection: this.props.cadastro.processCollection
-        });
+        }); */
     }
+
 
     deleteHandler = (item) => {
         if (this.state.select === 'emp') {
@@ -64,26 +69,23 @@ class ShowEmpContainer extends Component {
     }
 
     enableEdit = (itemId) => {
-        this.props.handleEdit(itemId)
-        let item = []
-        item = this.state.empCollection.filter(el => el._id.match(itemId))
-        let itemObj = Object.assign({}, item)
 
+        let item = []
+        item = this.props.cadastro.empCollection.filter(el => el._id.match(itemId))
+        let itemObj = Object.assign({}, item)
+        console.log(itemObj)
         //if (itemObj && itemObj[0])
+
         this.setState({
             ...this.state,
             item: itemObj[0],
             edit: true
         })
-        /*   setTimeout(() => {
-              console.log(this.state)
-          }, 400);
-   */
     }
 
     disableEdit = () => {
         this.props.disableEdit()
-        this.setState({...this.state, edit: false})
+        this.setState({ ...this.state, edit: false })
     }
 
     editValue = (event) => {
@@ -91,19 +93,36 @@ class ShowEmpContainer extends Component {
             let update = Object.assign({}, this.state.item, { [event.target.name]: event.target.value })
             this.setState({ ...this.state, item: update })
         }
-        setTimeout(() => {
-            console.log(this.state)
-        }, 400);
     }
 
-    renderBackButton = () => {
+    saveEdit = (e) => {
+
+        e.preventDefault()
+        if (this.state.item) {
+            console.log(this.state.item)
+            axios.put(('/api/editEmp'), {
+                item: this.state.item
+            })
+        }
+
+    }
+
+    renderButtons = () => {
         if (this.state.edit === true) {
             return (
-                <button className="btn-flat waves-effect btn-floating left red darken-3"
-                    title="Voltar"
-                    onClick={this.disableEdit}>
-                    <i className="material-icons">arrow_back</i>
-                </button>)
+                <div>
+                    <button className="btn-flat waves-effect btn-floating left red darken-3"
+                        title="Voltar"
+                        onClick={this.disableEdit}>
+                        <i className="material-icons">arrow_back</i>
+                    </button>
+                    <button className="btn-flat waves-effect btn-floating right teal darken-2"
+                        title="Salvar"
+                        form="empFormId" >
+                        <i className="material-icons">save</i>
+                    </button>
+                </div>
+            )
         } else {
             return null
         }
@@ -156,15 +175,16 @@ class ShowEmpContainer extends Component {
                 </table>
 
                 <div className="row">
-                <EditData
-                    redux={this.props.cadastro}
-                    data={this.state}
-                    disableEdit={this.disableEdit.bind(this)}
-                    change={e => this.editValue(e)} />
+                    <EditData
+                        redux={this.props.cadastro}
+                        data={this.state}
+                        disableEdit={this.disableEdit.bind(this)}
+                        change={e => this.editValue(e)}
+                        submit={e => this.saveEdit(e)} />
                 </div>
-            <div>
-                {this.renderBackButton()}
-            </div>
+                <div>
+                    {this.renderButtons()}
+                </div>
             </div>
 
 

@@ -123,6 +123,15 @@ app.delete('/api/deleteProcess/:id', function (req, res) {
         })
 })
 
+app.put('/api/editEmp/', (req, res) => {
+
+    empreendedor.update(
+        { '_id': req.body.item._id },
+        {
+            $set:  req.body.item 
+        }
+    ).then(result => res.json(result))
+})
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

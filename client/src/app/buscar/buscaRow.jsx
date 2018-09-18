@@ -8,7 +8,7 @@ const ShowEmpRow = (props) => {
 
     let n = 0
 
-    if (props.emps && props.emps[0] && props.redux.editItem === false) {
+    if (props.emps && props.emps[0] && props.data.edit === false) {
 
         return props.emps.map((item, i) => {
 
