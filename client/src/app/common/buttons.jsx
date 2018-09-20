@@ -61,7 +61,8 @@ export const UpdateButton = (props) => {
         return (
             <button className="btn-flat waves-effect btn-floating right teal darken-2"
                 title="Salvar"
-                form={props.form} >
+                form={props.form}
+                type="submit" >
                 <i className="material-icons">save</i>
             </button>
         )

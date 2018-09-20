@@ -16,6 +16,7 @@ const CadTemplate = (props) => {
         return configArray.map((item, i) => {
 
             let config = item.settings
+            
             return (
                 <div key={i} className={config.divClassName}>
                     <input type={config.type}
@@ -25,7 +26,7 @@ const CadTemplate = (props) => {
                         value={props.data[item.id]}
                         placeholder=" "
                         disabled={item.enableInput}
-                        onBlur={()=>props.handleBlur(config.name)}
+                        onBlur={props.handleBlur}
                     />
                     <label className="active"
                         htmlFor={config.name}>

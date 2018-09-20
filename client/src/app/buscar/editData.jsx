@@ -15,11 +15,19 @@ const EditData = (props) => {
                 })
             }
 
-            itemArray.length > 14 ? itemArray = itemArray.slice(0, 12) : null
-            return itemArray.slice(1).map((item, i) =>
+            function removeLast(arr, n){
+                arr.splice(arr.length-n, arr.length);
+                return arr;
+            }
+            let filterArray = itemArray
+            
+            props.data.select === 'emp' && itemArray.length > 14  ? filterArray = removeLast(itemArray, 3) : null
+            props.data.select === 'rt' && itemArray.length > 4  ? filterArray = removeLast(itemArray, 3) : null
+            props.data.select === 'process' ? filterArray = removeLast(itemArray, 5) : null
+            
+            return filterArray.slice(1).map((item, i) =>
 
                 <div key={i} className="input-field col s3" >
-
                     <label className="active">{item.key.replace(/\w/, c => c.toUpperCase())}</label>
                     <input
                         type="text"
@@ -29,7 +37,6 @@ const EditData = (props) => {
                         onChange={props.change} />
                 </div>
             )
-
         } else {
             return null
         }

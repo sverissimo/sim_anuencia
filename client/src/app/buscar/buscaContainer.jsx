@@ -82,10 +82,7 @@ class ShowEmpContainer extends Component {
             item: itemObj[0],
             edit: true
         })
-
-
     }
-
 
     disableEdit = () => {
         this.props.disableEdit()
@@ -109,12 +106,12 @@ class ShowEmpContainer extends Component {
         if (this.state.item && this.state.select === 'rt') {
             axios.put(('/api/editRt'), {
                 item: this.state.item
-            })
+            }).catch(err => alert(err))
         }
         if (this.state.item && this.state.select === 'process') {
             axios.put(('/api/editProcess'), {
                 item: this.state.item
-            })
+            }).catch(err => alert(err))
         }
     }
 

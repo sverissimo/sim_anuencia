@@ -73,23 +73,29 @@ class CadastroContainer extends React.Component {
         })
     }
 
-    handleBlur = cep => {
-        if (cep === 'cep') {
+    handleBlur = (item) => {
 
-            axios.get(`http://apps.widenet.com.br/busca-cep/api/cep.json?code=${this.state.cep}`)
-                .then((res) => {
-                    this.setState({
-                        rua: res.data.address,
-                        bairro: res.data.district,
-                        cidade: res.data.city,
-                        uf: res.data.state
-                    })
+        if (item.target.name === 'cep') {
+
+            axios.get(`http://apps.widenet.com.br/busca-cep/api/cep.json?code=${this.state.cep}`
+            ).then(res => {
+                this.setState({
+                    ...this.state,
+                    rua: res.data.address,
+                    bairro: res.data.district,
+                    cidade: res.data.city,
+                    uf: res.data.state
                 })
+            })
+
+        } else {
+            return null
         }
     }
 
     handleChange = event => {
         event.preventDefault();
+
         let autoComplete = event.target.value
 
         let empMatch = []
@@ -177,7 +183,7 @@ class CadastroContainer extends React.Component {
         if (this.state.empMatch !== '') {
             this.setState({
                 ...this.state,
-                _id: this.state.empMatch[0]._id,
+
                 phone: this.state.empMatch[0].phone,
                 cpf: this.state.empMatch[0].cpf,
                 cep: this.state.empMatch[0].cep,
@@ -187,8 +193,11 @@ class CadastroContainer extends React.Component {
                 rua: this.state.empMatch[0].rua,
                 bairro: this.state.empMatch[0].bairro,
                 cidade: this.state.empMatch[0].cidade,
+                uf: this.state.empMatch[0].cidade
 
             })
+            
+            console.log(this.state.empMatch[0].cep)
             this.enableRtInput();
 
         } else {
@@ -205,6 +214,7 @@ class CadastroContainer extends React.Component {
                 rua: '',
                 bairro: '',
                 cidade: '',
+                uf: ''
             })
         }
     }
@@ -230,7 +240,7 @@ class CadastroContainer extends React.Component {
     }
 
     render() {
-        
+
         return (
             <div>
                 <CadTemplate
@@ -240,7 +250,7 @@ class CadastroContainer extends React.Component {
                     handleBlurName={this.handleBlurName}
                     handleBlurRtName={this.handleBlurRtName}
                     handleSubmit={(submit) => this.handleSubmit(submit)}
-                    handleBlur={(cep) => this.handleBlur(cep)}
+                    handleBlur={this.handleBlur}
                     enableRtInput={e => this.enableRtInput(e)}
                     enableProcessInput={e => this.enableProcessInput(e)}
                     enableEmpInput={e => this.enableEmpInput(e)}
