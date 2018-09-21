@@ -15,16 +15,18 @@ const EditData = (props) => {
                 })
             }
 
-            function removeLast(arr, n){
-                arr.splice(arr.length-n, arr.length);
+            function removeLast(arr, n) {
+                arr.splice(arr.length - n, arr.length);
                 return arr;
             }
             let filterArray = itemArray
+
+            if (props.data.select === 'emp' && itemArray.length > 14) filterArray = removeLast(itemArray, 3)
             
-            props.data.select === 'emp' && itemArray.length > 14  ? filterArray = removeLast(itemArray, 3) : null
-            props.data.select === 'rt' && itemArray.length > 4  ? filterArray = removeLast(itemArray, 3) : null
-            props.data.select === 'process' ? filterArray = removeLast(itemArray, 5) : null
+            if (props.data.select === 'rt' && itemArray.length > 4) filterArray = removeLast(itemArray, 3) 
             
+            if (props.data.select === 'process') filterArray = removeLast(itemArray, 5)
+
             return filterArray.slice(1).map((item, i) =>
 
                 <div key={i} className="input-field col s3" >

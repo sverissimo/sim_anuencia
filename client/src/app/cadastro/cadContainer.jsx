@@ -37,25 +37,27 @@ class CadastroContainer extends React.Component {
         enableProcess: 'disabled',
         empMatch: '',
         empCollection: [],
-        rtCollection: []
+        rtCollection: [],
     }
 
-    componentWillMount() {
+    componentDidMount() {
+
         axios.get('/api/showEmpreend')
             .then(res => {
                 this.setState({ empCollection: res.data })
             })
             .catch(err => console.log(err));
 
+        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
+        console.log(this.props.cadastro.rtCollection)
     }
 
     enableRtInput(e) {
-        this.setState({
 
+        this.setState({
             enableEmp: 'disabled',
             enableRt: '',
             enableProcess: 'disabled',
-
         })
     }
     enableProcessInput(e) {
@@ -73,9 +75,9 @@ class CadastroContainer extends React.Component {
         })
     }
 
-    handleBlur = (item) => {
+    handleBlur = event => {
 
-        if (item.target.name === 'cep') {
+        if (event.target.name === 'cep' && this.state.empMatch === '') {
 
             axios.get(`http://apps.widenet.com.br/busca-cep/api/cep.json?code=${this.state.cep}`
             ).then(res => {
@@ -89,42 +91,46 @@ class CadastroContainer extends React.Component {
             })
 
         } else {
-            return null
+            void 0
         }
     }
 
     handleChange = event => {
         event.preventDefault();
 
-        let autoComplete = event.target.value
-
         let empMatch = []
-        empMatch = this.state.empCollection.filter(el => el.nome.toLowerCase().match(autoComplete.toLowerCase()))
-        if (autoComplete && empMatch[0]) {
-            this.setState({
-                ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
-            })
-
-        } else {
-            empMatch = ''
-            this.setState({
-                ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
-            })
-        }
         let rtMatch = []
-        rtMatch = this.props.cadastro.rtCollection.filter(el => el.nomeRt.toLowerCase().match(autoComplete.toLowerCase()))
-        if (autoComplete && rtMatch[0]) {
-            this.setState({
-                ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
-            })
-
+        if (event.target.name === 'nome') {
+            let nameInput = event.target.value
+            empMatch = this.state.empCollection.filter(el => el.nome.toLowerCase().match(nameInput.toLowerCase()))
+            if (nameInput && empMatch[0]) {
+                this.setState({
+                    ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
+                })
+            } else {
+                empMatch = ''
+                this.setState({
+                    ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
+                })
+            }
+        } else if (event.target.name === 'nomeRt') {
+            let autoCompleteRt = event.target.value
+            rtMatch = this.props.cadastro.rtCollection.filter(el => el.nomeRt.toLowerCase().match(autoCompleteRt.toLowerCase()))
+            if (autoCompleteRt && rtMatch[0]) {
+                this.setState({
+                    ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+                })
+            } else {
+                rtMatch = ''
+                this.setState({
+                    ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+                })
+            }
         } else {
-            rtMatch = ''
             this.setState({
-                ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+                ...this.state, [event.target.name]: event.target.value
             })
         }
-
     };
 
     handleSubmit = event => {
@@ -132,58 +138,110 @@ class CadastroContainer extends React.Component {
         this.setState({
             [event.target.name]: event.target.value
         });
-
-        axios.post(('/api/cadastro_emp/'), {
-
-            nome: this.state.nome,
-            cpf: this.state.cpf,
-            phone: this.state.phone,
-            cep: this.state.cep,
-            numero: this.state.numero,
-            complemento: this.state.complemento,
-            email: this.state.email,
-            rua: this.state.rua,
-            bairro: this.state.bairro,
-            cidade: this.state.cidade,
-            uf: this.state.uf,
-        })
-            .then(res => {
-                this.setState(
-                    { ...this.state, empId: res.data.Cadastro_id }
-                )
+        if (!this.state.empMatch && !this.state.empMatch[0] && !this.state.rtMatch && !this.state.rtMatch[0]) {
+            axios.post(('/api/cadastro_emp/'), {
+                nome: this.state.nome,
+                cpf: this.state.cpf,
+                phone: this.state.phone,
+                cep: this.state.cep,
+                numero: this.state.numero,
+                complemento: this.state.complemento,
+                email: this.state.email,
+                rua: this.state.rua,
+                bairro: this.state.bairro,
+                cidade: this.state.cidade,
+                uf: this.state.uf,
             })
-            .then(res => {
-
-                axios.post('/api/cadastro_rt', {
-                    nomeRt: this.state.nomeRt,
-                    emailRt: this.state.emailRt,
-                    phoneRt: this.state.phoneRt
+                .then(res => {
+                    this.setState({ empId: res.data.Cadastro_id })
                 })
-                    .then(res => {
-                        this.setState(
-                            { ...this.state, rtId: res.data.RT_id }
-                        )
+                .then((res) =>
+                    axios.post('/api/cadastro_rt', {
+                        nomeRt: this.state.nomeRt,
+                        emailRt: this.state.emailRt,
+                        phoneRt: this.state.phoneRt
+                    }))
+                .then(res => {
+                    this.setState({ rtId: res.data.RT_id })
+                })
+                .then(res =>
+                    axios.post('/api/cadastro_process', {
+                        nomeEmpreendimento: this.state.nomeEmpreendimento,
+                        area: this.state.area,
+                        modalidade: this.state.modalidade,
+                        munEmpreendimento: this.state.munEmpreendimento,
+                        empId: this.state.empId,
+                        rtId: this.state.rtId
                     })
-                    .then(res => {
-                        axios.post('/api/cadastro_process', {
-                            nomeEmpreendimento: this.state.nomeEmpreendimento,
-                            area: this.state.area,
-                            modalidade: this.state.modalidade,
-                            munEmpreendimento: this.state.munEmpreendimento,
-                            empId: this.state.empId,
-                            rtId: this.state.rtId
-                        });
-                    })
+                )
+        } else if (!this.state.empMatch && !this.state.empMatch[0] && this.state.rtMatch && this.state.rtMatch[0]) {
+            axios.post(('/api/cadastro_emp/'), {
+                nome: this.state.nome,
+                cpf: this.state.cpf,
+                phone: this.state.phone,
+                cep: this.state.cep,
+                numero: this.state.numero,
+                complemento: this.state.complemento,
+                email: this.state.email,
+                rua: this.state.rua,
+                bairro: this.state.bairro,
+                cidade: this.state.cidade,
+                uf: this.state.uf,
             })
+                .then(res => {
+                    this.setState({ empId: res.data.Cadastro_id })
+                })
+                .then(res =>
+                    axios.post('/api/cadastro_process', {
+                        nomeEmpreendimento: this.state.nomeEmpreendimento,
+                        area: this.state.area,
+                        modalidade: this.state.modalidade,
+                        munEmpreendimento: this.state.munEmpreendimento,
+                        empId: this.state.empId,
+                        rtId: this.state.rtId
+                    })
+                )
 
+        } else if (this.state.empMatch && this.state.empMatch[0] && !this.state.rtMatch && !this.state.rtMatch[0]) {
+
+            axios.post('/api/cadastro_rt', {
+                nomeRt: this.state.nomeRt,
+                emailRt: this.state.emailRt,
+                phoneRt: this.state.phoneRt
+            })
+                .then(res => {
+                    this.setState({ rtId: res.data.RT_id })
+                })
+                .then(res =>
+                    axios.post('/api/cadastro_process', {
+                        nomeEmpreendimento: this.state.nomeEmpreendimento,
+                        area: this.state.area,
+                        modalidade: this.state.modalidade,
+                        munEmpreendimento: this.state.munEmpreendimento,
+                        empId: this.state.empId,
+                        rtId: this.state.rtId
+                    })
+                )
+        } else if (this.state.empMatch && this.state.empMatch[0] && this.state.rtMatch && this.state.rtMatch[0]) {
+            axios.post('/api/cadastro_process', {
+                nomeEmpreendimento: this.state.nomeEmpreendimento,
+                area: this.state.area,
+                modalidade: this.state.modalidade,
+                munEmpreendimento: this.state.munEmpreendimento,
+                empId: this.state.empId,
+                rtId: this.state.rtId
+            })
+        }
     }
+
+
 
     handleBlurName = () => {
 
         if (this.state.empMatch !== '') {
             this.setState({
                 ...this.state,
-
+                empId: this.state.empMatch[0]._id,
                 phone: this.state.empMatch[0].phone,
                 cpf: this.state.empMatch[0].cpf,
                 cep: this.state.empMatch[0].cep,
@@ -193,17 +251,14 @@ class CadastroContainer extends React.Component {
                 rua: this.state.empMatch[0].rua,
                 bairro: this.state.empMatch[0].bairro,
                 cidade: this.state.empMatch[0].cidade,
-                uf: this.state.empMatch[0].cidade
-
+                uf: this.state.empMatch[0].uf
             })
-            
-            console.log(this.state.empMatch[0].cep)
             this.enableRtInput();
 
         } else {
             this.setState({
                 ...this.state,
-                _id: '',
+                empId: '',
                 phone: '',
                 cpf: '',
                 birth: '',
@@ -223,24 +278,23 @@ class CadastroContainer extends React.Component {
         if (this.state.rtMatch !== '') {
             this.setState({
                 ...this.state,
+                rtId: this.state.rtMatch[0]._id,
                 phoneRt: this.state.rtMatch[0].phoneRt,
                 emailRt: this.state.rtMatch[0].emailRt,
-
             })
             this.enableProcessInput()
 
         } else {
             this.setState({
                 ...this.state,
+                rtId: '',
                 phoneRt: '',
                 emailRt: '',
-
             })
         }
     }
 
     render() {
-
         return (
             <div>
                 <CadTemplate

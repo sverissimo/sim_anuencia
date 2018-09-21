@@ -12,11 +12,11 @@ const CadTemplate = (props) => {
                 enableInput: enableInput
             })
         }
-
+        
         return configArray.map((item, i) => {
 
             let config = item.settings
-            
+       
             return (
                 <div key={i} className={config.divClassName}>
                     <input type={config.type}
