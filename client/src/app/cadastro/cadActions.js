@@ -11,7 +11,6 @@ export const loadEmpData= () => {
     }
 };
 
-
 export function loadRtData() {
     
     const request = axios.get('/api/showRt')
@@ -34,13 +33,3 @@ export function loadProcessData() {
     }
 };
 
-/* 
-export function deleteRt(item) {
-
-    return ()=> {
-        axios.delete("/api/delRt/" + item._id)
-                        
-    }
-
-}
- */

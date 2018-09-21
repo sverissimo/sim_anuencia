@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadRtData, loadProcessData } from './cadActions';
+import { loadEmpData, loadRtData, loadProcessData } from './cadActions';
 
 import CadTemplate from './cadTemplate';
 
@@ -36,20 +36,12 @@ class CadastroContainer extends React.Component {
         enableRt: 'disabled',
         enableProcess: 'disabled',
         empMatch: '',
-        empCollection: [],
-        rtCollection: [],
     }
 
     componentDidMount() {
 
-        axios.get('/api/showEmpreend')
-            .then(res => {
-                this.setState({ empCollection: res.data })
-            })
-            .catch(err => console.log(err));
-
+        !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        console.log(this.props.cadastro.rtCollection)
     }
 
     enableRtInput(e) {
@@ -100,17 +92,18 @@ class CadastroContainer extends React.Component {
 
         let empMatch = []
         let rtMatch = []
+
         if (event.target.name === 'nome') {
             let nameInput = event.target.value
-            empMatch = this.state.empCollection.filter(el => el.nome.toLowerCase().match(nameInput.toLowerCase()))
+            empMatch = this.props.cadastro.empCollection.filter(el => el.nome.toLowerCase().match(nameInput.toLowerCase()))
             if (nameInput && empMatch[0]) {
                 this.setState({
-                    ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
+                    ...this.state, [event.target.name]: event.target.value, empMatch: empMatch
                 })
             } else {
                 empMatch = ''
                 this.setState({
-                    ...this.state.empCollection, [event.target.name]: event.target.value, empMatch: empMatch
+                    ...this.state, [event.target.name]: event.target.value, empMatch: empMatch
                 })
             }
         } else if (event.target.name === 'nomeRt') {
@@ -118,13 +111,14 @@ class CadastroContainer extends React.Component {
             rtMatch = this.props.cadastro.rtCollection.filter(el => el.nomeRt.toLowerCase().match(autoCompleteRt.toLowerCase()))
             if (autoCompleteRt && rtMatch[0]) {
                 this.setState({
-                    ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+                    ...this.state, [event.target.name]: event.target.value, rtMatch: rtMatch
                 })
             } else {
                 rtMatch = ''
                 this.setState({
-                    ...this.state.empCollection, [event.target.name]: event.target.value, rtMatch: rtMatch
+                    ...this.state, [event.target.name]: event.target.value, rtMatch: rtMatch
                 })
+
             }
         } else {
             this.setState({
@@ -234,8 +228,6 @@ class CadastroContainer extends React.Component {
         }
     }
 
-
-
     handleBlurName = () => {
 
         if (this.state.empMatch !== '') {
@@ -321,7 +313,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadRtData, loadProcessData }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CadastroContainer);

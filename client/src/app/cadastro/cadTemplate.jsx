@@ -12,11 +12,9 @@ const CadTemplate = (props) => {
                 enableInput: enableInput
             })
         }
-        
-        return configArray.map((item, i) => {
 
+        return configArray.map((item, i) => {
             let config = item.settings
-       
             return (
                 <div key={i} className={config.divClassName}>
                     <input type={config.type}
@@ -69,15 +67,14 @@ const CadTemplate = (props) => {
             return
         }
     }
-    
+
     return (
         <div style={{ marginLeft: 75, marginRight: 75 }} >
             <div className="tab-pane fade show active" id="empreend">
                 <div className="valign-wrapper" >
-                   
-                        <i className="material-icons small teal-text">error_outline</i>
-                        <strong style={{ marginLeft: 5, fontFamily: 'tahoma' }}>Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.</strong>
-                   
+
+                    <i className="material-icons small teal-text">error_outline</i>
+                    <strong style={{ marginLeft: 5, fontFamily: 'tahoma' }}>Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.</strong>
                 </div>
                 <form onSubmit={props.handleSubmit}>
                     <fieldset className="input-field"><legend className="input-field"><strong> Interessado </strong></legend>
@@ -95,7 +92,7 @@ const CadTemplate = (props) => {
                                     autoFocus="true"
                                 />
                                 <label className="active" htmlFor="nome">Nome</label>
-                                {autoComplete(props.data.empCollection, 'empreendList', props.data.nome)}
+                                {autoComplete(props.config.empCollection, 'empreendList', props.data.nome)}
                             </div>
                             {renderFields(props.config.empreendForm, props.data.enableEmp)}
                         </div>

@@ -13,9 +13,6 @@ import ShowEmpRow from './buscaRow';
 class ShowEmpContainer extends Component {
 
     state = {
-        empCollection: [],
-        rtCollection: [],
-        processCollection: [],
         search: '',
         select: 'emp',
         edit: false,
@@ -26,9 +23,9 @@ class ShowEmpContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.loadEmpData();
-        this.props.loadRtData();
-        this.props.loadProcessData();
+        !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
+        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
+        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
     }
 
     deleteHandler = (item) => {
