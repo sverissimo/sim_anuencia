@@ -6,7 +6,7 @@ const Header = () => {
 
     return (
         <nav style={{ marginBottom: 20}} >
-            <div className="nav-wrapper teal darken-3" style={{ paddingLeft: 30, paddingRight: 30 }} >
+            <div className="nav-wrapper grey darken-3" style={{ paddingLeft: 30, paddingRight: 30 }} >
                 <Link to="/" className="brand-logo">
                 <i className="material-icons" style={{fontSize: "30px"}} >home</i>
                 </Link>

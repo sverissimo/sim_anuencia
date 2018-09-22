@@ -2,23 +2,28 @@ import React from 'react';
 
 const solicitaDiretrizRow = (props) => {
     return (
-            <div className="row col s12" style={{padding: "10px", paddingLeft: "20px", paddingRight: "20px" }}>
-                <label style={{ fontSize: "15px", color: "black" }}> {props.object.label} </label>
-                <i style={{ marginLeft:"9px", color:"#42a5f5", fontSize:"1,1rem", float:'right' }}
-                    className="material-icons tooltipped" data-position="bottom"
-                    data-tooltip={props.object.tooltip}> help_outline </i>
-                <div className="row file-field input-field">
-                    <div>
-                        <span className="btn-small">Procurar</span>
+        <div className="row col s12" 
+        style={{ padding: "10px", paddingLeft: "20px", paddingRight: "20px" }}>
+            <label 
+            style={{ fontSize: "16px", paddingTop: "15px", fontWeight: 450, color: "black" }}> 
+            {props.object.label}
+            </label>
+
+            <div className="row file-field input-field">
+                <div className="file-path-wrapper row">
+                    <div className="col s11">
+                        <input 
+                        className="file-path validate" 
+                        type="text" 
+                        placeholder="Carregar arquivo" />
+                    </div>
+                    <div className="col s1 right">
+                        <i className="material-icons grey-text text-darken-1 small">attach_file</i>
                         <input type="file" />
                     </div>
-
-                    <div className="file-path-wrapper">
-                        <input className="file-path validate" type="text"
-                            placeholder="Carregar arquivo" />
-                    </div>
                 </div>
-            </div >
+            </div>
+        </div >
     );
 };
 

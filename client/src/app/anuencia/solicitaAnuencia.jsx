@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
-import SolicitaAnuenciaRow from './solicitaAnuenciaRow';
 
 class SolicitaAnuencia extends Component {
     state =
@@ -79,19 +78,13 @@ class SolicitaAnuencia extends Component {
         }
 
     render() {
-
-        let array = []
-        let array2 = []
-        array = this.state.config
-        array2 = this.state.config2
-        
         return (
             <div>
-                <SolicitaAnuenciaTemplate data={this.state}>
-                    <SolicitaAnuenciaRow
-                        array={array}
-                        array2={array2} />
-                </SolicitaAnuenciaTemplate>
+                <SolicitaAnuenciaTemplate
+                    data={this.state}
+                    array={this.state.config}
+                    array2={this.state.config2} 
+                    />
             </div>
         );
     }

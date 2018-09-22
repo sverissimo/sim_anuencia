@@ -1,52 +1,29 @@
 import React from 'react';
-import UploadButton from '../common/uploadButton';
 
-const SolicitaAnuenciaRow2 = (props) => {
+const SolicitaAnuenciaRow = (props) => {
 
     return (
-        <div>
-            <fieldset>
-                <legend>Documentos</legend>
-                <div className="col s12" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
-                    {
-                        props.array.map((item, i) => {
-                            return (
-                                <div className="col s12 m6" key={i}>
-                                    <label style={{ fontSize: "15px", color: "black" }}>  </label>
-                                    <i style={{ marginLeft: "9px", color: "#02b5a5", fontSize: "1,1rem", float: 'right' }}
-                                        className="material-icons tooltipped" data-position="bottom"
-                                        data-tooltip={item.tooltip}> help_outline </i>
-                                    <UploadButton label={item.label} />
-                                </div>
-                            )
-                        })
-                    }
-                </div >
-
-            </fieldset>
-            <div>
-                <fieldset>
-                    <legend>Projetos</legend>
-                    <div className="col s12" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
-                        {
-                            props.array2.map((item, i) => {
-                                return (
-                                    <div className="col s12 m6" key={i} >
-                                        <label style={{ fontSize: "15px", color: "black" }}> {item.label} </label>
-                                        <i style={{ marginLeft: "9px", color: "#02b5a5", fontSize: "1,1rem", float: 'right' }}
-                                            className="material-icons tooltipped" data-position="bottom"
-                                            data-tooltip={item.tooltip}> help_outline </i>
-                                        <UploadButton label={item.label}/>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-
-                </fieldset>
+        <div className="file-field input-field">
+            <div className="row" style={{ marginBottom: '35px' }}>
+                <label style={{ color: 'black', fontWeight: 400, fontSize: '1.02rem' }}>
+                    {props.label}
+                </label>
             </div>
+
+            <div className="row file-path-wrapper">
+                <div className="col s10">
+                    <input className="file-path validate" type="text" placeholder="Selecionar arquivo" />
+                </div>
+                <div className="col s1">
+                    <i className="material-icons grey-text text-lighten-6 small" >
+                        attach_file
+                        </i>
+                </div>
+            </div>
+            <input type="file" />
         </div>
+
     );
 };
 
-export default SolicitaAnuenciaRow2;
+export default SolicitaAnuenciaRow;
