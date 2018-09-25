@@ -25,8 +25,8 @@ const ShowEmpRow = (props) => {
         props.data.select === 'rt' ? filteredArray.splice(4, 3) : void 0
         props.data.select === 'process' ? filteredArray.splice(5, 5) : void 0
 
-        return filteredArray.slice(1).map((tst, w) =>
-            <td key={w} style={{ wordWrap: 'break-word' }} >{tst}</td>
+        return filteredArray.slice(1).map((item, w) =>
+            <td key={w} style={{ wordWrap: 'break-word' }} >{item}</td>
         )
     }
 
