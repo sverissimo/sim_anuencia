@@ -22,7 +22,7 @@ const renderSearch = (search, collection, onSelect, checked) => {
                 })
             }
             let i2 = itemArray.slice(0, 5)
-            console.log(!checked)
+            
             //console.log(k)
             return (
                 <div className="row teal lighten-5">
@@ -33,7 +33,7 @@ const renderSearch = (search, collection, onSelect, checked) => {
                         name="group1"
                         onClick={onSelect}
                         value={i2.map(field => field.key === '_id' ? `${field.values}` : void 0)}
-                        checked={checked}
+                        defaultChecked={checked === this.id}
                     />
                     <label htmlFor={k}>{k}</label>
                 </div>

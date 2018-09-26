@@ -19,7 +19,10 @@ const solicitaDiretrizRow = (props) => {
                     </div>
                     <div className="col s1 right">
                         <i className="material-icons grey-text text-darken-1 small">attach_file</i>
-                        <input type="file" />
+                        <input 
+                        type="file"
+                        name={props.object.nameInput}
+                        onChange={props.upload} />
                     </div>
                 </div>
             </div>

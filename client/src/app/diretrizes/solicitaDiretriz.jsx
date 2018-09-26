@@ -11,15 +11,18 @@ class solicitaDiretriz extends Component {
         config: [
             {
                 label: 'Diretrizes Municipais',
-                tooltip: 'Diretrizes emitidas pela Prefeitura Municipal'
+                tooltip: 'Diretrizes emitidas pela Prefeitura Municipal',
+                nameInput: 'dirMunFile'
             },
             {
                 label: 'Levantamento Planialtimétrico',
-                tooltip: 'Planta baixa contendo o levantamento planialtimétrico. Ver requisitos abaixo'
+                tooltip: 'Planta baixa contendo o levantamento planialtimétrico. Ver requisitos abaixo',
+                nameInput: 'levPlanFile'
             },
             {
                 label: 'Comprovante de pagamento da DAE',
-                tooltip: 'Comprovante de pagamento da DAE'
+                tooltip: 'Comprovante de pagamento da DAE',
+                nameInput: 'dirDaeFile'
             },
 
         ],
@@ -27,7 +30,11 @@ class solicitaDiretriz extends Component {
         dataMatch: [],
         toggleUpload: false,
         selectedId: 'off',
-        checked: false
+        checked: false,
+        dirMunFile: [],
+        levPlanFile: [],
+        dirDaeFile: [],
+        files: []
     }
     componentDidMount() {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
@@ -43,16 +50,21 @@ class solicitaDiretriz extends Component {
         this.setState({
             ...this.state,
             selectedId: e.target.value.replace(/,/g, ''),
+            checked: e.currentTarget.id
         })
-
-        setTimeout(() => {
-            this.setState({
-                ...this.state,
-                checked: !this.state.checked
-            })
-        }, 300);
     }
 
+    fileUpload(e) {
+
+
+
+        this.setState({
+
+            files: this.state.files.concat({ [e.target.name]: e.target.files[0] })
+        })
+
+
+    }
     render() {
 
         let dataMatch = []
@@ -60,7 +72,7 @@ class solicitaDiretriz extends Component {
         if (input && input.length > 2) {
             dataMatch = this.props.cadastro.processCollection.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
         }
-
+        console.log(this.state)
         return (
             <div>
                 <SolicitaDiretrizTemplate
@@ -76,6 +88,7 @@ class solicitaDiretriz extends Component {
                                 <SolicitaDiretrizRow
                                     object={item}
                                     key={i}
+                                    upload={this.fileUpload.bind(this)}
                                 />
                             )
                         })
