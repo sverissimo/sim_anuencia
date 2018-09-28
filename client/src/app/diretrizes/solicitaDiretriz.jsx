@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadProcessData } from './../cadastro/cadActions'
+import { loadEmpData, loadProcessData, setColor } from './../cadastro/cadActions'
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
+import randomColor from '../common/randomColors';
 
 class solicitaDiretriz extends Component {
     state = {
@@ -29,16 +31,18 @@ class solicitaDiretriz extends Component {
         searchValue: '',
         dataMatch: [],
         toggleUpload: false,
-        selectedId: 'off',
+        selectedId: '',
         checked: false,
-        dirMunFile: [],
-        levPlanFile: [],
-        dirDaeFile: [],
-        files: []
+        files: [],
     }
+
     componentDidMount() {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
+
+        let color = document.getElementById('setcolor').style.backgroundColor
+        this.props.setColor(color)
+
     }
 
     handleSearch(e) {
@@ -55,24 +59,37 @@ class solicitaDiretriz extends Component {
     }
 
     fileUpload(e) {
-
-
-
         this.setState({
-
             files: this.state.files.concat({ [e.target.name]: e.target.files[0] })
         })
+    }
 
+    handleSubmit(e) {
+        let data = new FormData();
+        data.append('dirMunFile', this.state.files[0]);
+        fetch('/api/upload', {
+            method: 'POST',
+            body: data
+        }).then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    this.loadFiles();
+                } else {
+                    alert('Upload failed');
+                }
+            });
 
     }
     render() {
 
         let dataMatch = []
         let input = this.state.searchValue.toLowerCase()
-        if (input && input.length > 2) {
+        if (input) {
             dataMatch = this.props.cadastro.processCollection.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
+        } else {
+            dataMatch = this.props.cadastro.processCollection
         }
-        console.log(this.state)
+
         return (
             <div>
                 <SolicitaDiretrizTemplate
@@ -81,6 +98,8 @@ class solicitaDiretriz extends Component {
                     search={e => this.handleSearch(e)}
                     searchArray={dataMatch}
                     selectProcess={this.handleSelect.bind(this)}
+                    submitFiles={this.handleSubmit.bind(this)}
+                    setColor={this.props.cadastro.setColor}
                 >
                     {
                         this.state.config.map((item, i) => {
@@ -106,7 +125,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadProcessData }, dispatch)
+    return bindActionCreators({ loadEmpData, loadProcessData, setColor }, dispatch)
 }
 
 

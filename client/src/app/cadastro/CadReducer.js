@@ -29,7 +29,8 @@ const initState = {
     rtMatch: '',
     empId: '',
     editItem: false,
-    search: ''
+    search: '',
+    setColor:''
 
 }
 
@@ -44,6 +45,10 @@ const CadReducer = (state = initState, action) => {
 
         case 'LOAD_PROCESS_DATA':
             return { ...state, processCollection: action.payload }
+
+        case 'SET_COLOR':
+            return { ...state, setColor: action.payload }
+
 
         default:
             return state

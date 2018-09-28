@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData } from './cadastro/cadActions'
 import HomeTemplate from './homeTemplate';
 
-
 class Home extends Component {
 
   componentWillMount() {
@@ -14,15 +13,13 @@ class Home extends Component {
   }
 
   render() {
-    
-    return (
+        return (
       <div>
         <HomeTemplate />
       </div>
     );
   }
 }
-
 
 function mapStateToProps(state) {
   return {

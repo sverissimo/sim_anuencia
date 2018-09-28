@@ -26,9 +26,16 @@ const processSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    solDirFileIds : [],
+    status: {
+        type: String,
+        trim: true
+    }
 
 }, { timestamps: true });
 
+
+//solDirDocs, status, datacgt, datavist, dirmetfiles, solAPfiles, EmiteApfiles, anaises
 const processModel = mongoose.model('Processo', processSchema);
 
 module.exports = { processModel }

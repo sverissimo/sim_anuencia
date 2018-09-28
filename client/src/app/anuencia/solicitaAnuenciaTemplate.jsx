@@ -1,5 +1,6 @@
 import React from 'react';
 import SolicitaAnuenciaRow from './solicitaAnuenciaRow';
+import Title from '../common/titleSubtitle';
 
 const fieldSet = (legend, array) => (
     <fieldset style={{paddingTop: '5px'}}>
@@ -13,17 +14,18 @@ const fieldSet = (legend, array) => (
         })}
     </fieldset>
 )
-
+//let color = document.getElementById('setcolor').style.backgroundColor
 const SolicitaAnuenciaTemplate = (props) => {
+    
     return (
         <div className="container" >
+           <Title
+                title='Solicitar Anuência Prévia'
+                subtitle=' Para anuência prévia, faça o upload dos documentos necessários 
+                em pdf e clique em "Solicitar Anuência". '
+                color = {props.data.setColor}
+            />
             <div className="row">
-                <center><h4><b>Solicitar Anuência Prévia</b></h4></center>
-                <div className="card-panel valign-wrapper teal lighten-4" 
-                style={{ marginBottom: '20px', maxHeight: '20px' }} >
-                    <h6> Para anuência prévia, faça o upload dos documentos necessários 
-                        em pdf e clique em "Solicitar Anuência". </h6>
-                </div>
                 <form>
                     <div className="row col s12">
                         {fieldSet('Documentos', props.array)}

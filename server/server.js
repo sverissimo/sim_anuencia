@@ -3,12 +3,31 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const config = require('./config/config').get(process.env.NODE_ENV);
+const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+Grid.mongo = mongoose.mongo;
+const path = require('path');
+const methodOverride = require('method-override')
+//const gfs = Grid(conn.db);
+
 
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
 const { processModel } = require('./models/processModel');
 
 const app = express();
+
+
+ app.use(function (req, res, next) { //allow cross origin requests
+    res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Credentials", true);
+    next();
+}); 
+
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', err => {
@@ -16,6 +35,57 @@ mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', err => {
         console.log(err);
     }
 });
+
+
+app.use(methodOverride('_method'));
+
+// Mongo URI
+const mongoURI = 'mongodb://localhost:27017/sim_anuencia_db';
+
+// Create mongo connection
+const conn = mongoose.createConnection(mongoURI);
+
+// Init gfs
+let gfs;
+
+conn.once('open', () => {
+    // Init stream
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+});
+
+// Create storage engine
+const storage = new GridFsStorage({
+    url: mongoURI,
+    file: (req, file) => {
+        return new Promise((resolve, reject) => {
+            crypto.randomBytes(16, (err, buf) => {
+                if (err) {
+                    return reject(err);
+                }
+                const filename = buf.toString('hex') + path.extname(file.originalname);
+                const fileInfo = {
+                    filename: filename,
+                    bucketName: 'uploads'
+                };
+                resolve(fileInfo);
+            });
+        });
+    }
+});
+const upload = multer({ storage });
+
+// @desc  Uploads file to DB
+app.post('/api/upload', upload.single('dirMunFile'), (req, res) => {
+   
+    res.json({ file: req.file });
+    res.redirect('/');
+});
+
+
+
+
+
 
 
 app.get('/api/showEmpreend', (req, res) => {
@@ -36,7 +106,7 @@ app.get('/api/showRt', (req, res) => {
 
 app.get('/api/showProcess', (req, res) => {
 
-    processModel.find().sort({ nomeRt: 1 }).exec((err, doc) => {
+    processModel.find().sort({ nomeEmpreendimento: 1 }).exec((err, doc) => {
         if (err) return err;
         res.send(doc);
     });

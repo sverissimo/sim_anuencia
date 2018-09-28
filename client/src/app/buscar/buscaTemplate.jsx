@@ -1,14 +1,16 @@
 import React from 'react';
+import Title from '../common/titleSubtitle'
 import './../css/styles.css';
 
 const ShowEmpTemplate = (props) => {
 
     return (
         <div>
-            <span style={{ fontSize: 18, fontFamily: 'arial', fontWeight: 'bold' }} >
-                Buscar
-           </span>
-            <hr />
+           
+            <Title
+                title='Gerenciar Processos'
+                subtitle=' Acompanhe a situação dos processos utilizando os filtros de busca disponíveis '
+            />
             <div>
                 <label>Selecione o método de Busca</label>
                 <br />

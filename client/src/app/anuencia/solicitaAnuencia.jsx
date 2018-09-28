@@ -74,17 +74,28 @@ class SolicitaAnuencia extends Component {
                     label: 'Projeto de Drenagem',
                     tooltip: 'Projeto na mesma escala do Projeto Urbanístico e em sistema de coordenadas UTM'
                 }
-            ]
+            ],
+            setColor:''
         }
 
+
+    componentDidMount() {
+       
+        let color = document.getElementById('setcolor').style.backgroundColor
+        this.setState({
+            setColor: color
+        })
+
+
+    }
     render() {
         return (
             <div>
                 <SolicitaAnuenciaTemplate
                     data={this.state}
                     array={this.state.config}
-                    array2={this.state.config2} 
-                    />
+                    array2={this.state.config2}
+                />
             </div>
         );
     }

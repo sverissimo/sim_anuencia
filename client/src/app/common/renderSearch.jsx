@@ -21,21 +21,20 @@ const renderSearch = (search, collection, onSelect, checked) => {
                     values: item[keys]
                 })
             }
-            let i2 = itemArray.slice(0, 5)
-            
-            //console.log(k)
+            let i2 = itemArray.slice(1, 6)
+            //let color = document.getElementById('setcolor').style.backgroundColor
             return (
-                <div className="row teal lighten-5">
+                <div className="row" >
                     {i2.map((field, i) => field.key !== '_id' ? <div key={i} className="col s2"> {field.values} </div> : void 0)}
                     {empName ? <div className="col s2"> {empName.values.nome} </div> : <div className="col s2"> </div>}
-                    <input id={k}
+                    <input id={item._id}
                         type="radio"
                         name="group1"
                         onClick={onSelect}
                         value={i2.map(field => field.key === '_id' ? `${field.values}` : void 0)}
                         defaultChecked={checked === this.id}
                     />
-                    <label htmlFor={k}>{k}</label>
+                    <label htmlFor={item._id}>Selecionar</label>
                 </div>
             )
         }
