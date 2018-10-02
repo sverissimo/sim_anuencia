@@ -1,15 +1,19 @@
 import React from 'react';
 
 const solicitaDiretrizRow = (props) => {
+   
     return (
-        <div className="row col s12" 
-        style={{ padding: "10px", paddingLeft: "20px", paddingRight: "20px" }}>
+        <div 
+        className="row col s12" 
+        style={{ padding: "10px", paddingLeft: "20px", paddingRight: "20px" }}
+        
+        >
             <label 
             style={{ fontSize: "16px", paddingTop: "15px", fontWeight: 450, color: "black" }}> 
             {props.object.label}
             </label>
 
-            <div className="row file-field input-field">
+            <div className="row file-field input-field" key={props.object.nameInput}>
                 <div className="file-path-wrapper row">
                     <div className="col s11">
                         <input 

@@ -8,8 +8,8 @@ const renderSearchHeader = (labels) => {
             fontFamily: 'arial',
             fontWeight: 'bold',
         }}> >
-            {labels.map(label =>
-                <div className="col s2"> {(label)} </div>
+            {labels.map((label, i) =>
+                <div className="col s2" key={i}> {(label)} </div>
             )}
         </div>
     );

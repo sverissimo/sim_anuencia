@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
+const crypto = require('crypto')
 const config = require('./config/config').get(process.env.NODE_ENV);
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
@@ -19,13 +20,13 @@ const { processModel } = require('./models/processModel');
 const app = express();
 
 
- app.use(function (req, res, next) { //allow cross origin requests
+app.use(function (req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Credentials", true);
     next();
-}); 
+});
 
 
 app.use(bodyParser.json());
@@ -57,7 +58,9 @@ conn.once('open', () => {
 // Create storage engine
 const storage = new GridFsStorage({
     url: mongoURI,
+    
     file: (req, file) => {
+        
         return new Promise((resolve, reject) => {
             crypto.randomBytes(16, (err, buf) => {
                 if (err) {
@@ -66,7 +69,7 @@ const storage = new GridFsStorage({
                 const filename = buf.toString('hex') + path.extname(file.originalname);
                 const fileInfo = {
                     filename: filename,
-                    bucketName: 'uploads'
+                    bucketName: 'uploads',
                 };
                 resolve(fileInfo);
             });
@@ -77,8 +80,12 @@ const upload = multer({ storage });
 
 // @desc  Uploads file to DB
 app.post('/api/upload', upload.single('dirMunFile'), (req, res) => {
-   
-    res.json({ file: req.file });
+
+    res.json({
+        file: req.file,
+        info: req.body
+    });
+
     res.redirect('/');
 });
 

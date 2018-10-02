@@ -42,7 +42,7 @@ const SolicitaDiretriz = (props) => {
                     )}
             </div>
 
-            <form enctype="multipart/form-data">
+            <form action="/api/upload" method="post" encType="multipart/form-data"  onSubmit= {props.submitFiles}  >
                 {
                     props.data.selectedId && props.data.checked  ?
                         (<div>
@@ -55,7 +55,7 @@ const SolicitaDiretriz = (props) => {
                             </fieldset>
                             <button
                                 className="btn teal darken-3 right"
-                                onSubmit={props.submitFiles}
+                               type="submit"
                             >Solicitar Diretrizes</button>
                         </div>)
                         : void 0

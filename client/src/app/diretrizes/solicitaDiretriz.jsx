@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -6,7 +7,6 @@ import { loadEmpData, loadProcessData, setColor } from './../cadastro/cadActions
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
-import randomColor from '../common/randomColors';
 
 class solicitaDiretriz extends Component {
     state = {
@@ -62,26 +62,21 @@ class solicitaDiretriz extends Component {
         this.setState({
             files: this.state.files.concat({ [e.target.name]: e.target.files[0] })
         })
-    }
+          }
 
     handleSubmit(e) {
+
         let data = new FormData();
+
+        data.append('selectedId', this.state.selectedId);
         data.append('dirMunFile', this.state.files[0]);
-        fetch('/api/upload', {
-            method: 'POST',
-            body: data
-        }).then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    this.loadFiles();
-                } else {
-                    alert('Upload failed');
-                }
-            });
+
+        axios.post('/api/upload', data)
+            .then(res => console.log(res))
 
     }
     render() {
-
+        console.log()
         let dataMatch = []
         let input = this.state.searchValue.toLowerCase()
         if (input) {

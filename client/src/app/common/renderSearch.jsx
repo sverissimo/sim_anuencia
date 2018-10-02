@@ -24,7 +24,7 @@ const renderSearch = (search, collection, onSelect, checked) => {
             let i2 = itemArray.slice(1, 6)
             //let color = document.getElementById('setcolor').style.backgroundColor
             return (
-                <div className="row" >
+                <div className="row" key={k} >
                     {i2.map((field, i) => field.key !== '_id' ? <div key={i} className="col s2"> {field.values} </div> : void 0)}
                     {empName ? <div className="col s2"> {empName.values.nome} </div> : <div className="col s2"> </div>}
                     <input id={item._id}
