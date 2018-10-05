@@ -118,7 +118,7 @@ const CadTemplate = (props) => {
                             {renderFields(props.config.rtForm, props.data.enableRt)}
                         </div>
                     </fieldset>
-                    <BackButton enableInput={props.enableEmpInput} enable={props.data.enableRt} />
+                    <BackButton disabled={props.enableEmpInput} enable={props.data.enableRt} icon='arrow_back' />
                     <ConfirmButton enableInput={props.enableProcessInput} enable={props.data.enableRt} />
                     <fieldset className="input-field"><legend className="input-field"><strong> Dados do Empreendimento </strong></legend>
                         <div className="row" >

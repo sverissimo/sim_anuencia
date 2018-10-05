@@ -1,15 +1,16 @@
 import React from 'react';
-import renderSearch from '../common/renderSearch';
+import RenderSearch from '../common/renderSearch';
 import renderSearchHeader from '../common/renderSearchHeader';
 import Title from '../common/titleSubtitle';
-
-const configLabels = ["Nome do empreendimento", "Área (m²)", "Modalidade", "Município",
-    "Nome do Empreendedor"]
+import { configLabels } from '../common/configLabels'
+import {BackButton} from '../common/buttons'
 
 const SolicitaDiretriz = (props) => {
+
+    let {setColor, search, searchArray, selectProcess, submitFiles, data, redux, children} = props
    
     let nameParc
-    props.data.selectedId ? nameParc = props.redux.processCollection.filter(el => el._id.match(props.data.selectedId)) : void 0
+    data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
     
     return (
         <div className="container" >
@@ -17,7 +18,7 @@ const SolicitaDiretriz = (props) => {
                 title='Solicitar Diretrizes Metropolitanas'
                 subtitle='Para solicitar diretrizes metropolitanas, faça o upload dos documentos 
                 necessários em pdf e clique em "Solicitar Diretrizes".'
-                color={ props.setColor}
+                color={ setColor}
             />
             <div className="row">
                 <div className="col s11">
@@ -26,7 +27,7 @@ const SolicitaDiretriz = (props) => {
                         className="input"
                         type="text"
                         name="search"
-                        onChange={props.search}
+                        onChange={search}
                     />
                 </div>
                 <div className="col s1 right" style={{ paddingTop: '35px' }}>
@@ -34,28 +35,40 @@ const SolicitaDiretriz = (props) => {
                 </div>
             </div>
             <div>
-                {props.searchArray.length > 0 ? renderSearchHeader(configLabels) : void 0}
-                {renderSearch(props.searchArray, 
-                    props.redux.empCollection, 
-                    props.selectProcess, 
-                    props.data.checked, 
-                    )}
+                {searchArray.length > 0 ? renderSearchHeader(configLabels) : void 0}
+                <RenderSearch
+                search={searchArray}
+                collection={redux.empCollection}
+                onSelect={selectProcess}
+                checked={data.checked}
+                />
+                
+            </div>
+            <div className="row">
+                <div className="col s1 right">
+                    <BackButton
+                    disabled={data.checked === null}
+                    icon='clear'
+                    onClick={props.clear}
+                    />
+                </div>
+
             </div>
 
             <div>
                 {
-                    props.data.selectedId && props.data.checked  ?
+                    data.selectedId && data.checked  ?
                         (<div>
                             <fieldset>
                                 <legend style={{ fontSize: '1.3rem' }}>
                                     {nameParc[0].nomeEmpreendimento}
                                      - Documentos para solicitação de diretrizes
                             </legend>
-                                {props.children}
+                                {children}
                             </fieldset>
                             <button
                                 className="btn teal darken-3 right"
-                                onClick = {props.submitFiles}  
+                                onClick = {submitFiles}  
                             >Solicitar Diretrizes</button>
                         </div>)
                         : void 0

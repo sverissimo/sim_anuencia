@@ -32,7 +32,7 @@ class solicitaDiretriz extends Component {
         dataMatch: [],
         toggleUpload: false,
         selectedId: '',
-        checked: false,
+        checked: null,
         files: [],
         form: null
     }
@@ -46,7 +46,19 @@ class solicitaDiretriz extends Component {
     }
 
     handleSearch(e) {
-        this.setState({ ...this.state, searchValue: e.target.value })
+
+        this.setState({ ...this.state, searchValue: e.target.value, checked: false });
+        let clearRadio = document.getElementsByName('group1')
+        clearRadio.forEach(radio => radio.checked = false)
+    }
+
+    clearSearch(e) {
+        this.setState({ ...this.state, searchValue: '', checked: null });
+        document.getElementsByName('search')[0].value = '';
+        let clearRadio = document.getElementsByName('group1')
+        clearRadio.forEach(radio => radio.checked = false)
+        
+        
     }
 
     handleSelect(e) {
@@ -96,10 +108,12 @@ class solicitaDiretriz extends Component {
     render() {
 
 
-        let dataMatch = []
+        let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
         if (input) {
             dataMatch = this.props.cadastro.processCollection.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
+        } else if (this.state.checked || this.state.checked && input) {
+            dataMatch = this.props.cadastro.processCollection.filter(el => el._id.toLowerCase().match(this.state.checked))
         } else {
             dataMatch = this.props.cadastro.processCollection
         }
@@ -114,6 +128,7 @@ class solicitaDiretriz extends Component {
                     selectProcess={this.handleSelect.bind(this)}
                     submitFiles={this.handleSubmit.bind(this)}
                     setColor={this.props.cadastro.setColor}
+                    clear={this.clearSearch.bind(this)}
                 >
                     {
                         this.state.config.map((item, i) => {
