@@ -34,6 +34,7 @@ class solicitaDiretriz extends Component {
         selectedId: '',
         checked: false,
         files: [],
+        form: null
     }
 
     componentDidMount() {
@@ -42,7 +43,6 @@ class solicitaDiretriz extends Component {
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
-
     }
 
     handleSearch(e) {
@@ -59,24 +59,43 @@ class solicitaDiretriz extends Component {
     }
 
     fileUpload(e) {
+
+        let formData = new FormData()
+
         this.setState({
             files: this.state.files.concat({ [e.target.name]: e.target.files[0] })
         })
-          }
+
+
+        setTimeout(() => {
+            this.state.files.length > 0 ?
+                formData.append('dirMunFile', this.state.files[0].dirMunFile) : void 0
+            this.state.files.length > 1 ?
+                formData.append('levPlanFile', this.state.files[1].levPlanFile) : void 0
+            this.state.files.length > 2 ?
+                formData.append('dirDaeFile', this.state.files[2].dirDaeFile) : void 0
+        }, 100);
+
+        setTimeout(() => {
+            this.setState({ form: formData })
+        }, 200);
+    }
 
     handleSubmit(e) {
-
-        let data = new FormData();
-
-        data.append('selectedId', this.state.selectedId);
-        data.append('dirMunFile', this.state.files[0]);
-
-        axios.post('/api/upload', data)
-            .then(res => console.log(res))
+        axios.post('/api/upload', this.state.form)
+            .then(res => {
+                console.log(res.data.file)
+                for (let key in res.data.file) {
+                    console.log(res.data.file[key][0].id)
+                    console.log(res.data.file[key][0].originalname)
+                }
+            })
 
     }
+
     render() {
-        console.log()
+
+
         let dataMatch = []
         let input = this.state.searchValue.toLowerCase()
         if (input) {
@@ -122,6 +141,5 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ loadEmpData, loadProcessData, setColor }, dispatch)
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(solicitaDiretriz);

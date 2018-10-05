@@ -58,9 +58,9 @@ conn.once('open', () => {
 // Create storage engine
 const storage = new GridFsStorage({
     url: mongoURI,
-    
+
     file: (req, file) => {
-        
+
         return new Promise((resolve, reject) => {
             crypto.randomBytes(16, (err, buf) => {
                 if (err) {
@@ -79,14 +79,20 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 // @desc  Uploads file to DB
-app.post('/api/upload', upload.single('dirMunFile'), (req, res) => {
+app.post('/api/upload', upload.fields([
+
+    {
+        name: "dirMunFile", maxCount: 1
+    }, {
+        name: "levPlanFile", maxCount: 1
+    }, {
+        name: "dirDaeFile", maxCount: 1
+    }]
+), (req, res) => {
 
     res.json({
-        file: req.file,
-        info: req.body
+        file: req.files,
     });
-
-    res.redirect('/');
 });
 
 
