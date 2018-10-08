@@ -41,6 +41,7 @@ const SolicitaDiretriz = (props) => {
                 collection={redux.empCollection}
                 onSelect={selectProcess}
                 checked={data.checked}
+                
                 />
                 
             </div>
@@ -61,8 +62,7 @@ const SolicitaDiretriz = (props) => {
                         (<div>
                             <fieldset>
                                 <legend style={{ fontSize: '1.3rem' }}>
-                                    {nameParc[0].nomeEmpreendimento}
-                                     - Documentos para solicitação de diretrizes
+                                    {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de diretrizes
                             </legend>
                                 {children}
                             </fieldset>

@@ -6,7 +6,7 @@ const ShowEmpTemplate = (props) => {
 
     return (
         <div>
-           
+
             <Title
                 title='Gerenciar Processos'
                 subtitle=' Acompanhe a situação dos processos utilizando os filtros de busca disponíveis '
@@ -24,7 +24,12 @@ const ShowEmpTemplate = (props) => {
                 </div>
                 <div className="col s9">
                     <form className="input-field" >
-                        <input className="form-control" value={props.search} onChange={props.change} type="search" placeholder="procurar..." aria-label="Search" />
+                        <input className="form-control"
+                            value={props.search}
+                            onChange={props.change}
+                            type="search"
+                            placeholder="procurar..."
+                            aria-label="Search" />
                     </form>
                 </div>
             </div>

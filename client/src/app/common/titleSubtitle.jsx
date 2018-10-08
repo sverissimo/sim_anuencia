@@ -1,12 +1,10 @@
 import React from 'react';
 
-
 const titleSubtitle = (props) => {
-   
-    
+
     let { title, subtitle, color } = props
-    
-      return (
+
+    return (
         <div className="row col s12" >
             <div style={{
                 fontSize: 28,
@@ -15,7 +13,11 @@ const titleSubtitle = (props) => {
             }}>
                 <center>{title}</center>
             </div>
-            <div className="card-panel" style={{ marginBottom: '10px', backgroundColor: color, filter: 'brightness(190%)' }}>
+            <div className="card-panel" style={{
+                marginBottom: '10px',
+                backgroundColor: color,
+                filter: 'brightness(190%)'
+            }}>
                 <b>{subtitle}</b>
             </div>
         </div>

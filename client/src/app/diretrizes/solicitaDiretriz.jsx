@@ -34,7 +34,8 @@ class solicitaDiretriz extends Component {
         selectedId: '',
         checked: null,
         files: [],
-        form: null
+        form: null,
+
     }
 
     componentDidMount() {
@@ -56,9 +57,9 @@ class solicitaDiretriz extends Component {
         this.setState({ ...this.state, searchValue: '', checked: null });
         document.getElementsByName('search')[0].value = '';
         let clearRadio = document.getElementsByName('group1')
-        clearRadio.forEach(radio => radio.checked = false)
-        
-        
+        clearRadio.forEach(radio => {
+            radio.checked = false
+        })
     }
 
     handleSelect(e) {
@@ -68,6 +69,10 @@ class solicitaDiretriz extends Component {
             selectedId: e.target.value.replace(/,/g, ''),
             checked: e.currentTarget.id
         })
+        setTimeout(() => {
+            document.getElementById(this.state.checked).checked = 'checked';
+        }, 20);
+
     }
 
     fileUpload(e) {
@@ -102,7 +107,6 @@ class solicitaDiretriz extends Component {
                     console.log(res.data.file[key][0].originalname)
                 }
             })
-
     }
 
     render() {
@@ -158,3 +162,36 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(solicitaDiretriz);
+
+
+
+        /*  setTimeout(() => {
+  
+              let select = []
+              let element = document.getElementsByName('group1')
+              let elArray = Array.from(element)
+  
+              if (elArray && elArray.length > 1) {
+                  select = elArray.filter(el => el.checked === false)
+  
+                  for (let p in select) {
+  
+                      select[p].parentElement.style.display = 'none'
+                  }
+              }
+  
+               document.getElementsByName('group1').checked !== 'checked' ?
+               document.getElementsByName('group1').parentElement.style.display='none' :
+               document.getElementsByName('group1').parentElement.style.display='' 
+               this.state.checked ? 
+              document.querySelectorAll(`*:not(#${CSS.escape(this.state.checked)})`).parentElement.style.display = 'none' : 
+              void 0 
+          }, 50);
+  */
+
+
+
+        /*     setTimeout(() => {
+    
+                document.querySelectorAll(`div.id:not(#${CSS.escape(this.state.checked)})`).style.display = 'none'
+            }, 60); */

@@ -118,7 +118,7 @@ const CadTemplate = (props) => {
                             {renderFields(props.config.rtForm, props.data.enableRt)}
                         </div>
                     </fieldset>
-                    <BackButton disabled={props.enableEmpInput} enable={props.data.enableRt} icon='arrow_back' />
+                    <BackButton onClick={props.enableEmpInput} disabled={props.data.enableRt} icon='arrow_back' />
                     <ConfirmButton enableInput={props.enableProcessInput} enable={props.data.enableRt} />
                     <fieldset className="input-field"><legend className="input-field"><strong> Dados do Empreendimento </strong></legend>
                         <div className="row" >
@@ -126,7 +126,7 @@ const CadTemplate = (props) => {
                         </div>
                     </fieldset>
                     <div>
-                        <BackButton enableInput={props.enableRtInput} enable={props.data.enableProcess} />
+                        <BackButton onClick={props.enableRtInput} disabled={props.data.enableProcess} icon='arrow_back'/>
                         <input className="btn right" type="submit" disabled={props.data.enableProcess} value="Cadastrar processo" style={{ marginTop: '10px' }} />
                     </div>
                     <br />

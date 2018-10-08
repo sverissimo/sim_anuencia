@@ -167,7 +167,7 @@ class ShowEmpContainer extends Component {
                 </div>
                 <div>
                     {this.state.edit ? <BackButton
-                        enableInput={this.disableEdit}
+                        onClick={this.disableEdit} icon='arrow_back'
                     /> : null}
 
                     <UpdateButton
