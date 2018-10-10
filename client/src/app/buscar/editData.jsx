@@ -24,7 +24,7 @@ const EditData = (props) => {
             if (props.data.select === 'emp' && itemArray.length > 14) filterArray = removeLast(itemArray, 3)
             if (props.data.select === 'rt' && itemArray.length > 5) filterArray = removeLast(itemArray, 3)
             if (props.data.select === 'rt' && itemArray.length === 5) filterArray = removeLast(itemArray, 1)
-            if (props.data.select === 'process') filterArray = removeLast(itemArray, 5)
+            if (props.data.select === 'process') filterArray = removeLast(itemArray.slice(1), 5)
 
             return filterArray.slice(1).map((item, i) =>
 

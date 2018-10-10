@@ -230,6 +230,15 @@ app.put('/api/editProcess/', (req, res) => {
     ).then(result => res.json(result))
 })
 
+app.put('/api/solDirFiles/', (req, res) => {
+    
+    processModel.update(
+        { '_id': req.body.itemId },
+        { $push: { solDirFileIds: req.body.filesArray } }
+
+    ).then(result => res.json(result))
+})
+
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`Running...`)

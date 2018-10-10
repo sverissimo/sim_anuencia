@@ -26,7 +26,6 @@ class solicitaDiretriz extends Component {
                 tooltip: 'Comprovante de pagamento da DAE',
                 nameInput: 'dirDaeFile'
             },
-
         ],
         searchValue: '',
         dataMatch: [],
@@ -35,7 +34,9 @@ class solicitaDiretriz extends Component {
         checked: null,
         files: [],
         form: null,
-
+        dirMunFile: '',
+        levPlanFile: '',
+        dirDaeFile: ''
     }
 
     componentDidMount() {
@@ -80,21 +81,35 @@ class solicitaDiretriz extends Component {
         let formData = new FormData()
 
         this.setState({
-            files: this.state.files.concat({ [e.target.name]: e.target.files[0] })
+            ...this.state, [e.target.name]: e.target.files[0]
         })
-
+        let k = []
+        this.state.config.map(item => k.push(item.nameInput))
 
         setTimeout(() => {
-            this.state.files.length > 0 ?
-                formData.append('dirMunFile', this.state.files[0].dirMunFile) : void 0
-            this.state.files.length > 1 ?
-                formData.append('levPlanFile', this.state.files[1].levPlanFile) : void 0
-            this.state.files.length > 2 ?
-                formData.append('dirDaeFile', this.state.files[2].dirDaeFile) : void 0
+            k.map(inputName => {
+                for (let keys in this.state) {
+                    keys.match(inputName) ?
+                        formData.append(inputName, this.state[keys])
+                        : void 0
+                }
+            })
+
+            /*  this.state.dirMunFile ?
+                 formData.append('dirMunFile', this.state.dirMunFile)
+                 : void 0
+             this.state.levPlanFile ?
+                 formData.append('levPlanFile', this.state.levPlanFile)
+                 : void 0
+             this.state.dirDaeFile ?
+                 formData.append('dirDaeFile', this.state.dirDaeFile)
+                 : void 0 */
+
         }, 100);
 
         setTimeout(() => {
             this.setState({ form: formData })
+            console.log(this.state)
         }, 200);
     }
 
@@ -103,21 +118,34 @@ class solicitaDiretriz extends Component {
             .then(res => {
                 console.log(res.data.file)
                 for (let key in res.data.file) {
-                    console.log(res.data.file[key][0].id)
-                    console.log(res.data.file[key][0].originalname)
+                    let filesArray = [];
+                    filesArray.push(
+                        res.data.file[key][0].fieldname,
+                        res.data.file[key][0].id,
+                        res.data.file[key][0].originalname,
+                        res.data.file[key][0].uploadDate
+                    )
+                    axios.put(('/api/solDirFiles'), {
+                        itemId: this.state.selectedId,
+                        filesArray: {
+                            fieldName: filesArray[0],
+                            id: filesArray[1],
+                            originalName: filesArray[2],
+                            uploadDate: filesArray[3]
+                        }
+                    })
                 }
             })
     }
 
     render() {
 
-
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
-        if (input) {
+        if (input && !this.state.checked) {
             dataMatch = this.props.cadastro.processCollection.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
-        } else if (this.state.checked || this.state.checked && input) {
-            dataMatch = this.props.cadastro.processCollection.filter(el => el._id.toLowerCase().match(this.state.checked))
+        } else if (this.state.checked || (this.state.checked && input)) {
+            dataMatch = this.props.cadastro.processCollection.filter(el => el._id.toLowerCase().match(this.state.selectedId))
         } else {
             dataMatch = this.props.cadastro.processCollection
         }

@@ -6,16 +6,26 @@ import HomeTemplate from './homeTemplate';
 
 class Home extends Component {
 
-  componentWillMount() {
+  state = {
+    setColor: ''
+  }
+  
+  componentDidMount() {
     this.props.loadEmpData();
     this.props.loadRtData();
     this.props.loadProcessData();
+
+    let color = document.getElementById('setcolor').style.backgroundColor
+    this.setState({ setColor: color })
+
   }
 
   render() {
-        return (
+    return (
       <div>
-        <HomeTemplate />
+        <HomeTemplate
+          color={this.state.setColor}
+        />
       </div>
     );
   }
@@ -28,7 +38,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
- return bindActionCreators({ loadEmpData, loadRtData, loadProcessData }, dispatch)
+  return bindActionCreators({ loadEmpData, loadRtData, loadProcessData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

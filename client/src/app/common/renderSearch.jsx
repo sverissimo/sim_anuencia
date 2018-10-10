@@ -25,9 +25,10 @@ const RenderSearch = (props) => {
             }
 
             let i2 = itemArray.slice(1, 6)
+            
 
             return (
-                <div className="row" key={k} style={{ display: '' }}  >
+                <div className="row" key={k} >
                     {
                         i2.map((field, i) => field.key !== '_id' ?
                             <div key={i} className="col s2">

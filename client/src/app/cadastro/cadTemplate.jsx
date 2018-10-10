@@ -1,8 +1,15 @@
 import React from 'react';
 import { ConfirmButton, BackButton } from '../common/buttons'
+import Title from '../common/titleSubtitle'
 
 const CadTemplate = (props) => {
+    const title = () => (
+        <div className="valign-wrapper" >
 
+            <i className="material-icons small teal-text">error_outline</i>
+            Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.
+        </div>
+    )
     const renderFields = (data, enableInput) => {
         let configArray = [];
         for (let keys in data) {
@@ -71,11 +78,12 @@ const CadTemplate = (props) => {
     return (
         <div style={{ marginLeft: 75, marginRight: 75 }} >
             <div className="tab-pane fade show active" id="empreend">
-                <div className="valign-wrapper" >
+                <Title
+                    title='Gerenciar Processos'
+                    subtitle={title()}
+                    color={props.color}
+                />
 
-                    <i className="material-icons small teal-text">error_outline</i>
-                    <strong style={{ marginLeft: 5, fontFamily: 'tahoma' }}>Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.</strong>
-                </div>
                 <form onSubmit={props.handleSubmit}>
                     <fieldset className="input-field"><legend className="input-field"><strong> Interessado </strong></legend>
                         <div className="row">
@@ -126,7 +134,7 @@ const CadTemplate = (props) => {
                         </div>
                     </fieldset>
                     <div>
-                        <BackButton onClick={props.enableRtInput} disabled={props.data.enableProcess} icon='arrow_back'/>
+                        <BackButton onClick={props.enableRtInput} disabled={props.data.enableProcess} icon='arrow_back' />
                         <input className="btn right" type="submit" disabled={props.data.enableProcess} value="Cadastrar processo" style={{ marginTop: '10px' }} />
                     </div>
                     <br />

@@ -78,14 +78,12 @@ class SolicitaAnuencia extends Component {
             setColor:''
         }
 
-
     componentDidMount() {
        
         let color = document.getElementById('setcolor').style.backgroundColor
         this.setState({
             setColor: color
         })
-
 
     }
     render() {

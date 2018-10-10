@@ -3,13 +3,14 @@ import Title from '../common/titleSubtitle'
 import './../css/styles.css';
 
 const ShowEmpTemplate = (props) => {
-
+    
     return (
         <div>
 
             <Title
                 title='Gerenciar Processos'
                 subtitle=' Acompanhe a situação dos processos utilizando os filtros de busca disponíveis '
+                color={props.color}
             />
             <div>
                 <label>Selecione o método de Busca</label>

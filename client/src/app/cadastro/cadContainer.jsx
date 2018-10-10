@@ -36,12 +36,16 @@ class CadastroContainer extends React.Component {
         enableRt: 'disabled',
         enableProcess: 'disabled',
         empMatch: '',
+        setColor: ''
     }
 
     componentDidMount() {
 
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
+        
+        let color = document.getElementById('setcolor').style.backgroundColor
+        this.setState({ setColor: color })
     }
 
     enableRtInput(e) {
@@ -300,6 +304,7 @@ class CadastroContainer extends React.Component {
                     enableRtInput={e => this.enableRtInput(e)}
                     enableProcessInput={e => this.enableProcessInput(e)}
                     enableEmpInput={e => this.enableEmpInput(e)}
+                    color={this.state.setColor}
                 />
             </div>
         )

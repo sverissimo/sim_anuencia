@@ -1,18 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Home = () => {
-
+const HomeTemplate = (props) => {
+let { color } = props
   return (
 
     <div>
       <div className="card-panel" id="jumbotron_home">
         <div className="container">
-          <h1 className="display-3"> <strong> <span style={{ color: 'white' }} >Bem-vindo ao SIM</span> </strong> </h1>
+          <h1 className="display-3"> <strong> 
+            <span style={{ color: 'white' }} >Bem-vindo ao SIM</span> </strong> </h1>
           <h4 style={{ color: 'white' }}>
             Módulo Anuência Prévia (versão beta)
           </h4>
-          <p className="btn btn-primary btn-lg" href="" role="button">Saiba mais &raquo;</p>
+          <p className="btn btn-primary btn-lg" href="" role="button"  style={{ backgroundColor: color }}>Saiba mais &raquo;</p>
         </div>
       </div>
 
@@ -24,7 +25,7 @@ const Home = () => {
 
             <h5><b>Cadastrar Processo</b></h5>
             <p style={{ textAlign: 'justify' }}>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-            <p className="btn" href="" role="button">
+            <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
               <Link to="/cadastro_emp" style={{ color: 'white' }}>Cadastrar Processo</Link>
               &raquo;</p>
           </div>
@@ -35,7 +36,7 @@ const Home = () => {
 
             <h5><b>Solicitar Diretrizes</b></h5>
             <p style={{ textAlign: 'justify' }}>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-            <p className="btn" href="" role="button">
+            <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
               <Link to="/solicitaDiretriz" style={{ color: 'white' }}>Solicitar Diretrizes</Link>
               &raquo;</p>
           </div>
@@ -45,7 +46,7 @@ const Home = () => {
 
             <h5><b>Solicitar Anuência</b></h5>
             <p style={{ textAlign: 'justify' }} >Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-            <p className="btn" href="" role="button">
+            <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
               <Link to="/solicitaAnuencia" style={{ color: 'white' }}>Solicitar Anuência &raquo;</Link></p>
           </div>
           <div className="col s12 m3" align="center">
@@ -56,7 +57,7 @@ const Home = () => {
 
             <h5><b>Buscar Processo</b></h5>
             <p style={{ textAlign: 'justify' }}>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-            <p className="btn" href="" role="button">
+            <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
               <Link to="/showEmpreend" style={{ color: 'white' }}>Buscar Processo &raquo;</Link></p>
           </div>
         </div>
@@ -69,4 +70,4 @@ const Home = () => {
 
 };
 
-export default Home;
+export default HomeTemplate;

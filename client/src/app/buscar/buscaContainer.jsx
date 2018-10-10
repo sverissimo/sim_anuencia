@@ -20,12 +20,16 @@ class ShowEmpContainer extends Component {
         itemId: '',
         item: {},
         nome: '',
+        setColor: ''
     }
 
     componentDidMount() {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
+
+        let color = document.getElementById('setcolor').style.backgroundColor
+        this.setState({ setColor: color })
     }
 
     deleteHandler = (item) => {
@@ -140,6 +144,7 @@ class ShowEmpContainer extends Component {
                     data={this.props.cadastro}
                     onSelect={this.handleSelect}
                     change={e => this.handleSearchBar(e)}
+                    color={this.state.setColor}
                 />
 
                 <table className="highlight" >
