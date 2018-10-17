@@ -85,7 +85,7 @@ const CadTemplate = (props) => {
                 />
 
                 <form onSubmit={props.handleSubmit}>
-                    <fieldset className="input-field"><legend className="input-field"><strong> Interessado </strong></legend>
+                    <fieldset className="input-field"><legend className="input-field"><strong> 1- Interessado </strong></legend>
                         <div className="row">
                             <div className="input-field col s4">
                                 <input
@@ -106,7 +106,7 @@ const CadTemplate = (props) => {
                         </div>
                     </fieldset>
                     <ConfirmButton enableInput={props.enableRtInput} enable={props.data.enableEmp} />
-                    <fieldset className="input-field"><legend className="input-field"><strong> Responsável Técnico </strong></legend>
+                    <fieldset className="input-field"><legend className="input-field"><strong> 2 - Responsável Técnico </strong></legend>
                         <div className="row">
                             <div className="input-field col s4">
                                 <input
@@ -128,7 +128,7 @@ const CadTemplate = (props) => {
                     </fieldset>
                     <BackButton onClick={props.enableEmpInput} disabled={props.data.enableRt} icon='arrow_back' />
                     <ConfirmButton enableInput={props.enableProcessInput} enable={props.data.enableRt} />
-                    <fieldset className="input-field"><legend className="input-field"><strong> Dados do Empreendimento </strong></legend>
+                    <fieldset className="input-field"><legend className="input-field"><strong> 3 - Dados do Empreendimento </strong></legend>
                         <div className="row" >
                             {renderFields(props.config.processForm, props.data.enableProcess)}
                         </div>

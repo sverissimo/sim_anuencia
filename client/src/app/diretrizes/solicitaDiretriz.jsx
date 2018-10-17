@@ -43,6 +43,11 @@ class solicitaDiretriz extends Component {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
 
+        /* setTimeout(() => {
+            console.log(Object.entries(this.props.cadastro.processCollection[0]).splice(2, 4));
+            console.log(Object.entries(this.props.cadastro.processCollection[0])[11])
+        }, 200); */
+
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
     }

@@ -1,9 +1,14 @@
-import React from 'react';
+ import React from 'react';
 
 const renderSearchHeader = (labels, color, indexSelect) => {
 
     let select = []
-    labels && labels[0] ? indexSelect.map(i => select.push(labels[i].lable)) : void 0
+    labels && labels[0] ? indexSelect.map(i =>
+        select.push({
+            label: labels[i].lable,
+            div: labels[i].div
+        }))
+        : void 0
     let divSelect = []
     labels && labels[0] ? indexSelect.map(i => divSelect.push(labels[i].div)) : void 0
 
@@ -16,12 +21,12 @@ const renderSearchHeader = (labels, color, indexSelect) => {
                 backgroundColor: color,
                 filter: 'brightness(190%)'
             }}>
-            {select.map((label, i) =>
-                <div className={divSelect[i]} key={i}> {label} </div>
+            {select.map((el, i) =>
+                <div className={el.div} key={i}> {el.label} </div>
             )}
 
         </div>
     );
 };
 
-export default renderSearchHeader;
+export default renderSearchHeader; 

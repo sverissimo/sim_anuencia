@@ -1,37 +1,63 @@
 export const configLabels = [
+
     {
-        name: 'index',
-        lable: 'Index',
-        div: 'col s1'
+        name: 'solDirFileIds',
+        label: ['dirMun, levPl, daeDir', ],
+        div: 'col s3'
+    },
+    {
+        name: '_id',
+        label: 'ID',
+        div: 'col s3'
     },
     {
         name: 'nomeEmpreendimento',
-        lable: 'Nome do empreendimento',
+        label: 'Nome do empreendimento',
         div: 'col s2'
     },
     {
         name: 'area',
-        lable: 'Área (m²)',
-        div: 'col s2'
+        label: 'Área (m²)',
+        div: 'col s1'
     },
     {
         name: 'modalidade',
-        lable: 'Modalidade',
-        div: 'col s2'
+        label: 'Modalidade',
+        div: 'col s1'
     },
     {
         name: 'munEmpreendimento',
-        lable: 'Município',
+        label: 'Município',
+        div: 'col s1'
+    },
+    {
+        name: 'empId',
+        label: 'EmpId',
         div: 'col s2'
     },
     {
-        name: 'nomeEmp',
-        lable: 'Nome do Empreendedor',
+        name: 'rtId',
+        label: 'rtId',
         div: 'col s2'
+    },
+    {
+        name: 'createdAt',
+        label: 'Data de Criação',
+        div: 'col s1'
+    },
+    {
+        name: 'updatedAt',
+        label: 'Atualizado em',
+        div: 'col s1'
+    },
+    {
+        name: '__v',
+        label: 'version',
+        div: 'col s1'
     },
     {
         name: 'status',
-        lable: 'Status do processo',
+        label: 'Status do processo',
         div: 'col s3'
     },
 ]

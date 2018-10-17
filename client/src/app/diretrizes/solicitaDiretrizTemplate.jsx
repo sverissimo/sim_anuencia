@@ -1,8 +1,6 @@
 import React from 'react';
 import RenderSearch from '../common/renderSearch';
-import renderSearchHeader from '../common/renderSearchHeader';
 import Title from '../common/titleSubtitle';
-import { configLabels } from '../common/configLabels'
 import {BackButton} from '../common/buttons'
 
 const SolicitaDiretriz = (props) => {
@@ -34,14 +32,17 @@ const SolicitaDiretriz = (props) => {
                     <i className="material-icons">search</i>
                 </div>
             </div>
-            <div className='z-depth-1' style={{width: '100%', padding: '0px 10px 1px '}}>
-                {searchArray.length > 0 ? renderSearchHeader(configLabels, setColor, [0,1,2,3,4]) : void 0}
+            <div className='z-depth-4' style={{width: '100%', padding: '0px 10px 1px'}}>
+                
                 <RenderSearch
                 search={searchArray}
                 collection={redux.empCollection}
                 onSelect={selectProcess}
                 checked={data.checked}
-                
+                color={setColor}
+                fields={[1,2,3,4,5,8,11]}
+                showEmp={true}
+                showRt={false}
                 />
                 
             </div>
@@ -53,7 +54,6 @@ const SolicitaDiretriz = (props) => {
                     onClick={props.clear}
                     />
                 </div>
-
             </div>
 
             <div>
@@ -65,7 +65,6 @@ const SolicitaDiretriz = (props) => {
                                     {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de diretrizes
                             </legend>
                                 {children}
-                            
                             </fieldset>
                             <button
                                 className="btn teal darken-3 right"
@@ -77,7 +76,6 @@ const SolicitaDiretriz = (props) => {
                 }
             </div>
         </div>
-
     );
 };
 

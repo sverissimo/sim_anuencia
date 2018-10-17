@@ -1,64 +1,127 @@
 import React from 'react';
-import divConfig from '../common/divConfig'
+import { configLabels } from '../common/configLabels';
+
+const fieldMatch = (fieldName, spec) => {
+
+    let matches = configLabels.filter(el => el.name === fieldName)
+
+    switch (spec) {
+        case 'div':
+            return matches[0].div
+        case 'label':
+            return matches[0].label
+        default:
+            return null
+    }
+};
 
 const RenderSearch = (props) => {
-    let { search, collection, onSelect, checked } = props
-    if (search && search.length > 0) {
+    let { search, collection, onSelect, checked, fields, color, showEmp, showRt } = props
 
 
-        return search.map((item, k) => {
+    //****************** HEADER *********************
 
-            let empName
-            let itemArray = []
-            let empreend = collection.filter(emp => emp._id.match(item.empId))
+    let fieldsConfig = []
+    fields.map(i => fieldsConfig.push({
+        name: configLabels[i].name,
+        label: configLabels[i].label,
+        div: configLabels[i].div
+    }))
 
-            for (let keys in empreend) {
-                empName = {
-                    key: keys,
-                    values: empreend[keys]
+    return (
+        <div>
+            <div className="row valign-wrapper"
+                style={{
+                    fontSize: 16,
+                    fontFamily: 'arial',
+                    fontWeight: 'bold',
+                    backgroundColor: color,
+                    filter: 'brightness(190%)',
+                    padding: '5px 0px',
+                }}>
+
+                {
+                    fieldsConfig.map((field, i) =>
+                        field.name !== '_id' ?
+                            <div className={field.div} key={i}> {field.label} </div> : void 0
+                    )
                 }
-            }
-            for (let keys in item) {
-                itemArray.push({
-                    key: keys,
-                    values: item[keys]
-                })
-            }
+                {
+                    showEmp ?
+                        <div className="col s2">
+                            Empreendedor
+                    </div> : void 0
+                }
+                <div className="col s1 right">
+                    Selecionar
+                     </div>
+            </div>
 
-            let i2 = itemArray.slice(1, 6)
+            {/* ***************** BODY / ROWS ***************** */}
+            {
 
-            
-            return (
-                <div className="row" key={k} >
-                    {
-                        i2.map((field, i) => field.key !== '_id' ?
-                        
-                            <div key={i} className={divConfig(field.key)}>
-                                {field.values}
-                            </div> : void 0)
+                search.map((item, k) => {
+
+                    let empName
+                    let itemArray = []
+                    let empreend = collection.filter(emp => emp._id.match(item.empId))
+
+                    for (let keys in empreend) {
+                        empName = {
+                            key: keys,
+                            values: empreend[keys]
+                        }
                     }
-                    {
-                        empName ?
-                            <div className="col s2">
-                                {empName.values.nome}
-                            </div> : <div className="col s2"> </div>
+                    for (let keys in item) {
+                        itemArray.push({
+                            key: keys,
+                            values: item[keys]
+                        })
                     }
-                    <input id={item._id}
-                        type="radio"
-                        name="group1"
-                        onClick={onSelect}
-                        value={i2.map(field => field.key === '_id' ? `${field.values}` : void 0)}
-                        defaultChecked={checked === this.id}
-                    />
-                    <label htmlFor={item._id}>Selecionar</label>
-                </div>
-            )
-        }
-        )
 
-    } else {
-        return null
+                    let i2 = []
+                    fields.map(i => i2.push(itemArray[i]))
+
+                    return (
+                        <div className="row" key={k} >
+                            {
+                                i2.map((field, i) =>
+                                    field.key !== '_id' ?
+                                        field.key === 'updatedAt' || field.key === 'createdAt' ?
+                                            <div key={i} className={fieldMatch(field.key, 'div')}>
+                                                {new Date(field.values).getDate()}/{new Date(field.values).getMonth() + 1}/{new Date(field.values).getFullYear()}
+                                            </div> :
+                                            <div key={i} className={fieldMatch(field.key, 'div')}>
+                                                {field.values}
+                                            </div>
+                                        : void 0
+                                )
+                            }
+                            {
+                                (empName && showEmp) ?
+                                    <div className="col s2">
+                                        {empName.values.nome}
+                                    </div> :
+                                        (!empName && showEmp) ?
+                                        < div className="col s2"> </div> : void 0
     }
+                            <div className="col s1 center">
+                <input id={item._id}
+                    type="radio"
+                    name="group1"
+                    onClick={onSelect}
+                    value={i2.map(field => field.key === '_id' ? `${field.values}` : void 0)}
+                    defaultChecked={checked === this.id}
+                />
+                <label htmlFor={item._id}> </label>
+            </div>
+        </div>
+    )
+}
+                )
+            }
+        </div >
+    )
 };
 
 export default RenderSearch;
