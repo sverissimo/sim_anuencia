@@ -31,7 +31,7 @@ app.use(function (req, res, next) { //allow cross origin requests
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', err => {
+mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', { useNewUrlParser: true }, (err) => {
     if (err) {
         console.log(err);
     }
@@ -44,9 +44,8 @@ app.use(methodOverride('_method'));
 const mongoURI = 'mongodb://localhost:27017/sim_anuencia_db';
 
 // Create mongo connection
-const conn = mongoose.createConnection(mongoURI);
+const conn = mongoose.createConnection(mongoURI, { useNewUrlParser: true });
 
-// Init gfs
 let gfs;
 
 conn.once('open', () => {
@@ -88,16 +87,13 @@ app.post('/api/upload', upload.fields([
     }, {
         name: "dirDaeFile", maxCount: 1
     }]
-), (req, res) => {
+        ),
+    (req, res) => {
 
-    res.json({
-        file: req.files,
+        res.json({
+            file: req.files,
+        });
     });
-});
-
-
-
-
 
 
 
@@ -208,7 +204,7 @@ app.delete('/api/deleteProcess/:id', function (req, res) {
 
 app.put('/api/editEmp/', (req, res) => {
 
-    empreendedor.update(
+    empreendedor.updateOne(
         { '_id': req.body.item._id },
         { $set: req.body.item }
     ).then(result => res.json(result))
@@ -216,7 +212,7 @@ app.put('/api/editEmp/', (req, res) => {
 
 app.put('/api/editRt/', (req, res) => {
 
-    CadastroRt.update(
+    CadastroRt.updateOne(
         { '_id': req.body.item._id },
         { $set: req.body.item }
     ).then(result => res.json(result))
@@ -224,17 +220,20 @@ app.put('/api/editRt/', (req, res) => {
 
 app.put('/api/editProcess/', (req, res) => {
 
-    processModel.update(
+    processModel.updateOne(
         { '_id': req.body.item._id },
         { $set: req.body.item }
     ).then(result => res.json(result))
 })
 
 app.put('/api/solDirFiles/', (req, res) => {
-    
-    processModel.update(
+
+    processModel.updateOne(
         { '_id': req.body.itemId },
-        { $push: { solDirFileIds: req.body.filesArray } }
+        {
+            $push: { solDirFileIds: req.body.filesArray },
+            $set: { status: req.body.status }
+        },
 
     ).then(result => res.json(result))
 })

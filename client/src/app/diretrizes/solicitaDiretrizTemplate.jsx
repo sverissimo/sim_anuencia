@@ -34,8 +34,8 @@ const SolicitaDiretriz = (props) => {
                     <i className="material-icons">search</i>
                 </div>
             </div>
-            <div>
-                {searchArray.length > 0 ? renderSearchHeader(configLabels) : void 0}
+            <div className='z-depth-1' style={{width: '100%', padding: '0px 10px 1px '}}>
+                {searchArray.length > 0 ? renderSearchHeader(configLabels, setColor, [0,1,2,3,4]) : void 0}
                 <RenderSearch
                 search={searchArray}
                 collection={redux.empCollection}
@@ -45,7 +45,7 @@ const SolicitaDiretriz = (props) => {
                 />
                 
             </div>
-            <div className="row">
+            <div className="row" style={{ marginTop: '15px' }}>
                 <div className="col s1 right">
                     <BackButton
                     disabled={data.checked === null}
@@ -65,9 +65,11 @@ const SolicitaDiretriz = (props) => {
                                     {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de diretrizes
                             </legend>
                                 {children}
+                            
                             </fieldset>
                             <button
                                 className="btn teal darken-3 right"
+                                style={{ marginBottom: '20px' }}
                                 onClick = {submitFiles}  
                             >Solicitar Diretrizes</button>
                         </div>)

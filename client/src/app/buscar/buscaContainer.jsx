@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions';
 import { deleteEmp, deleteRt, deleteProcess, handleEdit, disableEdit, changeHandler } from './buscaActions';
 import { BackButton, UpdateButton } from './../common/buttons';
+import { configLabels } from './../common/configLabels';
+import renderSearchHeader from './../common/renderSearchHeader';
 
 import EditData from './editData';
 import ShowEmpTemplate from './buscaTemplate';
@@ -127,13 +129,30 @@ class ShowEmpContainer extends Component {
         if (this.state.search && this.state.select === 'emp') {
             emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString))
         }
+
         if (this.state.search && this.state.select === 'rt') {
             rts = this.props.cadastro.rtCollection.filter((el) => el.nomeRt.toLowerCase().match(searchString))
+        } else if (!this.state.search && this.state.select === 'rt') {
+            rts = this.props.cadastro.rtCollection.slice(0, 500)
         }
 
-        searchString = this.state.search.trim().toLowerCase();
         if (this.state.search && this.state.select === 'process') {
             process = this.props.cadastro.processCollection.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString))
+        } else if (!this.state.search && this.state.select === 'process') {
+            process = this.props.cadastro.processCollection
+            process.sort(function (a, b) {
+                
+                let ca = new Date(a.createdAt)
+                let cb = new Date(b.createdAt)
+                if (ca && cb) {
+
+                    if (cb.getTime() > ca.getTime()) {
+                        return 1
+                    } else if (ca.getTime() > cb.getTime()) {
+                        return -1
+                    } else return 0
+                }
+            })
         }
 
         return (
@@ -146,21 +165,20 @@ class ShowEmpContainer extends Component {
                     change={e => this.handleSearchBar(e)}
                     color={this.state.setColor}
                 />
+                {renderSearchHeader(configLabels, this.state.setColor, [0, 1, 3, 4, 6])}
+                <div className="row">
+                    <ShowEmpRow
+                        data={this.state}
+                        redux={this.props.cadastro}
+                        emps={emps}
+                        rts={rts}
+                        process={process}
+                        edit={this.enableEdit.bind(this)}
+                        delete={this.deleteHandler.bind(this)}
+                        i={i = i + 1}
+                    />
 
-                <table className="highlight" >
-                    <tbody>
-                        <ShowEmpRow
-                            data={this.state}
-                            redux={this.props.cadastro}
-                            emps={emps}
-                            rts={rts}
-                            process={process}
-                            edit={this.enableEdit.bind(this)}
-                            delete={this.deleteHandler.bind(this)}
-                            i={i = i + 1}
-                        />
-                    </tbody>
-                </table>
+                </div>
 
                 <div className="row">
                     <EditData

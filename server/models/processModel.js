@@ -26,11 +26,12 @@ const processSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    solDirFileIds : [],
     status: {
         type: String,
         trim: true
-    }
+    },
+    solDirFileIds : [],
+  
 
 }, { timestamps: true });
 

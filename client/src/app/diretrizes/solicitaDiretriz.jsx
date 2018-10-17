@@ -94,22 +94,10 @@ class solicitaDiretriz extends Component {
                         : void 0
                 }
             })
-
-            /*  this.state.dirMunFile ?
-                 formData.append('dirMunFile', this.state.dirMunFile)
-                 : void 0
-             this.state.levPlanFile ?
-                 formData.append('levPlanFile', this.state.levPlanFile)
-                 : void 0
-             this.state.dirDaeFile ?
-                 formData.append('dirDaeFile', this.state.dirDaeFile)
-                 : void 0 */
-
         }, 100);
 
         setTimeout(() => {
             this.setState({ form: formData })
-            console.log(this.state)
         }, 200);
     }
 
@@ -132,7 +120,8 @@ class solicitaDiretriz extends Component {
                             id: filesArray[1],
                             originalName: filesArray[2],
                             uploadDate: filesArray[3]
-                        }
+                        },
+                        status: 'Aguardando emissão de Diretrizes Metropolitanas'
                     })
                 }
             })
@@ -190,36 +179,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(solicitaDiretriz);
-
-
-
-        /*  setTimeout(() => {
-  
-              let select = []
-              let element = document.getElementsByName('group1')
-              let elArray = Array.from(element)
-  
-              if (elArray && elArray.length > 1) {
-                  select = elArray.filter(el => el.checked === false)
-  
-                  for (let p in select) {
-  
-                      select[p].parentElement.style.display = 'none'
-                  }
-              }
-  
-               document.getElementsByName('group1').checked !== 'checked' ?
-               document.getElementsByName('group1').parentElement.style.display='none' :
-               document.getElementsByName('group1').parentElement.style.display='' 
-               this.state.checked ? 
-              document.querySelectorAll(`*:not(#${CSS.escape(this.state.checked)})`).parentElement.style.display = 'none' : 
-              void 0 
-          }, 50);
-  */
-
-
-
-        /*     setTimeout(() => {
-    
-                document.querySelectorAll(`div.id:not(#${CSS.escape(this.state.checked)})`).style.display = 'none'
-            }, 60); */

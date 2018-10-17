@@ -6,6 +6,7 @@ export const ConfirmButton = (props) => {
         <div className="row">
             <div>
                 <button className="btn-flat waves-effect btn-floating right teal"
+                    
                     disabled={props.enable}
                     title="Avançar"
                     onClick={props.enableInput}>
@@ -18,13 +19,13 @@ export const ConfirmButton = (props) => {
 };
 
 export const BackButton = (props) => {
-    
+
     return (
         <div className="input" >
             <button className="btn-flat waves-effect btn-floating left red darken-3"
                 disabled={props.disabled}
                 title="Voltar"
-                onClick={()=>props.onClick()}>
+                onClick={() => props.onClick()}>
                 <i className="material-icons">{props.icon}</i>
             </button>
         </div>
