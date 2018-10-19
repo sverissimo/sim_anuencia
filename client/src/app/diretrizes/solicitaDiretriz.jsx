@@ -3,30 +3,17 @@ import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadProcessData, setColor } from './../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, setColor } from './../cadastro/cadActions'
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
+import { solDirConfig } from '../common/configLabels'
+import ShowDetails from '../common/showDetails'
 
 class solicitaDiretriz extends Component {
+
+
     state = {
-        config: [
-            {
-                label: 'Diretrizes Municipais',
-                tooltip: 'Diretrizes emitidas pela Prefeitura Municipal',
-                nameInput: 'dirMunFile'
-            },
-            {
-                label: 'Levantamento Planialtimétrico',
-                tooltip: 'Planta baixa contendo o levantamento planialtimétrico. Ver requisitos abaixo',
-                nameInput: 'levPlanFile'
-            },
-            {
-                label: 'Comprovante de pagamento da DAE',
-                tooltip: 'Comprovante de pagamento da DAE',
-                nameInput: 'dirDaeFile'
-            },
-        ],
         searchValue: '',
         dataMatch: [],
         toggleUpload: false,
@@ -36,17 +23,17 @@ class solicitaDiretriz extends Component {
         form: null,
         dirMunFile: '',
         levPlanFile: '',
-        dirDaeFile: ''
+        dirDaeFile: '',
+        showEmpDetails: false,
+        showRtDetails: false,
+        empId: '',
+        rtId: ''
     }
 
     componentDidMount() {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-
-        /* setTimeout(() => {
-            console.log(Object.entries(this.props.cadastro.processCollection[0]).splice(2, 4));
-            console.log(Object.entries(this.props.cadastro.processCollection[0])[11])
-        }, 200); */
+        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
@@ -89,7 +76,7 @@ class solicitaDiretriz extends Component {
             ...this.state, [e.target.name]: e.target.files[0]
         })
         let k = []
-        this.state.config.map(item => k.push(item.nameInput))
+        solDirConfig.map(item => k.push(item.nameInput))
 
         setTimeout(() => {
             k.map(inputName => {
@@ -109,7 +96,7 @@ class solicitaDiretriz extends Component {
     handleSubmit(e) {
         axios.post('/api/upload', this.state.form)
             .then(res => {
-                console.log(res.data.file)
+
                 for (let key in res.data.file) {
                     let filesArray = [];
                     filesArray.push(
@@ -126,10 +113,21 @@ class solicitaDiretriz extends Component {
                             originalName: filesArray[2],
                             uploadDate: filesArray[3]
                         },
-                        status: 'Aguardando emissão de Diretrizes Metropolitanas'
+                        status: 'Aguardando Diretrizes Metropolitanas'
                     })
                 }
             })
+    }
+
+    empDetails(e) {
+        this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
+    }
+    rtDetails(e) {
+        this.setState({ showEmpDetails: false, showRtDetails: true, rtId: e.target.id })
+    }
+
+    closeDetails() {
+        this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId:'' })
     }
 
     render() {
@@ -155,9 +153,11 @@ class solicitaDiretriz extends Component {
                     submitFiles={this.handleSubmit.bind(this)}
                     setColor={this.props.cadastro.setColor}
                     clear={this.clearSearch.bind(this)}
+                    empDetails={this.empDetails.bind(this)}
+                    rtDetails={this.rtDetails.bind(this)}
                 >
                     {
-                        this.state.config.map((item, i) => {
+                        solDirConfig.map((item, i) => {
                             return (
                                 <SolicitaDiretrizRow
                                     object={item}
@@ -168,6 +168,16 @@ class solicitaDiretriz extends Component {
                         })
                     }
                 </SolicitaDiretrizTemplate>
+
+                <ShowDetails
+                    empId={this.state.empId}
+                    rtId={this.state.rtId}
+                    showEmp={this.state.showEmpDetails}
+                    showRt={this.state.showRtDetails}
+                    close={this.closeDetails.bind(this)}
+                    empCollection={this.props.cadastro.empCollection}
+                    rtCollection={this.props.cadastro.rtCollection}
+                />
             </div>
         );
     }
@@ -180,7 +190,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadProcessData, setColor }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, setColor }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(solicitaDiretriz);

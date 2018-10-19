@@ -1,22 +1,10 @@
 import React from 'react';
-import { configLabels } from '../common/configLabels';
-
-const fieldMatch = (fieldName, spec) => {
-
-    let matches = configLabels.filter(el => el.name === fieldName)
-
-    switch (spec) {
-        case 'div':
-            return matches[0].div
-        case 'label':
-            return matches[0].label
-        default:
-            return null
-    }
-};
+import { configLabels, configEmpLabels, configRtLabels } from '../common/configLabels';
+import fieldConfig from './fieldConfig'
 
 const RenderSearch = (props) => {
-    let { search, collection, onSelect, checked, fields, color, showEmp, showRt } = props
+    let { search, collection, rtCollection, onSelect, checked, fields, color, renderEmp,
+        renderRt, empDetails, rtDetails } = props
 
 
     //****************** HEADER *********************
@@ -30,7 +18,7 @@ const RenderSearch = (props) => {
 
     return (
         <div>
-            <div className="row valign-wrapper"
+            <div className="row "
                 style={{
                     fontSize: 16,
                     fontFamily: 'arial',
@@ -47,9 +35,15 @@ const RenderSearch = (props) => {
                     )
                 }
                 {
-                    showEmp ?
-                        <div className="col s2">
-                            Empreendedor
+                    renderEmp ?
+                        <div className={configEmpLabels[1].div}>
+                            Interessado
+                    </div> : void 0
+                }
+                {
+                    renderRt ?
+                        <div className={configRtLabels[1].div}>
+                            RT
                     </div> : void 0
                 }
                 <div className="col s1 right">
@@ -63,6 +57,7 @@ const RenderSearch = (props) => {
                 search.map((item, k) => {
 
                     let empName
+                    let rtName
                     let itemArray = []
                     let empreend = collection.filter(emp => emp._id.match(item.empId))
 
@@ -72,6 +67,15 @@ const RenderSearch = (props) => {
                             values: empreend[keys]
                         }
                     }
+
+                    rtName = rtCollection.filter(rt => rt._id.match(item.rtId))
+                    for (let keys in rtName) {
+                        rtName = {
+                            key: keys,
+                            values: rtName[keys]
+                        }
+                    }
+
                     for (let keys in item) {
                         itemArray.push({
                             key: keys,
@@ -88,37 +92,44 @@ const RenderSearch = (props) => {
                                 i2.map((field, i) =>
                                     field.key !== '_id' ?
                                         field.key === 'updatedAt' || field.key === 'createdAt' ?
-                                            <div key={i} className={fieldMatch(field.key, 'div')}>
+                                            <div key={i} className={fieldConfig(field.key, 'div')}>
                                                 {new Date(field.values).getDate()}/{new Date(field.values).getMonth() + 1}/{new Date(field.values).getFullYear()}
                                             </div> :
-                                            <div key={i} className={fieldMatch(field.key, 'div')}>
+                                            <div key={i} className={fieldConfig(field.key, 'div')}>
                                                 {field.values}
                                             </div>
                                         : void 0
                                 )
                             }
                             {
-                                (empName && showEmp) ?
-                                    <div className="col s2">
+                                (empName && renderEmp) ?
+                                    <div id={empName.values._id} className={fieldConfig(Object.keys(empName.values)[1], 'div')} style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={empDetails}>
                                         {empName.values.nome}
                                     </div> :
-                                        (!empName && showEmp) ?
-                                        < div className="col s2"> </div> : void 0
-    }
+                                    (!empName && renderEmp) ?
+                                        < div className={configEmpLabels[1].div}  > </div> : void 0
+                            }
+                            {
+                                (rtName && renderRt) ?
+                                    <div id={rtName.values._id} className={configRtLabels[1].div} style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={rtDetails}>
+                                        {rtName.values.nomeRt}
+                                    </div> :
+                                    (!rtName && renderRt) ?
+                                        <div className={configRtLabels[1].div}> </div> : void 0
+                            }
                             <div className="col s1 center">
-                <input id={item._id}
-                    type="radio"
-                    name="group1"
-                    onClick={onSelect}
-                    value={i2.map(field => field.key === '_id' ? `${field.values}` : void 0)}
-                    defaultChecked={checked === this.id}
-                />
-                <label htmlFor={item._id}> </label>
-            </div>
-        </div>
-    )
-}
-                )
+                                <input id={item._id}
+                                    type="radio"
+                                    name="group1"
+                                    onClick={onSelect}
+                                    value={i2.map(field => field.key === '_id' ? `${field.values}` : void 0)}
+                                    defaultChecked={checked === this.id}
+                                />
+                                <label htmlFor={item._id}> </label>
+                            </div>
+                        </div>
+                    )
+                })
             }
         </div >
     )

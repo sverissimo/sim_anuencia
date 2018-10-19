@@ -128,12 +128,14 @@ class ShowEmpContainer extends Component {
 
         if (this.state.search && this.state.select === 'emp') {
             emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString))
+        }  else if (!this.state.search && this.state.select === 'emp') {
+            rts = this.props.cadastro.empCollection.slice(0, 50)
         }
 
         if (this.state.search && this.state.select === 'rt') {
             rts = this.props.cadastro.rtCollection.filter((el) => el.nomeRt.toLowerCase().match(searchString))
         } else if (!this.state.search && this.state.select === 'rt') {
-            rts = this.props.cadastro.rtCollection.slice(0, 500)
+            rts = this.props.cadastro.rtCollection.slice(0, 300)
         }
 
         if (this.state.search && this.state.select === 'process') {

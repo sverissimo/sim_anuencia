@@ -5,7 +5,8 @@ import {BackButton} from '../common/buttons'
 
 const SolicitaDiretriz = (props) => {
 
-    let {setColor, search, searchArray, selectProcess, submitFiles, data, redux, children} = props
+    let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
+        children, empDetails, rtDetails} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
@@ -37,12 +38,15 @@ const SolicitaDiretriz = (props) => {
                 <RenderSearch
                 search={searchArray}
                 collection={redux.empCollection}
+                rtCollection={redux.rtCollection}
                 onSelect={selectProcess}
                 checked={data.checked}
                 color={setColor}
                 fields={[1,2,3,4,5,8,11]}
-                showEmp={true}
-                showRt={false}
+                renderEmp={true}
+                renderRt={true}
+                empDetails={empDetails}
+                rtDetails={rtDetails}
                 />
                 
             </div>

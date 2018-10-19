@@ -27,13 +27,9 @@ const ShowEmpRow = (props) => {
         props.data.select === 'process' ? (s = 2, filteredArray.splice(6, 5), filteredArray.splice(3, 1)) : void 0
         
         return filteredArray.slice(s).map((item, w) =>
-            item.length < 40 ?
+           
                 <div className="col s2" key={w} style={{ wordWrap: 'break-word' }} >{item}</div>
-                :
-                item.length > 40 ?
-                    <div className="col s3" key={w} style={{ wordWrap: 'break-word' }} >{item}</div>
-                    :
-                    void 0
+           
         )
     }
 
