@@ -10,7 +10,7 @@ const ShowDetails = (props) => {
     showEmp && empCollection ? (persona = empCollection.filter(emp => emp._id.match(empId)), personaDetails = Object.entries(persona[0]).splice(2, 9)) : void 0
     showRt && rtCollection ? (persona = rtCollection.filter(rt => rt._id.match(rtId)), personaDetails = Object.entries(persona[0]).splice(2, 2)) : void 0
 
-    if (  persona !== '' && (showEmp || showRt)) {
+    if (persona !== '' && (showEmp || showRt)) {
 
         return (
             <div className='card'
@@ -18,8 +18,8 @@ const ShowDetails = (props) => {
                     position: 'fixed',
                     top: '30%',
                     right: '33%',
-                    width: '40%',
-                    height: '40%',
+                    width: '35%',
+                    height: '20%',
                     border: '3px solid #000000',
                     backgroundColor: 'white'
 
@@ -37,10 +37,15 @@ const ShowDetails = (props) => {
                         )
                     }
                 </div>
-                <div className='right' >
+                <div style={{
+                    position: 'absolute',
+                    bottom: '0%',
+                    right: '0%'
+                }}>
                     <BackButton
                         onClick={close}
                         icon='close'
+                        size='btn-tiny'
                     />
                 </div>
             </div >

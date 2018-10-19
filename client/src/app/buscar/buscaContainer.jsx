@@ -128,7 +128,7 @@ class ShowEmpContainer extends Component {
 
         if (this.state.search && this.state.select === 'emp') {
             emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString))
-        }  else if (!this.state.search && this.state.select === 'emp') {
+        } else if (!this.state.search && this.state.select === 'emp') {
             rts = this.props.cadastro.empCollection.slice(0, 50)
         }
 
@@ -143,7 +143,7 @@ class ShowEmpContainer extends Component {
         } else if (!this.state.search && this.state.select === 'process') {
             process = this.props.cadastro.processCollection
             process.sort(function (a, b) {
-                
+
                 let ca = new Date(a.createdAt)
                 let cb = new Date(b.createdAt)
                 if (ca && cb) {

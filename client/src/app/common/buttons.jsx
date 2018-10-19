@@ -22,7 +22,7 @@ export const BackButton = (props) => {
 
     return (
         <div className="input" >
-            <button className="btn-flat waves-effect btn-floating left red darken-3"
+            <button className= {`btn-flat waves-effect btn-floating left red darken-3 ${props.size}`}
                 disabled={props.disabled}
                 title="Voltar"
                 onClick={() => props.onClick()}>
@@ -47,7 +47,7 @@ export const EditButton = (props) => {
 
     return (
         <div>
-            <button className="btn-flat waves-effect btn-floating blue red darken-3"
+            <button className={"btn-flat waves-effect btn-floating blue red darken-3"}
                 onClick={() => props.handleEdit(props.id)}>
                 <i className="material-icons">edit</i>
             </button>
