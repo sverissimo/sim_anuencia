@@ -8,6 +8,7 @@ import { BackButton, UpdateButton } from './../common/buttons';
 import { configLabels } from './../common/configLabels';
 import renderSearchHeader from './../common/renderSearchHeader';
 
+import ShowDetails from '../common/showDetails'
 import EditData from './editData';
 import ShowEmpTemplate from './buscaTemplate';
 import ShowEmpRow from './buscaRow';
@@ -22,7 +23,11 @@ class ShowEmpContainer extends Component {
         itemId: '',
         item: {},
         nome: '',
-        setColor: ''
+        setColor: '',
+        showEmpDetails: false,
+        showRtDetails: false,
+        empId: '',
+        rtId: ''
     }
 
     componentDidMount() {
@@ -71,6 +76,8 @@ class ShowEmpContainer extends Component {
             itemObj = Object.assign({}, item)
         }
 
+
+
         if (this.state.select === 'rt') {
             item = this.props.cadastro.rtCollection.filter(el => el._id.match(itemId))
             itemObj = Object.assign({}, item)
@@ -118,6 +125,18 @@ class ShowEmpContainer extends Component {
         }
     }
 
+    empDetails(e) {
+        this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
+    }
+    rtDetails(e) {
+        this.setState({ showEmpDetails: false, showRtDetails: true, rtId: e.target.id })
+    }
+
+    closeDetails() {
+        this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
+    }
+
+
     render() {
 
         let i = 0
@@ -129,7 +148,7 @@ class ShowEmpContainer extends Component {
         if (this.state.search && this.state.select === 'emp') {
             emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString))
         } else if (!this.state.search && this.state.select === 'emp') {
-            rts = this.props.cadastro.empCollection.slice(0, 50)
+            emps = this.props.cadastro.empCollection.slice(0, 50)
         }
 
         if (this.state.search && this.state.select === 'rt') {
@@ -158,7 +177,7 @@ class ShowEmpContainer extends Component {
         }
 
         return (
-            <div className="container" >
+            <div className="container " >
                 <ShowEmpTemplate
                     search={this.state.search}
                     select={this.state.select}
@@ -167,29 +186,34 @@ class ShowEmpContainer extends Component {
                     change={e => this.handleSearchBar(e)}
                     color={this.state.setColor}
                 />
-                {renderSearchHeader(configLabels, this.state.setColor, [0, 1, 3, 4, 6])}
-                <div className="row">
+                
+               
                     <ShowEmpRow
                         data={this.state}
                         redux={this.props.cadastro}
                         emps={emps}
                         rts={rts}
                         process={process}
+                        empFields={[1, 3, 6, 7, 8]}
+                        rtFields={[1, 2, 3]}
+                        fields={[1, 2, 3, 4, 8, 11]}
                         edit={this.enableEdit.bind(this)}
                         delete={this.deleteHandler.bind(this)}
-                        i={i = i + 1}
+                        color={this.state.setColor}
+                        empDetails={this.empDetails.bind(this)}
+                        rtDetails={this.rtDetails.bind(this)}
                     />
 
-                </div>
+               
 
-                <div className="row">
+            
                     <EditData
                         redux={this.props.cadastro}
                         data={this.state}
                         disableEdit={this.disableEdit.bind(this)}
                         change={e => this.editValue(e)}
                         submit={e => this.saveEdit(e)} />
-                </div>
+            
                 <div>
                     {this.state.edit ? <BackButton
                         onClick={this.disableEdit} icon='arrow_back'
@@ -198,6 +222,15 @@ class ShowEmpContainer extends Component {
                     <UpdateButton
                         form={`${this.state.select}`}
                         display={this.state.edit}
+                    />
+                    <ShowDetails
+                        empId={this.state.empId}
+                        rtId={this.state.rtId}
+                        showEmp={this.state.showEmpDetails}
+                        showRt={this.state.showRtDetails}
+                        close={this.closeDetails.bind(this)}
+                        empCollection={this.props.cadastro.empCollection}
+                        rtCollection={this.props.cadastro.rtCollection}
                     />
                 </div>
             </div>

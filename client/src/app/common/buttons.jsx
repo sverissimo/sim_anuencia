@@ -47,8 +47,8 @@ export const EditButton = (props) => {
 
     return (
         <div>
-            <button className={"btn-flat waves-effect btn-floating blue red darken-3"}
-                onClick={() => props.handleEdit(props.id)}>
+            <button className={"btn-flat waves-effect btn-floating right blue darken-3"}
+                onClick={() => props.edit(props.id)}>
                 <i className="material-icons">edit</i>
             </button>
         </div>

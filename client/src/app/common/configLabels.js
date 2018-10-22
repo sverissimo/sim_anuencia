@@ -91,7 +91,7 @@ export const configEmpLabels = [
     {
         name: 'cpf',
         label: 'CPF',
-        div: 'col s1'
+        div: 'col s2'
     },
     {
         name: 'rua',
@@ -155,6 +155,6 @@ export const configRtLabels = [
     {
         name: 'emailRt',
         label: 'E-mail',
-        div: 'col s2'
+        div: 'col s1'
     },
 ]
