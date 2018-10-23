@@ -1,6 +1,6 @@
 const randomColor = () => {
 
-  const array = [ 'rgb(120, 150, 151)', 'rgb(104, 119, 133)', 'rgb(84, 104, 102)', '  rgb(100, 136, 137)',
+  const array = [ 'rgb(120, 150, 151)', 'rgb(104, 119, 133)', 'rgb(84, 104, 102)',
     'rgb(105, 117, 153)', 'rgb(136, 121, 102)', 'rgb(88, 103, 88)', 
     'rgb(117, 116, 101)', 'rgb(89, 121, 120)', 'rgb(117, 117, 137)' ]
   let color = array[Math.floor(Math.random() * array.length)]

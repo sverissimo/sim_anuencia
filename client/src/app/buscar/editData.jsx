@@ -24,10 +24,11 @@ const EditData = (props) => {
             if (props.data.select === 'emp' && itemArray.length > 14) filterArray = removeLast(itemArray, 3)
             if (props.data.select === 'rt' && itemArray.length > 5) filterArray = removeLast(itemArray, 3)
             if (props.data.select === 'rt' && itemArray.length === 5) filterArray = removeLast(itemArray, 1)
-            if (props.data.select === 'process') filterArray = removeLast(itemArray.slice(1), 5)
+            if (props.data.select === 'process') filterArray = removeLast(itemArray.slice(2), 6)
 
-            return filterArray.slice(1).map((item, i) =>
+            return filterArray.map((item, i) =>
 
+                item.key !== '_id' ?
                 <div key={i} className="input-field col s3" >
                     <label className="active">{item.key.replace(/\w/, c => c.toUpperCase())}</label>
                     <input
@@ -37,6 +38,7 @@ const EditData = (props) => {
                         value={props.data.item[item.key]}
                         onChange={props.change} />
                 </div>
+                : void 0
             )
         } else {
             return null

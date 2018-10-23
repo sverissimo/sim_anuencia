@@ -5,8 +5,6 @@ import Title from '../common/titleSubtitle'
 const CadTemplate = (props) => {
     const title = () => (
         <div className="valign-wrapper" >
-
-            <i className="material-icons small teal-text">error_outline</i>
             Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.
         </div>
     )
@@ -79,7 +77,7 @@ const CadTemplate = (props) => {
         <div style={{ marginLeft: 75, marginRight: 75 }} >
             <div className="tab-pane fade show active" id="empreend">
                 <Title
-                    title='Gerenciar Processos'
+                    title='Cadastro de Processos'
                     subtitle={title()}
                     color={props.color}
                 />

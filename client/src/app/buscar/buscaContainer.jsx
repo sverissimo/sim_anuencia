@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions';
 import { deleteEmp, deleteRt, deleteProcess, handleEdit, disableEdit, changeHandler } from './buscaActions';
 import { BackButton, UpdateButton } from './../common/buttons';
-import { configLabels } from './../common/configLabels';
-import renderSearchHeader from './../common/renderSearchHeader';
 
 import ShowDetails from '../common/showDetails'
 import EditData from './editData';
@@ -139,7 +137,6 @@ class ShowEmpContainer extends Component {
 
     render() {
 
-        let i = 0
         let emps = []
         let rts = []
         let process = []
@@ -181,39 +178,40 @@ class ShowEmpContainer extends Component {
                 <ShowEmpTemplate
                     search={this.state.search}
                     select={this.state.select}
-                    data={this.props.cadastro}
+                    edit={this.state.edit}
+                    redux={this.props.cadastro}
                     onSelect={this.handleSelect}
                     change={e => this.handleSearchBar(e)}
                     color={this.state.setColor}
                 />
-                
-               
-                    <ShowEmpRow
-                        data={this.state}
-                        redux={this.props.cadastro}
-                        emps={emps}
-                        rts={rts}
-                        process={process}
-                        empFields={[1, 3, 6, 7, 8]}
-                        rtFields={[1, 2, 3]}
-                        fields={[1, 2, 3, 4, 8, 11]}
-                        edit={this.enableEdit.bind(this)}
-                        delete={this.deleteHandler.bind(this)}
-                        color={this.state.setColor}
-                        empDetails={this.empDetails.bind(this)}
-                        rtDetails={this.rtDetails.bind(this)}
-                    />
 
-               
 
-            
-                    <EditData
-                        redux={this.props.cadastro}
-                        data={this.state}
-                        disableEdit={this.disableEdit.bind(this)}
-                        change={e => this.editValue(e)}
-                        submit={e => this.saveEdit(e)} />
-            
+                <ShowEmpRow
+                    data={this.state}
+                    redux={this.props.cadastro}
+                    emps={emps}
+                    rts={rts}
+                    process={process}
+                    empFields={[1, 3, 6, 7, 8]}
+                    rtFields={[1, 2, 3]}
+                    fields={[3, 4, 5, 6, 9, 12]}
+                    edit={this.enableEdit.bind(this)}
+                    delete={this.deleteHandler.bind(this)}
+                    color={this.state.setColor}
+                    empDetails={this.empDetails.bind(this)}
+                    rtDetails={this.rtDetails.bind(this)}
+                />
+
+
+
+
+                <EditData
+                    redux={this.props.cadastro}
+                    data={this.state}
+                    disableEdit={this.disableEdit.bind(this)}
+                    change={e => this.editValue(e)}
+                    submit={e => this.saveEdit(e)} />
+
                 <div>
                     {this.state.edit ? <BackButton
                         onClick={this.disableEdit} icon='arrow_back'

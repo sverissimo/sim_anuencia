@@ -12,7 +12,6 @@ const path = require('path');
 const methodOverride = require('method-override')
 //const gfs = Grid(conn.db);
 
-
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
 const { processModel } = require('./models/processModel');
@@ -78,7 +77,7 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 // @desc  Uploads file to DB
-app.post('/api/upload', upload.fields([
+app.post('/api/solDirUpload', upload.fields([
 
     {
         name: "dirMunFile", maxCount: 1
@@ -87,7 +86,7 @@ app.post('/api/upload', upload.fields([
     }, {
         name: "dirDaeFile", maxCount: 1
     }]
-        ),
+),
     (req, res) => {
 
         res.json({
@@ -95,6 +94,48 @@ app.post('/api/upload', upload.fields([
         });
     });
 
+app.post('/api/solAnuenciaUpload', upload.fields([
+
+    {
+        name: "regImovel", maxCount: 1
+    }, {
+        name: "CNDMun", maxCount: 1
+    }, {
+        name: "empRG", maxCount: 1
+    }, {
+        name: "art", maxCount: 1
+    }, {
+        name: "decConform", maxCount: 1
+    }, {
+        name: "daeAnuencia", maxCount: 1
+    }, {
+        name: "memDescritivo", maxCount: 1
+    }, {
+        name: "memDescTp", maxCount: 1
+    }, {
+        name: "cemig", maxCount: 1
+    }, {
+        name: "dtbCopasa", maxCount: 1
+    }, {
+        name: "licAmbental", maxCount: 1
+    }, {
+        name: "levPlan", maxCount: 1
+    }, {
+        name: "projUrb", maxCount: 1
+    }, {
+        name: "mapaIso", maxCount: 1
+    }, {
+        name: "projTer", maxCount: 1
+    }, {
+        name: "projDren", maxCount: 1
+    }
+]),
+    (req, res) => {
+
+        res.json({
+            file: req.files,
+        });
+    });
 
 
 app.get('/api/showEmpreend', (req, res) => {
@@ -232,6 +273,18 @@ app.put('/api/solDirFiles/', (req, res) => {
         { '_id': req.body.itemId },
         {
             $push: { solDirFileIds: req.body.filesArray },
+            $set: { status: req.body.status }
+        },
+
+    ).then(result => res.json(result))
+})
+
+app.put('/api/solAnuenciaFiles/', (req, res) => {
+
+    processModel.updateOne(
+        { '_id': req.body.itemId },
+        {
+            $push: { solAnuenciaFiles: req.body.filesArray },
             $set: { status: req.body.status }
         },
 

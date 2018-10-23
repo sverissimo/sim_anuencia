@@ -31,6 +31,7 @@ const processSchema = mongoose.Schema({
         trim: true
     },
     solDirFileIds : [],
+    solAnuenciaFiles: []
   
 
 }, { timestamps: true });

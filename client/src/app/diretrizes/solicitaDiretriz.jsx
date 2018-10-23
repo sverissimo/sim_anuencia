@@ -94,7 +94,7 @@ class solicitaDiretriz extends Component {
     }
 
     handleSubmit(e) {
-        axios.post('/api/upload', this.state.form)
+        axios.post('/api/solDirUpload', this.state.form)
             .then(res => {
 
                 for (let key in res.data.file) {

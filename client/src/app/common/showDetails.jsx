@@ -7,8 +7,14 @@ const ShowDetails = (props) => {
 
     let persona = ''
     let personaDetails
-    showEmp && empCollection ? (persona = empCollection.filter(emp => emp._id.match(empId)), personaDetails = Object.entries(persona[0]).splice(2, 9)) : void 0
-    showRt && rtCollection ? (persona = rtCollection.filter(rt => rt._id.match(rtId)), personaDetails = Object.entries(persona[0]).splice(2, 2)) : void 0
+    if (showEmp && empCollection) {
+        persona = empCollection.filter(emp => emp._id.match(empId))
+        personaDetails = Object.entries(persona[0]).splice(2, 9)
+    }
+    if (showRt && rtCollection) {
+        persona = rtCollection.filter(rt => rt._id.match(rtId))
+        personaDetails = Object.entries(persona[0]).splice(2, 2)
+    }
 
     if (persona !== '' && (showEmp || showRt)) {
 
@@ -21,8 +27,8 @@ const ShowDetails = (props) => {
                     width: '35%',
                     height: '20%',
                     border: '3px solid #000000',
-                    backgroundColor: 'white'
-
+                    backgroundColor: 'white',
+                    paddingLeft: '20px'
                 }}>
                 <div className='row'>
                     <div className="center"><h4>{persona[0].nome}</h4></div>

@@ -55,7 +55,7 @@ let { color } = props
               style={{ margin: '10px' }} alt="" width="120" height="120" />
 
 
-            <h5><b>Buscar Processo</b></h5>
+            <h5><b>Gerenciar Dados</b></h5>
             <p style={{ textAlign: 'justify' }}>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
             <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
               <Link to="/showEmpreend" style={{ color: 'white' }}>Buscar Processo &raquo;</Link></p>

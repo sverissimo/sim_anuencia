@@ -1,8 +1,6 @@
 import React from 'react';
 import fieldConfig from '../common/fieldConfig'
 import { configLabels, configEmpLabels, configRtLabels } from '../common/configLabels';
-import RenderSearch from '../common/renderSearch'
-import RenderButtons from '../common/renderButtons'
 import { DeleteButton, EditButton } from './../common/buttons'
 import './../css/styles.css';
 
@@ -43,7 +41,7 @@ const ShowEmpRow = (props) => {
         : void 0
 
     return (
-        <div>
+        <div className="z-depth-4" style={{ padding: '0px 11px' }}>
             <div className="row "
                 style={{
                     fontSize: 16,
@@ -110,7 +108,7 @@ const ShowEmpRow = (props) => {
                     selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(itemArray[i])) : void 0
                     
                     return (
-                        <div className="row" key={k} >
+                        <div className="row" key={k} style={{borderBottom: 'dotted #bbb' }}>
                             {
                                 i2.map((field, i) =>
                                     field.key !== '_id' ?
@@ -143,9 +141,9 @@ const ShowEmpRow = (props) => {
                             <div className="col s2 right" style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
-                                maxWidth: '90px',
+                                maxWidth: '95px',
                                 margin: '0 auto',
-                                padding: '10px 0',
+                                padding: '10px 5px',
                             }}>
                                 <EditButton edit={edit} id={item._id} />
                                 <DeleteButton delete={deleteOne} id={item._id} />
