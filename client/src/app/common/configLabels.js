@@ -2,12 +2,22 @@ export const configLabels = [
 
     {
         name: 'solAnuenciaFiles',
-        label: ['dirMun, levPl, daeDir',],
+        label: 'Docs Anuência',
         div: 'col s3'
     },
     {
-        name: 'solDirFileIds',
-        label: ['dirMun, levPl, daeDir',],
+        name: 'solDirFiles',
+        label: 'Diretrizes Municipais',
+        div: 'col s1'
+    },
+    {
+        name: 'DirFiles',
+        label: 'Diretrizes Metropolitanas',
+        div: 'col s3'
+    },
+    {
+        name: 'AnuenciaFiles',
+        label: 'Anuência Prévia',
         div: 'col s3'
     },
     {
@@ -36,6 +46,21 @@ export const configLabels = [
         div: 'col s1'
     },
     {
+        name: 'cgt',
+        label: 'Data da CGT',
+        div: 'col s1'
+    },
+    {
+        name: 'vistoria',
+        label: 'Data da Vistoria',
+        div: 'col s1'
+    },
+    {
+        name: 'status',
+        label: 'Status do processo',
+        div: 'col s1'
+    },
+    {
         name: 'empId',
         label: 'EmpId',
         div: 'col s1'
@@ -60,11 +85,7 @@ export const configLabels = [
         label: 'version',
         div: 'col s1'
     },
-    {
-        name: 'status',
-        label: 'Status do processo',
-        div: 'col s1'
-    },
+
 ]
 
 export const solDirConfig = [

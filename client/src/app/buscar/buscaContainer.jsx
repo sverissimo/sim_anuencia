@@ -25,7 +25,8 @@ class ShowEmpContainer extends Component {
         showEmpDetails: false,
         showRtDetails: false,
         empId: '',
-        rtId: ''
+        rtId: '',
+        cgt: ''
     }
 
     componentDidMount() {
@@ -35,6 +36,7 @@ class ShowEmpContainer extends Component {
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.setState({ setColor: color })
+
     }
 
     deleteHandler = (item) => {
@@ -99,7 +101,7 @@ class ShowEmpContainer extends Component {
 
     editValue = (event) => {
         if (this.state.item) {
-            let update = Object.assign({}, this.state.item, { [event.target.name]: event.target.value })
+            let update = Object.assign({}, this.state.item, { [event.target.name]: event.target.value }, {cgt: new Date(2020)})
             this.setState({ ...this.state, item: update })
         }
     }
@@ -136,6 +138,7 @@ class ShowEmpContainer extends Component {
 
 
     render() {
+
 
         let emps = []
         let rts = []
@@ -185,7 +188,6 @@ class ShowEmpContainer extends Component {
                     color={this.state.setColor}
                 />
 
-
                 <ShowEmpRow
                     data={this.state}
                     redux={this.props.cadastro}
@@ -194,16 +196,14 @@ class ShowEmpContainer extends Component {
                     process={process}
                     empFields={[1, 3, 6, 7, 8]}
                     rtFields={[1, 2, 3]}
-                    fields={[3, 4, 5, 6, 9, 12]}
+                    fields={[4, 6, 7, 8, 11, 10, 9]}
+                    divConfig={['', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
                     edit={this.enableEdit.bind(this)}
-                    delete={this.deleteHandler.bind(this)}
+                    deleteOne={this.deleteHandler.bind(this)}
                     color={this.state.setColor}
                     empDetails={this.empDetails.bind(this)}
                     rtDetails={this.rtDetails.bind(this)}
                 />
-
-
-
 
                 <EditData
                     redux={this.props.cadastro}

@@ -43,7 +43,7 @@ class CadastroContainer extends React.Component {
 
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        
+
         let color = document.getElementById('setcolor').style.backgroundColor
         this.setState({ setColor: color })
     }
@@ -168,6 +168,7 @@ class CadastroContainer extends React.Component {
                         area: this.state.area,
                         modalidade: this.state.modalidade,
                         munEmpreendimento: this.state.munEmpreendimento,
+                        status: 'Processo cadastrado',
                         empId: this.state.empId,
                         rtId: this.state.rtId
                     })
@@ -195,6 +196,7 @@ class CadastroContainer extends React.Component {
                         area: this.state.area,
                         modalidade: this.state.modalidade,
                         munEmpreendimento: this.state.munEmpreendimento,
+                        status: 'Processo cadastrado',
                         empId: this.state.empId,
                         rtId: this.state.rtId
                     })
@@ -216,6 +218,7 @@ class CadastroContainer extends React.Component {
                         area: this.state.area,
                         modalidade: this.state.modalidade,
                         munEmpreendimento: this.state.munEmpreendimento,
+                        status: 'Processo cadastrado',
                         empId: this.state.empId,
                         rtId: this.state.rtId
                     })
@@ -226,8 +229,14 @@ class CadastroContainer extends React.Component {
                 area: this.state.area,
                 modalidade: this.state.modalidade,
                 munEmpreendimento: this.state.munEmpreendimento,
+                cgt: 'CGT não agendada',
+                vistoria: 'Vistoria não agendada',
+                status: 'Processo cadastrado',
                 empId: this.state.empId,
-                rtId: this.state.rtId
+                rtId: this.state.rtId,
+                solDirFiles: [],
+                solAnuenciaFiles: []
+
             })
         }
     }

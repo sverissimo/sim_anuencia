@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const processSchema = mongoose.Schema({
 
+    solDirFiles : [],
+    dirFiles: [],
+    solAnuenciaFiles: [],
+    anuenciaFiles:[],
+
     nomeEmpreendimento: {
         type: String,
         trim: true
@@ -18,6 +23,18 @@ const processSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    vistoria: {
+        type: String,
+        trim: true
+    },
+    cgt: {
+        type: {},
+        trim: true
+    },
+    status: {
+        type: String,
+        trim: true
+    },
     empId: {
         type: String,
         trim: true
@@ -25,14 +42,7 @@ const processSchema = mongoose.Schema({
     rtId: {
         type: String,
         trim: true
-    },
-    status: {
-        type: String,
-        trim: true
-    },
-    solDirFileIds : [],
-    solAnuenciaFiles: []
-  
+    }    
 
 }, { timestamps: true });
 

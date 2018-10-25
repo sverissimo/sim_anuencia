@@ -96,7 +96,7 @@ class solicitaDiretriz extends Component {
     handleSubmit(e) {
         axios.post('/api/solDirUpload', this.state.form)
             .then(res => {
-
+                console.log(res.data.file)
                 for (let key in res.data.file) {
                     let filesArray = [];
                     filesArray.push(
@@ -127,7 +127,7 @@ class solicitaDiretriz extends Component {
     }
 
     closeDetails() {
-        this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId:'' })
+        this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
     }
 
     render() {

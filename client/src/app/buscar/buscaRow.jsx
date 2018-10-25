@@ -1,12 +1,11 @@
 import React from 'react';
-import fieldConfig from '../common/fieldConfig'
 import { configLabels, configEmpLabels, configRtLabels } from '../common/configLabels';
 import { DeleteButton, EditButton } from './../common/buttons'
 import './../css/styles.css';
 
 const ShowEmpRow = (props) => {
 
-    let { redux, emps, rts, process, empFields, rtFields, edit, deleteOne, data, fields, color,
+    let { redux, emps, rts, process, empFields, rtFields, edit, deleteOne, data, fields, divConfig, color,
         empDetails, rtDetails } = props
 
     let searchMatch = []
@@ -55,15 +54,15 @@ const ShowEmpRow = (props) => {
                 {
                     fieldsConfig.map((field, i) =>
                         field.name !== '_id' ?
-                            <div className={field.div} key={i}> {field.label} </div> : void 0
+                            <div className={divConfig[i]} key={i}> {field.label} </div> : void 0
                     )
                 }
                 {
                     data.select === 'process' ?
                         <div>
-                            <div className={configEmpLabels[1].div}>
+                            <div className='col s1'>
                                 Interessado </div>
-                            <div className={configRtLabels[1].div}>
+                            <div className='col s1'>
                                 RT </div>
                         </div>
                         : void 0
@@ -106,17 +105,18 @@ const ShowEmpRow = (props) => {
 
                     let i2 = []
                     selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(itemArray[i])) : void 0
-                    
+
                     return (
-                        <div className="row" key={k} style={{borderBottom: 'dotted #bbb' }}>
+                        <div className="row" key={k} style={{ borderBottom: 'dotted #bbb' }}>
                             {
                                 i2.map((field, i) =>
                                     field.key !== '_id' ?
-                                        field.key === 'updatedAt' || field.key === 'createdAt' ?
-                                            <div key={i} className={fieldConfig(field.key, 'div')}>
+
+                                        !isNaN(Date.parse(field.values)) && String(field.values).length > 15 ?
+                                            <div key={i} className="col s1">
                                                 {new Date(field.values).getDate()}/{new Date(field.values).getMonth() + 1}/{new Date(field.values).getFullYear()}
                                             </div> :
-                                            <div key={i} className={fieldConfig(field.key, 'div')}>
+                                            <div key={i} className={divConfig[i]}>
                                                 {field.values}
                                             </div>
                                         : void 0
@@ -125,14 +125,14 @@ const ShowEmpRow = (props) => {
                             {
                                 (data.select === 'process' && (empName && empName.values)) ?
 
-                                    <div id={empName.values._id} className={fieldConfig(Object.keys(empName.values)[1], 'div')} style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={empDetails}>
+                                    <div id={empName.values._id} className='col s1' style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={empDetails}>
                                         {empName.values.nome}
                                     </div> : <div className='col s2'>  </div>
                             }
 
                             {
                                 (data.select === 'process' && (rtName && rtName.values)) ?
-                                    <div id={rtName.values._id} className={configRtLabels[1].div} style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={rtDetails}>
+                                    <div id={rtName.values._id} className='col s1' style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={rtDetails}>
                                         {rtName.values.nomeRt}
                                     </div>
                                     : <div className='col s1'> </div>
@@ -143,7 +143,7 @@ const ShowEmpRow = (props) => {
                                 justifyContent: 'space-between',
                                 maxWidth: '95px',
                                 margin: '0 auto',
-                                padding: '10px 5px',
+                                padding: '0px 5px',
                             }}>
                                 <EditButton edit={edit} id={item._id} />
                                 <DeleteButton delete={deleteOne} id={item._id} />

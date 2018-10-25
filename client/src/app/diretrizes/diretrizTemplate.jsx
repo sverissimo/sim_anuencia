@@ -3,21 +3,20 @@ import RenderSearch from '../common/renderSearch';
 import Title from '../common/titleSubtitle';
 import {BackButton} from '../common/buttons'
 
-
-const SolAnuenciaTemplate = (props) => {
+const Diretriz = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails} = props
+        children, empDetails, rtDetails, download} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
-
+    
     return (
         <div className="container" >
             <Title
-                title='Solicitar Anuência Prévia'
-                subtitle='Para solicitar anuência prévia, selecione o processo e faça o upload dos documentos 
-                necessários em pdf e clique em "Solicitar Diretrizes".'
+                title='Diretrizes Metropolitanas'
+                subtitle='Para a emissão de diretrizes metropoilotanas, agendamento a CGT e a vistoria, 
+                faça o upload da diretriz em pdf e clique em "Emitir Diretrizes".'
                 color={ setColor}
             />
             <div className="row">
@@ -40,14 +39,17 @@ const SolAnuenciaTemplate = (props) => {
                 search={searchArray}
                 collection={redux.empCollection}
                 rtCollection={redux.rtCollection}
+                processCollection={redux.processCollection}
                 onSelect={selectProcess}
                 checked={data.checked}
                 color={setColor}
-                fields={[4,5,6,7,8,14,10]}
-                renderEmp={false}
-                renderRt={false}
+                fields={[4,5,8,10,14,]}
+                renderEmp={true}
+                renderRt={true}
                 empDetails={empDetails}
                 rtDetails={rtDetails}
+                download={download}
+
                 />
                 
             </div>
@@ -67,26 +69,15 @@ const SolAnuenciaTemplate = (props) => {
                         (<div>
                             <fieldset>
                                 <legend style={{ fontSize: '1.3rem' }}>
-                                    {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de anuência prévia
+                                    {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de diretrizes
                             </legend>
-                            <div className="row">
-                                {children[0]}
-                                </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend style={{ fontSize: '1.3rem' }}>
-                                    {nameParc[0].nomeEmpreendimento} - Projetos para solicitação de anuência prévia
-                            </legend>
-                            <div className="row">
-                                {children[1]}
-                                </div>
+                                {children}
                             </fieldset>
                             <button
                                 className="btn teal darken-3 right"
                                 style={{ marginBottom: '20px' }}
                                 onClick = {submitFiles}  
-                            >Solicitar Anuência</button>
+                            >Solicitar Diretrizes</button>
                         </div>)
                         : void 0
                 }
@@ -95,4 +86,4 @@ const SolAnuenciaTemplate = (props) => {
     );
 };
 
-export default SolAnuenciaTemplate;
+export default Diretriz;

@@ -24,21 +24,20 @@ const ShowDetails = (props) => {
                     position: 'fixed',
                     top: '30%',
                     right: '33%',
-                    width: '35%',
-                    height: '20%',
+                    left: '33%',
                     border: '3px solid #000000',
                     backgroundColor: 'white',
                     paddingLeft: '20px'
                 }}>
                 <div className='row'>
-                    <div className="center"><h4>{persona[0].nome}</h4></div>
-                    <div className="center"><h4>{persona[0].nomeRt}</h4></div>
+                    <div className="center"><h5>{persona[0].nome}</h5></div>
+                    <div className="center"><h5>{persona[0].nomeRt}</h5></div>
                 </div>
 
                 <div className="row">
                     {
                         personaDetails.map((d, i) =>
-                            <div className='col s4' key={i}>
+                            <div className='col s12 m6' key={i}>
                                 <strong > {fieldConfig(d[0], 'label')}: </strong>{d[1]} </div>
                         )
                     }

@@ -75,6 +75,24 @@ const storage = new GridFsStorage({
     }
 });
 const upload = multer({ storage });
+/* 
+app.get('/api/downloadSolDir:id', (req, res) => {
+    
+    gfs.collection('uploads.files')
+    gfs.files.find({ _id: req.params.id }, (err, file) => {
+        
+        if(!file || file.length === 0){
+            return res.status(404).json({
+                responseCode: 1,
+                responseMessage: "error"
+            });
+        }
+                  
+        return res.json(file);
+    });
+});
+ */
+
 
 // @desc  Uploads file to DB
 app.post('/api/solDirUpload', upload.fields([
@@ -272,7 +290,7 @@ app.put('/api/solDirFiles/', (req, res) => {
     processModel.updateOne(
         { '_id': req.body.itemId },
         {
-            $push: { solDirFileIds: req.body.filesArray },
+            $push: { solDirFiles: req.body.filesArray },
             $set: { status: req.body.status }
         },
 
@@ -290,6 +308,8 @@ app.put('/api/solAnuenciaFiles/', (req, res) => {
 
     ).then(result => res.json(result))
 })
+
+
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

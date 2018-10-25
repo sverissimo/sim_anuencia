@@ -3,9 +3,24 @@ import { configLabels, configEmpLabels, configRtLabels } from '../common/configL
 import fieldConfig from './fieldConfig'
 
 const RenderSearch = (props) => {
-    let { search, collection, rtCollection, onSelect, checked, fields, color, renderEmp,
-        renderRt, empDetails, rtDetails } = props
+    let { search, collection, rtCollection, processCollection, onSelect, checked, fields, color, renderEmp,
+        renderRt, empDetails, rtDetails, download } = props
 
+
+    let solDirObjFiles = []
+    let sdFilesArray = []
+    if (processCollection && processCollection[0]) {
+
+        for (let key in processCollection) {
+            processCollection[key].solDirFiles && processCollection[key].solDirFiles.length > 0 ?
+                solDirObjFiles.push(processCollection[key].solDirFiles) : void 0
+        }
+        sdFilesArray = solDirObjFiles[0]
+        console.log(sdFilesArray)
+    }
+
+
+    //item.solDirFiles.length > 0 ? solDirFiles.push(item.solDirFiles[0]) : void 0
 
     //****************** HEADER *********************
 
@@ -84,6 +99,7 @@ const RenderSearch = (props) => {
                     }
 
                     let i2 = []
+                    let solDirFiles = []
                     fields.map(i => i2.push(itemArray[i]))
 
                     return (
@@ -91,10 +107,11 @@ const RenderSearch = (props) => {
                             {
                                 i2.map((field, i) =>
                                     field.key !== '_id' ?
-                                        field.key === 'updatedAt' || field.key === 'createdAt' ?
+                                        !isNaN(Date.parse(field.values)) && String(field.values).length > 15 ?
                                             <div key={i} className={fieldConfig(field.key, 'div')}>
                                                 {new Date(field.values).getDate()}/{new Date(field.values).getMonth() + 1}/{new Date(field.values).getFullYear()}
                                             </div> :
+
                                             <div key={i} className={fieldConfig(field.key, 'div')}>
                                                 {field.values}
                                             </div>
@@ -110,12 +127,16 @@ const RenderSearch = (props) => {
                                         < div className={configEmpLabels[1].div}  > </div> : void 0
                             }
                             {
-                                (rtName && renderRt) ?
+
+                                sdFilesArray.map(obj =>
+                                    <div id={obj.id} className='col s1' onClick={download}>{obj.fieldName}</div>
+                                )
+                                /* (rtName && renderRt) ?
                                     <div id={rtName.values._id} className={configRtLabels[1].div} style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={rtDetails}>
                                         {rtName.values.nomeRt}
                                     </div> :
                                     (!rtName && renderRt) ?
-                                        <div className={configRtLabels[1].div}> </div> : void 0
+                                        <div className={configRtLabels[1].div}> </div> : void 0 */
                             }
                             <div className="col s1 center">
                                 <input id={item._id}
