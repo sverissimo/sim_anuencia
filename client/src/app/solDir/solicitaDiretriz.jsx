@@ -103,7 +103,8 @@ class solicitaDiretriz extends Component {
                         res.data.file[key][0].fieldname,
                         res.data.file[key][0].id,
                         res.data.file[key][0].originalname,
-                        res.data.file[key][0].uploadDate
+                        res.data.file[key][0].uploadDate,
+                        res.data.file[key][0].filename
                     )
                     axios.put(('/api/solDirFiles'), {
                         itemId: this.state.selectedId,
@@ -111,7 +112,8 @@ class solicitaDiretriz extends Component {
                             fieldName: filesArray[0],
                             id: filesArray[1],
                             originalName: filesArray[2],
-                            uploadDate: filesArray[3]
+                            uploadDate: filesArray[3],
+                            filename: filesArray[4]
                         },
                         status: 'Aguardando Diretrizes Metropolitanas'
                     })

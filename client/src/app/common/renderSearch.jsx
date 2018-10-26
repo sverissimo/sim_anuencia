@@ -15,7 +15,7 @@ const RenderSearch = (props) => {
             processCollection[key].solDirFiles && processCollection[key].solDirFiles.length > 0 ?
                 solDirObjFiles.push(processCollection[key].solDirFiles) : void 0
         }
-        sdFilesArray = solDirObjFiles[0]
+        sdFilesArray = solDirObjFiles[2]
         console.log(sdFilesArray)
     }
 
@@ -129,7 +129,7 @@ const RenderSearch = (props) => {
                             {
 
                                 sdFilesArray.map(obj =>
-                                    <div id={obj.id} className='col s1' onClick={download}>{obj.fieldName}</div>
+                                    <div id={obj.id} name={obj.filename} className='col s1' onClick={download}>{obj.fieldName}</div>
                                 )
                                 /* (rtName && renderRt) ?
                                     <div id={rtName.values._id} className={configRtLabels[1].div} style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={rtDetails}>

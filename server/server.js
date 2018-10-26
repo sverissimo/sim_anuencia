@@ -30,7 +30,7 @@ app.use(function (req, res, next) { //allow cross origin requests
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', { useNewUrlParser: true }, (err) => {
+mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', (err) => {
     if (err) {
         console.log(err);
     }
@@ -39,11 +39,9 @@ mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', { useNewUrlParser:
 
 app.use(methodOverride('_method'));
 
-// Mongo URI
 const mongoURI = 'mongodb://localhost:27017/sim_anuencia_db';
 
-// Create mongo connection
-const conn = mongoose.createConnection(mongoURI, { useNewUrlParser: true });
+const conn = mongoose.createConnection(mongoURI);
 
 let gfs;
 
@@ -64,9 +62,9 @@ const storage = new GridFsStorage({
                 if (err) {
                     return reject(err);
                 }
-                const filename = buf.toString('hex') + path.extname(file.originalname);
+                const fileName = buf.toString('hex') + path.extname(file.originalname);
                 const fileInfo = {
-                    filename: filename,
+                    fileName: fileName,
                     bucketName: 'uploads',
                 };
                 resolve(fileInfo);
@@ -75,26 +73,35 @@ const storage = new GridFsStorage({
     }
 });
 const upload = multer({ storage });
-/* 
-app.get('/api/downloadSolDir:id', (req, res) => {
-    
-    gfs.collection('uploads.files')
-    gfs.files.find({ _id: req.params.id }, (err, file) => {
+
+
+app.get('/api/downloadSolDir/:id', function (req, res) {
         
-        if(!file || file.length === 0){
+    const fileId = new mongoose.mongo.ObjectId(req.params.id)
+    gfs.files.findOne({_id: fileId}, function(err, file)  {
+        
+        if(!file){
             return res.status(404).json({
                 responseCode: 1,
                 responseMessage: "error"
             });
+        } else {
+            //return res.json(file)
+            const readstream = gfs.createReadStream({
+                filename: file.filename,
+                root: "uploads"
+            });
+            // set the proper content type 
+            res.set('Content-Type', file.contentType)
+            // Return response
+            return readstream.pipe(res);
         }
-                  
-        return res.json(file);
     });
 });
- */
 
 
-// @desc  Uploads file to DB
+
+// Uploads file to DB
 app.post('/api/solDirUpload', upload.fields([
 
     {
@@ -308,8 +315,6 @@ app.put('/api/solAnuenciaFiles/', (req, res) => {
 
     ).then(result => res.json(result))
 })
-
-
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => {

@@ -37,6 +37,7 @@ class Diretriz extends Component {
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
+                
     }
 
     handleSearch(e) {
@@ -130,9 +131,9 @@ class Diretriz extends Component {
         this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId:'' })
     }
     download(e) {
-        const id = e.target.id
-        axios.get('/api/downloadSolDir'+id)
-        .then(res => console.log(res.data))
+    
+        axios.get('/api/downloadSolDir/'+e.target.id)
+        .then(res => console.log(res))
     }
 
     render() {
