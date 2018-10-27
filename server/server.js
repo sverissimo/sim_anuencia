@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+var MongoClient = require('mongodb').MongoClient;
 const mongoose = require('mongoose');
 const crypto = require('crypto')
 const config = require('./config/config').get(process.env.NODE_ENV);
@@ -15,6 +16,7 @@ const methodOverride = require('method-override')
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
 const { processModel } = require('./models/processModel');
+const { filesModel } = require('./models/filesModel');
 
 const app = express();
 
@@ -62,9 +64,14 @@ const storage = new GridFsStorage({
                 if (err) {
                     return reject(err);
                 }
-                const fileName = buf.toString('hex') + path.extname(file.originalname);
+                const filename = buf.toString('hex') + '.' + file.originalname.split('.').pop();
                 const fileInfo = {
-                    fileName: fileName,
+                    filename: filename,
+                    metadata: {
+                        'fieldName': file.fieldname,
+                        'originalName': file.originalname,
+                        'processId': req.body.processId
+                    },
                     bucketName: 'uploads',
                 };
                 resolve(fileInfo);
@@ -76,11 +83,11 @@ const upload = multer({ storage });
 
 
 app.get('/api/downloadSolDir/:id', function (req, res) {
-        
+
     const fileId = new mongoose.mongo.ObjectId(req.params.id)
-    gfs.files.findOne({_id: fileId}, function(err, file)  {
-        
-        if(!file){
+    gfs.files.findOne({ _id: fileId }, function (err, file) {
+
+        if (!file) {
             return res.status(404).json({
                 responseCode: 1,
                 responseMessage: "error"
@@ -92,14 +99,18 @@ app.get('/api/downloadSolDir/:id', function (req, res) {
                 root: "uploads"
             });
             // set the proper content type 
-            res.set('Content-Type', file.contentType)
+            res.set({
+                'Content-Type': file.contentType,
+                'Content-Disposition': `attachment; filename=${file.metadata.originalName}`,
+                'fileId': file._id,
+                'uploadDate': file.uploadDate
+            });
+
             // Return response
             return readstream.pipe(res);
         }
     });
 });
-
-
 
 // Uploads file to DB
 app.post('/api/solDirUpload', upload.fields([
@@ -161,6 +172,19 @@ app.post('/api/solAnuenciaUpload', upload.fields([
             file: req.files,
         });
     });
+
+
+
+app.get('/api/files', (req, res) => {
+
+ 
+        filesModel.find().exec((err, doc)=> {
+            if (err) throw err;
+            res.send(doc)
+           
+        });
+    
+})
 
 
 app.get('/api/showEmpreend', (req, res) => {

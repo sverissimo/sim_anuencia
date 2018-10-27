@@ -37,7 +37,7 @@ class Diretriz extends Component {
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
-                
+
     }
 
     handleSearch(e) {
@@ -128,12 +128,15 @@ class Diretriz extends Component {
     }
 
     closeDetails() {
-        this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId:'' })
+        this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
     }
     download(e) {
-    
-        axios.get('/api/downloadSolDir/'+e.target.id)
-        .then(res => console.log(res))
+
+        axios.get('/api/downloadSolDir/' + e.target.id)
+            .then(res => {
+                window.location.href = '/api/downloadSolDir/' + res.headers.fileid;
+            })
+
     }
 
     render() {
