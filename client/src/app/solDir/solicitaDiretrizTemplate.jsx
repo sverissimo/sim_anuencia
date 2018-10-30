@@ -42,9 +42,9 @@ const SolicitaDiretriz = (props) => {
                 onSelect={selectProcess}
                 checked={data.checked}
                 color={setColor}
-                fields={[4,5,6,7,8,10,14]}
+                fields={[4,5,8,9,10, 11]}
                 renderEmp={true}
-                renderRt={true}
+                renderRt={false}
                 empDetails={empDetails}
                 rtDetails={rtDetails}
                 />

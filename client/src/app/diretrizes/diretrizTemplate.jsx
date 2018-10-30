@@ -6,7 +6,7 @@ import {BackButton} from '../common/buttons'
 const Diretriz = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails, download} = props
+        children, empDetails, rtDetails, download, showFiles} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
@@ -43,12 +43,13 @@ const Diretriz = (props) => {
                 onSelect={selectProcess}
                 checked={data.checked}
                 color={setColor}
-                fields={[4,5,8,10,14,]}
+                fields={[4,5,8,9,10,14,]}
                 renderEmp={true}
                 renderRt={true}
                 empDetails={empDetails}
                 rtDetails={rtDetails}
                 download={download}
+                showFiles={showFiles}
 
                 />
                 
@@ -69,7 +70,7 @@ const Diretriz = (props) => {
                         (<div>
                             <fieldset>
                                 <legend style={{ fontSize: '1.3rem' }}>
-                                    {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de diretrizes
+                                    {nameParc[0].nomeEmpreendimento} - Diretrizes Metropolitanas
                             </legend>
                                 {children}
                             </fieldset>

@@ -9,6 +9,7 @@ import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
 import { solDirConfig } from '../common/configLabels'
 import ShowDetails from '../common/showDetails'
+import ShowFiles from '../common/showFiles';
 
 class Diretriz extends Component {
 
@@ -27,7 +28,9 @@ class Diretriz extends Component {
         showEmpDetails: false,
         showRtDetails: false,
         empId: '',
-        rtId: ''
+        rtId: '',
+        showFiles: false,
+        filesCollection: ''
     }
 
     componentDidMount() {
@@ -37,6 +40,9 @@ class Diretriz extends Component {
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
+
+        axios.get('/api/files')
+            .then(res => this.setState({ filesCollection: res.data }))
 
     }
 
@@ -128,7 +134,7 @@ class Diretriz extends Component {
     }
 
     closeDetails() {
-        this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
+        this.setState({ showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
     }
     download(e) {
 
@@ -137,6 +143,10 @@ class Diretriz extends Component {
                 window.location.href = '/api/downloadSolDir/' + res.headers.fileid;
             })
 
+    }
+
+    showFiles(e) {
+        this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
     }
 
     render() {
@@ -165,18 +175,18 @@ class Diretriz extends Component {
                     empDetails={this.empDetails.bind(this)}
                     rtDetails={this.rtDetails.bind(this)}
                     download={this.download.bind(this)}
+                    showFiles={this.showFiles.bind(this)}
                 >
-                    {
-                        solDirConfig.map((item, i) => {
-                            return (
-                                <DiretrizRow
-                                    object={item}
-                                    key={i}
-                                    upload={this.fileUpload.bind(this)}
-                                />
-                            )
-                        })
-                    }
+                    <DiretrizRow
+                        selectedId={this.state.selectedId}
+                        showFiles={this.state.showFiles}
+                        close={this.closeDetails.bind(this)}
+                        processCollection={this.props.cadastro.processCollection}
+                        filesCollection={this.state.filesCollection}
+                        upload={this.fileUpload.bind(this)}
+                    />
+
+
                 </DiretrizTemplate>
 
                 <ShowDetails
@@ -187,6 +197,15 @@ class Diretriz extends Component {
                     close={this.closeDetails.bind(this)}
                     empCollection={this.props.cadastro.empCollection}
                     rtCollection={this.props.cadastro.rtCollection}
+                />
+
+                <ShowFiles
+                    selectedId={this.state.selectedId}
+                    showFiles={this.state.showFiles}
+                    close={this.closeDetails.bind(this)}
+                    processCollection={this.props.cadastro.processCollection}
+                    filesCollection={this.state.filesCollection}
+                    download={this.download.bind(this)}
                 />
             </div>
         );

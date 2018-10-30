@@ -1,10 +1,12 @@
 import React from 'react';
 import { configLabels, configEmpLabels, configRtLabels } from '../common/configLabels';
 import fieldConfig from './fieldConfig'
+import ShowFiles from './showFiles';
+
 
 const RenderSearch = (props) => {
     let { search, collection, rtCollection, processCollection, onSelect, checked, fields, color, renderEmp,
-        renderRt, empDetails, rtDetails, download } = props
+        renderRt, empDetails, rtDetails, download, showFiles } = props
 
 
     let solDirObjFiles = []
@@ -16,7 +18,7 @@ const RenderSearch = (props) => {
                 solDirObjFiles.push(processCollection[key].solDirFiles) : void 0
         }
         sdFilesArray = solDirObjFiles[0]
-        
+
     }
 
 
@@ -127,17 +129,22 @@ const RenderSearch = (props) => {
                                         < div className={configEmpLabels[1].div}  > </div> : void 0
                             }
                             {
-
-                                sdFilesArray.map((obj, i) =>
-                                    <div id={obj.id} name={obj.filename} key={i} className='col s1' onClick={download}>{obj.fieldName}</div>
-                                )
-                                /* (rtName && renderRt) ?
+                                (rtName && renderRt) ?
                                     <div id={rtName.values._id} className={configRtLabels[1].div} style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={rtDetails}>
                                         {rtName.values.nomeRt}
                                     </div> :
                                     (!rtName && renderRt) ?
-                                        <div className={configRtLabels[1].div}> </div> : void 0 */
+                                        <div className={configRtLabels[1].div}> </div> : void 0
                             }
+                            <div
+                                id={`${item._id}z`}
+                                style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
+                                onClick={showFiles}
+                                className='col s1'
+                            >
+                                Ver arquivos
+                                </div>
+
                             <div className="col s1 center">
                                 <input id={item._id}
                                     type="radio"
