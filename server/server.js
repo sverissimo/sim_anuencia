@@ -112,7 +112,6 @@ app.get('/api/downloadSolDir/:id', function (req, res) {
     });
 });
 
-// Uploads file to DB
 app.post('/api/solDirUpload', upload.fields([
 
     {
@@ -125,6 +124,19 @@ app.post('/api/solDirUpload', upload.fields([
 ),
     (req, res) => {
 
+        res.json({
+            file: req.files,
+        });
+    });
+
+
+app.post('/api/diretrizUpload', upload.fields([
+
+    {
+        name: "diretrizFile", maxCount: 1
+    }]
+),
+    (req, res) => {
         res.json({
             file: req.files,
         });
@@ -254,7 +266,7 @@ app.post('/api/cadastro_process', (req, res) => {
         if (err) return res.status(400).send(err);
         res.status(200).json({
             post: true,
-            process_id: doc._id
+            process: doc
         })
     });
 
@@ -316,7 +328,7 @@ app.put('/api/editProcess/', (req, res) => {
     ).then(result => res.json(result))
 })
 
-app.put('/api/solDirFiles/', (req, res) => {
+/* app.put('/api/solDirFiles/', (req, res) => {
 
     processModel.updateOne(
         { '_id': req.body.itemId },
@@ -326,7 +338,7 @@ app.put('/api/solDirFiles/', (req, res) => {
         },
 
     ).then(result => res.json(result))
-})
+}) */
 
 app.put('/api/pendencias/', (req, res) => {
 
@@ -338,12 +350,12 @@ app.put('/api/pendencias/', (req, res) => {
     ).then(result => res.json(result))
 })
 
-app.put('/api/solAnuenciaFiles/', (req, res) => {
+app.put('/api/fileObject/', (req, res) => {
 
     processModel.updateOne(
         { '_id': req.body.itemId },
         {
-            $push: { solAnuenciaFiles: req.body.filesArray },
+            $push: { fileObjects: req.body.filesArray },
             $set: { status: req.body.status }
         },
 

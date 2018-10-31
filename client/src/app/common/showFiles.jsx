@@ -1,10 +1,14 @@
 import React from 'react';
-import { solDirConfig } from './configLabels';
+import { allFilesLabels } from './configLabels';
 import { BackButton } from '../common/buttons'
 import showDate from './showDate'
 
 const labels = (fieldName) => {
-    let label = solDirConfig.filter(e => e.nameInput.match(fieldName))
+    
+    let allFilesArray = []
+    allFilesArray = allFilesLabels()
+    console.log(allFilesArray)
+    let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
     return label[0].label
 }
 
@@ -38,20 +42,20 @@ const ShowFiles = (props) => {
                     </div>
                     <div className="row">
                         <div className="col s6 ">
-                        <h6 style={{ fontSize:'1.2em', fontWeight: 500 }}>Arquivo</h6>    
-                            
-                                </div>
+                            <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Arquivo</h6>
+
+                        </div>
                         <div className="col s6">
-                        <h6 style={{ fontSize:'1.2em', fontWeight: 500 }}>Data de Upload</h6>    
-                            </div>
+                            <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Data de Upload</h6>
+                        </div>
                     </div>
                     {files.map(file =>
                         <div>
                             <div className="row">
                                 <div id={file._id}
-                                style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
-                                className="col s6"
-                                onClick={download}>
+                                    style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
+                                    className="col s6"
+                                    onClick={download}>
                                     {labels(file.metadata.fieldName)}</div>
                                 <div className="col s6">
                                     {showDate(file.uploadDate)}

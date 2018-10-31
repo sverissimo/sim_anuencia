@@ -2,16 +2,7 @@ const mongoose = require('mongoose');
 
 const processSchema = mongoose.Schema({
 
-    solDirFiles : [],
-    dirFiles: [],
-    solAnuenciaFiles: [],
-    anuenciaFiles:[],
-
     nomeEmpreendimento: {
-        type: String,
-        trim: true
-    },
-    area: {
         type: String,
         trim: true
     },
@@ -19,11 +10,19 @@ const processSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    area: {
+        type: String,
+        trim: true
+    },
     munEmpreendimento: {
         type: String,
         trim: true
     },
-    daeDir: {
+    nProcess: {
+        type: String,
+        trim: true
+    },
+    status: {
         type: String,
         trim: true
     },
@@ -38,16 +37,12 @@ const processSchema = mongoose.Schema({
     vistoria: {
         type: String,
         trim: true
-    },    
-    pendencias: {
-        type: [],
-        trim: true
     },
-    daeAnuencia: {
+    daeDir: {
         type: String,
         trim: true
     },
-    status: {
+    daeAnuencia: {
         type: String,
         trim: true
     },
@@ -58,7 +53,9 @@ const processSchema = mongoose.Schema({
     rtId: {
         type: String,
         trim: true
-    }    
+    },
+    fileObjects: [],
+    pendencias: [],
 
 }, { timestamps: true });
 

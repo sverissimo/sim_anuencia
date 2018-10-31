@@ -43,9 +43,9 @@ const Diretriz = (props) => {
                 onSelect={selectProcess}
                 checked={data.checked}
                 color={setColor}
-                fields={[5,6,9,10,11,15,]}
+                fields={[2,3,4,6,9,10,11,]}
                 renderEmp={true}
-                renderRt={false}
+                renderRt={true}
                 empDetails={empDetails}
                 rtDetails={rtDetails}
                 download={download}
@@ -80,7 +80,7 @@ const Diretriz = (props) => {
                         : void 0
                 }
                 {
-                    data.emiteDiretriz ?
+                    data.anexaDiretriz ?
                         <button
                             className="btn teal darken-3 right"
                             style={{ marginBottom: '30px' }}

@@ -43,9 +43,9 @@ const SolAnuenciaTemplate = (props) => {
                 onSelect={selectProcess}
                 checked={data.checked}
                 color={setColor}
-                fields={[4,5,6,7,8,14,10]}
-                renderEmp={false}
-                renderRt={false}
+                fields={[2,3,4,5,7,8]}
+                renderEmp={true}
+                renderRt={true}
                 empDetails={empDetails}
                 rtDetails={rtDetails}
                 />

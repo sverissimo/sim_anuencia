@@ -12,7 +12,6 @@ import ShowDetails from '../common/showDetails'
 
 class solicitaDiretriz extends Component {
 
-
     state = {
         searchValue: '',
         dataMatch: [],
@@ -38,7 +37,6 @@ class solicitaDiretriz extends Component {
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
         axios.get('/api/files')
-        .then(res=> console.log(res.data))
     }
 
     handleSearch(e) {
@@ -79,7 +77,7 @@ class solicitaDiretriz extends Component {
         })
         let k = []
         solDirConfig.map(item => k.push(item.nameInput))
-        
+
 
         setTimeout(() => {
             k.map(inputName => {
@@ -99,7 +97,7 @@ class solicitaDiretriz extends Component {
     handleSubmit(e) {
         axios.post('/api/solDirUpload', this.state.form)
             .then(res => {
-                
+
                 for (let key in res.data.file) {
                     let filesArray = [];
                     filesArray.push(
@@ -109,7 +107,7 @@ class solicitaDiretriz extends Component {
                         res.data.file[key][0].uploadDate,
                         res.data.file[key][0].filename
                     )
-                    axios.put(('/api/solDirFiles'), {
+                    axios.put(('/api/fileObject'), {
                         itemId: this.state.selectedId,
                         filesArray: {
                             fieldName: filesArray[0],

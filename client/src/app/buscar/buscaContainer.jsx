@@ -163,8 +163,8 @@ class ShowEmpContainer extends Component {
             process = this.props.cadastro.processCollection
             process.sort(function (a, b) {
 
-                let ca = new Date(a.createdAt)
-                let cb = new Date(b.createdAt)
+                let ca = new Date(a.updatedAt)
+                let cb = new Date(b.updatedAt)
                 if (ca && cb) {
 
                     if (cb.getTime() > ca.getTime()) {
@@ -196,7 +196,7 @@ class ShowEmpContainer extends Component {
                     process={process}
                     empFields={[1, 3, 6, 7, 8]}
                     rtFields={[1, 2, 3]}
-                    fields={[4, 6, 7, 8, 11, 10, 9]}
+                    fields={[ 3, 4, 6, 7, 8 ]}
                     divConfig={['', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
                     edit={this.enableEdit.bind(this)}
                     deleteOne={this.deleteHandler.bind(this)}

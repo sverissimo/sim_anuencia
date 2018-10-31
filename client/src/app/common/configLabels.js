@@ -1,24 +1,14 @@
 export const configLabels = [
 
     {
-        name: 'solAnuenciaFiles',
-        label: 'Docs Anuência',
-        div: 'col s3'
-    },
-    {
-        name: 'solDirFiles',
-        label: 'Diretrizes Municipais',
+        name: 'fileObjects',
+        label: 'Arquivos',
         div: 'col s1'
     },
     {
-        name: 'DirFiles',
-        label: 'Diretrizes Metropolitanas',
-        div: 'col s3'
-    },
-    {
-        name: 'AnuenciaFiles',
-        label: 'Anuência Prévia',
-        div: 'col s3'
+        name: 'pendencias',
+        label: 'Pendências',
+        div: 'col s1'
     },
     {
         name: '_id',
@@ -26,14 +16,14 @@ export const configLabels = [
         div: 'col s3'
     },
     {
+        name: 'nProcess',
+        label: 'Número do processo',
+        div: 'col s1'
+    },
+    {
         name: 'nomeEmpreendimento',
         label: 'Nome do empreendimento',
         div: 'col s2'
-    },
-    {
-        name: 'area',
-        label: 'Área (m²)',
-        div: 'col s1'
     },
     {
         name: 'modalidade',
@@ -41,8 +31,23 @@ export const configLabels = [
         div: 'col s1'
     },
     {
+        name: 'area',
+        label: 'Área (m²)',
+        div: 'col s1'
+    },
+    {
         name: 'munEmpreendimento',
         label: 'Município',
+        div: 'col s1'
+    },
+    {
+        name: 'status',
+        label: 'Status do processo',
+        div: 'col s1'
+    },
+    {
+        name: 'tecnico',
+        label: 'Técnico da Agência',
         div: 'col s1'
     },
     {
@@ -56,8 +61,13 @@ export const configLabels = [
         div: 'col s1'
     },
     {
-        name: 'status',
-        label: 'Status do processo',
+        name: 'daeDir',
+        label: 'DAE - Diretrizes',
+        div: 'col s1'
+    },
+    {
+        name: 'daeAnuencia',
+        label: 'DAE - Anuência',
         div: 'col s1'
     },
     {
@@ -270,4 +280,34 @@ export const solAnuenciaConfig2 = [
         label: 'Projeto de Drenagem',
         tooltip: 'Projeto na mesma escala do Projeto Urbanístico e em sistema de coordenadas UTM'
     }
-]      
+]
+
+export const allFilesLabels = () => {
+
+    let allFilesArray = []
+    solDirConfig.forEach(element => {
+        allFilesArray.push(element)
+    })
+
+    solAnuenciaConfig1.forEach(element => {
+        allFilesArray.push(element)
+    })
+
+    solAnuenciaConfig2.forEach(element => {
+        allFilesArray.push(element)
+    })
+
+    allFilesArray.push(
+        {
+            nameInput: 'diretrizFile',
+            label: 'Diretrizes Metropolitanas',
+        },
+        {
+            nameInput: 'anuenciaFile',
+            label: 'Certidão de Anuência Metropolitana',
+        }
+    )
+    return allFilesArray
+};
+
+

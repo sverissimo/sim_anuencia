@@ -84,7 +84,7 @@ class SolicitaAnuencia extends Component {
     fileUpload(e) {
 
         let formData = new FormData()
-
+        formData.append('processId', this.state.selectedId)
         this.setState({
             ...this.state, [e.target.name]: e.target.files[0]
         })
@@ -122,7 +122,7 @@ class SolicitaAnuencia extends Component {
                         res.data.file[key][0].originalname,
                         res.data.file[key][0].uploadDate
                     )
-                    axios.put(('/api/solAnuenciaFiles'), {
+                    axios.put(('/api/fileObject'), {
                         itemId: this.state.selectedId,
                         filesArray: {
                             fieldName: filesArray[0],

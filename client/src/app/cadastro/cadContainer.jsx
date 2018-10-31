@@ -133,111 +133,62 @@ class CadastroContainer extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+
+        const cadEmp = {
+            nome: this.state.nome,
+            cpf: this.state.cpf,
+            phone: this.state.phone,
+            cep: this.state.cep,
+            numero: this.state.numero,
+            complemento: this.state.complemento,
+            email: this.state.email,
+            rua: this.state.rua,
+            bairro: this.state.bairro,
+            cidade: this.state.cidade,
+            uf: this.state.uf,
+        }
+        const cadRt = {
+            nomeRt: this.state.nomeRt,
+            emailRt: this.state.emailRt,
+            phoneRt: this.state.phoneRt
+        }
+        const cadProcess = {
+            nProcess: '1',
+            nomeEmpreendimento: this.state.nomeEmpreendimento,
+            modalidade: this.state.modalidade,
+            area: this.state.area,
+            munEmpreendimento: this.state.munEmpreendimento,
+            status: 'Processo cadastrado',
+            tecnico: 'Técnico não alocado',
+            cgt: 'CGT não agendada',
+            vistoria: 'Vistoria não agendada',
+            daeDir: 'DAE não recolhida',
+            daeAnuencia: 'DAE não recolhida',
+            empId: this.state.empId,
+            rtId: this.state.rtId,
+            fileObjects: [],
+            pendencias: [],
+        }
+
         if (!this.state.empMatch && !this.state.empMatch[0] && !this.state.rtMatch && !this.state.rtMatch[0]) {
-            axios.post(('/api/cadastro_emp/'), {
-                nome: this.state.nome,
-                cpf: this.state.cpf,
-                phone: this.state.phone,
-                cep: this.state.cep,
-                numero: this.state.numero,
-                complemento: this.state.complemento,
-                email: this.state.email,
-                rua: this.state.rua,
-                bairro: this.state.bairro,
-                cidade: this.state.cidade,
-                uf: this.state.uf,
-            })
-                .then(res => {
-                    this.setState({ empId: res.data.Cadastro_id })
-                })
-                .then((res) =>
-                    axios.post('/api/cadastro_rt', {
-                        nomeRt: this.state.nomeRt,
-                        emailRt: this.state.emailRt,
-                        phoneRt: this.state.phoneRt
-                    }))
-                .then(res => {
-                    this.setState({ rtId: res.data.RT_id })
-                })
-                .then(res =>
-                    axios.post('/api/cadastro_process', {
-                        nomeEmpreendimento: this.state.nomeEmpreendimento,
-                        area: this.state.area,
-                        modalidade: this.state.modalidade,
-                        munEmpreendimento: this.state.munEmpreendimento,
-                        status: 'Processo cadastrado',
-                        empId: this.state.empId,
-                        rtId: this.state.rtId
-                    })
-                )
+            axios.post(('/api/cadastro_emp/'), cadEmp)
+                .then(res => cadProcess.empId = res.data.Cadastro_id)
+                .then(res => axios.post('/api/cadastro_rt', cadRt))
+                .then(res => cadProcess.rtId = res.data.RT_id)
+                .then(res => axios.post('/api/cadastro_process', cadProcess))
+
         } else if (!this.state.empMatch && !this.state.empMatch[0] && this.state.rtMatch && this.state.rtMatch[0]) {
-            axios.post(('/api/cadastro_emp/'), {
-                nome: this.state.nome,
-                cpf: this.state.cpf,
-                phone: this.state.phone,
-                cep: this.state.cep,
-                numero: this.state.numero,
-                complemento: this.state.complemento,
-                email: this.state.email,
-                rua: this.state.rua,
-                bairro: this.state.bairro,
-                cidade: this.state.cidade,
-                uf: this.state.uf,
-            })
-                .then(res => {
-                    this.setState({ empId: res.data.Cadastro_id })
-                })
-                .then(res =>
-                    axios.post('/api/cadastro_process', {
-                        nomeEmpreendimento: this.state.nomeEmpreendimento,
-                        area: this.state.area,
-                        modalidade: this.state.modalidade,
-                        munEmpreendimento: this.state.munEmpreendimento,
-                        status: 'Processo cadastrado',
-                        empId: this.state.empId,
-                        rtId: this.state.rtId
-                    })
-                )
+            axios.post(('/api/cadastro_emp/'), cadEmp)
+                .then(res => cadProcess.empId = res.data.Cadastro_id)
+                .then(res => axios.post('/api/cadastro_process', cadProcess))
 
         } else if (this.state.empMatch && this.state.empMatch[0] && !this.state.rtMatch && !this.state.rtMatch[0]) {
+            axios.post('/api/cadastro_rt', cadRt)
+                .then(res => cadProcess.rtId = res.data.RT_id)
+                .then(res => axios.post('/api/cadastro_process', cadProcess))
 
-            axios.post('/api/cadastro_rt', {
-                nomeRt: this.state.nomeRt,
-                emailRt: this.state.emailRt,
-                phoneRt: this.state.phoneRt
-            })
-                .then(res => {
-                    this.setState({ rtId: res.data.RT_id })
-                })
-                .then(res =>
-                    axios.post('/api/cadastro_process', {
-                        nomeEmpreendimento: this.state.nomeEmpreendimento,
-                        area: this.state.area,
-                        modalidade: this.state.modalidade,
-                        munEmpreendimento: this.state.munEmpreendimento,
-                        status: 'Processo cadastrado',
-                        empId: this.state.empId,
-                        rtId: this.state.rtId
-                    })
-                )
         } else if (this.state.empMatch && this.state.empMatch[0] && this.state.rtMatch && this.state.rtMatch[0]) {
-            axios.post('/api/cadastro_process', {
-                nomeEmpreendimento: this.state.nomeEmpreendimento,
-                area: this.state.area,
-                modalidade: this.state.modalidade,
-                munEmpreendimento: this.state.munEmpreendimento,
-                cgt: 'CGT não agendada',
-                vistoria: 'Vistoria não agendada',
-                status: 'Processo cadastrado',
-                empId: this.state.empId,
-                rtId: this.state.rtId,
-                solDirFiles: [],
-                solAnuenciaFiles: []
-
-            })
+            axios.post('/api/cadastro_process', cadProcess)
         }
     }
 

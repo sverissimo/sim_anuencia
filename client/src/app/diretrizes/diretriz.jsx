@@ -21,9 +21,7 @@ class Diretriz extends Component {
         checked: null,
         files: [],
         form: null,
-        dirMunFile: '',
-        levPlanFile: '',
-        dirDaeFile: '',
+        diretrizFile: '',
         showEmpDetails: false,
         showRtDetails: false,
         empId: '',
@@ -31,7 +29,7 @@ class Diretriz extends Component {
         showFiles: false,
         filesCollection: '',
         daeDir: '',
-        emiteDiretriz: false,
+        anexaDiretriz: false,
         dirStatus: {
             createdAt: '',
             cgtOk: false,
@@ -63,7 +61,7 @@ class Diretriz extends Component {
         dirStatus.dirMunOk = false
         dirStatus.daeOk = false
 
-        this.setState({ ...this.state, searchValue: e.target.value, checked: false, dirStatus: dirStatus });
+        this.setState({ ...this.state, searchValue: e.target.value, checked: false, anexaDiretriz: false, dirStatus: dirStatus });
         let clearRadio = document.getElementsByName('group1')
         clearRadio.forEach(radio => radio.checked = false)
     }
@@ -75,7 +73,7 @@ class Diretriz extends Component {
         dirStatus.dirMunOk = false
         dirStatus.daeOk = false
 
-        this.setState({ ...this.state, searchValue: '', checked: null, dirStatus: dirStatus });
+        this.setState({ ...this.state, searchValue: '', checked: null, dirStatus: dirStatus, anexaDiretriz: false });
         document.getElementsByName('search')[0].value = '';
         let clearRadio = document.getElementsByName('group1')
         clearRadio.forEach(radio => {
@@ -99,21 +97,13 @@ class Diretriz extends Component {
     fileUpload(e) {
 
         let formData = new FormData()
-
+        formData.append('processId', this.state.selectedId)
         this.setState({
             ...this.state, [e.target.name]: e.target.files[0]
         })
-        let k = []
-        solDirConfig.map(item => k.push(item.nameInput))
 
         setTimeout(() => {
-            k.map(inputName => {
-                for (let keys in this.state) {
-                    keys.match(inputName) ?
-                        formData.append(inputName, this.state[keys])
-                        : void 0
-                }
-            })
+            formData.append('diretrizFile', this.state.diretrizFile)
         }, 100);
 
         setTimeout(() => {
@@ -122,7 +112,7 @@ class Diretriz extends Component {
     }
 
     handleSubmit(e) {
-        axios.post('/api/solDirUpload', this.state.form)
+        axios.post('/api/diretrizUpload', this.state.form)
             .then(res => {
 
                 for (let key in res.data.file) {
@@ -133,7 +123,7 @@ class Diretriz extends Component {
                         res.data.file[key][0].originalname,
                         res.data.file[key][0].uploadDate
                     )
-                    axios.put(('/api/solDirFiles'), {
+                    axios.put(('/api/fileObject'), {
                         itemId: this.state.selectedId,
                         filesArray: {
                             fieldName: filesArray[0],
@@ -141,7 +131,7 @@ class Diretriz extends Component {
                             originalName: filesArray[2],
                             uploadDate: filesArray[3]
                         },
-                        status: 'Aguardando Diretrizes Metropolitanas'
+                        status: 'Diretrizes Metropolitanas emitidas'
                     })
                 }
             })
@@ -177,7 +167,7 @@ class Diretriz extends Component {
         dirStatus[field] = !this.state.dirStatus[field]
         let { cgtOk, vistoriaOk, daeOk, dirMunOk } = dirStatus
         cgtOk === true && (vistoriaOk === true && (dirMunOk === true && daeOk === true)) ?
-            this.setState({ emiteDiretriz: true }) : this.setState({ emiteDiretriz: false })
+            this.setState({ anexaDiretriz: true }) : this.setState({ anexaDiretriz: false })
 
     }
 
@@ -189,11 +179,10 @@ class Diretriz extends Component {
         this.setState({
             dirStatus: dirStatus
         })
-        console.log(this.props.cadastro.processCollection[0].pendencias[this.props.cadastro.processCollection[0].pendencias.length-1])
     }
 
     enviaPendencias(e) {
-        
+
         let dirStatus = this.state.dirStatus
         dirStatus.createdAt = new Date()
 
@@ -202,10 +191,6 @@ class Diretriz extends Component {
             pendencias: dirStatus
         })
             .then(res => console.log(res))
-        
-    }
-
-    emiteDiretriz(e) {
 
     }
 
@@ -248,7 +233,7 @@ class Diretriz extends Component {
                         dirStatus={this.state.dirStatus}
                         change={this.handleChange.bind(this)}
                         enviaPendencias={this.enviaPendencias.bind(this)}
-                        emiteDiretriz={this.state.emiteDiretriz}
+                        anexaDiretriz={this.state.anexaDiretriz}
                     />
 
 

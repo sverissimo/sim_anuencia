@@ -2,7 +2,7 @@ import React from 'react';
 import showDate from '../common/showDate'
 
 const DiretrizRow = (props) => {
-    let { processCollection, selectedId, checkItem, change, dirStatus, emiteDiretriz, enviaPendencias } = props
+    let { processCollection, selectedId, checkItem, change, dirStatus, anexaDiretriz, enviaPendencias } = props
 
     let temp = processCollection.filter(el => el._id.match(selectedId))
     let processo = temp[0]
@@ -31,7 +31,7 @@ const DiretrizRow = (props) => {
                     )
                 }
                 {
-                    emiteDiretriz === false ?
+                    anexaDiretriz === false ?
 
                         <div className="row">
                             <div className="col s12">
@@ -72,7 +72,7 @@ const DiretrizRow = (props) => {
                                         <i className="material-icons grey-text text-darken-1 small">attach_file</i>
                                         <input
                                             type="file"
-                                            name='DirMetropolitana'
+                                            name='diretrizFile'
                                             onChange={props.upload} />
                                     </div>
                                 </div>
