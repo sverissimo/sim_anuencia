@@ -38,16 +38,20 @@ const ShowFiles = (props) => {
                     </div>
                     <div className="row">
                         <div className="col s6 ">
-                            Arquivo
+                        <h6 style={{ fontSize:'1.2em', fontWeight: 500 }}>Arquivo</h6>    
+                            
                                 </div>
                         <div className="col s6">
-                            Data de Upload
+                        <h6 style={{ fontSize:'1.2em', fontWeight: 500 }}>Data de Upload</h6>    
                             </div>
                     </div>
                     {files.map(file =>
                         <div>
                             <div className="row">
-                                <div id={file._id} onClick={download} className="col s6">
+                                <div id={file._id}
+                                style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
+                                className="col s6"
+                                onClick={download}>
                                     {labels(file.metadata.fieldName)}</div>
                                 <div className="col s6">
                                     {showDate(file.uploadDate)}

@@ -23,12 +23,28 @@ const processSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    vistoria: {
+    daeDir: {
+        type: String,
+        trim: true
+    },
+    tecnico: {
         type: String,
         trim: true
     },
     cgt: {
         type: {},
+        trim: true
+    },
+    vistoria: {
+        type: String,
+        trim: true
+    },    
+    pendencias: {
+        type: [],
+        trim: true
+    },
+    daeAnuencia: {
+        type: String,
         trim: true
     },
     status: {

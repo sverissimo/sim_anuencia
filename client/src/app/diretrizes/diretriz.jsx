@@ -17,7 +17,6 @@ class Diretriz extends Component {
     state = {
         searchValue: '',
         dataMatch: [],
-        toggleUpload: false,
         selectedId: '',
         checked: null,
         files: [],
@@ -30,7 +29,18 @@ class Diretriz extends Component {
         empId: '',
         rtId: '',
         showFiles: false,
-        filesCollection: ''
+        filesCollection: '',
+        daeDir: '',
+        emiteDiretriz: false,
+        dirStatus: {
+            createdAt: '',
+            cgtOk: false,
+            vistoriaOk: false,
+            daeOk: false,
+            dirMunOk: false,
+            pendencias: ''
+        }
+
     }
 
     componentDidMount() {
@@ -47,14 +57,25 @@ class Diretriz extends Component {
     }
 
     handleSearch(e) {
+        let dirStatus = this.state.dirStatus
+        dirStatus.cgtOk = false
+        dirStatus.vistoriaOk = false
+        dirStatus.dirMunOk = false
+        dirStatus.daeOk = false
 
-        this.setState({ ...this.state, searchValue: e.target.value, checked: false });
+        this.setState({ ...this.state, searchValue: e.target.value, checked: false, dirStatus: dirStatus });
         let clearRadio = document.getElementsByName('group1')
         clearRadio.forEach(radio => radio.checked = false)
     }
 
     clearSearch(e) {
-        this.setState({ ...this.state, searchValue: '', checked: null });
+        let dirStatus = this.state.dirStatus
+        dirStatus.cgtOk = false
+        dirStatus.vistoriaOk = false
+        dirStatus.dirMunOk = false
+        dirStatus.daeOk = false
+
+        this.setState({ ...this.state, searchValue: '', checked: null, dirStatus: dirStatus });
         document.getElementsByName('search')[0].value = '';
         let clearRadio = document.getElementsByName('group1')
         clearRadio.forEach(radio => {
@@ -149,6 +170,45 @@ class Diretriz extends Component {
         this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
     }
 
+    checkItem(e) {
+        let field = e.target.id
+        let dirStatus = this.state.dirStatus
+
+        dirStatus[field] = !this.state.dirStatus[field]
+        let { cgtOk, vistoriaOk, daeOk, dirMunOk } = dirStatus
+        cgtOk === true && (vistoriaOk === true && (dirMunOk === true && daeOk === true)) ?
+            this.setState({ emiteDiretriz: true }) : this.setState({ emiteDiretriz: false })
+
+    }
+
+    handleChange(e) {
+        let input = e.target.value
+        let dirStatus = this.state.dirStatus
+        dirStatus.pendencias = input
+        dirStatus.createdAt = new Date()
+        this.setState({
+            dirStatus: dirStatus
+        })
+        console.log(this.props.cadastro.processCollection[0].pendencias[this.props.cadastro.processCollection[0].pendencias.length-1])
+    }
+
+    enviaPendencias(e) {
+        
+        let dirStatus = this.state.dirStatus
+        dirStatus.createdAt = new Date()
+
+        axios.put('api/pendencias', {
+            id: this.state.selectedId,
+            pendencias: dirStatus
+        })
+            .then(res => console.log(res))
+        
+    }
+
+    emiteDiretriz(e) {
+
+    }
+
     render() {
 
         let { dataMatch } = this.state
@@ -180,10 +240,15 @@ class Diretriz extends Component {
                     <DiretrizRow
                         selectedId={this.state.selectedId}
                         showFiles={this.state.showFiles}
+                        checkItem={this.checkItem.bind(this)}
                         close={this.closeDetails.bind(this)}
                         processCollection={this.props.cadastro.processCollection}
                         filesCollection={this.state.filesCollection}
                         upload={this.fileUpload.bind(this)}
+                        dirStatus={this.state.dirStatus}
+                        change={this.handleChange.bind(this)}
+                        enviaPendencias={this.enviaPendencias.bind(this)}
+                        emiteDiretriz={this.state.emiteDiretriz}
                     />
 
 

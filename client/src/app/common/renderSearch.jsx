@@ -1,13 +1,10 @@
 import React from 'react';
 import { configLabels, configEmpLabels, configRtLabels } from '../common/configLabels';
 import fieldConfig from './fieldConfig'
-import ShowFiles from './showFiles';
-
 
 const RenderSearch = (props) => {
     let { search, collection, rtCollection, processCollection, onSelect, checked, fields, color, renderEmp,
-        renderRt, empDetails, rtDetails, download, showFiles } = props
-
+        renderRt, empDetails, rtDetails, showFiles } = props
 
     let solDirObjFiles = []
     let sdFilesArray = []
@@ -20,9 +17,6 @@ const RenderSearch = (props) => {
         sdFilesArray = solDirObjFiles[0]
 
     }
-
-
-    //item.solDirFiles.length > 0 ? solDirFiles.push(item.solDirFiles[0]) : void 0
 
     //****************** HEADER *********************
 
@@ -101,7 +95,6 @@ const RenderSearch = (props) => {
                     }
 
                     let i2 = []
-                    let solDirFiles = []
                     fields.map(i => i2.push(itemArray[i]))
 
                     return (

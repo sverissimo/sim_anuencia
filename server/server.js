@@ -177,13 +177,13 @@ app.post('/api/solAnuenciaUpload', upload.fields([
 
 app.get('/api/files', (req, res) => {
 
- 
-        filesModel.find().exec((err, doc)=> {
-            if (err) throw err;
-            res.send(doc)
-           
-        });
-    
+
+    filesModel.find().exec((err, doc) => {
+        if (err) throw err;
+        res.send(doc)
+
+    });
+
 })
 
 
@@ -324,6 +324,16 @@ app.put('/api/solDirFiles/', (req, res) => {
             $push: { solDirFiles: req.body.filesArray },
             $set: { status: req.body.status }
         },
+
+    ).then(result => res.json(result))
+})
+
+app.put('/api/pendencias/', (req, res) => {
+
+    processModel.updateOne(
+        { '_id': req.body.id },
+        { $push: { "pendencias": req.body.pendencias } },
+
 
     ).then(result => res.json(result))
 })

@@ -1,12 +1,12 @@
 import React from 'react';
 import RenderSearch from '../common/renderSearch';
 import Title from '../common/titleSubtitle';
-import {BackButton} from '../common/buttons'
+import { BackButton } from '../common/buttons'
 
 const Diretriz = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails, download, showFiles} = props
+        children, empDetails, rtDetails, download, showFiles, submitPendencias} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
@@ -43,14 +43,13 @@ const Diretriz = (props) => {
                 onSelect={selectProcess}
                 checked={data.checked}
                 color={setColor}
-                fields={[4,5,8,9,10,14,]}
+                fields={[5,6,9,10,11,15,]}
                 renderEmp={true}
-                renderRt={true}
+                renderRt={false}
                 empDetails={empDetails}
                 rtDetails={rtDetails}
                 download={download}
                 showFiles={showFiles}
-
                 />
                 
             </div>
@@ -68,19 +67,26 @@ const Diretriz = (props) => {
                 {
                     data.selectedId && data.checked  ?
                         (<div>
-                            <fieldset>
+                            <fieldset 
+                            style={{ paddingBottom: '0px', marginBottom: '20px'}}>
                                 <legend style={{ fontSize: '1.3rem' }}>
                                     {nameParc[0].nomeEmpreendimento} - Diretrizes Metropolitanas
-                            </legend>
+                                </legend>
                                 {children}
                             </fieldset>
-                            <button
-                                className="btn teal darken-3 right"
-                                style={{ marginBottom: '20px' }}
-                                onClick = {submitFiles}  
-                            >Solicitar Diretrizes</button>
+
+                            
                         </div>)
                         : void 0
+                }
+                {
+                    data.emiteDiretriz ?
+                        <button
+                            className="btn teal darken-3 right"
+                            style={{ marginBottom: '30px' }}
+                            onClick={submitFiles}
+                        >Emitir Diretrizes Metropolitanas
+                    </button> : void 0
                 }
             </div>
         </div>
