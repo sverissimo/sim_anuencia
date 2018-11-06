@@ -49,6 +49,7 @@ const DiretrizRow = (props) => {
                                     Enviar Pendências
                             </button>
                             </div>
+                          
                         </div>
                         :
                         <div>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
+import DateTime from 'react-datetime';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -7,7 +9,6 @@ import { loadEmpData, loadRtData, loadProcessData, setColor } from '../cadastro/
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
-import { solDirConfig } from '../common/configLabels'
 import ShowDetails from '../common/showDetails'
 import ShowFiles from '../common/showFiles';
 
@@ -30,6 +31,7 @@ class Diretriz extends Component {
         filesCollection: '',
         daeDir: '',
         anexaDiretriz: false,
+        m: moment(),
         dirStatus: {
             createdAt: '',
             cgtOk: false,
@@ -51,7 +53,7 @@ class Diretriz extends Component {
 
         axios.get('/api/files')
             .then(res => this.setState({ filesCollection: res.data }))
-
+            
     }
 
     handleSearch(e) {
@@ -191,6 +193,17 @@ class Diretriz extends Component {
             pendencias: dirStatus
         })
             .then(res => console.log(res))
+    }
+
+    setDate = d => {
+        this.setState({ m: d._d })
+        console.log(this.state.m)
+
+    }
+
+    saveDate = d => {
+
+        console.log(this.state.m)
 
     }
 
@@ -205,58 +218,74 @@ class Diretriz extends Component {
         } else {
             dataMatch = this.props.cadastro.processCollection
         }
-
+        var inputProps = {
+            name: 'appt_time'
+        }
         return (
+
             <div>
-                <DiretrizTemplate
-                    data={this.state}
-                    redux={this.props.cadastro}
-                    search={e => this.handleSearch(e)}
-                    searchArray={dataMatch}
-                    selectProcess={this.handleSelect.bind(this)}
-                    submitFiles={this.handleSubmit.bind(this)}
-                    setColor={this.props.cadastro.setColor}
-                    clear={this.clearSearch.bind(this)}
-                    empDetails={this.empDetails.bind(this)}
-                    rtDetails={this.rtDetails.bind(this)}
-                    download={this.download.bind(this)}
-                    showFiles={this.showFiles.bind(this)}
-                >
-                    <DiretrizRow
-                        selectedId={this.state.selectedId}
-                        showFiles={this.state.showFiles}
-                        checkItem={this.checkItem.bind(this)}
-                        close={this.closeDetails.bind(this)}
-                        processCollection={this.props.cadastro.processCollection}
-                        filesCollection={this.state.filesCollection}
-                        upload={this.fileUpload.bind(this)}
-                        dirStatus={this.state.dirStatus}
-                        change={this.handleChange.bind(this)}
-                        enviaPendencias={this.enviaPendencias.bind(this)}
-                        anexaDiretriz={this.state.anexaDiretriz}
-                    />
-
-
-                </DiretrizTemplate>
-
-                <ShowDetails
-                    empId={this.state.empId}
-                    rtId={this.state.rtId}
-                    showEmp={this.state.showEmpDetails}
-                    showRt={this.state.showRtDetails}
-                    close={this.closeDetails.bind(this)}
-                    empCollection={this.props.cadastro.empCollection}
-                    rtCollection={this.props.cadastro.rtCollection}
-                />
-
-                <ShowFiles
-                    selectedId={this.state.selectedId}
-                    showFiles={this.state.showFiles}
-                    close={this.closeDetails.bind(this)}
-                    processCollection={this.props.cadastro.processCollection}
-                    filesCollection={this.state.filesCollection}
-                    download={this.download.bind(this)}
-                />
+                {
+                    !this.state.showFiles ?
+                        <div>
+                            <DiretrizTemplate
+                                data={this.state}
+                                redux={this.props.cadastro}
+                                search={e => this.handleSearch(e)}
+                                searchArray={dataMatch}
+                                selectProcess={this.handleSelect.bind(this)}
+                                submitFiles={this.handleSubmit.bind(this)}
+                                setColor={this.props.cadastro.setColor}
+                                clear={this.clearSearch.bind(this)}
+                                empDetails={this.empDetails.bind(this)}
+                                rtDetails={this.rtDetails.bind(this)}
+                                download={this.download.bind(this)}
+                                showFiles={this.showFiles.bind(this)}
+                            >
+                                <DiretrizRow
+                                    selectedId={this.state.selectedId}
+                                    showFiles={this.state.showFiles}
+                                    checkItem={this.checkItem.bind(this)}
+                                    close={this.closeDetails.bind(this)}
+                                    processCollection={this.props.cadastro.processCollection}
+                                    filesCollection={this.state.filesCollection}
+                                    upload={this.fileUpload.bind(this)}
+                                    dirStatus={this.state.dirStatus}
+                                    change={this.handleChange.bind(this)}
+                                    enviaPendencias={this.enviaPendencias.bind(this)}
+                                    anexaDiretriz={this.state.anexaDiretriz}
+                                />
+                            </DiretrizTemplate>
+                            <ShowDetails
+                                empId={this.state.empId}
+                                rtId={this.state.rtId}
+                                showEmp={this.state.showEmpDetails}
+                                showRt={this.state.showRtDetails}
+                                close={this.closeDetails.bind(this)}
+                                empCollection={this.props.cadastro.empCollection}
+                                rtCollection={this.props.cadastro.rtCollection}
+                            />
+                            <div style={{ position: 'absolute', width: '15%', right: '40%' }}>
+                                <DateTime
+                                    input={true}
+                                    open={false}
+                                    inputProps={inputProps}
+                                    value={this.state.m}
+                                    onChange={this.setDate.bind(this)}
+                                />
+                            </div>
+                        </div>
+                        :
+                        <div>
+                            <ShowFiles
+                                selectedId={this.state.selectedId}
+                                showFiles={this.state.showFiles}
+                                close={this.closeDetails.bind(this)}
+                                processCollection={this.props.cadastro.processCollection}
+                                filesCollection={this.state.filesCollection}
+                                download={this.download.bind(this)}
+                            />
+                        </div>
+                }
             </div>
         );
     }

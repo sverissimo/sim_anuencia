@@ -9,8 +9,6 @@ import diretriz from './app/diretrizes/diretriz';
 import SolicitaAnuencia from './app/anuencia/solicitaAnuencia';
 import EditData from './app/buscar/editData'
 
-
-
 const Routes = () => {
     return (
         <Switch>
