@@ -2,13 +2,39 @@ import React from 'react';
 import showDate from '../common/showDate'
 
 const DiretrizRow = (props) => {
-    let { processCollection, selectedId, checkItem, change, dirStatus, anexaDiretriz, enviaPendencias } = props
+
+    let { processCollection, selectedId, checkItem, change, dirStatus, anexaDiretriz,
+        enviaPendencias, showCalendar } = props
 
     let temp = processCollection.filter(el => el._id.match(selectedId))
     let processo = temp[0]
 
     let selectedFields = [['CGT', 'cgt', 'cgtOk'], ['Vistoria', 'vistoria', 'vistoriaOk'],
     ['Diretriz Municipal', 'dirMunOk', 'dirMunOk'], ['Pagamento da DAE', 'daeOk', 'daeOk']]
+
+    const setCgt = (i) => {
+
+        if (i[1] === 'cgt' || i[1] === 'vistoria') {
+            if (processo[i[1]] === i[0] + ' não agendada') {
+                
+                return <span id={i[1]} onClick={showCalendar} 
+                style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}>
+                : Agendar {`${i[0]}`} 
+                </span>
+            } else {
+                return (
+                    <span>
+
+                        : {showDate(processo[i[1]])  }
+                        <span style={{  cursor: 'pointer' }}> <i id={i[1]} onClick={showCalendar} title={`Reagendar ${i[0]}`} className="material-icons">calendar_today</i>  </span>
+                    </span>
+                    
+                    )
+            }
+        } else {
+            return processo[i[1]]
+        }
+    }
 
     return (
         <div
@@ -23,10 +49,7 @@ const DiretrizRow = (props) => {
                                 id={i[2]}
                                 onClick={checkItem} />
                             <label htmlFor={i[2]}>{i[0]}</label>
-                            {
-                                i[1] === 'cgt' || i[1] === 'vistoria' ?
-                                    ': ' + showDate(processo[i[1]]) : processo[i[1]]
-                            }
+                            {setCgt(i)}
                         </div>
                     )
                 }
@@ -49,7 +72,7 @@ const DiretrizRow = (props) => {
                                     Enviar Pendências
                             </button>
                             </div>
-                          
+
                         </div>
                         :
                         <div>

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import 'moment/locale/pt-br'
 import DateTime from 'react-datetime';
+import styles from '../css/react-datetime.css'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, setColor } from '../cadastro/cadActions'
+import { setCgtDate, setVistoriaDate } from './diretrizActions'
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
@@ -32,6 +35,8 @@ class Diretriz extends Component {
         daeDir: '',
         anexaDiretriz: false,
         m: moment(),
+        cgtCalendar: false,
+        vistoriaCalendar: false,
         dirStatus: {
             createdAt: '',
             cgtOk: false,
@@ -43,6 +48,7 @@ class Diretriz extends Component {
 
     }
 
+
     componentDidMount() {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
@@ -53,7 +59,7 @@ class Diretriz extends Component {
 
         axios.get('/api/files')
             .then(res => this.setState({ filesCollection: res.data }))
-            
+
     }
 
     handleSearch(e) {
@@ -195,9 +201,32 @@ class Diretriz extends Component {
             .then(res => console.log(res))
     }
 
+    showCalendar(el) {
+        this.setState({ ...this.state, [`${el.target.id}Calendar`]: true })
+
+    }
+
+    hideCalendar(d) {
+        if (this.state.cgtCalendar) {
+            this.setState({ ...this.state, cgtCalendar: false })
+            this.props.setCgtDate(this.state.m, this.state.selectedId)
+        } else {
+            this.setState({ ...this.state, vistoriaCalendar: false })
+            this.props.setVistoriaDate(this.state.m, this.state.selectedId)
+        }
+
+        console.log(this.props.cadastro.processCollection[0])
+
+        setTimeout(() => {
+            console.log(this.props.cadastro.processCollection[0])
+        }, 200);
+
+    }
+
     setDate = d => {
-        this.setState({ m: d._d })
-        console.log(this.state.m)
+        this.state.cgtCalendar ? this.setState({ m: d._d, cgt: d._d })
+            :
+            this.setState({ m: d._d, vistoria: d._d })
 
     }
 
@@ -218,9 +247,7 @@ class Diretriz extends Component {
         } else {
             dataMatch = this.props.cadastro.processCollection
         }
-        var inputProps = {
-            name: 'appt_time'
-        }
+
         return (
 
             <div>
@@ -253,8 +280,36 @@ class Diretriz extends Component {
                                     change={this.handleChange.bind(this)}
                                     enviaPendencias={this.enviaPendencias.bind(this)}
                                     anexaDiretriz={this.state.anexaDiretriz}
-                                />
+                                    showCalendar={this.showCalendar.bind(this)}
+                                    cgtCalendar={this.state.cgtCalendar}
+                                    vistoriaCalendar={this.state.vistoriaCalendar}
+                                >
+
+
+                                </DiretrizRow>
                             </DiretrizTemplate>
+                            {
+                                (this.state.cgtCalendar || this.state.vistoriaCalendar) ?
+
+                                    <div style={{
+                                        position: 'fixed',
+                                        top: '50%',
+                                        right: '43%',
+                                        backgroundColor: 'white',
+
+                                    }}
+                                    >
+                                        <DateTime
+                                            className={styles}
+                                            input={true}
+                                            inputProps={{ readOnly: true }}
+                                            value={this.state.m}
+                                            onChange={this.setDate.bind(this)}
+                                            onBlur={this.hideCalendar.bind(this)}
+                                        />
+                                    </div> :
+                                    void 0
+                            }
                             <ShowDetails
                                 empId={this.state.empId}
                                 rtId={this.state.rtId}
@@ -264,15 +319,6 @@ class Diretriz extends Component {
                                 empCollection={this.props.cadastro.empCollection}
                                 rtCollection={this.props.cadastro.rtCollection}
                             />
-                            <div style={{ position: 'absolute', width: '15%', right: '40%' }}>
-                                <DateTime
-                                    input={true}
-                                    open={false}
-                                    inputProps={inputProps}
-                                    value={this.state.m}
-                                    onChange={this.setDate.bind(this)}
-                                />
-                            </div>
                         </div>
                         :
                         <div>
@@ -298,7 +344,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, setColor }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, setColor, setCgtDate, setVistoriaDate }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Diretriz);
