@@ -43,7 +43,7 @@ export const configLabels = [
     {
         name: 'status',
         label: 'Status do processo',
-        div: 'col s1'
+        div: 'col s2'
     },
     {
         name: 'tecnico',

@@ -3,12 +3,13 @@ import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, setColor } from './../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } from './../cadastro/cadActions'
 
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolAnuenciaFilesRow from './solAnuenciaFilesRow';
 import { solAnuenciaConfig1, solAnuenciaConfig2 } from '../common/configLabels'
 import ShowDetails from '../common/showDetails'
+import ShowFiles from '../common/showFiles'
 
 class SolicitaAnuencia extends Component {
 
@@ -22,6 +23,7 @@ class SolicitaAnuencia extends Component {
         form: null,
         showEmpDetails: false,
         showRtDetails: false,
+        showFiles: false,
         empId: '',
         rtId: '',
         regImovel: '',
@@ -47,6 +49,8 @@ class SolicitaAnuencia extends Component {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
+        !this.props.cadastro.filesCollection[0] ? this.props.loadFilesData() : void 0
+
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
@@ -144,8 +148,21 @@ class SolicitaAnuencia extends Component {
     }
 
     closeDetails() {
-        this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
+        this.setState({ showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
     }
+
+    download(e) {
+        axios.get('/api/downloadSolDir/' + e.target.id)
+            .then(res => {
+                window.location.href = '/api/downloadSolDir/' + res.headers.fileid;
+            })
+    }
+
+    showFiles(e) {
+        this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
+    }
+
+
 
     render() {
 
@@ -161,66 +178,76 @@ class SolicitaAnuencia extends Component {
 
         return (
             <div>
-                <SolicitaAnuenciaTemplate
-                    data={this.state}
-                    redux={this.props.cadastro}
-                    search={e => this.handleSearch(e)}
-                    searchArray={dataMatch}
-                    selectProcess={this.handleSelect.bind(this)}
-                    submitFiles={this.handleSubmit.bind(this)}
-                    setColor={this.props.cadastro.setColor}
-                    clear={this.clearSearch.bind(this)}
-                    empDetails={this.empDetails.bind(this)}
-                    rtDetails={this.rtDetails.bind(this)}
-                    array={solAnuenciaConfig1}
-                    array2={solAnuenciaConfig2}
-                >
+                {
+                    this.state.showFiles ?
+                        <ShowFiles
+                            selectedId={this.state.selectedId}
+                            showFiles={this.state.showFiles}
+                            close={this.closeDetails.bind(this)}
+                            processCollection={this.props.cadastro.processCollection}
+                            filesCollection={this.props.cadastro.filesCollection}
+                            download={this.download.bind(this)}
+                        />
+                        :
+                        <div>
+                            <SolicitaAnuenciaTemplate
+                                data={this.state}
+                                redux={this.props.cadastro}
+                                search={e => this.handleSearch(e)}
+                                searchArray={dataMatch}
+                                selectProcess={this.handleSelect.bind(this)}
+                                submitFiles={this.handleSubmit.bind(this)}
+                                setColor={this.props.cadastro.setColor}
+                                clear={this.clearSearch.bind(this)}
+                                empDetails={this.empDetails.bind(this)}
+                                rtDetails={this.rtDetails.bind(this)}
+                                array={solAnuenciaConfig1}
+                                array2={solAnuenciaConfig2}
+                                showFiles={this.showFiles.bind(this)}
+                            >
+                                {
+                                    solAnuenciaConfig1.map((item, i) => {
+                                        return (
+                                            <div className='col s6' key={i}>
 
+                                                <SolAnuenciaFilesRow
+                                                    object={item}
+                                                    key={i}
+                                                    upload={this.fileUpload.bind(this)}
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
+                                <div className="row">
+                                    {
+                                        solAnuenciaConfig2.map((item, i) => {
+                                            return (
+                                                <div className='col s6' key={i}>
 
-                    {
-                        solAnuenciaConfig1.map((item, i) => {
-                            return (
-                                <div className='col s6' key={i}>
-
-                                    <SolAnuenciaFilesRow
-                                        object={item}
-                                        key={i}
-                                        upload={this.fileUpload.bind(this)}
-                                    />
+                                                    <SolAnuenciaFilesRow
+                                                        object={item}
+                                                        key={i}
+                                                        upload={this.fileUpload.bind(this)}
+                                                    />
+                                                </div>
+                                            )
+                                        })
+                                    }
                                 </div>
-                            )
-                        })
-                    }
-
-                    <div className="row">
-                        {
-                            solAnuenciaConfig2.map((item, i) => {
-                                return (
-                                    <div className='col s6' key={i}>
-
-                                        <SolAnuenciaFilesRow
-                                            object={item}
-                                            key={i}
-                                            upload={this.fileUpload.bind(this)}
-                                        />
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-
-
-                </SolicitaAnuenciaTemplate>
-
-                <ShowDetails
-                    empId={this.state.empId}
-                    rtId={this.state.rtId}
-                    showEmp={this.state.showEmpDetails}
-                    showRt={this.state.showRtDetails}
-                    close={this.closeDetails.bind(this)}
-                    empCollection={this.props.cadastro.empCollection}
-                    rtCollection={this.props.cadastro.rtCollection}
-                />
+                            </SolicitaAnuenciaTemplate>
+                            <ShowDetails
+                                empId={this.state.empId}
+                                rtId={this.state.rtId}
+                                showEmp={this.state.showEmpDetails}
+                                showRt={this.state.showRtDetails}
+                                close={this.closeDetails.bind(this)}
+                                empCollection={this.props.cadastro.empCollection}
+                                rtCollection={this.props.cadastro.rtCollection}
+                            >
+                            </ShowDetails>
+                        </div>
+                }
             </div >
         );
     }
@@ -233,7 +260,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, setColor }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SolicitaAnuencia);

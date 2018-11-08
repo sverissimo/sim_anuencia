@@ -1,5 +1,6 @@
 import React from 'react';
 import { BackButton } from '../common/buttons'
+import { CloseWindow } from '../common/buttons'
 import fieldConfig from './fieldConfig'
 
 const ShowDetails = (props) => {
@@ -44,14 +45,10 @@ const ShowDetails = (props) => {
                 </div>
                 <div style={{
                     position: 'absolute',
-                    bottom: '0%',
+                    top: '0%',
                     right: '0%'
                 }}>
-                    <BackButton
-                        onClick={close}
-                        icon='close'
-                        size='btn-tiny'
-                    />
+                    <CloseWindow close={close} />
                 </div>
             </div >
         )

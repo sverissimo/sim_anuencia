@@ -6,7 +6,7 @@ export const ConfirmButton = (props) => {
         <div className="row">
             <div>
                 <button className="btn-flat waves-effect btn-floating right teal"
-                    
+
                     disabled={props.enable}
                     title="Avançar"
                     onClick={props.enableInput}>
@@ -22,7 +22,7 @@ export const BackButton = (props) => {
 
     return (
         <div className="input" >
-            <button className= {`btn-flat waves-effect btn-floating left red darken-3 ${props.size}`}
+            <button className={`btn-flat waves-effect btn-floating left red darken-3 ${props.size}`}
                 disabled={props.disabled}
                 title="Voltar"
                 onClick={() => props.onClick()}>
@@ -72,6 +72,12 @@ export const UpdateButton = (props) => {
     }
 }
 
+export const CloseWindow = (props) => (
+    <div>
+        <i className="material-icons right" title="Fechar" style={{ cursor: 'pointer', color: 'red' }} onClick={props.close}>close</i>
+    </div>
+
+)
 
 /* renderButtons = () => {
     if (this.state.edit === true) {

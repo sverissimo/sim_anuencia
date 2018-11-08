@@ -33,6 +33,18 @@ export function loadProcessData() {
     }
 };
 
+export function loadFilesData() {
+    
+    const request = axios.get('/api/files')
+        .then(res => res.data)
+        .catch(err => console.log(err))
+    return {
+        type: 'LOAD_FILES_DATA',
+        payload: request
+    }
+};
+
+
 export function setColor(color) {
     
       return {

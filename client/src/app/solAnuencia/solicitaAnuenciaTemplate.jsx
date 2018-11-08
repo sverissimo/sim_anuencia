@@ -7,7 +7,7 @@ import {BackButton} from '../common/buttons'
 const SolAnuenciaTemplate = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails} = props
+        children, empDetails, rtDetails, showFiles} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
@@ -48,6 +48,7 @@ const SolAnuenciaTemplate = (props) => {
                 renderRt={true}
                 empDetails={empDetails}
                 rtDetails={rtDetails}
+                showFiles={showFiles}
                 />
                 
             </div>

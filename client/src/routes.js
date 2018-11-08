@@ -6,7 +6,7 @@ import CadastroContainer from './app/cadastro/cadContainer';
 import BuscaContainer from './app/buscar/buscaContainer';
 import SolicitaDiretriz from './app/solDir/solicitaDiretriz';
 import diretriz from './app/diretrizes/diretriz';
-import SolicitaAnuencia from './app/anuencia/solicitaAnuencia';
+import SolicitaAnuencia from './app/solAnuencia/solicitaAnuencia';
 import EditData from './app/buscar/editData'
 
 const Routes = () => {

@@ -43,9 +43,11 @@ class CadastroContainer extends React.Component {
 
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
+        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.setState({ setColor: color })
+
     }
 
     enableRtInput(e) {
@@ -62,6 +64,26 @@ class CadastroContainer extends React.Component {
             enableRt: 'disabled',
             enableProcess: '',
         })
+        if (this.props.cadastro.processCollection[0]) {
+
+            const collection = this.props.cadastro.processCollection
+            const lastNumber = collection.length
+            const currentYear = Number(new Date().getFullYear())
+            let year = Number(new Date(collection[lastNumber - 1].createdAt).getFullYear())
+            let number
+
+            if (year === currentYear) {
+                number = lastNumber
+            } else {
+                year = currentYear
+                number = 0
+            }
+
+            let nProcess = (number + 1) + '/' + year
+            console.log(nProcess)
+            this.setState({ nProcess: nProcess })
+
+        }
     }
     enableEmpInput(e) {
         this.setState({
@@ -132,7 +154,6 @@ class CadastroContainer extends React.Component {
     };
 
     handleSubmit = event => {
-        event.preventDefault();
 
         const cadEmp = {
             nome: this.state.nome,
@@ -153,7 +174,7 @@ class CadastroContainer extends React.Component {
             phoneRt: this.state.phoneRt
         }
         const cadProcess = {
-            nProcess: '1',
+            nProcess: this.state.nProcess,
             nomeEmpreendimento: this.state.nomeEmpreendimento,
             modalidade: this.state.modalidade,
             area: this.state.area,
@@ -231,7 +252,7 @@ class CadastroContainer extends React.Component {
     }
 
     handleBlurRtName = () => {
-        if (this.state.rtMatch !== '') {
+        if (this.state.rtMatch && this.state.rtMatch[0]) {
             this.setState({
                 ...this.state,
                 rtId: this.state.rtMatch[0]._id,

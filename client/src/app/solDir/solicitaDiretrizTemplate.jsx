@@ -47,6 +47,7 @@ const SolicitaDiretriz = (props) => {
                 renderRt={true}
                 empDetails={empDetails}
                 rtDetails={rtDetails}
+                verArquivos={true}
                 />
                 
             </div>

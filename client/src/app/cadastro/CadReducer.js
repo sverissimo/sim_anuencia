@@ -7,6 +7,7 @@ const initState = {
     empCollection: [],
     rtCollection: [],
     processCollection: [],
+    filesCollection: [],
     id: '',
     nome: '',
     cpf: '',
@@ -45,6 +46,9 @@ const CadReducer = (state = initState, action) => {
 
         case 'LOAD_PROCESS_DATA':
             return { ...state, processCollection: action.payload }
+
+        case 'LOAD_FILES_DATA':
+            return { ...state, filesCollection: action.payload }
 
         case 'SET_COLOR':
             return { ...state, setColor: action.payload }

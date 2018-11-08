@@ -4,7 +4,7 @@ import fieldConfig from './fieldConfig'
 
 const RenderSearch = (props) => {
     let { search, collection, rtCollection, processCollection, onSelect, checked, fields, color, renderEmp,
-        renderRt, empDetails, rtDetails, showFiles } = props
+        renderRt, empDetails, rtDetails, showFiles, verArquivos } = props
 
     let solDirObjFiles = []
     let sdFilesArray = []
@@ -64,7 +64,6 @@ const RenderSearch = (props) => {
 
             {/* ***************** BODY / ROWS ***************** */}
             {
-
                 search.map((item, k) => {
 
                     let empName
@@ -129,14 +128,18 @@ const RenderSearch = (props) => {
                                     (!rtName && renderRt) ?
                                         <div className={configRtLabels[1].div}> </div> : void 0
                             }
-                            <div
-                                id={`${item._id}z`}
-                                style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
-                                onClick={showFiles}
-                                className='col s1'
-                            >
-                                Ver arquivos
+                            {
+                                !verArquivos ?
+                                    <div
+                                        id={`${item._id}z`}
+                                        style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
+                                        onClick={showFiles}
+                                        className='col s1'
+                                    >
+                                        Ver arquivos
                                 </div>
+                                    : void 0
+                            }
 
                             <div className="col s1 center">
                                 <input id={item._id}

@@ -1,8 +1,7 @@
 import React from 'react';
 import { allFilesLabels } from './configLabels';
-import { BackButton } from '../common/buttons'
+import { CloseWindow } from '../common/buttons'
 import showDate from './showDate'
-import { relative } from 'path';
 
 const labels = (fieldName) => {
 
@@ -19,17 +18,14 @@ const formatFileSize = (bytes) => {
         return Math.round(bytes / 1024) + ' KB'
 
     } else if (bytes >= 1048576 && bytes < (1048576 * 1024)) {
-        return ((bytes / 1024)/1024).toFixed(2) + ' MB'
+        return ((bytes / 1024) / 1024).toFixed(2) + ' MB'
     } else {
-        return bytes+' bytes'
+        return bytes + ' bytes'
     }
-
-
 }
 
 const ShowFiles = (props) => {
     let { showFiles, close, processCollection, selectedId, filesCollection, download } = props
-
 
     let process = processCollection.filter(el => el._id.match(selectedId))
     let files
@@ -37,9 +33,7 @@ const ShowFiles = (props) => {
         files = filesCollection.filter(el => el.metadata.processId.match(selectedId))
     }
 
-
     if (showFiles && (process && (process[0] && (files && files[0])))) {
-
         return (
             <div className='card'
                 style={{
@@ -55,7 +49,7 @@ const ShowFiles = (props) => {
                     </div>
                     <div className="row">
                         <div className="col s1">
-                            <img src="/images/genericFile.png" />
+                            <img src="/images/multipleFiles2.png" />
                         </div>
                         <div className="col s5">
                             <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Arquivo</h6>
@@ -94,11 +88,7 @@ const ShowFiles = (props) => {
                     top: '0%',
                     right: '0%'
                 }}>
-                    <BackButton
-                        onClick={close}
-                        icon='close'
-                        size='btn-tiny'
-                    />
+                    <CloseWindow close={close} />
                 </div>
             </div>
         )
@@ -123,21 +113,16 @@ const ShowFiles = (props) => {
                 </div>
                 <div style={{
                     position: 'absolute',
-                    bottom: '0%',
+                    top: '0%',
                     right: '0%'
                 }}>
-                    <BackButton
-                        onClick={close}
-                        icon='close'
-                        size='btn-tiny'
-                    />
+                    <CloseWindow close={close} />
                 </div>
             </div>
         )
     } else {
         return null
     }
-
 };
 
 export default ShowFiles;

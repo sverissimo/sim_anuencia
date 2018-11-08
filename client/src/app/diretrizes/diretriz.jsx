@@ -7,7 +7,7 @@ import styles from '../css/react-datetime.css'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, setColor } from '../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } from '../cadastro/cadActions'
 import { setCgtDate, setVistoriaDate } from './diretrizActions'
 
 import DiretrizTemplate from './diretrizTemplate';
@@ -16,7 +16,6 @@ import ShowDetails from '../common/showDetails'
 import ShowFiles from '../common/showFiles';
 
 class Diretriz extends Component {
-
 
     state = {
         searchValue: '',
@@ -48,17 +47,14 @@ class Diretriz extends Component {
 
     }
 
-
     componentDidMount() {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
+        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
+        !this.props.cadastro.filesCollection[0] ? this.props.loadFilesData() : void 0
 
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
-
-        axios.get('/api/files')
-            .then(res => this.setState({ filesCollection: res.data }))
 
     }
 
@@ -155,13 +151,12 @@ class Diretriz extends Component {
     closeDetails() {
         this.setState({ showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
     }
-    download(e) {
 
+    download(e) {
         axios.get('/api/downloadSolDir/' + e.target.id)
             .then(res => {
                 window.location.href = '/api/downloadSolDir/' + res.headers.fileid;
             })
-
     }
 
     showFiles(e) {
@@ -230,10 +225,20 @@ class Diretriz extends Component {
 
     }
 
-    saveDate = d => {
+    renderInput = (props, openCalendar, closeCalendar) => {
+        function clear() {
+            props.onChange({ target: { value: '' } });
+        }
+        props.style = { marginBottom: '0px', backgroundColor: '#F8F8FF', fontWeight: 500 }
+        props.className = 'center-align'
+        return (
+            <div>
 
-        console.log(this.state.m)
-
+                <i className="material-icons right" style={{ cursor: 'pointer', color: 'red' }} onClick={closeCalendar}>close</i>
+                <i className="material-icons" style={{ cursor: 'pointer', color: 'gold' }} onClick={clear}>backspace</i>
+                <input className="red" {...props} />
+            </div>
+        );
     }
 
     render() {
@@ -249,7 +254,6 @@ class Diretriz extends Component {
         }
 
         return (
-
             <div>
                 {
                     !this.state.showFiles ?
@@ -274,7 +278,7 @@ class Diretriz extends Component {
                                     checkItem={this.checkItem.bind(this)}
                                     close={this.closeDetails.bind(this)}
                                     processCollection={this.props.cadastro.processCollection}
-                                    filesCollection={this.state.filesCollection}
+                                    filesCollection={this.props.cadastro.filesCollection}
                                     upload={this.fileUpload.bind(this)}
                                     dirStatus={this.state.dirStatus}
                                     change={this.handleChange.bind(this)}
@@ -285,7 +289,6 @@ class Diretriz extends Component {
                                     vistoriaCalendar={this.state.vistoriaCalendar}
                                 >
 
-
                                 </DiretrizRow>
                             </DiretrizTemplate>
                             {
@@ -293,15 +296,19 @@ class Diretriz extends Component {
 
                                     <div style={{
                                         position: 'fixed',
-                                        top: '50%',
+                                        top: '33%',
                                         right: '43%',
+                                        width: '253px',
+                                        border: '2px solid #ddd',
                                         backgroundColor: 'white',
 
                                     }}
                                     >
                                         <DateTime
+                                            renderInput={this.renderInput}
                                             className={styles}
                                             input={true}
+                                            open={true}
                                             inputProps={{ readOnly: true }}
                                             value={this.state.m}
                                             onChange={this.setDate.bind(this)}
@@ -327,7 +334,7 @@ class Diretriz extends Component {
                                 showFiles={this.state.showFiles}
                                 close={this.closeDetails.bind(this)}
                                 processCollection={this.props.cadastro.processCollection}
-                                filesCollection={this.state.filesCollection}
+                                filesCollection={this.props.cadastro.filesCollection}
                                 download={this.download.bind(this)}
                             />
                         </div>
@@ -344,7 +351,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, setColor, setCgtDate, setVistoriaDate }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, setCgtDate, setVistoriaDate }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Diretriz);
