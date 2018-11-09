@@ -4,7 +4,7 @@ import fieldConfig from './fieldConfig'
 
 const RenderSearch = (props) => {
     let { search, collection, rtCollection, processCollection, onSelect, checked, fields, color, renderEmp,
-        renderRt, empDetails, rtDetails, showFiles, verArquivos } = props
+        renderRt, empDetails, rtDetails, showFiles, ocultarArquivos } = props
 
     let solDirObjFiles = []
     let sdFilesArray = []
@@ -36,7 +36,8 @@ const RenderSearch = (props) => {
                     fontWeight: 'bold',
                     backgroundColor: color,
                     filter: 'brightness(190%)',
-                    padding: '5px 0px',
+                    padding: '10px 0px 7px 0px',
+                    borderRadius: '10px 10px 5px 5px'
                 }}>
 
                 {
@@ -57,7 +58,15 @@ const RenderSearch = (props) => {
                             RT
                     </div> : void 0
                 }
-                <div className="col s1 right">
+                {
+                    !ocultarArquivos ?
+                        <div className="col s1" >
+                            Arquivos
+                     </div>
+                        : void 0
+                }
+
+                <div className="col s1 " >
                     Selecionar
                      </div>
             </div>
@@ -129,7 +138,7 @@ const RenderSearch = (props) => {
                                         <div className={configRtLabels[1].div}> </div> : void 0
                             }
                             {
-                                !verArquivos ?
+                                !ocultarArquivos ?
                                     <div
                                         id={`${item._id}z`}
                                         style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}

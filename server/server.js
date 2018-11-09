@@ -190,7 +190,7 @@ app.post('/api/solAnuenciaUpload', upload.fields([
 app.get('/api/files', (req, res) => {
 
 
-    filesModel.find().exec((err, doc) => {
+    filesModel.find().sort({uploadDate: -1}).exec((err, doc) => {
         if (err) throw err;
         res.send(doc)
 

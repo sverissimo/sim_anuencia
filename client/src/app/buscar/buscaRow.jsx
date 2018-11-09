@@ -5,22 +5,24 @@ import './../css/styles.css';
 
 const ShowEmpRow = (props) => {
 
-    let { redux, emps, rts, process, empFields, rtFields, edit, deleteOne, data, fields, divConfig, color,
-        empDetails, rtDetails } = props
+    let { redux, emps, rts, process, empFields, rtFields, showRt, edit, deleteOne, data, fields,
+        divConfig, color, empDetails, rtDetails } = props
 
     let searchMatch = []
     let selectedFields
     let headerLabels = []
 
-    if (emps && emps[0] && data.edit === false) {
+    if ((emps && emps[0]) && data.edit === false) {
         searchMatch = emps
         selectedFields = empFields
         headerLabels = configEmpLabels
-    } else if (rts && rts[0] && data.edit === false) {
+        divConfig = ['col s2', 'col s2', 'col s2', 'col s2', 'col s2' ]
+    } else if ((rts && rts[0]) && data.edit === false) {
         searchMatch = rts
         selectedFields = rtFields
         headerLabels = configRtLabels
-    } else if (process && process[0] && data.edit === false) {
+        divConfig = ['col s4', 'col s4', 'col s4']
+    } else if ((process && process[0]) && data.edit === false) {
         searchMatch = process
         selectedFields = fields
         headerLabels = configLabels
@@ -40,7 +42,7 @@ const ShowEmpRow = (props) => {
         : void 0
 
     return (
-        <div className="z-depth-4" style={{ padding: '0px 11px' }}>
+        <div className="z-depth-3" style={{ padding: '0px 11px', borderRadius: '10px' }}>
             <div className="row "
                 style={{
                     fontSize: 16,
@@ -62,13 +64,15 @@ const ShowEmpRow = (props) => {
                         <div>
                             <div className='col s1'>
                                 Interessado </div>
-                            <div className='col s1'>
-                                RT </div>
+
+                            {
+                                showRt ?
+                                    <div className='col s1'>
+                                        RT </div> : void 0
+                            }
                         </div>
                         : void 0
                 }
-
-
             </div>
 
             {/* ***************** BODY / ROWS ***************** */}
@@ -131,7 +135,7 @@ const ShowEmpRow = (props) => {
                             }
 
                             {
-                                (data.select === 'process' && (rtName && rtName.values)) ?
+                                (showRt && (data.select === 'process' && (rtName && rtName.values))) ?
                                     <div id={rtName.values._id} className='col s1' style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={rtDetails}>
                                         {rtName.values.nomeRt}
                                     </div>

@@ -82,7 +82,6 @@ class CadastroContainer extends React.Component {
             let nProcess = (number + 1) + '/' + year
             console.log(nProcess)
             this.setState({ nProcess: nProcess })
-
         }
     }
     enableEmpInput(e) {

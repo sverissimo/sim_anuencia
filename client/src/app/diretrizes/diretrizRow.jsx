@@ -16,20 +16,27 @@ const DiretrizRow = (props) => {
 
         if (i[1] === 'cgt' || i[1] === 'vistoria') {
             if (processo[i[1]] === i[0] + ' não agendada') {
-                
-                return <span id={i[1]} onClick={showCalendar} 
-                style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}>
-                : Agendar {`${i[0]}`} 
-                </span>
+
+                return (
+                    <span>
+                        <strong>{': '}</strong>
+                        <span id={i[1]} onClick={showCalendar}
+                            style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}>
+                            Agendar {`${i[0]}`}
+                        </span>
+                    </span>
+                )
             } else {
                 return (
                     <span>
-
-                        : {showDate(processo[i[1]])  }
-                        <span style={{  cursor: 'pointer' }}> <i id={i[1]} onClick={showCalendar} title={`Reagendar ${i[0]}`} className="material-icons">calendar_today</i>  </span>
+                        <strong>{': '}</strong>
+                        <span>
+                            {showDate(processo[i[1]])}
+                            <span style={{ cursor: 'pointer' }}> <i id={i[1]} onClick={showCalendar} title={`Reagendar ${i[0]}`} className="material-icons">calendar_today</i>  </span>
+                        </span>
                     </span>
-                    
-                    )
+
+                )
             }
         } else {
             return processo[i[1]]
@@ -48,7 +55,7 @@ const DiretrizRow = (props) => {
                             <input type="checkbox"
                                 id={i[2]}
                                 onClick={checkItem} />
-                            <label htmlFor={i[2]}>{i[0]}</label>
+                            <label htmlFor={i[2]} style={{ color: 'black', fontWeight: 500 }}>{i[0]}</label>
                             {setCgt(i)}
                         </div>
                     )

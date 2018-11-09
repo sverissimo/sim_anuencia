@@ -7,7 +7,6 @@ const labels = (fieldName) => {
 
     let allFilesArray = []
     allFilesArray = allFilesLabels()
-    console.log(allFilesArray)
     let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
     return label[0].label
 }
@@ -35,26 +34,34 @@ const ShowFiles = (props) => {
 
     if (showFiles && (process && (process[0] && (files && files[0])))) {
         return (
-            <div className='card'
+            <div className='container z-depth-3'
                 style={{
                     position: 'relative',
-                    margin: '0px 10%',
-                    border: '3px solid #000000',
+                    borderRadius: '15px',
+                    width: '80%',
                     backgroundColor: 'white',
-                    paddingLeft: '20px'
+                    padding: '15px 0px 0px 30px',
+                    border: '1px solid #ddd',
+                    marginBottom: '25px'
+
                 }}>
                 <div className="row">
                     <div className="row">
-                        <h5> <img src="/images/folderIcon2.jpg" style={{ marginRight: '20px' }} /> Arquivos > {process[0].nomeEmpreendimento}</h5>
+                        <h5> <img alt="" src="/images/folderIcon2.jpg" style={{ paddingLeft: '20px', marginRight: '20px' }} /> Arquivos > {process[0].nomeEmpreendimento}</h5>
                     </div>
                     <div className="row">
-                        <div className="col s1">
-                            <img src="/images/multipleFiles2.png" />
-                        </div>
-                        <div className="col s5">
-                            <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Arquivo</h6>
 
+                        <div className="col s6">
+
+                            <div className="col s1">
+                                <img alt="" src="/images/multipleFiles2.png" />
+                            </div>
+                            <div className="col s11">
+                                <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Arquivo</h6>
+
+                            </div>
                         </div>
+
                         <div className="col s3">
                             <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Data de Upload</h6>
                         </div>
@@ -62,17 +69,21 @@ const ShowFiles = (props) => {
                             <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Tamanho</h6>
                         </div>
                     </div>
-                    {files.map(file =>
-                        <div>
+                    {files.map((file, index) =>
+                        <div key={index}>
                             <div className="row">
-                                <div className="col s1">
-                                    <img src="/images/genericFile.png" />
+                                <div className="col s6">
+                                    <div className="col s1">
+                                        <img alt="" src="/images/genericFile.png" />
+                                    </div>
+                                    <div id={file._id}
+                                        style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
+                                        className="col s11"
+                                        onClick={download}>
+
+                                        {labels(file.metadata.fieldName)}
+                                    </div>
                                 </div>
-                                <div id={file._id}
-                                    style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
-                                    className="col s5 left"
-                                    onClick={download}>
-                                    {labels(file.metadata.fieldName)}</div>
                                 <div className="col s3">
                                     {showDate(file.uploadDate)}
                                 </div>
@@ -85,8 +96,8 @@ const ShowFiles = (props) => {
                 </div>
                 <div style={{
                     position: 'absolute',
-                    top: '0%',
-                    right: '0%'
+                    top: '0.5%',
+                    right: '0.5%'
                 }}>
                     <CloseWindow close={close} />
                 </div>

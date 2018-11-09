@@ -13,7 +13,7 @@ const SolAnuenciaTemplate = (props) => {
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
 
     return (
-        <div className="container" >
+        <div className="container" style={{width: '90%'}}>
             <Title
                 title='Solicitar Anuência Prévia'
                 subtitle='Para solicitar anuência prévia, selecione o processo e faça o upload dos documentos 
@@ -34,7 +34,7 @@ const SolAnuenciaTemplate = (props) => {
                     <i className="material-icons">search</i>
                 </div>
             </div>
-            <div className='z-depth-4' style={{width: '100%', padding: '0px 10px 1px'}}>
+            <div className='z-depth-3' style={{padding: '0px 10px 1px', borderRadius: '10px'}}>
                 
                 <RenderSearch
                 search={searchArray}

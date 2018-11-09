@@ -16,7 +16,8 @@ const titleSubtitle = (props) => {
             <div className="card-panel" style={{
                 marginBottom: '10px',
                 backgroundColor: color,
-                filter: 'brightness(190%)'
+                filter: 'brightness(190%)',
+                borderRadius: '10px 10px'
             }}>
                 <b>{subtitle}</b>
             </div>

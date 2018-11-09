@@ -6,13 +6,13 @@ import { BackButton } from '../common/buttons'
 const Diretriz = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails, download, showFiles, submitPendencias} = props
+        children, empDetails, rtDetails, download, showFiles} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
     
     return (
-        <div className="container" >
+        <div className="container" style={{width: '90%'}} >
             <Title
                 title='Diretrizes Metropolitanas'
                 subtitle='Para a emissão de diretrizes metropoilotanas, agendamento a CGT e a vistoria, 
@@ -33,7 +33,7 @@ const Diretriz = (props) => {
                     <i className="material-icons">search</i>
                 </div>
             </div>
-            <div className='z-depth-4' style={{width: '100%', padding: '0px 10px 1px'}}>
+            <div className='z-depth-3' style={{width: '100%', padding: '0px 10px 1px', borderRadius: '10px'}}>
                 
                 <RenderSearch
                 search={searchArray}

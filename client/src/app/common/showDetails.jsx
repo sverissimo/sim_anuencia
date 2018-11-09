@@ -1,6 +1,5 @@
 import React from 'react';
-import { BackButton } from '../common/buttons'
-import { CloseWindow } from '../common/buttons'
+    import { CloseWindow } from '../common/buttons'
 import fieldConfig from './fieldConfig'
 
 const ShowDetails = (props) => {
@@ -20,15 +19,15 @@ const ShowDetails = (props) => {
     if (persona !== '' && (showEmp || showRt)) {
 
         return (
-            <div className='card'
+            <div className='card z-depth-5'
                 style={{
                     position: 'fixed',
                     top: '30%',
                     right: '33%',
                     left: '33%',
-                    border: '3px solid #000000',
-                    backgroundColor: 'white',
-                    paddingLeft: '20px'
+                    padding: '5px 0px 7px 20px',
+                    borderRadius: '15px',
+                    border: '1px solid #aaa',
                 }}>
                 <div className='row'>
                     <div className="center"><h5>{persona[0].nome}</h5></div>
@@ -45,8 +44,8 @@ const ShowDetails = (props) => {
                 </div>
                 <div style={{
                     position: 'absolute',
-                    top: '0%',
-                    right: '0%'
+                    top: '0.4%',
+                    right: '0.4%'
                 }}>
                     <CloseWindow close={close} />
                 </div>

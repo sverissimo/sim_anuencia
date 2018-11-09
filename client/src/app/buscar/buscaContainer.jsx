@@ -101,7 +101,7 @@ class ShowEmpContainer extends Component {
 
     editValue = (event) => {
         if (this.state.item) {
-            let update = Object.assign({}, this.state.item, { [event.target.name]: event.target.value }, {cgt: new Date(2020)})
+            let update = Object.assign({}, this.state.item, { [event.target.name]: event.target.value })
             this.setState({ ...this.state, item: update })
         }
     }
@@ -136,9 +136,7 @@ class ShowEmpContainer extends Component {
         this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
     }
 
-
     render() {
-
 
         let emps = []
         let rts = []
@@ -148,7 +146,7 @@ class ShowEmpContainer extends Component {
         if (this.state.search && this.state.select === 'emp') {
             emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString))
         } else if (!this.state.search && this.state.select === 'emp') {
-            emps = this.props.cadastro.empCollection.slice(0, 50)
+            emps = this.props.cadastro.empCollection.slice(0, 10)
         }
 
         if (this.state.search && this.state.select === 'rt') {
@@ -161,8 +159,8 @@ class ShowEmpContainer extends Component {
             process = this.props.cadastro.processCollection.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString))
         } else if (!this.state.search && this.state.select === 'process') {
             process = this.props.cadastro.processCollection
-            process.sort(function (a, b) {
 
+            process.sort(function (a, b) {
                 let ca = new Date(a.updatedAt)
                 let cb = new Date(b.updatedAt)
                 if (ca && cb) {
@@ -172,12 +170,14 @@ class ShowEmpContainer extends Component {
                     } else if (ca.getTime() > cb.getTime()) {
                         return -1
                     } else return 0
+                } else {
+                    return null
                 }
             })
         }
 
         return (
-            <div className="container " >
+            <div className="container" style={{ width: '90%' }} >
                 <ShowEmpTemplate
                     search={this.state.search}
                     select={this.state.select}
@@ -196,8 +196,9 @@ class ShowEmpContainer extends Component {
                     process={process}
                     empFields={[1, 3, 6, 7, 8]}
                     rtFields={[1, 2, 3]}
-                    fields={[ 3, 4, 6, 7, 8 ]}
-                    divConfig={['', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
+                    showRt={false}
+                    fields={[3, 4, 5, 6, 7, 8, 9, 17]}
+                    divConfig={['col s1', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
                     edit={this.enableEdit.bind(this)}
                     deleteOne={this.deleteHandler.bind(this)}
                     color={this.state.setColor}

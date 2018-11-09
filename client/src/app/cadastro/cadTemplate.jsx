@@ -74,7 +74,7 @@ const CadTemplate = (props) => {
     }
 
     return (
-        <div style={{ marginLeft: 75, marginRight: 75 }} >
+        <div className="container" style={{ width: '90%'}} >
             <div className="tab-pane fade show active" id="empreend">
                 <Title
                     title='Cadastro de Processos'
@@ -133,7 +133,7 @@ const CadTemplate = (props) => {
                     </fieldset>
                     <div>
                         <BackButton onClick={props.enableRtInput} disabled={props.data.enableProcess} icon='arrow_back' />
-                        <input className="btn right" type="submit" disabled={props.data.enableProcess} value="Cadastrar processo" style={{ marginTop: '10px' }} />
+                        <input className="btn right" type="submit" disabled={props.data.enableProcess} value="Cadastrar processo" style={{ margin: '20px 0px' }} />
                     </div>
                     <br />
                     <br />
