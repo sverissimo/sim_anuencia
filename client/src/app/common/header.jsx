@@ -16,6 +16,7 @@ const Header = () => {
                     <li><Link to="/solicitaDiretriz">Solicitar Diretrizes Metropolitanas</Link></li>
                     <li><Link to="/diretrizes">Diretrizes Metropolitanas</Link></li>
                     <li><Link to="/solicitaAnuencia">Solicitar Anuência Prévia</Link></li>
+                    <li><Link to="/Anuencia">Emitir Anuência Prévia</Link></li>
                     <li><Link to="/showEmpreend">Gerenciar Dados</Link></li>
                     <li><Link to="">Login <i className="material-icons left">person</i></Link></li>
                     <li><Link to="">Contato <i className="material-icons left">mail</i></Link></li>
@@ -25,6 +26,7 @@ const Header = () => {
                     <li><Link to="/solicitaDiretriz">Solicitar Diretrizes</Link></li>
                     <li><Link to="/diretrizes">Diretrizes Metropolitanas</Link></li>
                     <li><Link to="/solicitaAnuencia">Solicitar Anuência Prévia</Link></li>
+                    <li><Link to="/Anuencia">Emitir Anuência Prévia</Link></li>
                     <li><Link to="/showEmpreend">Buscar</Link></li>
                     <li><Link to="">Login</Link></li>
                     <li><Link to="">Contato</Link></li>

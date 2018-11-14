@@ -8,6 +8,7 @@ import SolicitaDiretriz from './app/solDir/solicitaDiretriz';
 import diretriz from './app/diretrizes/diretriz';
 import SolicitaAnuencia from './app/solAnuencia/solicitaAnuencia';
 import EditData from './app/buscar/editData'
+import Anuencia from './app/anuencia/anuenciaContainer' ;
 
 const Routes = () => {
     return (
@@ -19,6 +20,8 @@ const Routes = () => {
             <Route path='/solicitaAnuencia' component={SolicitaAnuencia} />
             <Route path='/showEmpreend' component={BuscaContainer} />
             <Route path='/editData' component={EditData} />
+            <Route path='/anuencia' component={Anuencia} />
+            
         </Switch>
     );
 };

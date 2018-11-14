@@ -26,6 +26,11 @@ legend {
     font-weight: bold
 }
 
+.ql-editor strong{
+    font-weight:bold;
+}
+
+
 .btn-small {
     color: white;
     background-color: rgb(20, 83, 59);
