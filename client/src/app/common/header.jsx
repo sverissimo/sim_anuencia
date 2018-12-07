@@ -5,7 +5,7 @@ import randomColors from './randomColors'
 const Header = () => {
 
     return (
-        <nav style={{ marginBottom: 20}} >
+        <nav>
             <div className="nav-wrapper" style={{ paddingLeft: 30, paddingRight: 30, backgroundColor: randomColors() }} id="setcolor" >
                 <Link to="/" className="brand-logo">
                 <i className="material-icons" style={{fontSize: "30px"}} >home</i>
