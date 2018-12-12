@@ -5,8 +5,8 @@ import ReactQuill from 'react-quill';
 import jsPDF from 'jspdf'
 import Title from '../common/titleSubtitle';
 import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions'
-import styles from '../css/styles.css'
-
+import axios from 'axios'
+import MostrarOficio from './mostrarOficio'
 
 
 const toolbarOptions = [
@@ -32,7 +32,8 @@ class AnuenciaContainer extends Component {
 
     state = {
         color: '',
-        text: ''
+        text: '',
+        mostrarOficio: false
     }
 
     componentDidMount() {
@@ -48,14 +49,20 @@ class AnuenciaContainer extends Component {
 
     handleChange(value) {
         this.setState({ ...this.state, text: value })
-        console.log(this.state)
+        console.log(this.state.text)
     }
 
     savePdf() {
 
-        const pdf = new jsPDF()
-        pdf.text(this.state.text)
-        pdf.save('tst.pdf')
+        this.setState({ mostrarOficio: true })
+
+        /*      axios.post('/api/sendHtml', { data: this.state.text })
+                 .then(res => {
+                     document.getElementById("root").innerHTML = res.data
+                 }  )
+      */
+
+
     }
 
     render() {
@@ -68,9 +75,6 @@ class AnuenciaContainer extends Component {
                         subtitle='Insira as pendências observadas no processo. É possível colar texto do MSword mantendo a formatação.'
                         color={this.state.setColor}
                     />
-
-
-
 
                     <ReactQuill
                         value={this.state.text}
@@ -86,6 +90,13 @@ class AnuenciaContainer extends Component {
                             overflow: 'hidden',
                         }}
                     />
+
+                    <MostrarOficio
+                        mostrarOficio={this.state.mostrarOficio}
+                        content={this.state.text}
+                    />
+
+
 
 
                     <button className=' btn right' onClick={this.savePdf.bind(this)}> whatever </button>

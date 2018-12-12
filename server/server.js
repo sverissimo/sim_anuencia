@@ -362,6 +362,12 @@ app.put('/api/fileObject/', (req, res) => {
     ).then(result => res.json(result))
 })
 
+app.post('/api/sendHtml', (req, res) => {
+    console.log(req.body.data)
+    res.json(req.body.data)
+    
+})
+
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
     console.log(`Running...`)
