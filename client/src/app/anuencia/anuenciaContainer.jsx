@@ -64,11 +64,10 @@ class AnuenciaContainer extends Component {
         dirStatus.daeOk = false
 
         this.setState({
-            ...this.state, searchValue: '', checked: null,
-            dirStatus: dirStatus, anexaDiretriz: false, selectedId: ''
+            ...this.state, checked: null,
+            dirStatus: dirStatus, anexaDiretriz: false, selectedId: null, searchValue: ''
         });
-
-        document.getElementsByName('search').value = '';
+                        
         let clearRadio = document.getElementsByName('group1')
         clearRadio.forEach(radio => {
             radio.checked = false
@@ -135,7 +134,7 @@ class AnuenciaContainer extends Component {
     }
 
     closeDetails() {
-        this.setState({ showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
+        this.setState({ selectedId: null, showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
     }
 
     download(e) {
@@ -209,6 +208,8 @@ class AnuenciaContainer extends Component {
                                 data={this.state}
                                 redux={this.props.cadastro}
                                 clear={this.clearSearch.bind(this)}
+                                download={this.download.bind(this)}
+                                close={this.closeDetails.bind(this)}
                             />
                             <ShowDetails
                                 empId={this.state.empId}

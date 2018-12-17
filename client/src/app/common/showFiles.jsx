@@ -35,16 +35,7 @@ const ShowFiles = (props) => {
     if (showFiles && (process && (process[0] && (files && files[0])))) {
         return (
             <div className='container z-depth-3'
-                style={{
-                    position: 'relative',
-                    borderRadius: '15px',
-                    width: '80%',
-                    backgroundColor: 'white',
-                    padding: '15px 0px 0px 30px',
-                    border: '1px solid #ddd',
-                    marginBottom: '25px'
-
-                }}>
+               >
                 <div className="row">
                     <div className="row">
                         <h5> <img alt="" src="/images/folderIcon2.jpg" style={{ paddingLeft: '20px', marginRight: '20px' }} /> Arquivos > {process[0].nomeEmpreendimento}</h5>

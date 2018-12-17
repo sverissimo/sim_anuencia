@@ -12,28 +12,19 @@ const AnuenciaTemplate = (props) => {
     let selectedProcess
     data.selectedId ? selectedProcess = redux.processCollection.filter(el => el._id.match(data.selectedId))[0] : void 0
 
+    let showSearchBar = true
 
-
-    let info = {
-        title: 'Analisar Processo',
-        subtitle: 'Selecione o processo para analisar, registrar pendências ou emitir anuência prévia.',
-        showSearchBar: true
-    }
-    if (data.selectedId) {
-        info.title = selectedProcess.nomeEmpreendimento
-        info.subtitle = null
-        info.showSearchBar = false
-    }
+    if (data.selectedId) { showSearchBar = false }
 
     return (
         <div className="container" style={{ width: '90%' }} >
             <Title
-                title={info.title}
-                subtitle={info.subtitle}
+                title='Analisar Processo'
+                subtitle='Selecione o processo para analisar, registrar pendências ou emitir anuência prévia.'
                 color={setColor}
             />
             {
-                info.showSearchBar ?
+                showSearchBar ?
                     <div className="row">
                         <div className="col s11">
                             <label>Filtrar</label>
@@ -42,6 +33,7 @@ const AnuenciaTemplate = (props) => {
                                 type="text"
                                 name="search"
                                 onChange={search}
+                                value={data.searchValue}
                             />
                         </div>
                         <div className="col s1 right" style={{ paddingTop: '35px' }}>
@@ -80,7 +72,7 @@ const AnuenciaTemplate = (props) => {
                             />
                         </div> : null
                 }
-              
+
             </div>
         </div>
     );
