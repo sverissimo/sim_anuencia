@@ -5,7 +5,6 @@ import ReactQuill from 'react-quill';
 import jsPDF from 'jspdf'
 import Title from '../common/titleSubtitle';
 import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions'
-import axios from 'axios'
 import MostrarOficio from './mostrarOficio'
 
 
@@ -37,8 +36,6 @@ class AnuenciaForm extends Component {
     }
 
     componentDidMount() {
-
-
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
@@ -67,42 +64,28 @@ class AnuenciaForm extends Component {
 
     render() {
         return (
+            <div style={{ height: '100%'}}>
+                <ReactQuill
+                    value={this.state.text}
+                    onChange={this.handleChange.bind(this)}
+                    modules={modules}
+                    theme='snow'
+                    style={{                        
+                        background: '#fff',
+                        height: '50vh',
+                        marginBottom: '10px',
+                        border: '1px solid #ddd',
+                        borderRadius: '1%',
+                        overflow: 'hidden',
+                    }}
+                />
+                <MostrarOficio
+                    mostrarOficio={this.state.mostrarOficio}
+                    content={this.state.text}
+                />
 
-            <div style={{ background: '#f3f1f2', height: "100vh", bottom: 0, paddingTop: '1rem' }}>
-                <div className="container">
-                    <Title
-                        title='Registrar pendências'
-                        subtitle='Insira as pendências observadas no processo. É possível colar texto do MSword mantendo a formatação.'
-                        color={this.state.setColor}
-                    />
-
-                    <ReactQuill
-                        value={this.state.text}
-                        onChange={this.handleChange.bind(this)}
-                        modules={modules}
-                        theme='snow'
-                        style={{
-                            background: '#fff',
-                            height: '60vh',
-                            marginBottom: '10px',
-                            border: '1px solid #ddd',
-                            borderRadius: '1%',
-                            overflow: 'hidden',
-                        }}
-                    />
-
-                    <MostrarOficio
-                        mostrarOficio={this.state.mostrarOficio}
-                        content={this.state.text}
-                    />
-
-
-
-
-                    <button className=' btn right' onClick={this.savePdf.bind(this)}> whatever </button>
-                </div>
+                <button className=' btn right' onClick={this.savePdf.bind(this)}> whatever </button>
             </div>
-
         )
     }
 }

@@ -20,8 +20,7 @@ const Routes = () => {
             <Route path='/solicitaAnuencia' component={SolicitaAnuencia} />
             <Route path='/showEmpreend' component={BuscaContainer} />
             <Route path='/editData' component={EditData} />
-            <Route path='/anuencia' component={Anuencia} />
-            
+            <Route path='/Anuencia' exact component={Anuencia} />            
         </Switch>
     );
 };

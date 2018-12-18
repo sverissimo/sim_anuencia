@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } from '../cadastro/cadActions'
 
 import AnuenciaTemplate from './anuenciaTemplate';
-import ProcessTemplate from './processTemplate'
+import ProcessContainer from './processContainer'
 import ShowDetails from '../common/showDetails'
 import ShowFiles from '../common/showFiles';
 
@@ -170,8 +170,8 @@ class AnuenciaContainer extends Component {
             .then(res => console.log(res))
     }
 
-    render() {        
-
+    render() {
+        
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
         if (input && !this.state.checked) {
@@ -204,12 +204,13 @@ class AnuenciaContainer extends Component {
                                         showFiles={this.showFiles.bind(this)}
                                     /> :
                                     <div>
-                                        <ProcessTemplate
+                                        <ProcessContainer
                                             data={this.state}
                                             redux={this.props.cadastro}
                                             clear={this.clearSearch.bind(this)}
                                             download={this.download.bind(this)}
                                             close={this.closeDetails.bind(this)}
+                                            match={this.props.match}
                                         />
                                     </div>
                             }

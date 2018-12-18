@@ -1,28 +1,38 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BackButton } from '../common/buttons'
 import anuenciaMenu from '../config/anuenciaMenu'
+import ProcessTemplate from './processTemplate'
 
-class ProcessTemplate extends Component {
+class ProcessContainer extends Component {
 
     state = {
-        selectedOption = ''
+        selectedOption: ''
     }
 
-    optionSelect(opt) {
-        switch (opt) {
-            case 'fileExplorer':
-                this.setState({ selectedOption: 'fileExplorer' })
-            case 'pendencias':
-                this.setState({ selectedOption: 'pendencias' })
-            case 'anuencia':
-                this.setState({ selectedOption: 'anuencia' })
-            case 'processInfo':
-                this.setState({ selectedOption: 'fprocessInfo' })
+    optionSelect(e) {
+        this.setState({ selectedOption: e.target.id })
+        console.log(this.state)
+    }
+
+    divConfig(e) {
+        let id = e.name
+        if (id !== this.state.selectedOption) {
+            let format = {
+                stylez:
+                    { minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '' },
+                class: 'col s12 m6 l3 z-depth-2'
+            }
+            return format
+        } else {
+            let format = {
+                stylez:
+                    { minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '' },
+                class: 'col s12 m6 l3'
+            }
+            return format
         }
 
     }
-
-
     render() {
         let { clear, data, redux, close, download } = this.props
         let process
@@ -40,81 +50,24 @@ class ProcessTemplate extends Component {
 
             return (
                 <div className='container'>
-                    <div>
-                        <div className="row" align='center' style={{
-                            border: '1px solid #ddd',
-                            backgroundColor: '#ffe',
-                            fontSize: '1.3rem',
-                            fontFamily: 'calibri',
-                            marginTop: '15px'
-                        }}>
-                            <h4>{process.nomeEmpreendimento}</h4>
-                            <div className="row col s12">
-                                <div className="col s12 m6 l4">
-                                    <b>Município:</b>  {process.munEmpreendimento}
-                                </div>
-                                <div className="col s12 m6 l4">
-                                    <b>Modalidade:</b> {process.modalidade}
-                                </div>
-                                <div className="col s12 m6 l4">
-                                    <b>Área:</b> {process.area}
-                                </div>
-                                <div className="col s12 m6 l4">
-                                    <b> Empreendedor: </b> {empreend.nome}
-                                </div >
-                                <div className="col s12 m6 l4">
-                                    <b>RT: </b>{rt.nomeRt}
-                                </div>
-                                <div className="col s12 m6 l4">
-                                    {process.status}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row" style={{ marginBottom: 0 }}>
-                            {
-                                anuenciaMenu.map((opt, index) => (
-                                    <div key={index} align="center" className={`col s12 m6 l3  ${opt.className}`} style={opt.divStyle}>
-                                        <div>
-                                            <img className="center-align" src={opt.img}
-                                                style={{ margin: '10px 10px 0px 10px' }} height="40" alt="" />
-                                            <div>
-                                            </div>
-                                            <h6>{opt.label}</h6>
-                                        </div>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        <div className="row valign-wrapper" style={{ height: '50vh', border: '1px solid #ddd', borderRadius: '2%' }}>
-                            <div className='col push-s4'>
-                                <h5>
-                                    Selecione uma das opçoes acima.
-                             </h5>
-                            </div>
-                            {/*  <ShowFiles
-                            selectedId={data.selectedId}
-                            showFiles={data.showFiles}
-                            close={close}
-                            processCollection={redux.processCollection}
-                            filesCollection={redux.filesCollection}
-                            download={download}
-                            ocultarArquivos= {true}
-                        /> */}
-                        </div>
-                        <div className="row">
-                            <div className="col s1 left">
-                                <BackButton
-                                    disabled={data.checked === null}
-                                    icon='arrow_back'
-                                    onClick={clear}
-                                /> Voltar
-                        </div>
-                        </div>
-                    </div>
+                    <ProcessTemplate
+                        data={data}
+                        redux={redux}
+                        clear={clear}
+                        download={download}
+                        close={close}
+                        process={process}
+                        empreend={empreend}
+                        rt={rt}
+                        match={this.props.match}
+                        optionSelect={this.optionSelect.bind(this)}
+                        selectedOption={this.state.selectedOption}
+                        divConfig={this.divConfig.bind(this)}
+                    />
                 </div>
             )
         }
     }
 };
 
-export default ProcessTemplate;
+export default ProcessContainer;
