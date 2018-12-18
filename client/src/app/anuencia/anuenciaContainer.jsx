@@ -65,9 +65,9 @@ class AnuenciaContainer extends Component {
 
         this.setState({
             ...this.state, checked: null,
-            dirStatus: dirStatus, anexaDiretriz: false, selectedId: null, searchValue: ''
+            dirStatus: dirStatus, anexaDiretriz: false, selectedId: null, searchValue: '', showFiles: null
         });
-                        
+
         let clearRadio = document.getElementsByName('group1')
         clearRadio.forEach(radio => {
             radio.checked = false
@@ -170,7 +170,7 @@ class AnuenciaContainer extends Component {
             .then(res => console.log(res))
     }
 
-    render() {
+    render() {        
 
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
@@ -202,15 +202,17 @@ class AnuenciaContainer extends Component {
                                         rtDetails={this.rtDetails.bind(this)}
                                         download={this.download.bind(this)}
                                         showFiles={this.showFiles.bind(this)}
-                                    /> : null
+                                    /> :
+                                    <div>
+                                        <ProcessTemplate
+                                            data={this.state}
+                                            redux={this.props.cadastro}
+                                            clear={this.clearSearch.bind(this)}
+                                            download={this.download.bind(this)}
+                                            close={this.closeDetails.bind(this)}
+                                        />
+                                    </div>
                             }
-                            <ProcessTemplate
-                                data={this.state}
-                                redux={this.props.cadastro}
-                                clear={this.clearSearch.bind(this)}
-                                download={this.download.bind(this)}
-                                close={this.closeDetails.bind(this)}
-                            />
                             <ShowDetails
                                 empId={this.state.empId}
                                 rtId={this.state.rtId}
