@@ -55,6 +55,7 @@ const processSchema = mongoose.Schema({
         trim: true
     },
     fileObjects: [],
+    dirPendencias: [],
     pendencias: [],
 
 }, { timestamps: true });

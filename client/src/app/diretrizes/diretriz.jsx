@@ -42,7 +42,7 @@ class Diretriz extends Component {
             vistoriaOk: false,
             daeOk: false,
             dirMunOk: false,
-            pendencias: ''
+            dirPendencias: ''
         }
 
     }
@@ -177,7 +177,7 @@ class Diretriz extends Component {
     handleChange(e) {
         let input = e.target.value
         let dirStatus = this.state.dirStatus
-        dirStatus.pendencias = input
+        dirStatus.dirPendencias = input
         dirStatus.createdAt = new Date()
         this.setState({
             dirStatus: dirStatus
@@ -189,9 +189,9 @@ class Diretriz extends Component {
         let dirStatus = this.state.dirStatus
         dirStatus.createdAt = new Date()
 
-        axios.put('api/pendencias', {
+        axios.put('api/dirPendencias', {
             id: this.state.selectedId,
-            pendencias: dirStatus
+            dirPendencias: dirStatus
         })
             .then(res => console.log(res))
     }

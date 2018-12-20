@@ -1,0 +1,11 @@
+Pendências / retorno:
+in filesCollection (uploads;files):
+1. se aquele processId (metaData) tiver pendencias[x]:
+2. adicionar 1 campo no metadata retorno-i
+3. onde i = pendencias.lenght() -1
+
+4. if process.status = aguardando reanalise
+5. For i in pendendencias.length:
+	return (
+	<div> <link to pendencias[i]> pendencia {i} </div>
+	<div> <link to files.filter(metadata.retorno[i])> retorno {i} </div>

@@ -85,7 +85,9 @@ class AnuenciaForm extends Component {
                     rt={rt}
                 />
                 
-                <button className=' btn right' onClick={this.savePdf.bind(this)}> whatever </button>
+                <button className='btn right' onClick={this.savePdf.bind(this)}> Enviar </button>
+                <button style={{marginRight: '10px'}} className='btn right' onClick={this.savePdf.bind(this)}> Pré-visualizar </button>
+                
             </div>
         )
     }

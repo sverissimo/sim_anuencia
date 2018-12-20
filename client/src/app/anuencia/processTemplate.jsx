@@ -69,7 +69,7 @@ const ProcessTemplate = (props) => {
                 <div className="row" style={{ marginBottom: 0 }}>
                     {
                         anuenciaMenu.map((opt, index) => (
-                            <div key={index} align="center"
+                            <div id={opt.name} key={index} align="center"
                                 className={`col s12 m6 l3 ${divConfig(opt).class}`}
                                 style={divConfig(opt).stylez}
                                 onClick={optionSelect}

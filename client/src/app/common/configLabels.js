@@ -6,6 +6,11 @@ export const configLabels = [
         div: 'col s1'
     },
     {
+        name: 'dirPendencias',
+        label: 'Pendências para emissão de diretrizes',
+        div: 'col s1'
+    },
+    {
         name: 'pendencias',
         label: 'Pendências',
         div: 'col s1'
@@ -17,7 +22,7 @@ export const configLabels = [
     },
     {
         name: 'nProcess',
-        label: 'Número do processo',
+        label: 'Num. do processo',
         div: 'col s1'
     },
     {
@@ -95,7 +100,7 @@ export const configLabels = [
         label: 'version',
         div: 'col s1'
     },
-
+    
 ]
 
 export const solDirConfig = [

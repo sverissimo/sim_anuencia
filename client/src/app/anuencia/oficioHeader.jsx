@@ -3,7 +3,7 @@ import '../css/reactQuill.css'
 import prefeituras from '../config/prefeituras.json'
 
 const OficioHeader = (props) => {
-    const { empreend, rt, process } = props
+    const { empreend, process } = props
 
     function date() {
         const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
@@ -29,9 +29,9 @@ const OficioHeader = (props) => {
             <p className="ql-align-justify" style={line}>{pref.cargo}</p>
             <p className="ql-align-justify" style={line}>Prefeitura de {process.munEmpreendimento}</p>
             <p className="ql-align-justify" style={line}>{pref.endereco}</p>
-            <p className="ql-align-justify" style={line}>CEP: {pref.cep} – {process.munEmpreendimento}. MG</p>
+            <p className="ql-align-justify" style={line}>CEP: {pref.cep} – {process.munEmpreendimento}, MG</p>
             <p />
-            <p className="ql-align-justify"><strong>Assunto:</strong> Empreendimento "{process.nomeEmpreendimento}", Of. Municipal__, Proc. {process.nProcess} </p>
+            <p className="ql-align-justify"><strong>Assunto:</strong> Empreendimento "{process.nomeEmpreendimento}", Processo RMBH nº {process.nProcess} </p>
             <p />
             <p className="ql-align-justify">{pref.vocativo2}, </p>
             <p className="ql-align-justify">

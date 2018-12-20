@@ -340,11 +340,11 @@ app.put('/api/editProcess/', (req, res) => {
     ).then(result => res.json(result))
 }) */
 
-app.put('/api/pendencias/', (req, res) => {
+app.put('/api/dirPendencias/', (req, res) => {
 
     processModel.updateOne(
         { '_id': req.body.id },
-        { $push: { "pendencias": req.body.pendencias } },
+        { $push: { "dirPendencias": req.body.dirPendencias } },
 
 
     ).then(result => res.json(result))
