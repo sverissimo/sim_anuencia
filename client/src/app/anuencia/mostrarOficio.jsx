@@ -2,15 +2,15 @@ import React from 'react';
 import OficioHeader from './oficioHeader'
 
 const MostrarOficio = (props) => {
-    let { mostrarOficio, content } = props
-
+    let { mostrarOficio, content, redux, process, empreend, rt } = props
+    console.log(content)
     if (mostrarOficio) {
         return (
-            <div className='container z-depth-3'
+            <div className='z-depth-3'
                 style={{
                     position: 'relative',
                     borderRadius: '15px',
-                    width: '80%',
+                    width: '100%',
                     backgroundColor: 'white',
                     padding: '15px 0px 0px 30px',
                     border: '1px solid #ddd',
@@ -18,7 +18,12 @@ const MostrarOficio = (props) => {
 
                 }}
             >
-                <OficioHeader />
+                <OficioHeader
+                    redux={redux}
+                    process={process}
+                    empreend={empreend}
+                    rt={rt}
+                />
                 <div dangerouslySetInnerHTML={{ __html: content }}></div>
             </div>
         )

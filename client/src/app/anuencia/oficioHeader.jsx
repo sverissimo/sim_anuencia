@@ -1,9 +1,45 @@
 import React from 'react';
+import '../css/reactQuill.css'
+import prefeituras from '../config/prefeituras.json'
 
-const OficioHeader = () => {
+const OficioHeader = (props) => {
+    const { empreend, rt, process } = props
+
+    function date() {
+        const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+        const data = new Date()
+        return `${data.getDate()} de ${meses[data.getMonth()]} de ${data.getFullYear()}`
+    }
+    const pref = prefeituras.filter(el => el.MUNICÍPIO.toLowerCase().match(process.munEmpreendimento.toLowerCase()))[0]
+    const line = { lineHeight: 0.8 }
     return (
         <div>
-            <p><strong>OF. Nº 999/2018-Agência RMBH.DR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>Belo Horizonte, 09 de abril de 2018.</p><br></br><p class="ql-align-justify">«VOCATIVO_1»</p><p class="ql-align-justify">«NOME»</p><p class="ql-align-justify">«CARGO»</p><p class="ql-align-justify">Prefeitura de «MUNICÍPIO»</p><p class="ql-align-justify">«ENDEREÇO»</p><p class="ql-align-justify">«CEP» – «MUNICÍPIO». MG</p><br></br><p class="ql-align-justify"><strong>Assunto: Empreendimento/Interessado, Ofício Municipal, Proc. RMBH 999/2000. </strong></p><p class="ql-align-justify">	</p><p class="ql-align-justify">	</p><p class="ql-align-justify">	«VOCATIVO_2»,</p><p class="ql-align-justify">	</p><p class="ql-align-justify">	Em resposta ao ofício da Prefeitura Municipal de «MUNICÍPIO», que solicita análise e emissão de Selo de Anuência Prévia para o &lt;Loteamento&gt; &lt;Desmembramento&gt; de uma área de 1.000.000,00m², situado no lugar denominado <strong>“Curralinho”</strong>, de interesse de <strong>“Empresa Nova Administração Participações Incorporações e Empreendimentos Imobiliários Ltda.”</strong>, informamos que:</p><p><br></br></p>
+            <div className="row">
+
+                <img className="col s12"
+                    src="/images/governo_header2.jpg"
+                    style={{ paddingRight: '20px'}}
+                   
+                    alt="" /></div>
+            <p className="oficioHeader" ><strong>OF. Nº &nbsp;&nbsp;&nbsp; / {new Date().getFullYear()}-Agência RMBH.DR</strong>
+                <span className="right">Belo Horizonte, {date()}.</span></p>
+            <br></br>
+            <p className="ql-align-justify" style={line}> {pref.vocativo1} </p>
+            <p className="ql-align-justify" style={line}> <strong>{pref.nome}</strong> </p>
+            <p className="ql-align-justify" style={line}>{pref.cargo}</p>
+            <p className="ql-align-justify" style={line}>Prefeitura de {process.munEmpreendimento}</p>
+            <p className="ql-align-justify" style={line}>{pref.endereco}</p>
+            <p className="ql-align-justify" style={line}>CEP: {pref.cep} – {process.munEmpreendimento}. MG</p>
+            <p />
+            <p className="ql-align-justify"><strong>Assunto:</strong> Empreendimento "{process.nomeEmpreendimento}", Of. Municipal__, Proc. {process.nProcess} </p>
+            <p />
+            <p className="ql-align-justify">{pref.vocativo2}, </p>
+            <p className="ql-align-justify">
+                Em resposta ao ofício da Prefeitura Municipal de {process.munEmpreendimento}, que solicita análise
+            e emissão de Selo de Anuência Prévia para o {process.modalidade} de uma área de {process.area}m²,
+            situado no lugar denominado <strong>{process.nomeEmpreendimento}</strong>, de interesse de
+            <strong> {empreend.nome}</strong>, informamos que:</p>
+            <p></p>
         </div>
     );
 };

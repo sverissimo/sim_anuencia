@@ -9,19 +9,25 @@ import { BackButton } from '../common/buttons'
 import anuenciaMenu from '../config/anuenciaMenu'
 import FileExplorer from './fileExplorer'
 import Anuencia from './emiteAnuencia'
-import Pendencias from './pendencias'
+import AnuenciaForm from './anuenciaForm'
 import ProcessInfo from './processInfo'
 
 
 const ProcessTemplate = (props) => {
-    const { clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, download } = props
-    
+    const { clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue, download } = props
+
     const returnComponent = (name) => {
         switch (name) {
             case 'FileExplorer':
                 return <FileExplorer />
             case 'Pendencias':
-                return <Pendencias />
+                return <AnuenciaForm
+                    process={process}
+                    empreend={empreend}
+                    rt={rt}
+                    value={data.analiseProc.pendencias}
+                    changeValue={changeValue}
+                />
             case 'Anuencia':
                 return <Anuencia />
             case 'ProcessInfo':

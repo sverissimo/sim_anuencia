@@ -1,0 +1,14 @@
+.app, .ql, .ql-align, .ql-align-justify {
+    font-size: 14px;
+    padding-right: 16px;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.oficioHeader {
+    font-size: 16px;
+    padding-right: 16px;
+    text-align: justify;
+    text-justify: inter-word;
+    line-height:'1'
+}

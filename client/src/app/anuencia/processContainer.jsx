@@ -34,7 +34,7 @@ class ProcessContainer extends Component {
 
     }
     render() {
-        let { clear, data, redux, close, download } = this.props
+        let { clear, data, redux, close, download, changeValue } = this.props
         let process
         let empreend
         let rt
@@ -63,6 +63,7 @@ class ProcessContainer extends Component {
                         optionSelect={this.optionSelect.bind(this)}
                         selectedOption={this.state.selectedOption}
                         divConfig={this.divConfig.bind(this)}
+                        changeValue={changeValue}
                     />
                 </div>
             )

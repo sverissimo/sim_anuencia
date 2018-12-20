@@ -25,8 +25,8 @@ class AnuenciaContainer extends Component {
         rtId: '',
         showFiles: false,
         filesCollection: '',
-        anexaDiretriz: false,
-        dirStatus: {
+
+        analiseProc: {
             createdAt: '',
             pendencias: ''
         }
@@ -45,33 +45,17 @@ class AnuenciaContainer extends Component {
     }
 
     handleSearch(e) {
-        let dirStatus = this.state.dirStatus
-        dirStatus.cgtOk = false
-        dirStatus.vistoriaOk = false
-        dirStatus.dirMunOk = false
-        dirStatus.daeOk = false
 
-        this.setState({ ...this.state, searchValue: e.target.value, checked: false, anexaDiretriz: false, dirStatus: dirStatus });
-        let clearRadio = document.getElementsByName('group1')
-        clearRadio.forEach(radio => radio.checked = false)
+        this.setState({ ...this.state, searchValue: e.target.value, checked: false });
+
     }
 
     clearSearch(e) {
-        let dirStatus = this.state.dirStatus
-        dirStatus.cgtOk = false
-        dirStatus.vistoriaOk = false
-        dirStatus.dirMunOk = false
-        dirStatus.daeOk = false
 
         this.setState({
             ...this.state, checked: null,
-            dirStatus: dirStatus, anexaDiretriz: false, selectedId: null, searchValue: '', showFiles: null
-        });
-
-        let clearRadio = document.getElementsByName('group1')
-        clearRadio.forEach(radio => {
-            radio.checked = false
-        })
+            selectedId: null, searchValue: '', showFiles: null
+        });      
     }
 
     handleSelect(e) {
@@ -149,29 +133,30 @@ class AnuenciaContainer extends Component {
     }
 
     handleChange(e) {
-        let input = e.target.value
-        let dirStatus = this.state.dirStatus
-        dirStatus.pendencias = input
-        dirStatus.createdAt = new Date()
+        let input = e
+        let analiseProc = this.state.analiseProc
+        analiseProc.pendencias = input
+        analiseProc.createdAt = new Date()
         this.setState({
-            dirStatus: dirStatus
+            analiseProc: analiseProc
         })
+        console.log(this.state.analiseProc)
     }
 
     enviaPendencias(e) {
 
-        let dirStatus = this.state.dirStatus
-        dirStatus.createdAt = new Date()
+        let analiseProc = this.state.analiseProc
+        analiseProc.createdAt = new Date()
 
         axios.put('api/pendencias', {
             id: this.state.selectedId,
-            pendencias: dirStatus
+            pendencias: analiseProc
         })
             .then(res => console.log(res))
     }
 
     render() {
-        
+
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
         if (input && !this.state.checked) {
@@ -211,6 +196,7 @@ class AnuenciaContainer extends Component {
                                             download={this.download.bind(this)}
                                             close={this.closeDetails.bind(this)}
                                             match={this.props.match}
+                                            changeValue={this.handleChange.bind(this)}
                                         />
                                     </div>
                             }

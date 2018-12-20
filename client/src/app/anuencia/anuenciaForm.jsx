@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import ReactQuill from 'react-quill';
 import jsPDF from 'jspdf'
-import Title from '../common/titleSubtitle';
 import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions'
 import MostrarOficio from './mostrarOficio'
 
@@ -53,24 +53,22 @@ class AnuenciaForm extends Component {
 
         this.setState({ mostrarOficio: true })
 
-        /*      axios.post('/api/sendHtml', { data: this.state.text })
+          /*     axios.post('/api/sendHtml', { data: this.state.text })
                  .then(res => {
                      document.getElementById("root").innerHTML = res.data
                  }  )
-      */
-
-
+       */
     }
-
     render() {
+        const { empreend, rt, process, value } = this.props
         return (
-            <div style={{ height: '100%'}}>
+            <div style={{ height: '100%' }}>
                 <ReactQuill
                     value={this.state.text}
                     onChange={this.handleChange.bind(this)}
                     modules={modules}
                     theme='snow'
-                    style={{                        
+                    style={{
                         background: '#fff',
                         height: '50vh',
                         marginBottom: '10px',
@@ -82,8 +80,11 @@ class AnuenciaForm extends Component {
                 <MostrarOficio
                     mostrarOficio={this.state.mostrarOficio}
                     content={this.state.text}
+                    process={process}
+                    empreend={empreend}
+                    rt={rt}
                 />
-
+                
                 <button className=' btn right' onClick={this.savePdf.bind(this)}> whatever </button>
             </div>
         )
