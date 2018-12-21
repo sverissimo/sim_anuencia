@@ -5,11 +5,7 @@ export const configLabels = [
         label: 'Arquivos',
         div: 'col s1'
     },
-    {
-        name: 'dirPendencias',
-        label: 'Pendências para emissão de diretrizes',
-        div: 'col s1'
-    },
+    
     {
         name: 'pendencias',
         label: 'Pendências',

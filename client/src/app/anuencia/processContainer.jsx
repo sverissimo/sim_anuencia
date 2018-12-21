@@ -6,12 +6,13 @@ import ProcessTemplate from './processTemplate'
 class ProcessContainer extends Component {
 
     state = {
-        selectedOption: ''
+        selectedOption: '',
+        logDetails: false,
+        logIndex: ''
     }
 
     optionSelect(e) {
         this.setState({ selectedOption: e.target.id })
-        console.log(this.state)
     }
 
     divConfig(e) {
@@ -33,6 +34,18 @@ class ProcessContainer extends Component {
         }
 
     }
+
+    showLog(e) {
+        
+        this.setState({ logDetails: true, logIndex: e.target.id })
+        
+        
+    }
+
+    clearLog() {
+        this.setState({ logDetails: false, logIndex: '' })
+    }
+
     render() {
         let { clear, data, redux, close, download, changeValue } = this.props
         let process
@@ -64,6 +77,9 @@ class ProcessContainer extends Component {
                         selectedOption={this.state.selectedOption}
                         divConfig={this.divConfig.bind(this)}
                         changeValue={changeValue}
+                        log={this.state}
+                        showLog={this.showLog.bind(this)}
+                        clearLog={this.clearLog.bind(this)}
                     />
                 </div>
             )

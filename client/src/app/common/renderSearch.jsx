@@ -26,7 +26,7 @@ const RenderSearch = (props) => {
         label: configLabels[i].label,
         div: configLabels[i].div
     }))
-    console.log(fieldsConfig)
+    
     return (
         <div>
             <div className="row "
@@ -104,9 +104,7 @@ const RenderSearch = (props) => {
 
                     let i2 = []
                     fields.map(i => i2.push(itemArray[i]))
-
-                    console.log(i2)
-
+                    
                     return (
                         <div className="row" key={k} >
                             {

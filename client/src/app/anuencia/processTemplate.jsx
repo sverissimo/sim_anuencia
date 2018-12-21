@@ -11,10 +11,12 @@ import FileExplorer from './fileExplorer'
 import Anuencia from './emiteAnuencia'
 import AnuenciaForm from './anuenciaForm'
 import ProcessInfo from './processInfo'
+import LogDetails from './logDetails'
 
 
 const ProcessTemplate = (props) => {
-    const { clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue, download } = props
+    const { clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
+        showLog, clearLog, log } = props
 
     const returnComponent = (name) => {
         switch (name) {
@@ -31,7 +33,23 @@ const ProcessTemplate = (props) => {
             case 'Anuencia':
                 return <Anuencia />
             case 'ProcessInfo':
-                return <ProcessInfo />
+
+                if (log.logDetails === false) {
+                    return <ProcessInfo
+                        process={process}
+                        empreend={empreend}
+                        rt={rt}
+                        showLog={showLog}
+                    />
+                } else {
+                    return <LogDetails
+                        process={process}
+                        empreend={empreend}
+                        rt={rt}
+                        index={log.logIndex}
+                        clearLog={clearLog}
+                    />
+                }
         }
     }
     return (
@@ -91,9 +109,9 @@ const ProcessTemplate = (props) => {
                          </h5>
                             </div> :
                             <div className='col s12' style={{ height: '100%' }}>
-                                <h5>
-                                    {returnComponent(selectedOption)}
-                                </h5>
+
+                                {returnComponent(selectedOption)}
+
                             </div>
                     }
                 </div>

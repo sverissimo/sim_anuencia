@@ -1,21 +1,34 @@
 import React from 'react';
+import showDate from '../common/showDate'
+//import ShowDetails from '../common/showDetails';
 
-const ProcessInfo = () => {
+
+
+const ProcessInfo = (props) => {
+    const { emp, rt, process, showLog } = props
+    
+
     return (
-        <div style={{cursor: 'pointer', color: 'blue'}}>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Cadastro - (data)</p>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Pedido de dir Metropolitanas (data)</p>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Emissão de dir Metropolitanas (data)</p>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Entrada 1 - (data)</p>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Pendência 1 - (data)</p>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Entrada 2 - (data)</p>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Pendência 2 - (data)</p>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Entrada 3 - (data)</p>
-            <p style={{cursor: 'pointer', color: 'blue'}}>Pendência 3 - (data)</p>
-
-
+        <div style={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
+            <div className="row">
+                <div className="col s12 m9"> <strong>Status do processo</strong> </div>
+                <div className="col s12 m3 center" style={{ fontsize: '10px' }}> <strong>Data</strong> </div>
+            </div>
+            {process.processHistory.map((el, i) =>
+                <div className="row" key={i}  >
+                    <div
+                        className="col s12 m9"
+                        style={{ cursor: 'pointer', color: 'blue' }}
+                        id={i} 
+                        onClick={showLog}
+                    >
+                        {el.label}
+                    </div>
+                    <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
+                </div>
+            )}
         </div>
-    );
+    )
 };
 
 export default ProcessInfo;

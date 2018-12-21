@@ -187,9 +187,14 @@ class CadastroContainer extends React.Component {
             empId: this.state.empId,
             rtId: this.state.rtId,
             fileObjects: [],
-            pendencias: [],
+            processHistory: [
+                {
+                    label: 'Processo cadastrado',
+                    createdAt: new Date(),
+                }
+            ],
         }
-
+        
         if (!this.state.empMatch && !this.state.empMatch[0] && !this.state.rtMatch && !this.state.rtMatch[0]) {
             axios.post(('/api/cadastro_emp/'), cadEmp)
                 .then(res => cadProcess.empId = res.data.Cadastro_id)

@@ -32,7 +32,7 @@ class AnuenciaForm extends Component {
     state = {
         color: '',
         text: '',
-        mostrarOficio: false
+        mostrarOficio: false     
     }
 
     componentDidMount() {

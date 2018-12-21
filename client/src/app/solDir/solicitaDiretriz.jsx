@@ -95,31 +95,37 @@ class solicitaDiretriz extends Component {
     }
 
     handleSubmit(e) {
-        axios.post('/api/solDirUpload', this.state.form)
-            .then(res => {
+        let filesArray = []
+        const submit = async () => {
+            await axios.post('/api/solDirUpload', this.state.form)
+                .then(res => {
+                    for (let key in res.data.file) {
+                        filesArray.push({
+                            fieldName: res.data.file[key][0].fieldname,
+                            id: res.data.file[key][0].id,
+                            originalName: res.data.file[key][0].originalname,
+                            uploadDate: res.data.file[key][0].uploadDate,
+                            filename: res.data.file[key][0].filename
+                        })
+                        axios.put(('/api/fileObject'), {
+                            itemId: this.state.selectedId,
+                            filesArray: filesArray,
+                            status: 'Aguardando Diretrizes Metropolitanas'
+                        })
+                    }
 
-                for (let key in res.data.file) {
-                    let filesArray = [];
-                    filesArray.push(
-                        res.data.file[key][0].fieldname,
-                        res.data.file[key][0].id,
-                        res.data.file[key][0].originalname,
-                        res.data.file[key][0].uploadDate,
-                        res.data.file[key][0].filename
-                    )
-                    axios.put(('/api/fileObject'), {
-                        itemId: this.state.selectedId,
-                        filesArray: {
-                            fieldName: filesArray[0],
-                            id: filesArray[1],
-                            originalName: filesArray[2],
-                            uploadDate: filesArray[3],
-                            filename: filesArray[4]
-                        },
-                        status: 'Aguardando Diretrizes Metropolitanas'
-                    })
+                })
+            axios.put(('/api/processLog'), {
+                id: this.state.selectedId,
+                processLog: {
+                    label: 'Diretrizes metropolitanas solicitadas',
+                    createdAt: new Date(),
+                    files: filesArray
                 }
             })
+
+        }
+        submit()
     }
 
     empDetails(e) {

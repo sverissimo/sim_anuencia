@@ -43,7 +43,7 @@ const Diretriz = (props) => {
                 onSelect={selectProcess}
                 checked={data.checked}
                 color={setColor}
-                fields={[3,4,5,6,10,11,12]}
+                fields={[2,3,4,7,9,10,11]}
                 renderEmp={true}
                 renderRt={true}
                 empDetails={empDetails}

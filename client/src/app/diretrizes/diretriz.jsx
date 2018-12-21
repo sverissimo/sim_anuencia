@@ -37,12 +37,13 @@ class Diretriz extends Component {
         cgtCalendar: false,
         vistoriaCalendar: false,
         dirStatus: {
+            label: 'Pendências na emissão de Diretrizes',
             createdAt: '',
             cgtOk: false,
             vistoriaOk: false,
             daeOk: false,
             dirMunOk: false,
-            dirPendencias: ''
+            pendencias: ''
         }
 
     }
@@ -177,7 +178,7 @@ class Diretriz extends Component {
     handleChange(e) {
         let input = e.target.value
         let dirStatus = this.state.dirStatus
-        dirStatus.dirPendencias = input
+        dirStatus.pendencias = input
         dirStatus.createdAt = new Date()
         this.setState({
             dirStatus: dirStatus
@@ -185,13 +186,13 @@ class Diretriz extends Component {
     }
 
     enviaPendencias(e) {
-
+        
         let dirStatus = this.state.dirStatus
         dirStatus.createdAt = new Date()
 
-        axios.put('api/dirPendencias', {
+        axios.put('api/processLog', {
             id: this.state.selectedId,
-            dirPendencias: dirStatus
+            processLog: dirStatus
         })
             .then(res => console.log(res))
     }
