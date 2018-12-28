@@ -57,6 +57,10 @@ class CadastroContainer extends React.Component {
             enableRt: '',
             enableProcess: 'disabled',
         })
+        setTimeout(() => {
+            document.getElementById("rtInput").focus()
+        }, 50);
+
     }
     enableProcessInput(e) {
         this.setState({
@@ -80,9 +84,13 @@ class CadastroContainer extends React.Component {
             }
 
             let nProcess = (number + 1) + '/' + year
-            console.log(nProcess)
+
             this.setState({ nProcess: nProcess })
         }
+        setTimeout(() => {
+            document.getElementById("nomeEmpreendimento").focus()
+        }, 50);
+
     }
     enableEmpInput(e) {
         this.setState({
@@ -90,6 +98,9 @@ class CadastroContainer extends React.Component {
             enableRt: 'disabled',
             enableProcess: 'disabled',
         })
+        setTimeout(() => {
+            document.getElementById("nome").focus()
+        }, 50);
     }
 
     handleBlur = event => {
@@ -194,7 +205,7 @@ class CadastroContainer extends React.Component {
                 }
             ],
         }
-        
+
         if (!this.state.empMatch && !this.state.empMatch[0] && !this.state.rtMatch && !this.state.rtMatch[0]) {
             axios.post(('/api/cadastro_emp/'), cadEmp)
                 .then(res => cadProcess.empId = res.data.Cadastro_id)
@@ -256,6 +267,7 @@ class CadastroContainer extends React.Component {
     }
 
     handleBlurRtName = () => {
+        
         if (this.state.rtMatch && this.state.rtMatch[0]) {
             this.setState({
                 ...this.state,

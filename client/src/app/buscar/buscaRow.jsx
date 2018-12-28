@@ -62,7 +62,7 @@ const ShowEmpRow = (props) => {
                 {
                     data.select === 'process' ?
                         <div>
-                            <div className='col s1'>
+                            <div className='col s2'>
                                 Interessado </div>
 
                             {
@@ -129,7 +129,7 @@ const ShowEmpRow = (props) => {
                             {
                                 (data.select === 'process' && (empName && empName.values)) ?
 
-                                    <div id={empName.values._id} className='col s1' style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={empDetails}>
+                                    <div id={empName.values._id} className='col s2' style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }} onClick={empDetails}>
                                         {empName.values.nome}
                                     </div> : <div className='col s2'>  </div>
                             }

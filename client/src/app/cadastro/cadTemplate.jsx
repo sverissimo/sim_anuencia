@@ -23,6 +23,7 @@ const CadTemplate = (props) => {
             return (
                 <div key={i} className={config.divClassName}>
                     <input type={config.type}
+                        id={config.name}
                         className="active"
                         name={config.name}
                         onChange={props.handleChange}
@@ -89,7 +90,8 @@ const CadTemplate = (props) => {
                                 <input
                                     type="text"
                                     list="empreendList"
-                                    className="validate"
+                                    id="nome"
+                                    className="validate"                                    
                                     name="nome"
                                     onChange={props.handleChange}
                                     value={props.data.nome}
@@ -112,6 +114,7 @@ const CadTemplate = (props) => {
                                     list="rtList"
                                     className="validate"
                                     name="nomeRt"
+                                    id="rtInput"
                                     onChange={props.handleChange}
                                     value={props.data.nomeRt}
                                     onBlur={props.handleBlurRtName}

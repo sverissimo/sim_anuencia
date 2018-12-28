@@ -17,7 +17,7 @@ const AnuenciaTemplate = (props) => {
     if (data.selectedId) { showSearchBar = false }
 
     return (
-        <div className="container" style={{ width: '90%' }} >
+        <div className="container" style={{ width: '95%' }} >
             <Title
                 title='Analisar Processo'
                 subtitle='Selecione o processo para analisar, registrar pendências ou emitir anuência prévia.'
