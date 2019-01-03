@@ -64,26 +64,23 @@ class CadastroContainer extends React.Component {
     }
     enableProcessInput(e) {
         this.setState({
-            enableEmp: 'disabled',
-            enableRt: 'disabled',
             enableProcess: '',
+            enableEmp: 'disabled',
+            enableRt: 'disabled'
         })
         if (this.props.cadastro.processCollection[0]) {
 
             const collection = this.props.cadastro.processCollection
-            const lastNumber = collection.length
+            let procThisYear = []
+
+            collection.map(el =>
+                procThisYear.push(new Date(el.createdAt).getFullYear())
+            )
+
             const currentYear = Number(new Date().getFullYear())
-            let year = Number(new Date(collection[lastNumber - 1].createdAt).getFullYear())
-            let number
+            let count = procThisYear.filter(el => el === currentYear).length
 
-            if (year === currentYear) {
-                number = lastNumber
-            } else {
-                year = currentYear
-                number = 0
-            }
-
-            let nProcess = (number + 1) + '/' + year
+            let nProcess = (count + 1) + '/' + currentYear
 
             this.setState({ nProcess: nProcess })
         }
@@ -91,12 +88,13 @@ class CadastroContainer extends React.Component {
             document.getElementById("nomeEmpreendimento").focus()
         }, 50);
 
+
     }
     enableEmpInput(e) {
         this.setState({
-            enableEmp: '',
             enableRt: 'disabled',
             enableProcess: 'disabled',
+            enableEmp: '',
         })
         setTimeout(() => {
             document.getElementById("nome").focus()
@@ -164,7 +162,7 @@ class CadastroContainer extends React.Component {
     };
 
     handleSubmit = event => {
-
+        event.preventDefault()
         const cadEmp = {
             nome: this.state.nome,
             cpf: this.state.cpf,
@@ -205,25 +203,27 @@ class CadastroContainer extends React.Component {
                 }
             ],
         }
-
-        if (!this.state.empMatch && !this.state.empMatch[0] && !this.state.rtMatch && !this.state.rtMatch[0]) {
+        if (!this.state.nome || (!this.state.nomeRt || !this.state.nomeEmpreendimento)) {
+            alert('Favor preencher os nomes do empreendedor, RT e processo.')
+        }
+        else if (!this.state.empMatch && (!this.state.empMatch[0] && (!this.state.rtMatch && !this.state.rtMatch[0]))) {
             axios.post(('/api/cadastro_emp/'), cadEmp)
                 .then(res => cadProcess.empId = res.data.Cadastro_id)
                 .then(res => axios.post('/api/cadastro_rt', cadRt))
                 .then(res => cadProcess.rtId = res.data.RT_id)
                 .then(res => axios.post('/api/cadastro_process', cadProcess))
 
-        } else if (!this.state.empMatch && !this.state.empMatch[0] && this.state.rtMatch && this.state.rtMatch[0]) {
+        } else if (!this.state.empMatch && (!this.state.empMatch[0] && (this.state.rtMatch && this.state.rtMatch[0]))) {
             axios.post(('/api/cadastro_emp/'), cadEmp)
                 .then(res => cadProcess.empId = res.data.Cadastro_id)
                 .then(res => axios.post('/api/cadastro_process', cadProcess))
 
-        } else if (this.state.empMatch && this.state.empMatch[0] && !this.state.rtMatch && !this.state.rtMatch[0]) {
+        } else if (this.state.empMatch && (this.state.empMatch[0] && (!this.state.rtMatch && !this.state.rtMatch[0]))) {
             axios.post('/api/cadastro_rt', cadRt)
                 .then(res => cadProcess.rtId = res.data.RT_id)
                 .then(res => axios.post('/api/cadastro_process', cadProcess))
 
-        } else if (this.state.empMatch && this.state.empMatch[0] && this.state.rtMatch && this.state.rtMatch[0]) {
+        } else if (this.state.empMatch && (this.state.empMatch[0] && (this.state.rtMatch && this.state.rtMatch[0]))) {
             axios.post('/api/cadastro_process', cadProcess)
         }
     }
@@ -267,15 +267,20 @@ class CadastroContainer extends React.Component {
     }
 
     handleBlurRtName = () => {
-        
+
         if (this.state.rtMatch && this.state.rtMatch[0]) {
             this.setState({
-                ...this.state,
                 rtId: this.state.rtMatch[0]._id,
                 phoneRt: this.state.rtMatch[0].phoneRt,
                 emailRt: this.state.rtMatch[0].emailRt,
             })
-            this.enableProcessInput()
+
+            setTimeout(() => {
+                if (this.state.enableEmp !== '') {
+                    this.enableProcessInput()
+                }
+            }, 200);
+
 
         } else {
             this.setState({
@@ -285,6 +290,10 @@ class CadastroContainer extends React.Component {
                 emailRt: '',
             })
         }
+    }
+
+    backToEmp() {
+
     }
 
     render() {
