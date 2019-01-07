@@ -96,9 +96,6 @@ class CadastroContainer extends React.Component {
             enableProcess: 'disabled',
             enableEmp: '',
         })
-        setTimeout(() => {
-            document.getElementById("nome").focus()
-        }, 50);
     }
 
     handleBlur = event => {
@@ -162,7 +159,7 @@ class CadastroContainer extends React.Component {
     };
 
     handleSubmit = event => {
-        event.preventDefault()
+        
         const cadEmp = {
             nome: this.state.nome,
             cpf: this.state.cpf,
@@ -268,7 +265,7 @@ class CadastroContainer extends React.Component {
 
     handleBlurRtName = () => {
 
-        if (this.state.rtMatch && this.state.rtMatch[0]) {
+        if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0].nomeRt === this.state.nomeRt )) {
             this.setState({
                 rtId: this.state.rtMatch[0]._id,
                 phoneRt: this.state.rtMatch[0].phoneRt,
@@ -282,7 +279,7 @@ class CadastroContainer extends React.Component {
             }, 200);
 
 
-        } else {
+        } else if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0] !== this.state.nomeRt )) {
             this.setState({
                 ...this.state,
                 rtId: '',
@@ -292,8 +289,12 @@ class CadastroContainer extends React.Component {
         }
     }
 
-    backToEmp() {
-
+    backToRt() {
+        this.setState({
+            enableEmp: 'disabled',
+            enableRt: '',
+            enableProcess: 'disabled',
+        })
     }
 
     render() {
@@ -310,6 +311,7 @@ class CadastroContainer extends React.Component {
                     enableRtInput={e => this.enableRtInput(e)}
                     enableProcessInput={e => this.enableProcessInput(e)}
                     enableEmpInput={e => this.enableEmpInput(e)}
+                    backToRt={this.backToRt.bind(this)}
                     color={this.state.setColor}
                 />
             </div>

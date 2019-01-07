@@ -82,7 +82,7 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 
-app.get('/api/downloadSolDir/:id', function (req, res) {
+app.get('/api/download/:id', function (req, res) {
 
     const fileId = new mongoose.mongo.ObjectId(req.params.id)
     gfs.files.findOne({ _id: fileId }, function (err, file) {

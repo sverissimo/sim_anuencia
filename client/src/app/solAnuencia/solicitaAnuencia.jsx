@@ -152,9 +152,9 @@ class SolicitaAnuencia extends Component {
     }
 
     download(e) {
-        axios.get('/api/downloadSolDir/' + e.target.id)
+        axios.get('/api/download/' + e.target.id)
             .then(res => {
-                window.location.href = '/api/downloadSolDir/' + res.headers.fileid;
+                window.location.href = '/api/download/' + res.headers.fileid;
             })
     }
 

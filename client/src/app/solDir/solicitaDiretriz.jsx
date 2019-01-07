@@ -99,6 +99,7 @@ class solicitaDiretriz extends Component {
         const submit = async () => {
             await axios.post('/api/solDirUpload', this.state.form)
                 .then(res => {
+
                     for (let key in res.data.file) {
                         filesArray.push({
                             fieldName: res.data.file[key][0].fieldname,
@@ -107,14 +108,13 @@ class solicitaDiretriz extends Component {
                             uploadDate: res.data.file[key][0].uploadDate,
                             filename: res.data.file[key][0].filename
                         })
-                        axios.put(('/api/fileObject'), {
-                            itemId: this.state.selectedId,
-                            filesArray: filesArray,
-                            status: 'Aguardando Diretrizes Metropolitanas'
-                        })
                     }
-
                 })
+            axios.put(('/api/fileObject'), {
+                itemId: this.state.selectedId,
+                filesArray: filesArray,
+                status: 'Aguardando Diretrizes Metropolitanas'
+            })            
             axios.put(('/api/processLog'), {
                 id: this.state.selectedId,
                 processLog: {

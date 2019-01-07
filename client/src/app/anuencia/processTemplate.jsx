@@ -1,10 +1,4 @@
 import React from 'react';
-import {
-    Switch,
-    Link,
-    Route
-} from 'react-router-dom'
-
 import { BackButton } from '../common/buttons'
 import anuenciaMenu from '../config/anuenciaMenu'
 import FileExplorer from './fileExplorer'
@@ -16,7 +10,7 @@ import LogDetails from './logDetails'
 
 const ProcessTemplate = (props) => {
     const { clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
-        showLog, clearLog, log } = props
+        showLog, clearLog, log, download } = props
 
     const returnComponent = (name) => {
         switch (name) {
@@ -37,8 +31,6 @@ const ProcessTemplate = (props) => {
                 if (log.logDetails === false) {
                     return <ProcessInfo
                         process={process}
-                        empreend={empreend}
-                        rt={rt}
                         showLog={showLog}
                     />
                 } else {
@@ -48,6 +40,7 @@ const ProcessTemplate = (props) => {
                         rt={rt}
                         index={log.logIndex}
                         clearLog={clearLog}
+                        download={download}
                     />
                 }
         }
@@ -106,7 +99,7 @@ const ProcessTemplate = (props) => {
                             <div className='col push-s4'>
                                 <h5>
                                     Selecione uma das opçoes acima.
-                         </h5>
+                                </h5>
                             </div> :
                             <div className='col s12' style={{ height: '100%' }}>
 
@@ -123,7 +116,7 @@ const ProcessTemplate = (props) => {
                             icon='arrow_back'
                             onClick={clear}
                         /> Voltar
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>

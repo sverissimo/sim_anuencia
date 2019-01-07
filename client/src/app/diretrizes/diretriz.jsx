@@ -116,30 +116,45 @@ class Diretriz extends Component {
         }, 200);
     }
 
-    handleSubmit(e) {
-        axios.post('/api/diretrizUpload', this.state.form)
+    async handleSubmit(e) {
+        let filesArray = [];
+        await axios.post('/api/diretrizUpload', this.state.form)
             .then(res => {
-
                 for (let key in res.data.file) {
-                    let filesArray = [];
                     filesArray.push(
                         res.data.file[key][0].fieldname,
                         res.data.file[key][0].id,
                         res.data.file[key][0].originalname,
-                        res.data.file[key][0].uploadDate
+                        res.data.file[key][0].uploadDate,
+                        res.data.file[key][0].length,
+                        res.data.file[key][0].contentType
                     )
-                    axios.put(('/api/fileObject'), {
-                        itemId: this.state.selectedId,
-                        filesArray: {
-                            fieldName: filesArray[0],
-                            id: filesArray[1],
-                            originalName: filesArray[2],
-                            uploadDate: filesArray[3]
-                        },
-                        status: 'Diretrizes Metropolitanas emitidas'
-                    })
                 }
             })
+        let fileObject = {
+            fieldName: filesArray[0],
+            id: filesArray[1],
+            originalName: filesArray[2],
+            uploadDate: filesArray[3],
+            length: filesArray[4],
+            contentType: filesArray[5]
+        }
+                
+        axios.put(('/api/fileObject'), {
+            itemId: this.state.selectedId,
+            filesArray: fileObject,
+            status: 'Diretrizes Metropolitanas emitidas'
+        })
+
+        axios.put(('/api/processLog'), {
+            id: this.state.selectedId,
+            processLog: {
+                label: 'Diretrizes Metropolitanas emitidas',
+                createdAt: new Date(),
+                files: [fileObject]
+            }
+        })
+
     }
 
     empDetails(e) {
@@ -154,9 +169,9 @@ class Diretriz extends Component {
     }
 
     download(e) {
-        axios.get('/api/downloadSolDir/' + e.target.id)
+        axios.get('/api/download/' + e.target.id)
             .then(res => {
-                window.location.href = '/api/downloadSolDir/' + res.headers.fileid;
+                window.location.href = '/api/download/' + res.headers.fileid;
             })
     }
 
@@ -186,7 +201,7 @@ class Diretriz extends Component {
     }
 
     enviaPendencias(e) {
-        
+
         let dirStatus = this.state.dirStatus
         dirStatus.createdAt = new Date()
 

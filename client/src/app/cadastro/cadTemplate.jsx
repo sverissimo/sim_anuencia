@@ -135,7 +135,7 @@ const CadTemplate = (props) => {
                         </div>
                     </fieldset>
                     <div>
-                        <BackButton onClick={props.enableRtInput} disabled={props.data.enableProcess} icon='arrow_back' />
+                        <BackButton onClick={props.backToRt} disabled={props.data.enableProcess} icon='arrow_back' />
                         <input className="btn right" type="submit" disabled={props.data.enableProcess} value="Cadastrar processo" style={{ margin: '20px 0px' }} />
                     </div>
                     <br />
