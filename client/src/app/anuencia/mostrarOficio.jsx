@@ -2,11 +2,12 @@ import React from 'react';
 import OficioHeader from './oficioHeader'
 
 const MostrarOficio = (props) => {
-    let { mostrarOficio, content, redux, process, empreend, rt } = props
-    console.log(content)
+    let { mostrarOficio, content, redux, process, empreend, rt, oficio } = props
+    
     if (mostrarOficio) {
         return (
-            <div className='z-depth-3'
+            <div id='oficio'
+                className='z-depth-3'
                 style={{
                     position: 'relative',
                     borderRadius: '15px',

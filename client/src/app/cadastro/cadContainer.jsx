@@ -159,7 +159,7 @@ class CadastroContainer extends React.Component {
     };
 
     handleSubmit = event => {
-        
+
         const cadEmp = {
             nome: this.state.nome,
             cpf: this.state.cpf,
@@ -227,7 +227,7 @@ class CadastroContainer extends React.Component {
 
     handleBlurName = () => {
 
-        if (this.state.empMatch !== '') {
+        if (this.state.empMatch && (this.state.empMatch[0] && (this.state.empMatch[0].nome === this.state.nome))) {
             this.setState({
                 ...this.state,
                 empId: this.state.empMatch[0]._id,
@@ -265,7 +265,7 @@ class CadastroContainer extends React.Component {
 
     handleBlurRtName = () => {
 
-        if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0].nomeRt === this.state.nomeRt )) {
+        if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0].nomeRt === this.state.nomeRt)) {
             this.setState({
                 rtId: this.state.rtMatch[0]._id,
                 phoneRt: this.state.rtMatch[0].phoneRt,
@@ -279,7 +279,7 @@ class CadastroContainer extends React.Component {
             }, 200);
 
 
-        } else if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0] !== this.state.nomeRt )) {
+        } else if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0] !== this.state.nomeRt)) {
             this.setState({
                 ...this.state,
                 rtId: '',

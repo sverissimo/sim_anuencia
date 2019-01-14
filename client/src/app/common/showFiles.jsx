@@ -2,6 +2,7 @@ import React from 'react';
 import { allFilesLabels } from './configLabels';
 import { CloseWindow } from '../common/buttons'
 import showDate from './showDate'
+import formatFileSize from '../config/formatFileSize'
 
 const labels = (fieldName) => {
 
@@ -9,18 +10,6 @@ const labels = (fieldName) => {
     allFilesArray = allFilesLabels()
     let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
     return label[0].label
-}
-
-const formatFileSize = (bytes) => {
-
-    if (bytes > 1024 && bytes < 1048576) {
-        return Math.round(bytes / 1024) + ' KB'
-
-    } else if (bytes >= 1048576 && bytes < (1048576 * 1024)) {
-        return ((bytes / 1024) / 1024).toFixed(2) + ' MB'
-    } else {
-        return bytes + ' bytes'
-    }
 }
 
 const ShowFiles = (props) => {

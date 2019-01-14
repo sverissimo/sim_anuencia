@@ -2,6 +2,7 @@ import React from 'react';
 import { BackButton } from '../common/buttons'
 import { allFilesLabels } from '../common/configLabels'
 import showDate from '../common/showDate'
+import formatFileSize from '../config/formatFileSize'
 
 const labels = (fieldName) => {
 
@@ -62,7 +63,7 @@ const LogDetails = (props) => {
                                 {showDate(file.uploadDate)}
                             </div>
                             <div className="col s3">
-                                {file.originalName}
+                                {formatFileSize(file.fileSize)}
                             </div>
                         </div>
                     </div>
@@ -74,7 +75,7 @@ const LogDetails = (props) => {
                     <div className="col s1 left" style={{ marginTop: '3%' }}>
                         <strong>
                             <i className='material-icons'
-                                style={{ color: 'teal', cursor: 'pointer', border:'1px solid #ddd', borderRadius: '35%' }}
+                                style={{ color: 'teal', cursor: 'pointer', border:'1px solid #bbb', borderRadius: '45%' }}
                                 onClick={clearLog}
                             > arrow_back
                             </i>

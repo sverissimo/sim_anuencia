@@ -126,7 +126,7 @@ class Diretriz extends Component {
                         res.data.file[key][0].id,
                         res.data.file[key][0].originalname,
                         res.data.file[key][0].uploadDate,
-                        res.data.file[key][0].length,
+                        res.data.file[key][0].size,
                         res.data.file[key][0].contentType
                     )
                 }
@@ -136,9 +136,10 @@ class Diretriz extends Component {
             id: filesArray[1],
             originalName: filesArray[2],
             uploadDate: filesArray[3],
-            length: filesArray[4],
+            fileSize: filesArray[4],
             contentType: filesArray[5]
         }
+        console.log(fileObject)
                 
         axios.put(('/api/fileObject'), {
             itemId: this.state.selectedId,

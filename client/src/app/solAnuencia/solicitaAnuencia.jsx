@@ -114,29 +114,33 @@ class SolicitaAnuencia extends Component {
         }, 200);
     }
 
-    handleSubmit(e) {
-        axios.post('/api/solAnuenciaUpload', this.state.form)
+    async handleSubmit(e) {
+        let filesArray = [];
+        await axios.post('/api/solAnuenciaUpload', this.state.form)
             .then(res => {
-
                 for (let key in res.data.file) {
-                    let filesArray = [];
-                    filesArray.push(
-                        res.data.file[key][0].fieldname,
-                        res.data.file[key][0].id,
-                        res.data.file[key][0].originalname,
-                        res.data.file[key][0].uploadDate
-                    )
-                    axios.put(('/api/fileObject'), {
-                        itemId: this.state.selectedId,
-                        filesArray: {
-                            fieldName: filesArray[0],
-                            id: filesArray[1],
-                            originalName: filesArray[2],
-                            uploadDate: filesArray[3]
-                        },
-                        status: 'Aguardando Análise'
+
+                    filesArray.push({
+                        fieldName: res.data.file[key][0].fieldname,
+                        id: res.data.file[key][0].id,
+                        originalName: res.data.file[key][0].originalname,
+                        uploadDate: res.data.file[key][0].uploadDate,
+                        fileSize: res.data.file[key][0].size
                     })
                 }
+                axios.put(('/api/fileObject'), {
+                    itemId: this.state.selectedId,
+                    filesArray: filesArray,
+                    status: 'Aguardando Análise'
+                })
+                axios.put(('/api/processLog'), {
+                    id: this.state.selectedId,
+                    processLog: {
+                        label: 'Anuência prévia solicitada',
+                        createdAt: new Date(),
+                        files: filesArray
+                    }
+                })
             })
     }
 

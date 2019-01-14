@@ -32,7 +32,8 @@ class AnuenciaForm extends Component {
     state = {
         color: '',
         text: '',
-        mostrarOficio: false     
+        mostrarOficio: false,
+        oficio: ''    
     }
 
     componentDidMount() {
@@ -46,19 +47,20 @@ class AnuenciaForm extends Component {
 
     handleChange(value) {
         this.setState({ ...this.state, text: value })
-        console.log(this.state.text)
+        
     }
 
     savePdf() {
-
-        this.setState({ mostrarOficio: true })
-
-          /*     axios.post('/api/sendHtml', { data: this.state.text })
-                 .then(res => {
-                     document.getElementById("root").innerHTML = res.data
-                 }  )
-       */
+        this.setState({ mostrarOficio: true })      
     }
+
+    enviaPendencias(e) {
+        let oficio = document.getElementById('oficio').outerHTML
+        this.setState({ oficio: oficio })      
+        console.log(oficio)
+    }
+
+
     render() {
         const { empreend, rt, process, value } = this.props
         return (
@@ -78,14 +80,15 @@ class AnuenciaForm extends Component {
                     }}
                 />
                 <MostrarOficio
-                    mostrarOficio={this.state.mostrarOficio}
+                    mostrarOficio={this.state.mostrarOficio}                    
                     content={this.state.text}
+                    oficio={this.state.oficio}
                     process={process}
                     empreend={empreend}
                     rt={rt}
                 />
                 
-                <button className='btn right' onClick={this.savePdf.bind(this)}> Enviar </button>
+                <button className='btn right' onClick={this.enviaPendencias.bind(this)}> Enviar </button>
                 <button style={{marginRight: '10px'}} className='btn right' onClick={this.savePdf.bind(this)}> Pré-visualizar </button>
                 
             </div>

@@ -20,14 +20,16 @@ class ProcessContainer extends Component {
         if (id !== this.state.selectedOption) {
             let format = {
                 stylez:
-                    { minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '' },
+                    { minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '',  borderTopLeftRadius: '15%',
+                    borderTopRightRadius: '15%' },
                 class: 'col s12 m6 l3 z-depth-2'
             }
             return format
         } else {
             let format = {
                 stylez:
-                    { minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '' },
+                    { minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '',  borderTopLeftRadius: '15%',
+                    borderTopRightRadius: '15%', },
                 class: 'col s12 m6 l3'
             }
             return format

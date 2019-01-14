@@ -50,10 +50,12 @@ const ProcessTemplate = (props) => {
             <div>
                 <div className="row" align='center' style={{
                     border: '1px solid #ddd',
+                   
                     backgroundColor: '#ffe',
                     fontSize: '1.3rem',
                     fontFamily: 'calibri',
-                    marginTop: '15px'
+                    marginTop: '15px',
+                   
                 }}>
                     <h4>{process.nomeEmpreendimento}</h4>
                     <div className="row col s12">
@@ -77,7 +79,7 @@ const ProcessTemplate = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="row" style={{ marginBottom: 0 }}>
+                <div className="row" style={{ marginBottom: 0, cursor: 'pointer' }}>
                     {
                         anuenciaMenu.map((opt, index) => (
                             <div id={opt.name} key={index} align="center"
