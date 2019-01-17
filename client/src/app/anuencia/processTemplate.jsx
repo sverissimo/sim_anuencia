@@ -46,16 +46,16 @@ const ProcessTemplate = (props) => {
         }
     }
     return (
-        <div className='container'>
+        <div className='container' style={{ width: '90%' }}>
             <div>
                 <div className="row" align='center' style={{
                     border: '1px solid #ddd',
-                   
+
                     backgroundColor: '#ffe',
                     fontSize: '1.3rem',
                     fontFamily: 'calibri',
                     marginTop: '15px',
-                   
+
                 }}>
                     <h4>{process.nomeEmpreendimento}</h4>
                     <div className="row col s12">
@@ -95,7 +95,7 @@ const ProcessTemplate = (props) => {
                         ))
                     }
                 </div>
-                <div style={{ height: '50vh', border: '1px solid #ddd', borderRadius: '2%' }}>
+                <div style={{ minHeight: '50vh', border: '1px solid #ddd', borderRadius: '2%', marginBottom: '2%'}}>
                     {
                         selectedOption === '' ?
                             <div className='col push-s4'>
@@ -111,15 +111,22 @@ const ProcessTemplate = (props) => {
                     }
                 </div>
 
-                <div className="row">
-                    <div className="col s1 left">
-                        <BackButton
-                            disabled={data.checked === null}
-                            icon='arrow_back'
-                            onClick={clear}
-                        /> Voltar
-                    </div>
-                </div>
+                {
+                    !log.logDetails || selectedOption !== 'ProcessInfo' ?
+
+                        <div className="row">
+                            <div className="col s1 left">
+                                <BackButton
+                                    disabled={data.checked === null}
+                                    icon='arrow_back'
+                                    onClick={clear}
+                                /> Voltar
+                             </div>
+                        </div>
+                        :
+                        null
+                }
+
             </div>
         </div>
     )

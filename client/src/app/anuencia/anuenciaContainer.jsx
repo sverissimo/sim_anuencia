@@ -42,7 +42,7 @@ class AnuenciaContainer extends Component {
         let color = document.getElementById('setcolor').style.backgroundColor
         this.props.setColor(color)
 
-    }
+    } 
 
     handleSearch(e) {
 

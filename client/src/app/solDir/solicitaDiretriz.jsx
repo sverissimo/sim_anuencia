@@ -99,7 +99,7 @@ class solicitaDiretriz extends Component {
         const submit = async () => {
             await axios.post('/api/solDirUpload', this.state.form)
                 .then(res => {
-                    
+
                     for (let key in res.data.file) {
                         filesArray.push({
                             fieldName: res.data.file[key][0].fieldname,
@@ -116,7 +116,7 @@ class solicitaDiretriz extends Component {
                 filesArray: filesArray,
                 status: 'Aguardando Diretrizes Metropolitanas'
             })
-                     
+
             axios.put(('/api/processLog'), {
                 id: this.state.selectedId,
                 processLog: {
@@ -144,13 +144,15 @@ class solicitaDiretriz extends Component {
     render() {
 
         let { dataMatch } = this.state
+        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Processo cadastrado')
+        
         let input = this.state.searchValue.toLowerCase()
-        if (input && !this.state.checked) {
-            dataMatch = this.props.cadastro.processCollection.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
-        } else if (this.state.checked || (this.state.checked && input)) {
-            dataMatch = this.props.cadastro.processCollection.filter(el => el._id.toLowerCase().match(this.state.selectedId))
+        if (filteredList && (input && !this.state.checked)) {
+            dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
+        } else if (filteredList && (this.state.checked || (this.state.checked && input))) {
+            dataMatch = filteredList.filter(el => el._id.toLowerCase().match(this.state.selectedId))
         } else {
-            dataMatch = this.props.cadastro.processCollection
+            dataMatch = filteredList
         }
 
         return (

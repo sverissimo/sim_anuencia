@@ -15,21 +15,29 @@ class ProcessContainer extends Component {
         this.setState({ selectedOption: e.target.id })
     }
 
+    componentWillUnmount() {
+        this.props.clear()
+    }
+
     divConfig(e) {
         let id = e.name
         if (id !== this.state.selectedOption) {
             let format = {
                 stylez:
-                    { minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '',  borderTopLeftRadius: '15%',
-                    borderTopRightRadius: '15%' },
+                {
+                    minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
+                    borderTopRightRadius: '15%'
+                },
                 class: 'col s12 m6 l3 z-depth-2'
             }
             return format
         } else {
             let format = {
                 stylez:
-                    { minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '',  borderTopLeftRadius: '15%',
-                    borderTopRightRadius: '15%', },
+                {
+                    minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
+                    borderTopRightRadius: '15%',
+                },
                 class: 'col s12 m6 l3'
             }
             return format
@@ -38,10 +46,10 @@ class ProcessContainer extends Component {
     }
 
     showLog(e) {
-        
+
         this.setState({ logDetails: true, logIndex: e.target.id })
-        
-        
+
+
     }
 
     clearLog() {
