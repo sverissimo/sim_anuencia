@@ -34,8 +34,11 @@ class solicitaDiretriz extends Component {
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
 
-        let color = document.getElementById('setcolor').style.backgroundColor
-        this.props.setColor(color)
+        setTimeout(() => {
+            let color = document.getElementById('setcolor').style.backgroundColor
+            this.props.setColor(color)    
+        }, 50);
+        
         axios.get('/api/files')
     }
 
@@ -125,6 +128,7 @@ class solicitaDiretriz extends Component {
                     files: filesArray
                 }
             })
+            window.location.reload()
 
         }
         submit()

@@ -65,7 +65,8 @@ const SolAnuenciaTemplate = (props) => {
             <div>
                 {
                     data.selectedId && data.checked  ?
-                        (<div>
+                        (
+                        <div>
                             <fieldset>
                                 <legend style={{ fontSize: '1.3rem' }}>
                                     {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de anuência prévia
@@ -88,8 +89,9 @@ const SolAnuenciaTemplate = (props) => {
                                 style={{ marginBottom: '20px' }}
                                 onClick = {submitFiles}  
                             >Solicitar Anuência</button>
-                        </div>)
-                        : void 0
+                        </div>
+                        )
+                        : null
                 }
             </div>
         </div>

@@ -77,16 +77,17 @@ const Diretriz = (props) => {
 
                             
                         </div>)
-                        : void 0
+                        : null
                 }
                 {
                     data.anexaDiretriz ?
                         <button
                             className="btn teal darken-3 right"
                             style={{ marginBottom: '30px' }}
+                            type="submit"
                             onClick={submitFiles}
                         >Emitir Diretrizes Metropolitanas
-                    </button> : void 0
+                    </button> : null
                 }
             </div>
         </div>

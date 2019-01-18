@@ -54,8 +54,10 @@ class Diretriz extends Component {
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
         !this.props.cadastro.filesCollection[0] ? this.props.loadFilesData() : void 0
 
-        let color = document.getElementById('setcolor').style.backgroundColor
-        this.props.setColor(color)
+        setTimeout(() => {
+            let color = document.getElementById('setcolor').style.backgroundColor
+            this.props.setColor(color)    
+        }, 50);
 
     }
 
@@ -139,8 +141,7 @@ class Diretriz extends Component {
             fileSize: filesArray[4],
             contentType: filesArray[5]
         }
-        console.log(fileObject)
-                
+                        
         axios.put(('/api/fileObject'), {
             itemId: this.state.selectedId,
             filesArray: fileObject,
@@ -155,6 +156,7 @@ class Diretriz extends Component {
                 files: [fileObject]
             }
         })
+        window.location.reload()
 
     }
 
@@ -262,12 +264,13 @@ class Diretriz extends Component {
 
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
+        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
         if (input && !this.state.checked) {
-            dataMatch = this.props.cadastro.processCollection.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
+            dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
         } else if (this.state.checked || (this.state.checked && input)) {
-            dataMatch = this.props.cadastro.processCollection.filter(el => el._id.toLowerCase().match(this.state.selectedId))
+            dataMatch = filteredList.filter(el => el._id.toLowerCase().match(this.state.selectedId))
         } else {
-            dataMatch = this.props.cadastro.processCollection
+            dataMatch = filteredList
         }
 
         return (

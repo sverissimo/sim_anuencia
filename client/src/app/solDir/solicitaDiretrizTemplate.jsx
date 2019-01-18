@@ -65,7 +65,7 @@ const SolicitaDiretriz = (props) => {
                 {
                     data.selectedId && data.checked  ?
                         (<div>
-                            <fieldset>
+                                                      <fieldset>
                                 <legend style={{ fontSize: '1.3rem' }}>
                                     {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de diretrizes
                             </legend>
@@ -74,8 +74,10 @@ const SolicitaDiretriz = (props) => {
                             <button
                                 className="btn teal darken-3 right"
                                 style={{ marginBottom: '20px' }}
-                                onClick = {submitFiles}  
-                            >Solicitar Diretrizes</button>
+                                onClick = {submitFiles}
+                            >
+                                Solicitar Diretrizes
+                            </button>
                         </div>)
                         : void 0
                 }

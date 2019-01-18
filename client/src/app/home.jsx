@@ -15,8 +15,11 @@ class Home extends Component {
     this.props.loadRtData();
     this.props.loadProcessData();
 
-    let color = document.getElementById('setcolor').style.backgroundColor
-    this.setState({ setColor: color })
+    setTimeout(() => {
+      let color = document.getElementById('setcolor').style.backgroundColor
+      this.setState({ setColor: color })
+  }, 450);
+    
 
   }
 
