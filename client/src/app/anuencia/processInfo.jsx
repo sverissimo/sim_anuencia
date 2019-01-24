@@ -4,7 +4,6 @@ import showDate from '../common/showDate'
 const ProcessInfo = (props) => {
     const { process, showLog } = props
 
-    console.log(process)
     return (
         <div style={{ paddingLeft: '1rem', paddingTop: '1rem' }}>
             <div className="row">
@@ -21,18 +20,28 @@ const ProcessInfo = (props) => {
                                 </div>
                                 <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
                             </div>
-                            :
-                            <div>
-                                <div
-                                    className="col s12 m9"
-                                    style={{ cursor: 'pointer', color: 'blue' }}
-                                    id={i}
-                                    onClick={showLog}
-                                >
-                                    {el.label}
+                            : el.label === 'Pendências para emissão de diretrizes' ?
+                                <div>
+                                    <div className="col s12 m9"
+                                        style={{ cursor: 'pointer', color: 'blue' }}
+                                        id={i}
+                                        onClick={showLog}>
+                                        {el.label}
+                                    </div>
+                                    <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
                                 </div>
-                                <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
-                            </div>
+                                :
+                                <div>
+                                    <div
+                                        className="col s12 m9"
+                                        style={{ cursor: 'pointer', color: 'blue' }}
+                                        id={i}
+                                        onClick={showLog}
+                                    >
+                                        {el.label}
+                                    </div>
+                                    <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
+                                </div>
                     }
                 </div>
             )}

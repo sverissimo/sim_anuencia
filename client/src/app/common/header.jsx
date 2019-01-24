@@ -11,17 +11,22 @@ const Header = (props) => {
     const count = (item) => {
         if (process && process.length > 0) {
             let counter = process.filter(el => el.status.match(item)).length
+            if (item = 'Diretrizes Metropolitanas emitidas') {
+                counter = counter + process.filter(el => el.status.match('Pendências')).length
+            } else {
+                counter = process.filter(el => el.status.match(item)).length
+            }
+            
             if (counter > 0)
                 return (
                     <sup style={{ fontSize: '0.9em', borderRadius: '50%', padding: '0px 5px', backgroundColor: 'red', fontWeight: '900' }}>
                         {counter}
                     </sup>
                 )
-                if (counter ===0)
+            if (counter === 0)
                 return (
                     <sup> </sup>
                 )
-
         }
 
     }
@@ -37,7 +42,7 @@ const Header = (props) => {
                     <li><Link to="/cadastro">Cadastro</Link></li>
                     <li><Link to="/solicitaDiretriz">Solicitar Diretrizes Metropolitanas {count('Processo cadastrado')}</Link></li>
                     <li><Link to="/diretrizes">Diretrizes Metropolitanas {count('Aguardando Diretrizes Metropolitanas')}</Link></li>
-                    <li><Link to="/solicitaAnuencia">Solicitar Anuência Prévia {count('Diretrizes Metropolitanas emitidas')}</Link></li>
+                    <li><Link to="/solicitaAnuencia">Solicitar Anuência Prévia {count(`Diretrizes Metropolitanas emitidas`)}</Link></li>
                     <li><Link to="/Anuencia">Emitir Anuência Prévia {count('Aguardando Análise')}</Link></li>
                     <li><Link to="/showEmpreend">Gerenciar Dados </Link></li>
                     <li><Link to=""><i className="material-icons left">person</i></Link></li>

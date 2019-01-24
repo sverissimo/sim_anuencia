@@ -56,7 +56,7 @@ class Diretriz extends Component {
 
         setTimeout(() => {
             let color = document.getElementById('setcolor').style.backgroundColor
-            this.props.setColor(color)    
+            this.props.setColor(color)
         }, 50);
 
     }
@@ -119,6 +119,7 @@ class Diretriz extends Component {
     }
 
     async handleSubmit(e) {
+        e.preventDefault()
         let filesArray = [];
         await axios.post('/api/diretrizUpload', this.state.form)
             .then(res => {
@@ -141,14 +142,14 @@ class Diretriz extends Component {
             fileSize: filesArray[4],
             contentType: filesArray[5]
         }
-                        
-        axios.put(('/api/fileObject'), {
+
+        await axios.put(('/api/fileObject'), {
             itemId: this.state.selectedId,
             filesArray: fileObject,
             status: 'Diretrizes Metropolitanas emitidas'
         })
 
-        axios.put(('/api/processLog'), {
+        await axios.put(('/api/processLog'), {
             id: this.state.selectedId,
             processLog: {
                 label: 'Diretrizes Metropolitanas emitidas',
@@ -197,27 +198,38 @@ class Diretriz extends Component {
         let input = e.target.value
         let dirStatus = this.state.dirStatus
         dirStatus.pendencias = input
-        dirStatus.createdAt = new Date()
         this.setState({
             dirStatus: dirStatus
         })
     }
 
-    enviaPendencias(e) {
-
+    async enviaPendencias(e) {
+        e.preventDefault()
         let dirStatus = this.state.dirStatus
-        dirStatus.createdAt = new Date()
 
-        axios.put('api/processLog', {
-            id: this.state.selectedId,
-            processLog: dirStatus
+        await axios.put('/api/fileObject', {
+            itemId: this.state.selectedId,
+            status: 'Processo cadastrado'
         })
-            .then(res => console.log(res))
+        await axios.put('api/processLog', {
+            id: this.state.selectedId,
+            processLog: {
+                label: 'Pendências para emissão de diretrizes',
+                createdAt: new Date(),
+                pendencias: dirStatus.pendencias,
+                dirCheckList: {
+                    cgtOk: dirStatus.cgtOk,
+                    vistoriaOk: dirStatus.vistoriaOk,
+                    daeOk: dirStatus.daeOk,
+                    dirMunOk: dirStatus.dirMunOk,
+                }
+            }
+        })
+        window.location.reload()
     }
 
     showCalendar(el) {
         this.setState({ ...this.state, [`${el.target.id}Calendar`]: true })
-
     }
 
     hideCalendar(d) {

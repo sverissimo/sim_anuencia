@@ -43,6 +43,8 @@ const ProcessTemplate = (props) => {
                         download={download}
                     />
                 }
+            default:
+                console.log('invalid option, dude!')
         }
     }
     return (
@@ -95,7 +97,7 @@ const ProcessTemplate = (props) => {
                         ))
                     }
                 </div>
-                <div style={{ minHeight: '50vh', border: '1px solid #ddd', borderRadius: '2%', marginBottom: '2%'}}>
+                <div style={{ minHeight: '50vh', border: '1px solid #ddd', borderRadius: '2%', marginBottom: '2%' }}>
                     {
                         selectedOption === '' ?
                             <div className='col push-s4'>

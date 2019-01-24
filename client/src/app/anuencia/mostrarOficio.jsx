@@ -2,8 +2,8 @@ import React from 'react';
 import OficioHeader from './oficioHeader'
 
 const MostrarOficio = (props) => {
-    let { mostrarOficio, content, redux, process, empreend, rt, oficio } = props
-    
+    let { mostrarOficio, content, redux, process, empreend, rt } = props
+
     if (mostrarOficio) {
         return (
             <div id='oficio'
@@ -16,7 +16,6 @@ const MostrarOficio = (props) => {
                     padding: '15px 0px 0px 30px',
                     border: '1px solid #ddd',
                     marginBottom: '25px'
-
                 }}
             >
                 <OficioHeader
@@ -26,6 +25,12 @@ const MostrarOficio = (props) => {
                     rt={rt}
                 />
                 <div dangerouslySetInnerHTML={{ __html: content }}></div>
+                <center>
+                    <strong>
+                        <p>Técnico Responsável</p>
+                    </strong>
+                    <p>CAU 1234567890</p>
+                </center>
             </div>
         )
     }

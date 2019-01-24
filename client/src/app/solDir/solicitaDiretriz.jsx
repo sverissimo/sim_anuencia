@@ -36,9 +36,9 @@ class solicitaDiretriz extends Component {
 
         setTimeout(() => {
             let color = document.getElementById('setcolor').style.backgroundColor
-            this.props.setColor(color)    
+            this.props.setColor(color)
         }, 50);
-        
+
         axios.get('/api/files')
     }
 
@@ -97,41 +97,38 @@ class solicitaDiretriz extends Component {
         }, 200);
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
+        e.preventDefault()
         let filesArray = []
-        const submit = async () => {
-            await axios.post('/api/solDirUpload', this.state.form)
-                .then(res => {
+        await axios.post('/api/solDirUpload', this.state.form)
+            .then(res => {
 
-                    for (let key in res.data.file) {
-                        filesArray.push({
-                            fieldName: res.data.file[key][0].fieldname,
-                            id: res.data.file[key][0].id,
-                            originalName: res.data.file[key][0].originalname,
-                            uploadDate: res.data.file[key][0].uploadDate,
-                            filename: res.data.file[key][0].filename,
-                            fileSize: res.data.file[key][0].size
-                        })
-                    }
-                })
-            axios.put(('/api/fileObject'), {
-                itemId: this.state.selectedId,
-                filesArray: filesArray,
-                status: 'Aguardando Diretrizes Metropolitanas'
-            })
-
-            axios.put(('/api/processLog'), {
-                id: this.state.selectedId,
-                processLog: {
-                    label: 'Diretrizes metropolitanas solicitadas',
-                    createdAt: new Date(),
-                    files: filesArray
+                for (let key in res.data.file) {
+                    filesArray.push({
+                        fieldName: res.data.file[key][0].fieldname,
+                        id: res.data.file[key][0].id,
+                        originalName: res.data.file[key][0].originalname,
+                        uploadDate: res.data.file[key][0].uploadDate,
+                        filename: res.data.file[key][0].filename,
+                        fileSize: res.data.file[key][0].size
+                    })
                 }
             })
-            window.location.reload()
+        await axios.put(('/api/fileObject'), {
+            itemId: this.state.selectedId,
+            filesArray: filesArray,
+            status: 'Aguardando Diretrizes Metropolitanas'
+        })
 
-        }
-        submit()
+        await axios.put(('/api/processLog'), {
+            id: this.state.selectedId,
+            processLog: {
+                label: 'Diretrizes metropolitanas solicitadas',
+                createdAt: new Date(),
+                files: filesArray
+            }
+        })
+        window.location.reload()
     }
 
     empDetails(e) {
@@ -149,7 +146,7 @@ class solicitaDiretriz extends Component {
 
         let { dataMatch } = this.state
         const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Processo cadastrado')
-        
+
         let input = this.state.searchValue.toLowerCase()
         if (filteredList && (input && !this.state.checked)) {
             dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))

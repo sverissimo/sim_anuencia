@@ -51,10 +51,9 @@ class SolicitaAnuencia extends Component {
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.filesCollection[0] ? this.props.loadFilesData() : void 0
 
-
         setTimeout(() => {
             let color = document.getElementById('setcolor').style.backgroundColor
-            this.props.setColor(color)    
+            this.props.setColor(color)
         }, 50);
     }
 
@@ -99,7 +98,7 @@ class SolicitaAnuencia extends Component {
         let allFields = solAnuenciaConfig1.concat(solAnuenciaConfig2)
 
         allFields.map(item => k.push(item.nameInput))
-        console.log(k)
+
         setTimeout(() => {
             k.map(inputName => {
                 for (let keys in this.state) {
@@ -108,7 +107,6 @@ class SolicitaAnuencia extends Component {
                         : void 0
                 }
             })
-
         }, 100);
 
         setTimeout(() => {
@@ -117,6 +115,32 @@ class SolicitaAnuencia extends Component {
     }
 
     async handleSubmit(e) {
+        e.preventDefault()
+        const procCollection = this.props.cadastro.processCollection
+        const { selectedId } = this.state
+
+        const label = () => {
+            let entradaCounter = []            
+            if (procCollection.length > 0) {
+                const process = procCollection.filter(proc => proc._id.match(selectedId))
+                entradaCounter = process[0].processHistory.filter(el=> el.label)
+                
+            }
+            const analise = entradaCounter.filter(el=> el.label.match('Análise'))
+            const count = analise.length
+            
+            
+            if (count === 0) {
+                const newLabel = 'Anuência prévia solicitada'                
+                console.log(newLabel)            
+                return newLabel
+            } else {                
+                const newLabel2 = 'Entrada '+count
+                console.log(newLabel2)
+                return newLabel2
+            } 
+        } 
+
         let filesArray = [];
         await axios.post('/api/solAnuenciaUpload', this.state.form)
             .then(res => {
@@ -127,24 +151,26 @@ class SolicitaAnuencia extends Component {
                         id: res.data.file[key][0].id,
                         originalName: res.data.file[key][0].originalname,
                         uploadDate: res.data.file[key][0].uploadDate,
-                        fileSize: res.data.file[key][0].size
+                        fileSize: res.data.file[key][0].size,
+                        contentType: res.data.file[key][0].contentType
                     })
                 }
-                axios.put(('/api/fileObject'), {
-                    itemId: this.state.selectedId,
-                    filesArray: filesArray,
-                    status: 'Aguardando Análise'
-                })
-                axios.put(('/api/processLog'), {
-                    id: this.state.selectedId,
-                    processLog: {
-                        label: 'Anuência prévia solicitada',
-                        createdAt: new Date(),
-                        files: filesArray
-                    }
-                })
             })
-            window.location.reload()
+        await axios.put(('/api/fileObject'), {
+            itemId: this.state.selectedId,
+            filesArray: filesArray,
+            status: 'Aguardando Análise'
+        })
+        const label2 = label()
+        await axios.put(('/api/processLog'), {
+            id: this.state.selectedId,
+            processLog: {
+                label: label2,
+                createdAt: new Date(),
+                files: filesArray
+            }
+        })
+        window.location.reload()
     }
 
     empDetails(e) {
@@ -173,7 +199,7 @@ class SolicitaAnuencia extends Component {
 
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
-        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Diretrizes Metropolitanas emitidas')
+        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Diretrizes Metropolitanas emitidas' || el.status.match('Pendências'))        
         if (input && !this.state.checked) {
             dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
         } else if (this.state.checked || (this.state.checked && input)) {

@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-var MongoClient = require('mongodb').MongoClient;
 const mongoose = require('mongoose');
 const crypto = require('crypto')
 const config = require('./config/config').get(process.env.NODE_ENV);
@@ -190,7 +189,7 @@ app.post('/api/solAnuenciaUpload', upload.fields([
 app.get('/api/files', (req, res) => {
 
 
-    filesModel.find().sort({uploadDate: -1}).exec((err, doc) => {
+    filesModel.find().sort({ uploadDate: -1 }).exec((err, doc) => {
         if (err) throw err;
         res.send(doc)
 
@@ -352,20 +351,26 @@ app.put('/api/processLog/', (req, res) => {
 
 app.put('/api/fileObject/', (req, res) => {
 
-    processModel.updateOne(
-        { '_id': req.body.itemId },
-        {
-            $push: { fileObjects: req.body.filesArray },
-            $set: { status: req.body.status }
-        },
-
-    ).then(result => res.json(result))
+    if (req.body.filesArray) {
+        processModel.updateOne(
+            { '_id': req.body.itemId },
+            {
+                $push: { fileObjects: req.body.filesArray },
+                $set: { status: req.body.status }
+            },
+        ).then(result => res.json(result))
+    } else {
+        processModel.updateOne(
+            { '_id': req.body.itemId },
+            { $set: { status: req.body.status }},
+        ).then(result => res.json(result))
+    }
 })
 
 app.post('/api/sendHtml', (req, res) => {
     console.log(req.body.data)
     res.json(req.body.data)
-    
+
 })
 
 const port = process.env.PORT || 3001;

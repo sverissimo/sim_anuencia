@@ -3,7 +3,6 @@ import axios from 'axios'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import ReactQuill from 'react-quill';
-import jsPDF from 'jspdf'
 import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions'
 import MostrarOficio from './mostrarOficio'
 
@@ -54,15 +53,32 @@ class AnuenciaForm extends Component {
         this.setState({ mostrarOficio: true })      
     }
 
-    enviaPendencias(e) {
-        let oficio = document.getElementById('oficio').outerHTML
-        this.setState({ oficio: oficio })      
-        console.log(oficio)
+    async enviaPendencias(e) {
+        e.preventDefault()
+        const pendCounter = this.props.process.processHistory.filter(log=> log.label.match('Análise'))
+        
+        const label = `Análise ${pendCounter.length+1}`
+        const oficio = document.getElementById('oficio').outerHTML
+        
+        this.setState({ oficio: oficio })              
+        
+        await axios.put('/api/processLog', {
+            id: this.props.process._id,
+            processLog: {
+                label: label,
+                createdAt: new Date(),
+                pendencias: oficio
+            }
+        }).then(res=> console.log(res))
+        await axios.put('/api/fileObject', {
+            itemId: this.props.process._id,
+            status: 'Pendências'
+        })
+        window.location.reload() 
     }
 
-
     render() {
-        const { empreend, rt, process, value } = this.props
+        const { empreend, rt, process } = this.props
         return (
             <div style={{ height: '100%' }}>
                 <ReactQuill
@@ -89,8 +105,7 @@ class AnuenciaForm extends Component {
                 />
                 
                 <button className='btn right' onClick={this.enviaPendencias.bind(this)}> Enviar </button>
-                <button style={{marginRight: '10px'}} className='btn right' onClick={this.savePdf.bind(this)}> Pré-visualizar </button>
-                
+                <button style={{marginRight: '10px'}} className='btn right' onClick={this.savePdf.bind(this)}> Pré-visualizar </button>                
             </div>
         )
     }

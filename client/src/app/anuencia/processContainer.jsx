@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { BackButton } from '../common/buttons'
-import anuenciaMenu from '../config/anuenciaMenu'
 import ProcessTemplate from './processTemplate'
 
 class ProcessContainer extends Component {
@@ -46,15 +44,12 @@ class ProcessContainer extends Component {
     }
 
     showLog(e) {
-
         this.setState({ logDetails: true, logIndex: e.target.id })
-
-
     }
 
     clearLog() {
         this.setState({ logDetails: false, logIndex: '' })
-    }
+    }   
 
     render() {
         let { clear, data, redux, close, download, changeValue } = this.props
