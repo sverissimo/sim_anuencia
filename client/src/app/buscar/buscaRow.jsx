@@ -120,7 +120,7 @@ const ShowEmpRow = (props) => {
                                             <div key={i} className="col s1">
                                                 {new Date(field.values).getDate()}/{new Date(field.values).getMonth() + 1}/{new Date(field.values).getFullYear()}
                                             </div> :
-                                            <div key={i} className={divConfig[i]}>
+                                            <div key={i} className={divConfig[i]} style={{ wordBreak: 'break-word' }}>
                                                 {field.values}
                                             </div>
                                         : void 0

@@ -63,11 +63,13 @@ class CadastroContainer extends React.Component {
 
     }
     enableProcessInput(e) {
+
         this.setState({
             enableProcess: '',
             enableEmp: 'disabled',
             enableRt: 'disabled'
         })
+        
         if (this.props.cadastro.processCollection[0]) {
 
             const collection = this.props.cadastro.processCollection
@@ -160,6 +162,14 @@ class CadastroContainer extends React.Component {
 
     handleSubmit = event => {
 
+        let procStatus
+
+        if (this.state.modalidade === 'Loteamento') {
+            procStatus = 'Processo cadastrado'
+        } else {
+            procStatus = 'Aguardando documentação para desmembramento'
+        }
+        
         const cadEmp = {
             nome: this.state.nome,
             cpf: this.state.cpf,
@@ -184,7 +194,7 @@ class CadastroContainer extends React.Component {
             modalidade: this.state.modalidade,
             area: this.state.area,
             munEmpreendimento: this.state.munEmpreendimento,
-            status: 'Processo cadastrado',
+            status: procStatus,
             tecnico: 'Técnico não alocado',
             cgt: 'CGT não agendada',
             vistoria: 'Vistoria não agendada',

@@ -34,7 +34,7 @@ class ProcessContainer extends Component {
                 stylez:
                 {
                     minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
-                    borderTopRightRadius: '15%',
+                    borderTopRightRadius: '15%', backgroundColor: '#fcfcfc'
                 },
                 class: 'col s12 m6 l3'
             }

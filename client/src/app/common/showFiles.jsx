@@ -24,31 +24,34 @@ const ShowFiles = (props) => {
     if (showFiles && (process && (process[0] && (files && files[0])))) {
         return (
             <div className='container z-depth-3'
-            style={{
-                position: 'relative',
-                borderRadius: '15px',
-                width: '80%',
-                backgroundColor: 'white',
-                padding: '15px 0px 0px 30px',
-                border: '1px solid #ddd',
-                marginBottom: '25px',
-                marginTop: '25px'
+                style={{
+                    position: 'fixed',
+                    top: '30%',
+                    right: '15%',
+                    left: '15%',
+                    height: '50%',
+                    borderRadius: '15px',                    
+                    backgroundColor: 'white',
+                    padding: '15px 0px 0px 30px',
+                    border: '1px solid #ddd',
+                    marginBottom: '25px',
+                    marginTop: '25px',
+                    overflowY: 'auto',
+                    overflowX: 'hidden'
 
-            }}>
+                }}>
                 <div className="row">
                     <div className="row">
-                        <h5> <img alt="" src="/images/folderIcon2.jpg" style={{ paddingLeft: '20px', marginRight: '20px' }} /> Arquivos > {process[0].nomeEmpreendimento}</h5>
+                       <hr style={{marginTop: '1.3%'}} /> <h5> <img alt="" src="/images/folderIcon2.jpg" style={{ paddingLeft: '20px', marginRight: '20px' }} /> Arquivos > {process[0].nomeEmpreendimento}</h5>
                     </div>
                     <div className="row">
-
                         <div className="col s6">
-
                             <div className="col s1">
                                 <img alt="" src="/images/multipleFiles2.png" />
                             </div>
                             <div className="col s11">
+                                
                                 <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Arquivo</h6>
-
                             </div>
                         </div>
 
@@ -104,7 +107,13 @@ const ShowFiles = (props) => {
                     left: '33%',
                     border: '3px solid #000000',
                     backgroundColor: 'white',
-                    paddingLeft: '20px'
+                    paddingLeft: '20px',
+                    borderRadius: '15px',
+                    backgroundColor: 'white',
+                    padding: '15px 0px 0px 30px',
+                    border: '1px solid #ddd',
+                    marginBottom: '25px',
+                    marginTop: '25px'
                 }}>
                 <div className="row">
                     <div className="row">
@@ -115,7 +124,7 @@ const ShowFiles = (props) => {
                 <div style={{
                     position: 'absolute',
                     top: '0%',
-                    right: '0%'
+                    right: '0%',
                 }}>
                     <CloseWindow close={close} />
                 </div>

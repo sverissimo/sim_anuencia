@@ -10,11 +10,7 @@ const AnuenciaTemplate = (props) => {
         empDetails, rtDetails, download, showFiles } = props
 
     let selectedProcess
-    data.selectedId ? selectedProcess = redux.processCollection.filter(el => el._id.match(data.selectedId))[0] : void 0
-
-    let showSearchBar = true
-
-    if (data.selectedId) { showSearchBar = false }
+    if (data.selectedId) selectedProcess = redux.processCollection.filter(el => el._id.match(data.selectedId))[0]
 
     return (
         <div className="container" style={{ width: '95%' }} >
@@ -23,24 +19,21 @@ const AnuenciaTemplate = (props) => {
                 subtitle='Selecione o processo para analisar, registrar pendências ou emitir anuência prévia.'
                 color={setColor}
             />
-            {
-                showSearchBar ?
-                    <div className="row">
-                        <div className="col s11">
-                            <label>Filtrar</label>
-                            <input
-                                className="input"
-                                type="text"
-                                name="search"
-                                onChange={search}
-                                value={data.searchValue}
-                            />
-                        </div>
-                        <div className="col s1 right" style={{ paddingTop: '35px' }}>
-                            <i className="material-icons">search</i>
-                        </div>
-                    </div> : void 0
-            }
+            <div className="row">
+                <div className="col s11">
+                    <label>Filtrar</label>
+                    <input
+                        className="input"
+                        type="text"
+                        name="search"
+                        onChange={search}
+                        value={data.searchValue}
+                    />
+                </div>
+                <div className="col s1 right" style={{ paddingTop: '35px' }}>
+                    <i className="material-icons">search</i>
+                </div>
+            </div>
             <div className='z-depth-3' style={{ width: '100%', padding: '0px 10px 1px', borderRadius: '10px' }}>
 
                 <RenderSearch
@@ -51,7 +44,7 @@ const AnuenciaTemplate = (props) => {
                     onSelect={selectProcess}
                     checked={data.checked}
                     color={setColor}
-                    fields={[2, 3, 4, 5, 6,7, 9]}
+                    fields={[2, 3, 4, 5, 6, 7, 9]}
                     renderEmp={true}
                     renderRt={true}
                     empDetails={empDetails}

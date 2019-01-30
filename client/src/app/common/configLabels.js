@@ -283,6 +283,52 @@ export const solAnuenciaConfig2 = [
     }
 ]
 
+export const solDesmembConfig1 = [
+    {
+        nameInput: 'regImovel',
+        label: 'Registro do Imóvel',
+        tooltip: 'Certidão de Registro do Imóvel com negativa de ônus, emitida em até 30 dias antes da entrada do processo na Prefeitura Municipal.'
+    },
+    {
+        nameInput: 'CNDMun',
+        label: 'Certidão Negativa de tributos municipais',
+        tooltip: 'Certidão Negativa de tributos municipais.'
+    },
+    {
+        nameInput: 'empRG',
+        label: 'Fotocópia da Identidade do proprietário',
+        tooltip: 'Fotocópia da Identidade do proprietário; no caso de pessoa jurídica, fotocópia do contrato social e de suas alterações.'
+    },
+    {
+        nameInput: 'art',
+        label: 'ART com comprovante de pagamento',
+        tooltip: 'ART referente ao projeto com comprovante de pagamento'
+    },
+    {
+        nameInput: 'decConform',
+        label: 'Declaração de conformidade',
+        tooltip: 'Documento emitido pela Prefeitura Municipal declarando a conformidade do parcelamento com a legislação municipal'
+    },
+    {
+        nameInput: 'daeAnuencia',
+        label: 'Comprovante de pagamento da DAE',
+        tooltip: 'Comprovante de pagamento da taxa de expediente para emissão de anuência prévia por meio de Documento de Arrecadação Estadual'
+    },
+    {
+        nameInput: 'memDescritivo',
+        label: 'Memorial descritivo',
+        tooltip: 'Descrição sucinta do loteamento com suas características, áreas públicas, equipamentos etc. '
+    }  
+]
+
+export const solDesmembConfig2 = [
+    
+    {
+        nameInput: 'projDesmemb',
+        label: 'Projeto de Desmembramento',        
+    },    
+]
+
 export const allFilesLabels = () => {
 
     let allFilesArray = []
@@ -306,7 +352,11 @@ export const allFilesLabels = () => {
         {
             nameInput: 'anuenciaFile',
             label: 'Certidão de Anuência Metropolitana',
-        }
+        },
+        {
+            nameInput: 'projDesmemb',
+            label: 'Projeto de Desmembramento',        
+        }, 
     )
     return allFilesArray
 };

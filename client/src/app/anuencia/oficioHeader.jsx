@@ -10,7 +10,7 @@ const OficioHeader = (props) => {
         const data = new Date()
         return `${data.getDate()} de ${meses[data.getMonth()]} de ${data.getFullYear()}`
     }
-    const pref = prefeituras.filter(el => el.MUNICÍPIO.toLowerCase().match(process.munEmpreendimento.toLowerCase()))[0]
+    const pref = prefeituras.filter(el => el.municipio.toLowerCase().match(process.munEmpreendimento.toLowerCase()))[0]
     const line = { lineHeight: 0.8 }
     return (
         <div>

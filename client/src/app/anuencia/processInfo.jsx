@@ -20,28 +20,18 @@ const ProcessInfo = (props) => {
                                 </div>
                                 <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
                             </div>
-                            : el.label === 'Pendências para emissão de diretrizes' ?
-                                <div>
-                                    <div className="col s12 m9"
-                                        style={{ cursor: 'pointer', color: 'blue' }}
-                                        id={i}
-                                        onClick={showLog}>
-                                        {el.label}
-                                    </div>
-                                    <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
+                            :
+                            <div>
+                                <div
+                                    className="col s12 m9"
+                                    style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
+                                    id={i}
+                                    onClick={showLog}
+                                >
+                                    {el.label}
                                 </div>
-                                :
-                                <div>
-                                    <div
-                                        className="col s12 m9"
-                                        style={{ cursor: 'pointer', color: 'blue' }}
-                                        id={i}
-                                        onClick={showLog}
-                                    >
-                                        {el.label}
-                                    </div>
-                                    <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
-                                </div>
+                                <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
+                            </div>
                     }
                 </div>
             )}

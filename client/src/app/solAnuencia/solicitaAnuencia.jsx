@@ -7,7 +7,7 @@ import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } fro
 
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolAnuenciaFilesRow from './solAnuenciaFilesRow';
-import { solAnuenciaConfig1, solAnuenciaConfig2 } from '../common/configLabels'
+import { solAnuenciaConfig1, solAnuenciaConfig2, solDesmembConfig1, solDesmembConfig2, } from '../common/configLabels'
 import ShowDetails from '../common/showDetails'
 import ShowFiles from '../common/showFiles'
 
@@ -42,7 +42,7 @@ class SolicitaAnuencia extends Component {
         mapaIso: '',
         projTer: '',
         projDren: '',
-
+        projDesmemb: ''
     }
 
     componentDidMount() {
@@ -96,9 +96,14 @@ class SolicitaAnuencia extends Component {
 
         let k = []
         let allFields = solAnuenciaConfig1.concat(solAnuenciaConfig2)
+        allFields.push({
+            nameInput: 'projDesmemb',
+            label: 'Projeto de Desmembramento',  
+            tooltip: 'Planta de localização com delimitação da área em análise e indicação do perímetro urbano, em escala de 1:10000'      
+        })
 
         allFields.map(item => k.push(item.nameInput))
-
+        console.log(allFields, k)
         setTimeout(() => {
             k.map(inputName => {
                 for (let keys in this.state) {
@@ -111,6 +116,7 @@ class SolicitaAnuencia extends Component {
 
         setTimeout(() => {
             this.setState({ form: formData })
+            console.log(this.state)
         }, 200);
     }
 
@@ -120,26 +126,24 @@ class SolicitaAnuencia extends Component {
         const { selectedId } = this.state
 
         const label = () => {
-            let entradaCounter = []            
+            let entradaCounter = []
             if (procCollection.length > 0) {
                 const process = procCollection.filter(proc => proc._id.match(selectedId))
-                entradaCounter = process[0].processHistory.filter(el=> el.label)
-                
+                entradaCounter = process[0].processHistory.filter(el => el.label)
             }
-            const analise = entradaCounter.filter(el=> el.label.match('Análise'))
+            const analise = entradaCounter.filter(el => el.label.match('Análise'))
             const count = analise.length
-            
-            
+
             if (count === 0) {
-                const newLabel = 'Anuência prévia solicitada'                
-                console.log(newLabel)            
+                const newLabel = 'Anuência prévia solicitada'
+                console.log(newLabel)
                 return newLabel
-            } else {                
-                const newLabel2 = 'Entrada '+count
+            } else {
+                const newLabel2 = 'Entrada ' + (count + 1)
                 console.log(newLabel2)
                 return newLabel2
-            } 
-        } 
+            }
+        }
 
         let filesArray = [];
         await axios.post('/api/solAnuenciaUpload', this.state.form)
@@ -197,26 +201,41 @@ class SolicitaAnuencia extends Component {
 
     render() {
 
-        let { dataMatch } = this.state
+        let { dataMatch, selectedId, checked } = this.state
+        let { processCollection } = this.props.cadastro
         let input = this.state.searchValue.toLowerCase()
-        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Diretrizes Metropolitanas emitidas' || el.status.match('Pendências'))        
-        if (input && !this.state.checked) {
+        const filteredList = processCollection.filter(el => (el.status === 'Diretrizes Metropolitanas emitidas' || el.status.match('Pendências')) || el.status === 'Aguardando documentação para desmembramento')
+        if (input && !checked) {
             dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
-        } else if (this.state.checked || (this.state.checked && input)) {
-            dataMatch = filteredList.filter(el => el._id.toLowerCase().match(this.state.selectedId))
+        } else if (checked || (checked && input)) {
+            dataMatch = filteredList.filter(el => el._id.toLowerCase().match(selectedId))
         } else {
             dataMatch = filteredList
         }
-
+        let process
+        let status
+        let fileInput1 = []
+        let fileInput2 = []
+        if (selectedId) {
+            process = processCollection.filter(el => el._id.match(selectedId))
+            status = process[0].status
+        }
+        if (process && (process[0].modalidade === 'Loteamento' && (status === 'Diretrizes Metropolitanas emitidas' || status === 'Pendências'))) {
+            fileInput1 = solAnuenciaConfig1
+            fileInput2 = solAnuenciaConfig2
+        } else if (process && (process[0].modalidade === 'Desmembramento' && (status === 'Aguardando documentação para desmembramento' || status === 'Pendências'))) {
+            fileInput1 = solDesmembConfig1
+            fileInput2 = solDesmembConfig2
+        }
         return (
             <div>
                 {
                     this.state.showFiles ?
                         <ShowFiles
-                            selectedId={this.state.selectedId}
+                            selectedId={selectedId}
                             showFiles={this.state.showFiles}
                             close={this.closeDetails.bind(this)}
-                            processCollection={this.props.cadastro.processCollection}
+                            processCollection={processCollection}
                             filesCollection={this.props.cadastro.filesCollection}
                             download={this.download.bind(this)}
                         />
@@ -238,7 +257,7 @@ class SolicitaAnuencia extends Component {
                                 showFiles={this.showFiles.bind(this)}
                             >
                                 {
-                                    solAnuenciaConfig1.map((item, i) => {
+                                    fileInput1.map((item, i) => {
                                         return (
                                             <div className='col s6' key={i}>
 
@@ -253,10 +272,9 @@ class SolicitaAnuencia extends Component {
                                 }
                                 <div className="row">
                                     {
-                                        solAnuenciaConfig2.map((item, i) => {
+                                        fileInput2.map((item, i) => {
                                             return (
                                                 <div className='col s6' key={i}>
-
                                                     <SolAnuenciaFilesRow
                                                         object={item}
                                                         key={i}

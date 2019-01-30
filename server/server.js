@@ -175,10 +175,11 @@ app.post('/api/solAnuenciaUpload', upload.fields([
         name: "projTer", maxCount: 1
     }, {
         name: "projDren", maxCount: 1
+    }, {
+        name: "projDesmemb", maxCount: 1
     }
 ]),
     (req, res) => {
-
         res.json({
             file: req.files,
         });

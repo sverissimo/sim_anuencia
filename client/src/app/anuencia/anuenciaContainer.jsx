@@ -41,10 +41,10 @@ class AnuenciaContainer extends Component {
 
         setTimeout(() => {
             let color = document.getElementById('setcolor').style.backgroundColor
-            this.props.setColor(color)    
+            this.props.setColor(color)
         }, 50);
 
-    } 
+    }
 
     handleSearch(e) {
 
@@ -57,7 +57,7 @@ class AnuenciaContainer extends Component {
         this.setState({
             ...this.state, checked: null,
             selectedId: null, searchValue: '', showFiles: null
-        });      
+        });
     }
 
     handleSelect(e) {
@@ -188,58 +188,72 @@ class AnuenciaContainer extends Component {
 
         return (
             <div>
-                {
-                    !this.state.showFiles ?
-                        <div>
-                            {
-                                !this.state.selectedId ?
-                                    <AnuenciaTemplate
+
+                <div>
+                    {
+                        !this.state.selectedId ?
+                            <AnuenciaTemplate
+                                data={this.state}
+                                redux={this.props.cadastro}
+                                search={e => this.handleSearch(e)}
+                                searchArray={dataMatch}
+                                selectProcess={this.handleSelect.bind(this)}
+                                submitFiles={this.handleSubmit.bind(this)}
+                                setColor={this.props.cadastro.setColor}
+                                clear={this.clearSearch.bind(this)}
+                                empDetails={this.empDetails.bind(this)}
+                                rtDetails={this.rtDetails.bind(this)}
+                                download={this.download.bind(this)}
+                                showFiles={this.showFiles.bind(this)}
+                            /> : !this.state.showFiles ?
+                                <div>
+                                    <ProcessContainer
                                         data={this.state}
                                         redux={this.props.cadastro}
-                                        search={e => this.handleSearch(e)}
-                                        searchArray={dataMatch}
-                                        selectProcess={this.handleSelect.bind(this)}
-                                        submitFiles={this.handleSubmit.bind(this)}
-                                        setColor={this.props.cadastro.setColor}
                                         clear={this.clearSearch.bind(this)}
-                                        empDetails={this.empDetails.bind(this)}
-                                        rtDetails={this.rtDetails.bind(this)}
                                         download={this.download.bind(this)}
-                                        showFiles={this.showFiles.bind(this)}
-                                    /> :
-                                    <div>
-                                        <ProcessContainer
-                                            data={this.state}
-                                            redux={this.props.cadastro}
-                                            clear={this.clearSearch.bind(this)}
-                                            download={this.download.bind(this)}
-                                            close={this.closeDetails.bind(this)}
-                                            match={this.props.match}
-                                            changeValue={this.handleChange.bind(this)}
-                                        />
-                                    </div>
-                            }
-                            <ShowDetails
-                                empId={this.state.empId}
-                                rtId={this.state.rtId}
-                                showEmp={this.state.showEmpDetails}
-                                showRt={this.state.showRtDetails}
-                                close={this.closeDetails.bind(this)}
-                                empCollection={this.props.cadastro.empCollection}
-                                rtCollection={this.props.cadastro.rtCollection}
-                            />
-                        </div>
-                        :
-                        <div>
-                            <ShowFiles
-                                selectedId={this.state.selectedId}
-                                showFiles={this.state.showFiles}
-                                close={this.closeDetails.bind(this)}
-                                processCollection={this.props.cadastro.processCollection}
-                                filesCollection={this.props.cadastro.filesCollection}
-                                download={this.download.bind(this)}
-                            />
-                        </div>
+                                        close={this.closeDetails.bind(this)}
+                                        match={this.props.match}
+                                        changeValue={this.handleChange.bind(this)}
+                                        showFiles={this.state.showFiles}
+                                    />
+                                </div> :
+                                <AnuenciaTemplate
+                                    data={this.state}
+                                    redux={this.props.cadastro}
+                                    search={e => this.handleSearch(e)}
+                                    searchArray={dataMatch}
+                                    selectProcess={this.handleSelect.bind(this)}
+                                    submitFiles={this.handleSubmit.bind(this)}
+                                    setColor={this.props.cadastro.setColor}
+                                    clear={this.clearSearch.bind(this)}
+                                    empDetails={this.empDetails.bind(this)}
+                                    rtDetails={this.rtDetails.bind(this)}
+                                    download={this.download.bind(this)}
+                                    showFiles={this.showFiles.bind(this)}
+                                />
+                    }
+                    <ShowDetails
+                        empId={this.state.empId}
+                        rtId={this.state.rtId}
+                        showEmp={this.state.showEmpDetails}
+                        showRt={this.state.showRtDetails}
+                        close={this.closeDetails.bind(this)}
+                        empCollection={this.props.cadastro.empCollection}
+                        rtCollection={this.props.cadastro.rtCollection}
+                    />
+                </div>
+
+                <div>
+                    <ShowFiles
+                        selectedId={this.state.selectedId}
+                        showFiles={this.state.showFiles}
+                        close={this.closeDetails.bind(this)}
+                        processCollection={this.props.cadastro.processCollection}
+                        filesCollection={this.props.cadastro.filesCollection}
+                        download={this.download.bind(this)}
+                    />
+                </div>
                 }
             </div>
         );

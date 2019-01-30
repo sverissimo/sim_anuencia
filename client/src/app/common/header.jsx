@@ -10,13 +10,12 @@ const Header = (props) => {
 
     const count = (item) => {
         if (process && process.length > 0) {
+
             let counter = process.filter(el => el.status.match(item)).length
-            if (item = 'Diretrizes Metropolitanas emitidas') {
-                counter = counter + process.filter(el => el.status.match('Pendências')).length
-            } else {
-                counter = process.filter(el => el.status.match(item)).length
+            if (item === 'Diretrizes Metropolitanas emitidas') {
+                counter += (process.filter(el => el.status.match('Pendências')).length + process.filter(el => el.status.match('Aguardando documentação para desmembramento')).length)
             }
-            
+
             if (counter > 0)
                 return (
                     <sup style={{ fontSize: '0.9em', borderRadius: '50%', padding: '0px 5px', backgroundColor: 'red', fontWeight: '900' }}>

@@ -2,6 +2,7 @@ import React from 'react';
 import { BackButton } from '../common/buttons'
 import anuenciaMenu from '../config/anuenciaMenu'
 import FileExplorer from './fileExplorer'
+import ShowFiles from '../common/showFiles';
 import Anuencia from './emiteAnuencia'
 import AnuenciaForm from './anuenciaForm'
 import ProcessInfo from './processInfo'
@@ -9,13 +10,22 @@ import LogDetails from './logDetails'
 
 
 const ProcessTemplate = (props) => {
-    const { clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
-        showLog, clearLog, log, download } = props
+    const { redux, clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
+        showLog, clearLog, log, download, close } = props
 
     const returnComponent = (name) => {
         switch (name) {
             case 'FileExplorer':
-                return <FileExplorer />
+                return <FileExplorer
+                    selectedId={data.selectedId}
+                    showFiles={data.showFiles}
+                    close={close}
+                    processCollection={redux.processCollection}
+                    filesCollection={redux.filesCollection}
+                    download={download}
+                    process={process}
+                />
+
             case 'Pendencias':
                 return <AnuenciaForm
                     process={process}
@@ -52,8 +62,7 @@ const ProcessTemplate = (props) => {
             <div>
                 <div className="row" align='center' style={{
                     border: '1px solid #ddd',
-
-                    backgroundColor: '#ffe',
+                    backgroundColor: 'aliceblue',
                     fontSize: '1.3rem',
                     fontFamily: 'calibri',
                     marginTop: '15px',

@@ -1,9 +1,4 @@
-import { empreendForm, processForm, rtForm } from './../common/formConfig';
-
 const initState = {
-    empreendForm: empreendForm,
-    processForm: processForm,
-    rtForm: rtForm,
     empCollection: [],
     rtCollection: [],
     processCollection: [],
