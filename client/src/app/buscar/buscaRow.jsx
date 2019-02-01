@@ -1,12 +1,12 @@
 import React from 'react';
-import { configLabels, configEmpLabels, configRtLabels } from '../common/configLabels';
-import { DeleteButton, EditButton } from './../common/buttons'
+import { configLabels, configEmpLabels, configRtLabels } from '../config/configLabels';
+import { DeleteButton, EditButton, InfoButton } from './../common/buttons'
 import './../css/styles.css';
 
 const ShowEmpRow = (props) => {
 
     let { redux, emps, rts, process, empFields, rtFields, showRt, edit, deleteOne, data, fields,
-        divConfig, color, empDetails, rtDetails } = props
+        divConfig, color, empDetails, rtDetails, showInfo, clearLog } = props
 
     let searchMatch = []
     let selectedFields
@@ -16,7 +16,7 @@ const ShowEmpRow = (props) => {
         searchMatch = emps
         selectedFields = empFields
         headerLabels = configEmpLabels
-        divConfig = ['col s2', 'col s2', 'col s2', 'col s2', 'col s2' ]
+        divConfig = ['col s2', 'col s2', 'col s2', 'col s2', 'col s2']
     } else if ((rts && rts[0]) && data.edit === false) {
         searchMatch = rts
         selectedFields = rtFields
@@ -142,13 +142,17 @@ const ShowEmpRow = (props) => {
                                     : <div className='col s1'> </div>
                             }
 
-                            <div className="col s2 right" style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                maxWidth: '95px',
-                                margin: '0 auto',
-                                padding: '0px 5px',
-                            }}>
+                            <div className="col s2 right"
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    maxWidth: '95px',
+                                    margin: '0 auto',
+                                    padding: '0px 5px',
+                                    height: '100%',
+                                    verticalAlign: 'middle'
+                                }}>
+                                <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
                                 <EditButton edit={edit} id={item._id} />
                                 <DeleteButton delete={deleteOne} id={item._id} />
 
@@ -160,36 +164,5 @@ const ShowEmpRow = (props) => {
         </div >
     )
 };
-
-
-/*  return (
-     <div className="col s12">
-
-         <RenderSearch
-             search={searchMatch}
-             fields={[1, 2, 3, 4, 8, 11]}
-             collection={redux.empCollection}
-             rtCollection={redux.rtCollection}
-             renderEmp={true}
-             renderRt={true}
-             color={data.setColor}
-
-         />
-         
-         <div className="col s1 right">
-             <RenderButtons
-                 onClick={edit}
-                 id='item._id'
-                 icon='create'
-                 title='Editar'
-                 className='btn-flat waves-effect btn-floating blue red darken-3'
-             />
-         </div>
-        <div className="col s1 right">
-             <DeleteButton delete={deleteOne} id={item._id} />
-         </div>
-     </div>
- ) */
-
 
 export default ShowEmpRow;

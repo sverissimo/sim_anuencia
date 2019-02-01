@@ -1,5 +1,5 @@
 import React from 'react';
-import { allFilesLabels } from './configLabels';
+import { allFilesLabels } from '../config/configLabels';
 import { CloseWindow } from '../common/buttons'
 import showDate from './showDate'
 import formatFileSize from '../config/formatFileSize'
@@ -30,27 +30,32 @@ const ShowFiles = (props) => {
                     right: '15%',
                     left: '15%',
                     height: '50%',
-                    borderRadius: '15px',                    
+                    borderRadius: '15px',
                     backgroundColor: 'white',
                     padding: '15px 0px 0px 30px',
                     border: '1px solid #ddd',
                     marginBottom: '25px',
                     marginTop: '25px',
                     overflowY: 'auto',
-                    overflowX: 'hidden'
+                    overflowX: 'hidden',
+                    zIndex: 1
 
                 }}>
                 <div className="row">
-                    <div className="row">
-                       <hr style={{marginTop: '1.3%'}} /> <h5> <img alt="" src="/images/folderIcon2.jpg" style={{ paddingLeft: '20px', marginRight: '20px' }} /> Arquivos > {process[0].nomeEmpreendimento}</h5>
+                    <div className="row">                        
+                        <h5>
+                            <img alt="" src="/images/folderIcon2.jpg" style={{ paddingLeft: '20px', marginRight: '20px' }} />
+                            Arquivos > {process[0].nomeEmpreendimento}
+                        </h5>
                     </div>
-                    <div className="row">
+                    <hr style={{ marginBottom: '5px' }} /> 
+                    <div className="row" style={{ marginBottom: 0 }}>
                         <div className="col s6">
                             <div className="col s1">
                                 <img alt="" src="/images/multipleFiles2.png" />
                             </div>
                             <div className="col s11">
-                                
+
                                 <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Arquivo</h6>
                             </div>
                         </div>
@@ -62,6 +67,7 @@ const ShowFiles = (props) => {
                             <h6 style={{ fontSize: '1.2em', fontWeight: 500 }}>Tamanho</h6>
                         </div>
                     </div>
+                    <hr style={{ margin: '0 0 20px 0' }}/>
                     {files.map((file, index) =>
                         <div key={index}>
                             <div className="row">

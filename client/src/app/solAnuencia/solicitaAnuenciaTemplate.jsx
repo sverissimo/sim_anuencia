@@ -49,19 +49,17 @@ const SolAnuenciaTemplate = (props) => {
                 empDetails={empDetails}
                 rtDetails={rtDetails}
                 showFiles={showFiles}
-                />
-                
+                />                
             </div>
             <div className="row" style={{ marginTop: '15px' }}>
                 <div className="col s1 right">
                     <BackButton
                     disabled={data.checked === null}
                     icon='clear'
-                    onClick={props.clear}
+                    onClick={props.clear}                  
                     />
                 </div>
             </div>
-
             <div>
                 {
                     data.selectedId && data.checked  ?

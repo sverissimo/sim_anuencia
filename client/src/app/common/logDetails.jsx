@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { allFilesLabels } from '../common/configLabels'
-import showDate from '../common/showDate'
+import { allFilesLabels } from '../config/configLabels'
+import showDate from './showDate'
 import formatFileSize from '../config/formatFileSize'
+import { soloStyle }from '../config/soloStyle'
+import { CloseWindow }from '../common/buttons'
 
 const labels = (fieldName) => {
 
@@ -18,11 +20,25 @@ class LogDetails extends Component {
     }
 
     render() {
-        const { process, index, clearLog, download } = this.props
+        const { process, index, clearLog, download, soloComponent, hideLog } = this.props
         const log = process.processHistory[index]
 
         return (
-            <div style={{ paddingLeft: '3%' }}>
+            <div style={soloStyle(soloComponent)}>
+                 {
+                    soloComponent === true ?
+                        <div className="row" style={{ textAlign: 'center' }}>
+                            <div style={{
+                                position: 'absolute',
+                                top: '0.5%',
+                                right: '0.5%'
+                            }}>
+                                <CloseWindow close={hideLog} />
+                            </div>
+                           
+                        </div>
+                        : null
+                }
                 {
                     (log.label === 'Pendências para emissão de diretrizes' || log.label.match('Análise')) ?
                         <div>
@@ -95,7 +111,7 @@ class LogDetails extends Component {
                     <div className="col s1 left" style={{ marginTop: '1%' }}>
                         <strong>
                             <i className='material-icons'
-                                style={{ color: 'teal', cursor: 'pointer', border: '1px solid #bbb', borderRadius: '45%' }}
+                                style={{ marginTop:'10%', color: 'teal', cursor: 'pointer', border: '1px solid #bbb', borderRadius: '55%' }}
                                 onClick={clearLog}
                             > arrow_back
                             </i>

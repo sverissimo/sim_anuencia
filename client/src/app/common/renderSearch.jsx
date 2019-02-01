@@ -1,6 +1,6 @@
 import React from 'react';
-import { configLabels, configEmpLabels, configRtLabels } from '../common/configLabels';
-import fieldConfig from './fieldConfig'
+import { configLabels, configEmpLabels, configRtLabels } from '../config/configLabels';
+import fieldConfig from '../config/fieldConfig'
 
 const RenderSearch = (props) => {
     let { search, collection, rtCollection, processCollection, onSelect, checked, fields, color, renderEmp,

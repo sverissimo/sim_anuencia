@@ -8,8 +8,9 @@ import { BackButton, UpdateButton } from './../common/buttons';
 
 import ShowDetails from '../common/showDetails'
 import EditData from './editData';
-import ShowEmpTemplate from './buscaTemplate';
-import ShowEmpRow from './buscaRow';
+import BuscaTemplate from './buscaTemplate';
+import BuscaRow from './buscaRow';
+import ProcessInfo from '../common/processInfo';
 
 class ShowEmpContainer extends Component {
 
@@ -26,7 +27,11 @@ class ShowEmpContainer extends Component {
         showRtDetails: false,
         empId: '',
         rtId: '',
-        cgt: ''
+        cgt: '',
+        showInfo: '',
+        process: '',
+        logIndex: '',
+        logDetails: false
     }
 
     componentDidMount() {
@@ -136,6 +141,32 @@ class ShowEmpContainer extends Component {
         this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
     }
 
+    showInfo(e) {
+        let proc = this.props.cadastro.processCollection.filter(el => el._id.match(e.target.id))
+        this.setState({ showInfo: true, process: proc[0] })
+        
+    }
+
+    showLog(e) {
+        this.setState({ logIndex: e.target.id, logDetails: true })
+    }
+
+    hideLog() {
+        this.setState({ logIndex: '', showInfo: false })
+        console.log(this.state)
+    }
+
+    clearLog() {
+        this.setState({ logDetails: false, logIndex: '' })
+    }
+
+    download(e) {
+        axios.get('/api/download/' + e.target.id)
+            .then(res => {
+                window.location.href = '/api/download/' + res.headers.fileid;
+            })
+    }
+
     render() {
 
         let emps = []
@@ -178,7 +209,7 @@ class ShowEmpContainer extends Component {
 
         return (
             <div className="container" style={{ width: '90%' }} >
-                <ShowEmpTemplate
+                <BuscaTemplate
                     search={this.state.search}
                     select={this.state.select}
                     edit={this.state.edit}
@@ -187,31 +218,49 @@ class ShowEmpContainer extends Component {
                     change={e => this.handleSearchBar(e)}
                     color={this.state.setColor}
                 />
-
-                <ShowEmpRow
-                    data={this.state}
-                    redux={this.props.cadastro}
-                    emps={emps}
-                    rts={rts}
-                    process={process}
-                    empFields={[1, 3, 6, 7, 8]}
-                    rtFields={[1, 2, 3]}
-                    showRt={false}
-                    fields={[3, 4, 5, 6, 7, 8, 9, 17]}
-                    divConfig={['col s1', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
-                    edit={this.enableEdit.bind(this)}
-                    deleteOne={this.deleteHandler.bind(this)}
-                    color={this.state.setColor}
-                    empDetails={this.empDetails.bind(this)}
-                    rtDetails={this.rtDetails.bind(this)}
-                />
-
-                <EditData
-                    redux={this.props.cadastro}
-                    data={this.state}
-                    disableEdit={this.disableEdit.bind(this)}
-                    change={e => this.editValue(e)}
-                    submit={e => this.saveEdit(e)} />
+                {
+                    this.state.showInfo ?
+                        <div>
+                            <ProcessInfo
+                            process={this.state.process}                                                      
+                            logDetails={this.state.logDetails}                                       
+                            index={this.state.logIndex}
+                            showLog={this.showLog.bind(this)}
+                            hideLog={this.hideLog.bind(this)}
+                            clearLog={this.clearLog.bind(this)}
+                            download={this.download.bind(this)}
+                            soloComponent={true}
+                            />
+                        </div>
+                        : null }
+                        <div>
+                            <BuscaRow
+                                data={this.state}
+                                redux={this.props.cadastro}
+                                emps={emps}
+                                rts={rts}
+                                process={process}
+                                empFields={[1, 3, 6, 7, 8]}
+                                rtFields={[1, 2, 3]}
+                                showRt={false}
+                                fields={[3, 4, 5, 6, 7, 8, 9, 17]}
+                                divConfig={['col s1', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
+                                edit={this.enableEdit.bind(this)}
+                                deleteOne={this.deleteHandler.bind(this)}
+                                color={this.state.setColor}
+                                empDetails={this.empDetails.bind(this)}
+                                rtDetails={this.rtDetails.bind(this)}
+                                showInfo={this.showInfo.bind(this)}
+                                clearLog={this.clearLog.bind(this)}
+                            />
+                            <EditData
+                                redux={this.props.cadastro}
+                                data={this.state}
+                                disableEdit={this.disableEdit.bind(this)}
+                                change={e => this.editValue(e)}
+                                submit={e => this.saveEdit(e)} />
+                        </div>
+                
 
                 <div>
                     {this.state.edit ? <BackButton

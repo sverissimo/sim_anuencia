@@ -1,4 +1,4 @@
-import { configLabels, configEmpLabels, configRtLabels } from '../common/configLabels'
+import { configLabels, configEmpLabels, configRtLabels } from '../config/configLabels'
 
 const fieldConfig = (fieldName, spec) => {
 

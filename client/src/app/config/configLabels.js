@@ -350,6 +350,10 @@ export const allFilesLabels = () => {
             label: 'Diretrizes Metropolitanas',
         },
         {
+            nameInput: 'notaTecnica',
+            label: 'Nota Técnica',
+        },
+        {
             nameInput: 'anuenciaFile',
             label: 'Certidão de Anuência Metropolitana',
         },
@@ -361,4 +365,11 @@ export const allFilesLabels = () => {
     return allFilesArray
 };
 
+export const fileLabel = (fieldName) => {
+    
+        let allFilesArray = []
+        allFilesArray = allFilesLabels()
+        let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
+        return label[0].label    
+}
 

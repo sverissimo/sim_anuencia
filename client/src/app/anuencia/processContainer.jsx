@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 import ProcessTemplate from './processTemplate'
 
 class ProcessContainer extends Component {
 
     state = {
         selectedOption: '',
+        selectedId: '',
         logDetails: false,
-        logIndex: ''
+        logIndex: '',
+        notaTecnica: '',
+        anuenciaFile: '',
+        form: ''
     }
 
     optionSelect(e) {
         this.setState({ selectedOption: e.target.id })
     }
 
+    componentDidMount() {
+        this.setState({ selectedId: this.props.data.selectedId })
+    }
     componentWillUnmount() {
         this.props.clear()
     }
@@ -44,12 +52,79 @@ class ProcessContainer extends Component {
     }
 
     showLog(e) {
-        this.setState({ logDetails: true, logIndex: e.target.id })
+        this.setState({ logIndex: e.target.id, logDetails: true })
     }
 
     clearLog() {
         this.setState({ logDetails: false, logIndex: '' })
-    }   
+    }
+
+    fileUpload(e) {
+
+        let formData = new FormData()
+        formData.append('processId', this.state.selectedId)
+        this.setState({
+            ...this.state, [e.target.name]: e.target.files[0]
+        })
+
+        let k = ['notaTecnica', 'anuenciaFile']
+
+
+
+        setTimeout(() => {
+            k.map(inputName => {
+                for (let keys in this.state) {
+                    keys.match(inputName) ?
+                        (formData.append(inputName, this.state[keys]))
+                        : void 0
+                }
+            })
+        }, 100);
+        setTimeout(() => {
+            this.setState({ form: formData })
+        }, 200);
+    }
+
+
+
+    async handleSubmit(e) {
+        e.preventDefault()
+        let filesArray = []
+        if (this.state.notaTecnica === '' || this.state.anuenciaFile === '') {
+            console.log(this.state)
+            alert('Favor anexar a nota técnica e a certidão de anuência')
+        } else {
+            await axios.post('/api/anuenciaUpload', this.state.form)
+                .then(res => {
+
+                    for (let key in res.data.file) {
+                        filesArray.push({
+                            fieldName: res.data.file[key][0].fieldname,
+                            id: res.data.file[key][0].id,
+                            originalName: res.data.file[key][0].originalname,
+                            uploadDate: res.data.file[key][0].uploadDate,
+                            filename: res.data.file[key][0].filename,
+                            fileSize: res.data.file[key][0].size
+                        })
+                    }
+                })
+            await axios.put(('/api/fileObject'), {
+                itemId: this.state.selectedId,
+                filesArray: filesArray,
+                status: 'Processo Anuído'
+            })
+
+            await axios.put(('/api/processLog'), {
+                id: this.state.selectedId,
+                processLog: {
+                    label: 'Processo Anuído',
+                    createdAt: new Date(),
+                    files: filesArray
+                }
+            })
+            window.location.reload()
+        }
+    }
 
     render() {
         let { clear, data, redux, close, download, changeValue } = this.props
@@ -85,6 +160,8 @@ class ProcessContainer extends Component {
                         log={this.state}
                         showLog={this.showLog.bind(this)}
                         clearLog={this.clearLog.bind(this)}
+                        upload={this.fileUpload.bind(this)}
+                        submit={this.handleSubmit.bind(this)}
                     />
                 </div>
             )

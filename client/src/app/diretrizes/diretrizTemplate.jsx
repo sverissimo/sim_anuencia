@@ -59,6 +59,7 @@ const Diretriz = (props) => {
                     disabled={data.checked === null}
                     icon='clear'
                     onClick={props.clear}
+                    showFiles={showFiles}
                     />
                 </div>
             </div>

@@ -2,16 +2,15 @@ import React from 'react';
 import { BackButton } from '../common/buttons'
 import anuenciaMenu from '../config/anuenciaMenu'
 import FileExplorer from './fileExplorer'
-import ShowFiles from '../common/showFiles';
 import Anuencia from './emiteAnuencia'
 import AnuenciaForm from './anuenciaForm'
-import ProcessInfo from './processInfo'
-import LogDetails from './logDetails'
+import ProcessInfo from '../common/processInfo'
+
 
 
 const ProcessTemplate = (props) => {
     const { redux, clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
-        showLog, clearLog, log, download, close } = props
+        showLog, clearLog, log, download, close, upload, submit } = props
 
     const returnComponent = (name) => {
         switch (name) {
@@ -35,24 +34,21 @@ const ProcessTemplate = (props) => {
                     changeValue={changeValue}
                 />
             case 'Anuencia':
-                return <Anuencia />
+                return <Anuencia
+                    upload={upload}
+                    submitFiles={submit}
+                />
             case 'ProcessInfo':
 
-                if (log.logDetails === false) {
-                    return <ProcessInfo
-                        process={process}
-                        showLog={showLog}
-                    />
-                } else {
-                    return <LogDetails
-                        process={process}
-                        empreend={empreend}
-                        rt={rt}
-                        index={log.logIndex}
-                        clearLog={clearLog}
-                        download={download}
-                    />
-                }
+                return <ProcessInfo
+                    process={process}
+                    showLog={showLog}
+                    logDetails={log.logDetails}
+                    index={log.logIndex}
+                    clearLog={clearLog}
+                    download={download}
+                />
+
             default:
                 console.log('invalid option, dude!')
         }

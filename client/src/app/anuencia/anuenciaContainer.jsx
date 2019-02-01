@@ -68,50 +68,7 @@ class AnuenciaContainer extends Component {
             checked: e.currentTarget.id
         })
     }
-
-    fileUpload(e) {
-
-        let formData = new FormData()
-        formData.append('processId', this.state.selectedId)
-        this.setState({
-            ...this.state, [e.target.name]: e.target.files[0]
-        })
-
-        setTimeout(() => {
-            formData.append('diretrizFile', this.state.diretrizFile)
-        }, 100);
-
-        setTimeout(() => {
-            this.setState({ form: formData })
-        }, 200);
-    }
-
-    handleSubmit(e) {
-        axios.post('/api/diretrizUpload', this.state.form)
-            .then(res => {
-
-                for (let key in res.data.file) {
-                    let filesArray = [];
-                    filesArray.push(
-                        res.data.file[key][0].fieldname,
-                        res.data.file[key][0].id,
-                        res.data.file[key][0].originalname,
-                        res.data.file[key][0].uploadDate
-                    )
-                    axios.put(('/api/fileObject'), {
-                        itemId: this.state.selectedId,
-                        filesArray: {
-                            fieldName: filesArray[0],
-                            id: filesArray[1],
-                            originalName: filesArray[2],
-                            uploadDate: filesArray[3]
-                        },
-                        status: 'Diretrizes Metropolitanas emitidas'
-                    })
-                }
-            })
-    }
-
+   
     empDetails(e) {
         this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
     }
@@ -188,7 +145,6 @@ class AnuenciaContainer extends Component {
 
         return (
             <div>
-
                 <div>
                     {
                         !this.state.selectedId ?
@@ -197,8 +153,7 @@ class AnuenciaContainer extends Component {
                                 redux={this.props.cadastro}
                                 search={e => this.handleSearch(e)}
                                 searchArray={dataMatch}
-                                selectProcess={this.handleSelect.bind(this)}
-                                submitFiles={this.handleSubmit.bind(this)}
+                                selectProcess={this.handleSelect.bind(this)}                                
                                 setColor={this.props.cadastro.setColor}
                                 clear={this.clearSearch.bind(this)}
                                 empDetails={this.empDetails.bind(this)}
@@ -215,7 +170,7 @@ class AnuenciaContainer extends Component {
                                         close={this.closeDetails.bind(this)}
                                         match={this.props.match}
                                         changeValue={this.handleChange.bind(this)}
-                                        showFiles={this.state.showFiles}
+                                        showFiles={this.state.showFiles}    
                                     />
                                 </div> :
                                 <AnuenciaTemplate
@@ -223,8 +178,7 @@ class AnuenciaContainer extends Component {
                                     redux={this.props.cadastro}
                                     search={e => this.handleSearch(e)}
                                     searchArray={dataMatch}
-                                    selectProcess={this.handleSelect.bind(this)}
-                                    submitFiles={this.handleSubmit.bind(this)}
+                                    selectProcess={this.handleSelect.bind(this)}                                    
                                     setColor={this.props.cadastro.setColor}
                                     clear={this.clearSearch.bind(this)}
                                     empDetails={this.empDetails.bind(this)}

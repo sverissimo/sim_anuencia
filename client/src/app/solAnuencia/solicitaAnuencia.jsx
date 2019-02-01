@@ -7,7 +7,7 @@ import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } fro
 
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolAnuenciaFilesRow from './solAnuenciaFilesRow';
-import { solAnuenciaConfig1, solAnuenciaConfig2, solDesmembConfig1, solDesmembConfig2, } from '../common/configLabels'
+import { solAnuenciaConfig1, solAnuenciaConfig2, solDesmembConfig1, solDesmembConfig2, } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
 import ShowFiles from '../common/showFiles'
 
@@ -98,8 +98,8 @@ class SolicitaAnuencia extends Component {
         let allFields = solAnuenciaConfig1.concat(solAnuenciaConfig2)
         allFields.push({
             nameInput: 'projDesmemb',
-            label: 'Projeto de Desmembramento',  
-            tooltip: 'Planta de localização com delimitação da área em análise e indicação do perímetro urbano, em escala de 1:10000'      
+            label: 'Projeto de Desmembramento',
+            tooltip: 'Planta de localização com delimitação da área em análise e indicação do perímetro urbano, em escala de 1:10000'
         })
 
         allFields.map(item => k.push(item.nameInput))
@@ -229,75 +229,71 @@ class SolicitaAnuencia extends Component {
         }
         return (
             <div>
-                {
-                    this.state.showFiles ?
-                        <ShowFiles
-                            selectedId={selectedId}
-                            showFiles={this.state.showFiles}
-                            close={this.closeDetails.bind(this)}
-                            processCollection={processCollection}
-                            filesCollection={this.props.cadastro.filesCollection}
-                            download={this.download.bind(this)}
-                        />
-                        :
-                        <div>
-                            <SolicitaAnuenciaTemplate
-                                data={this.state}
-                                redux={this.props.cadastro}
-                                search={e => this.handleSearch(e)}
-                                searchArray={dataMatch}
-                                selectProcess={this.handleSelect.bind(this)}
-                                submitFiles={this.handleSubmit.bind(this)}
-                                setColor={this.props.cadastro.setColor}
-                                clear={this.clearSearch.bind(this)}
-                                empDetails={this.empDetails.bind(this)}
-                                rtDetails={this.rtDetails.bind(this)}
-                                array={solAnuenciaConfig1}
-                                array2={solAnuenciaConfig2}
-                                showFiles={this.showFiles.bind(this)}
-                            >
-                                {
-                                    fileInput1.map((item, i) => {
-                                        return (
-                                            <div className='col s6' key={i}>
+                <div>
+                    <SolicitaAnuenciaTemplate
+                        data={this.state}
+                        redux={this.props.cadastro}
+                        search={e => this.handleSearch(e)}
+                        searchArray={dataMatch}
+                        selectProcess={this.handleSelect.bind(this)}
+                        submitFiles={this.handleSubmit.bind(this)}
+                        setColor={this.props.cadastro.setColor}
+                        clear={this.clearSearch.bind(this)}
+                        empDetails={this.empDetails.bind(this)}
+                        rtDetails={this.rtDetails.bind(this)}
+                        array={solAnuenciaConfig1}
+                        array2={solAnuenciaConfig2}
+                        showFiles={this.showFiles.bind(this)}
+                    >
+                        {
+                            fileInput1.map((item, i) => {
+                                return (
+                                    <div className='col s6' key={i}>
 
-                                                <SolAnuenciaFilesRow
-                                                    object={item}
-                                                    key={i}
-                                                    upload={this.fileUpload.bind(this)}
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                }
-                                <div className="row">
-                                    {
-                                        fileInput2.map((item, i) => {
-                                            return (
-                                                <div className='col s6' key={i}>
-                                                    <SolAnuenciaFilesRow
-                                                        object={item}
-                                                        key={i}
-                                                        upload={this.fileUpload.bind(this)}
-                                                    />
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </SolicitaAnuenciaTemplate>
-                            <ShowDetails
-                                empId={this.state.empId}
-                                rtId={this.state.rtId}
-                                showEmp={this.state.showEmpDetails}
-                                showRt={this.state.showRtDetails}
-                                close={this.closeDetails.bind(this)}
-                                empCollection={this.props.cadastro.empCollection}
-                                rtCollection={this.props.cadastro.rtCollection}
-                            >
-                            </ShowDetails>
+                                        <SolAnuenciaFilesRow
+                                            object={item}
+                                            key={i}
+                                            upload={this.fileUpload.bind(this)}
+                                        />
+                                    </div>
+                                )
+                            })
+                        }
+                        <div className="row">
+                            {
+                                fileInput2.map((item, i) => {
+                                    return (
+                                        <div className='col s6' key={i}>
+                                            <SolAnuenciaFilesRow
+                                                object={item}
+                                                key={i}
+                                                upload={this.fileUpload.bind(this)}
+                                            />
+                                        </div>
+                                    )
+                                })
+                            }
                         </div>
-                }
+                    </SolicitaAnuenciaTemplate>
+                    <ShowFiles
+                        selectedId={selectedId}
+                        showFiles={this.state.showFiles}
+                        close={this.closeDetails.bind(this)}
+                        processCollection={processCollection}
+                        filesCollection={this.props.cadastro.filesCollection}
+                        download={this.download.bind(this)}
+                    />
+                    <ShowDetails
+                        empId={this.state.empId}
+                        rtId={this.state.rtId}
+                        showEmp={this.state.showEmpDetails}
+                        showRt={this.state.showRtDetails}
+                        close={this.closeDetails.bind(this)}
+                        empCollection={this.props.cadastro.empCollection}
+                        rtCollection={this.props.cadastro.rtCollection}
+                    />
+                </div>
+
             </div >
         );
     }

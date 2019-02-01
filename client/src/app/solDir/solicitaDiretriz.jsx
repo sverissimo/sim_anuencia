@@ -7,7 +7,7 @@ import { loadEmpData, loadRtData, loadProcessData, setColor } from './../cadastr
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
-import { solDirConfig } from '../common/configLabels'
+import { solDirConfig } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
 
 class solicitaDiretriz extends Component {

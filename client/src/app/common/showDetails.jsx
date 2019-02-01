@@ -1,6 +1,6 @@
 import React from 'react';
     import { CloseWindow } from '../common/buttons'
-import fieldConfig from './fieldConfig'
+import fieldConfig from '../config/fieldConfig'
 
 const ShowDetails = (props) => {
     let { empId, rtId, showEmp, showRt, close, empCollection, rtCollection } = props

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export const ConfirmButton = (props) => {
 
@@ -6,7 +6,6 @@ export const ConfirmButton = (props) => {
         <div className="row">
             <div>
                 <button className="btn-flat waves-effect btn-floating right teal"
-
                     disabled={props.enable}
                     title="Avançar"
                     onClick={props.enableInput}>
@@ -14,19 +13,18 @@ export const ConfirmButton = (props) => {
                 </button>
             </div>
         </div>
-
-    );
-};
+    )
+}
 
 export const BackButton = (props) => {
-
+    let { disabled, icon } = props
     return (
         <div className="input" >
-            <button className={`btn-flat waves-effect btn-floating left red darken-3 ${props.size}`}
-                disabled={props.disabled}
+            <button className={`btn-floating left red darken-3 ${props.size}`}
+                disabled={disabled}
                 title="Voltar"
                 onClick={() => props.onClick()}>
-                <i className="material-icons">{props.icon}</i>
+                <i className="material-icons">{icon}</i>
             </button>
         </div>
     )
@@ -35,25 +33,28 @@ export const BackButton = (props) => {
 export const DeleteButton = (props) => {
     return (
         <div>
-            <button className="btn-flat waves-effect btn-floating right red darken-1"
-                onClick={() => props.delete(props.id)}>
-                <i className="material-icons">delete_outline</i>
-            </button>
+            <i className="material-icons"
+                style={{ fontSize: '24px', color: 'red', cursor: 'pointer' }}
+                title='Apagar'
+                onClick={() => props.delete(props.id)}
+            >
+                delete_outline
+            </i>
+
         </div>
-    );
+    )
 }
 
 export const EditButton = (props) => {
-
     return (
         <div>
-            <button className={"btn-flat waves-effect btn-floating right blue darken-3"}
-                onClick={() => props.edit(props.id)}>
-                <i className="material-icons">edit</i>
-            </button>
+            <i className="material-icons"
+                style={{ fontSize: '24px', color: 'teal', cursor: 'pointer' }}
+                title='Editar'
+                onClick={() => props.edit(props.id)}
+            >edit</i>
         </div>
-
-    );
+    )
 }
 
 export const UpdateButton = (props) => {
@@ -72,28 +73,28 @@ export const UpdateButton = (props) => {
     }
 }
 
-export const CloseWindow = (props) => (
+export const CloseWindow = props => (
     <div>
         <i className="material-icons right" title="Fechar" style={{ cursor: 'pointer', color: 'red' }} onClick={props.close}>close</i>
     </div>
-
 )
 
-/* renderButtons = () => {
-    if (this.state.edit === true) {
-        return (
-            <div>
-                <button className="btn-flat waves-effect btn-floating left red darken-3"
-                    title="Voltar"
-                    onClick={this.disableEdit}>
-                    <i className="material-icons">arrow_back</i>
-                </button>
+export const InfoButton = props => {
+    const { showInfo, id } = props
 
-            </div>
-        )
-    } else {
-        return null
-    }
+    return (
+        <div>
+            <i className="material-icons"
+                id={id}
+                onClick={showInfo}
+                style={{ fontSize: '24px', color: '#1D90EE', cursor: 'pointer' }}
+                title='Informações'
+                >                
+                info
+            </i>
+        </div>
+    )
 
-} */
 
+
+}

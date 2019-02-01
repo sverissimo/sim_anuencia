@@ -90,7 +90,7 @@ const DiretrizRow = (props) => {
                                     color: "black"
                                 }}>
                                 Anexar Diretriz Metropolitana
-                    </label>
+                            </label>
                             <div className="row file-field input-field" >
                                 <div className="file-path-wrapper row">
                                     <div className="col s11">

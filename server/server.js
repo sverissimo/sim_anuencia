@@ -141,6 +141,21 @@ app.post('/api/diretrizUpload', upload.fields([
         });
     });
 
+app.post('/api/anuenciaUpload', upload.fields([
+
+    {
+        name: "notaTecnica", maxCount: 1
+    },
+    {
+        name: "anuenciaFile", maxCount: 1
+    }]
+),
+    (req, res) => {
+        res.json({
+            file: req.files,
+        });
+    });
+
 app.post('/api/solAnuenciaUpload', upload.fields([
 
     {
@@ -363,7 +378,7 @@ app.put('/api/fileObject/', (req, res) => {
     } else {
         processModel.updateOne(
             { '_id': req.body.itemId },
-            { $set: { status: req.body.status }},
+            { $set: { status: req.body.status } },
         ).then(result => res.json(result))
     }
 })

@@ -3,7 +3,7 @@ import { Input } from 'react-materialize'
 
 import { ConfirmButton, BackButton } from '../common/buttons'
 import Title from '../common/titleSubtitle'
-import { empreendForm, processForm, rtForm, municipios, modalidade } from './../common/formConfig';
+import { empreendForm, processForm, rtForm, municipios, modalidade } from '../config/formConfig';
 
 const CadTemplate = (props) => {
     let selector = municipios.munEmpreendimento.options.map((opt, i) =>
