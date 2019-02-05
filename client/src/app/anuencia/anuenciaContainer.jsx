@@ -118,8 +118,8 @@ class AnuenciaContainer extends Component {
 
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
-        //const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Aguardando Análise')
-        const filteredList = this.props.cadastro.processCollection
+        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Aguardando Análise')
+        
         filteredList.sort(function (a, b) {
             let ca = new Date(a.updatedAt)
             let cb = new Date(b.updatedAt)

@@ -103,9 +103,8 @@ class SolicitaAnuencia extends Component {
         })
 
         allFields.map(item => k.push(item.nameInput))
-        console.log(allFields, k)
         setTimeout(() => {
-            k.map(inputName => {
+            k.forEach(inputName => {
                 for (let keys in this.state) {
                     keys.match(inputName) ?
                         formData.append(inputName, this.state[keys])
@@ -136,11 +135,9 @@ class SolicitaAnuencia extends Component {
 
             if (count === 0) {
                 const newLabel = 'Anuência prévia solicitada'
-                console.log(newLabel)
                 return newLabel
             } else {
                 const newLabel2 = 'Entrada ' + (count + 1)
-                console.log(newLabel2)
                 return newLabel2
             }
         }
@@ -149,26 +146,21 @@ class SolicitaAnuencia extends Component {
         await axios.post('/api/solAnuenciaUpload', this.state.form)
             .then(res => {
                 for (let key in res.data.file) {
-
                     filesArray.push({
                         fieldName: res.data.file[key][0].fieldname,
                         id: res.data.file[key][0].id,
                         originalName: res.data.file[key][0].originalname,
                         uploadDate: res.data.file[key][0].uploadDate,
-                        fileSize: res.data.file[key][0].size,
-                        contentType: res.data.file[key][0].contentType
+                        contentType: res.data.file[key][0].contentType,
+                        fileSize: res.data.file[key][0].size
                     })
                 }
             })
-        await axios.put(('/api/fileObject'), {
-            itemId: this.state.selectedId,
-            filesArray: filesArray,
-            status: 'Aguardando Análise'
-        })
         const label2 = label()
-        await axios.put(('/api/processLog'), {
+        await axios.put('/api/editProcess', {
             id: this.state.selectedId,
-            processLog: {
+            status: 'Aguardando Análise',
+            processHistory: {
                 label: label2,
                 createdAt: new Date(),
                 files: filesArray
@@ -293,7 +285,6 @@ class SolicitaAnuencia extends Component {
                         rtCollection={this.props.cadastro.rtCollection}
                     />
                 </div>
-
             </div >
         );
     }

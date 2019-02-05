@@ -83,7 +83,7 @@ class solicitaDiretriz extends Component {
 
 
         setTimeout(() => {
-            k.map(inputName => {
+            k.forEach(inputName => {
                 for (let keys in this.state) {
                     keys.match(inputName) ?
                         (formData.append(inputName, this.state[keys]))
@@ -109,20 +109,15 @@ class solicitaDiretriz extends Component {
                         id: res.data.file[key][0].id,
                         originalName: res.data.file[key][0].originalname,
                         uploadDate: res.data.file[key][0].uploadDate,
-                        filename: res.data.file[key][0].filename,
+                        contentType: res.data.file[key][0].contentType,
                         fileSize: res.data.file[key][0].size
                     })
                 }
-            })
-        await axios.put(('/api/fileObject'), {
-            itemId: this.state.selectedId,
-            filesArray: filesArray,
-            status: 'Aguardando Diretrizes Metropolitanas'
-        })
-
-        await axios.put(('/api/processLog'), {
+            })        
+        await axios.put('/api/editProcess', {
             id: this.state.selectedId,
-            processLog: {
+            status: 'Aguardando Diretrizes Metropolitanas',
+            processHistory: {
                 label: 'Diretrizes metropolitanas solicitadas',
                 createdAt: new Date(),
                 files: filesArray

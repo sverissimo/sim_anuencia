@@ -45,8 +45,7 @@ class AnuenciaForm extends Component {
     }
 
     handleChange(value) {
-        this.setState({ ...this.state, text: value })
-        
+        this.setState({ ...this.state, text: value })        
     }
 
     savePdf() {
@@ -62,17 +61,14 @@ class AnuenciaForm extends Component {
         
         this.setState({ oficio: oficio })              
         
-        await axios.put('/api/processLog', {
+        await axios.put('/api/editProcess', {
             id: this.props.process._id,
-            processLog: {
+            status: 'Pendências',
+            processHistory: {
                 label: label,
                 createdAt: new Date(),
                 pendencias: oficio
             }
-        }).then(res=> console.log(res))
-        await axios.put('/api/fileObject', {
-            itemId: this.props.process._id,
-            status: 'Pendências'
         })
         window.location.reload() 
     }

@@ -24,7 +24,7 @@ class LogDetails extends Component {
         const log = process.processHistory[index]
 
         return (
-            <div style={soloStyle(soloComponent)}>
+            <div style={soloStyle(soloComponent, ['15%', '70%'])}>
                  {
                     soloComponent === true ?
                         <div className="row" style={{ textAlign: 'center' }}>

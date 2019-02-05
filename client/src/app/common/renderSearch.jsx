@@ -8,6 +8,7 @@ const RenderSearch = (props) => {
 
     let solDirObjFiles = []
     let sdFilesArray = []
+    void sdFilesArray
     if (processCollection && processCollection[0]) {
 
         for (let key in processCollection) {

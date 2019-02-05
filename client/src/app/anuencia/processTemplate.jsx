@@ -105,7 +105,7 @@ const ProcessTemplate = (props) => {
                 <div style={{ minHeight: '50vh', border: '1px solid #ddd', borderRadius: '2%', marginBottom: '2%' }}>
                     {
                         selectedOption === '' ?
-                            <div className='col push-s4'>
+                            <div className='col push-s4' style={{paddingTop: '20%'}}>
                                 <h5>
                                     Selecione uma das opçoes acima.
                                 </h5>

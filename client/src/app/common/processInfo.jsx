@@ -9,7 +9,7 @@ const ProcessInfo = (props) => {
 
     if (logDetails === false) {
         return (
-            <div style={soloStyle(soloComponent)}>
+            <div style={soloStyle(soloComponent, ['15%', '70%'])}>
                 {
                     soloComponent === true ?
                         <div className="row" style={{ textAlign: 'center' }}>

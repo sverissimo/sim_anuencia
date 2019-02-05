@@ -8,7 +8,7 @@ import styles from '../css/react-datetime.css'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } from '../cadastro/cadActions'
-import { setCgtDate, setVistoriaDate } from './diretrizActions'
+import { setDate } from './diretrizActions'
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
@@ -142,23 +142,16 @@ class Diretriz extends Component {
             fileSize: filesArray[4],
             contentType: filesArray[5]
         }
-
-        await axios.put(('/api/fileObject'), {
-            itemId: this.state.selectedId,
-            filesArray: fileObject,
-            status: 'Diretrizes Metropolitanas emitidas'
-        })
-
-        await axios.put(('/api/processLog'), {
+        await axios.put('/api/editProcess', {
             id: this.state.selectedId,
-            processLog: {
+            status: 'Diretrizes Metropolitanas emitidas',
+            processHistory: {
                 label: 'Diretrizes Metropolitanas emitidas',
                 createdAt: new Date(),
                 files: [fileObject]
             }
         })
         window.location.reload()
-
     }
 
     empDetails(e) {
@@ -207,13 +200,10 @@ class Diretriz extends Component {
         e.preventDefault()
         let dirStatus = this.state.dirStatus
 
-        await axios.put('/api/fileObject', {
-            itemId: this.state.selectedId,
-            status: 'Processo cadastrado'
-        })
-        await axios.put('api/processLog', {
+        await axios.put('/api/editProcess', {
             id: this.state.selectedId,
-            processLog: {
+            status: 'Processo cadastrado',
+            processHistory: {
                 label: 'Pendências para emissão de diretrizes',
                 createdAt: new Date(),
                 pendencias: dirStatus.pendencias,
@@ -233,20 +223,14 @@ class Diretriz extends Component {
     }
 
     hideCalendar(d) {
+        let selectCalendar
         if (this.state.cgtCalendar) {
-            this.setState({ ...this.state, cgtCalendar: false })
-            this.props.setCgtDate(this.state.m, this.state.selectedId)
+            selectCalendar = 'cgt'
         } else {
-            this.setState({ ...this.state, vistoriaCalendar: false })
-            this.props.setVistoriaDate(this.state.m, this.state.selectedId)
+            selectCalendar = 'vistoria'
         }
-
-        console.log(this.props.cadastro.processCollection[0])
-
-        setTimeout(() => {
-            console.log(this.props.cadastro.processCollection[0])
-        }, 200);
-
+        this.setState({ ...this.state, [`${selectCalendar}Calendar`]: false })
+        this.props.setDate(this.state.m, this.state.selectedId, selectCalendar)
     }
 
     setDate = d => {
@@ -380,7 +364,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, setCgtDate, setVistoriaDate }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, setDate }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Diretriz);

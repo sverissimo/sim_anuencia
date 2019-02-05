@@ -1,16 +1,8 @@
 import React from 'react';
-import { allFilesLabels } from '../config/configLabels';
 import { CloseWindow } from '../common/buttons'
 import showDate from './showDate'
 import formatFileSize from '../config/formatFileSize'
-
-const labels = (fieldName) => {
-
-    let allFilesArray = []
-    allFilesArray = allFilesLabels()
-    let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
-    return label[0].label
-}
+import { fileLabel } from '../config/configLabels'
 
 const ShowFiles = (props) => {
     let { showFiles, close, processCollection, selectedId, filesCollection, download } = props
@@ -80,7 +72,7 @@ const ShowFiles = (props) => {
                                         className="col s11"
                                         onClick={download}>
 
-                                        {labels(file.metadata.fieldName)}
+                                        {fileLabel(file.metadata.fieldName)}
                                     </div>
                                 </div>
                                 <div className="col s3">
@@ -110,12 +102,10 @@ const ShowFiles = (props) => {
                     position: 'fixed',
                     top: '30%',
                     right: '33%',
-                    left: '33%',
-                    border: '3px solid #000000',
+                    left: '33%',                    
                     backgroundColor: 'white',
                     paddingLeft: '20px',
-                    borderRadius: '15px',
-                    backgroundColor: 'white',
+                    borderRadius: '15px',                    
                     padding: '15px 0px 0px 30px',
                     border: '1px solid #ddd',
                     marginBottom: '25px',

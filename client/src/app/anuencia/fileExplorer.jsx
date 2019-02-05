@@ -4,7 +4,7 @@ import formatFileSize from '../config/formatFileSize'
 import {fileLabel } from '../config/configLabels'
 
 const FileExplorer = (props) => {
-    let { showFiles, close, processCollection, selectedId, process, filesCollection, download } = props
+    let { process,  download } = props
     const log = process.processHistory.filter(proc => proc.files)
     
     return (
@@ -19,14 +19,14 @@ const FileExplorer = (props) => {
                         <div className='row'>
                             {el.files.map((file, index) =>
                                 <div className='row' key={(index+100)}>
-                                    <div className='col s5' key={index}>{fileLabel(file.fieldName)}</div>
+                                    <div className='col s5'>{fileLabel(file.fieldName)}</div>
                                     <div className='col s4'
                                     id={file.id} 
                                     key={index}
                                     style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}                                    
                                     onClick={download}
                                     >{file.originalName}</div>
-                                    <div className='col s3' key={index}>{formatFileSize(file.fileSize)}</div>                                    
+                                    <div className='col s3'>{formatFileSize(file.fileSize)}</div>                                    
                                 </div>
                             )}
                         </div>

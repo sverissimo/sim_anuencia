@@ -201,8 +201,7 @@ class CadastroContainer extends React.Component {
             daeDir: 'DAE não recolhida',
             daeAnuencia: 'DAE não recolhida',
             empId: this.state.empId,
-            rtId: this.state.rtId,
-            fileObjects: [],
+            rtId: this.state.rtId,            
             processHistory: [
                 {
                     label: 'Processo cadastrado',

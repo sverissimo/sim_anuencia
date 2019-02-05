@@ -142,21 +142,41 @@ const ShowEmpRow = (props) => {
                                     : <div className='col s1'> </div>
                             }
 
-                            <div className="col s2 right"
-                                style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    maxWidth: '95px',
-                                    margin: '0 auto',
-                                    padding: '0px 5px',
-                                    height: '100%',
-                                    verticalAlign: 'middle'
-                                }}>
-                                <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
-                                <EditButton edit={edit} id={item._id} />
-                                <DeleteButton delete={deleteOne} id={item._id} />
 
-                            </div>
+                            {
+                                data.select === 'process' ?
+                                    <div className="col s2 right"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            maxWidth: '95px',
+                                            margin: '0 auto',
+                                            padding: '0px 5px',
+                                            height: '100%',
+                                            verticalAlign: 'middle'
+                                        }}>
+                                        <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
+                                        <EditButton edit={edit} id={item._id} />
+                                        <DeleteButton delete={deleteOne} id={item._id} />
+                                    </div>
+                                    :
+                                    <div className="col s2 right"
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-around',                                            
+                                            maxWidth: '95px',
+                                            margin: '0 auto',
+                                            padding: '0px 5px',
+                                            height: '100%',
+                                            verticalAlign: 'middle'
+                                        }}>
+                                        <EditButton edit={edit} id={item._id} />
+                                        <DeleteButton delete={deleteOne} id={item._id} />
+                                    </div>
+                            }
+
+
+
                         </div>
                     )
                 })

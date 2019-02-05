@@ -6,10 +6,11 @@ import { BackButton } from '../common/buttons'
 
 const AnuenciaTemplate = (props) => {
 
-    let { setColor, search, searchArray, selectProcess, submitFiles, data, redux,
+    let { setColor, search, searchArray, selectProcess, data, redux,
         empDetails, rtDetails, download, showFiles } = props
 
     let selectedProcess
+    void selectedProcess
     if (data.selectedId) selectedProcess = redux.processCollection.filter(el => el._id.match(data.selectedId))[0]
 
     return (

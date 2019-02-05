@@ -69,29 +69,24 @@ class ProcessContainer extends Component {
 
         let k = ['notaTecnica', 'anuenciaFile']
 
-
-
         setTimeout(() => {
-            k.map(inputName => {
+            k.forEach(inputName => {
                 for (let keys in this.state) {
                     keys.match(inputName) ?
                         (formData.append(inputName, this.state[keys]))
                         : void 0
                 }
             })
-        }, 100);
+        }, 150);
         setTimeout(() => {
-            this.setState({ form: formData })
-        }, 200);
+            this.setState({ form: formData })            
+        }, 250);
     }
-
-
 
     async handleSubmit(e) {
         e.preventDefault()
         let filesArray = []
-        if (this.state.notaTecnica === '' || this.state.anuenciaFile === '') {
-            console.log(this.state)
+        if (!this.state.notaTecnica || !this.state.anuenciaFile) {            
             alert('Favor anexar a nota técnica e a certidão de anuência')
         } else {
             await axios.post('/api/anuenciaUpload', this.state.form)
@@ -103,20 +98,15 @@ class ProcessContainer extends Component {
                             id: res.data.file[key][0].id,
                             originalName: res.data.file[key][0].originalname,
                             uploadDate: res.data.file[key][0].uploadDate,
-                            filename: res.data.file[key][0].filename,
+                            contentType: res.data.file[key][0].contentType,
                             fileSize: res.data.file[key][0].size
                         })
                     }
-                })
-            await axios.put(('/api/fileObject'), {
-                itemId: this.state.selectedId,
-                filesArray: filesArray,
-                status: 'Processo Anuído'
-            })
-
-            await axios.put(('/api/processLog'), {
+                })            
+            await axios.put('/api/editProcess', {
                 id: this.state.selectedId,
-                processLog: {
+                status: 'Processo Anuído',
+                processHistory: {
                     label: 'Processo Anuído',
                     createdAt: new Date(),
                     files: filesArray

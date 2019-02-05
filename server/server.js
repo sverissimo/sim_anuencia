@@ -337,48 +337,19 @@ app.put('/api/editRt/', (req, res) => {
 
 app.put('/api/editProcess/', (req, res) => {
 
-    processModel.updateOne(
-        { '_id': req.body.item._id },
-        { $set: req.body.item }
-    ).then(result => res.json(result))
-})
-
-/* app.put('/api/solDirFiles/', (req, res) => {
-
-    processModel.updateOne(
-        { '_id': req.body.itemId },
-        {
-            $push: { solDirFiles: req.body.filesArray },
-            $set: { status: req.body.status }
-        },
-
-    ).then(result => res.json(result))
-}) */
-
-app.put('/api/processLog/', (req, res) => {
-
-    processModel.updateOne(
-        { '_id': req.body.id },
-        { $push: { "processHistory": req.body.processLog } },
-
-
-    ).then(result => res.json(result))
-})
-
-app.put('/api/fileObject/', (req, res) => {
-
-    if (req.body.filesArray) {
+    if (req.body.item) {
         processModel.updateOne(
-            { '_id': req.body.itemId },
-            {
-                $push: { fileObjects: req.body.filesArray },
-                $set: { status: req.body.status }
-            },
+            { '_id': req.body._id },
+            { $set: req.body.item }
         ).then(result => res.json(result))
+
     } else {
         processModel.updateOne(
-            { '_id': req.body.itemId },
-            { $set: { status: req.body.status } },
+            { '_id': req.body.id },
+            {
+                $push: { 'processHistory': req.body.processHistory },
+                $set: { 'status': req.body.status }                
+            }
         ).then(result => res.json(result))
     }
 })

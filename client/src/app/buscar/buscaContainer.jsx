@@ -125,6 +125,7 @@ class ShowEmpContainer extends Component {
         }
         if (this.state.item && this.state.select === 'process') {
             axios.put(('/api/editProcess'), {
+                _id: this.state.item._id,
                 item: this.state.item
             }).catch(err => alert(err))
         }
