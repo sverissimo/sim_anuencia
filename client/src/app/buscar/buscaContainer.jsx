@@ -38,10 +38,6 @@ class ShowEmpContainer extends Component {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-
-        let color = document.getElementById('setcolor').style.backgroundColor
-        this.setState({ setColor: color })
-
     }
 
     deleteHandler = (item) => {
@@ -80,8 +76,6 @@ class ShowEmpContainer extends Component {
             item = this.props.cadastro.empCollection.filter(el => el._id.match(itemId))
             itemObj = Object.assign({}, item)
         }
-
-
 
         if (this.state.select === 'rt') {
             item = this.props.cadastro.rtCollection.filter(el => el._id.match(itemId))
@@ -217,7 +211,7 @@ class ShowEmpContainer extends Component {
                     redux={this.props.cadastro}
                     onSelect={this.handleSelect}
                     change={e => this.handleSearchBar(e)}
-                    color={this.state.setColor}
+                    color={this.props.cadastro.setColor}
                 />
                 {
                     this.state.showInfo ?
@@ -244,11 +238,11 @@ class ShowEmpContainer extends Component {
                                 empFields={[1, 3, 6, 7, 8]}
                                 rtFields={[1, 2, 3]}
                                 showRt={false}
-                                fields={[3, 4, 5, 6, 7, 8, 9, 17]}
+                                fields={[2, 3, 4, 5, 6, 7, 8, 16]}
                                 divConfig={['col s1', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
                                 edit={this.enableEdit.bind(this)}
                                 deleteOne={this.deleteHandler.bind(this)}
-                                color={this.state.setColor}
+                                color={this.props.cadastro.setColor}
                                 empDetails={this.empDetails.bind(this)}
                                 rtDetails={this.rtDetails.bind(this)}
                                 showInfo={this.showInfo.bind(this)}

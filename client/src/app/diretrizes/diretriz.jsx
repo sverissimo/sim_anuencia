@@ -49,16 +49,10 @@ class Diretriz extends Component {
     }
 
     componentDidMount() {
-        !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-        !this.props.cadastro.filesCollection[0] ? this.props.loadFilesData() : void 0
-
-        setTimeout(() => {
-            let color = document.getElementById('setcolor').style.backgroundColor
-            this.props.setColor(color)
-        }, 50);
-
+        !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
+        !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
+        !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
+        !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0
     }
 
     handleSearch(e) {
@@ -260,7 +254,7 @@ class Diretriz extends Component {
 
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
-        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
+        const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
         if (input && !this.state.checked) {
             dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
         } else if (this.state.checked || (this.state.checked && input)) {
@@ -274,12 +268,12 @@ class Diretriz extends Component {
                 <div>
                     <DiretrizTemplate
                         data={this.state}
-                        redux={this.props.cadastro}
+                        redux={this.props.redux}
                         search={e => this.handleSearch(e)}
                         searchArray={dataMatch}
                         selectProcess={this.handleSelect.bind(this)}
                         submitFiles={this.handleSubmit.bind(this)}
-                        setColor={this.props.cadastro.setColor}
+                        setColor={this.props.redux.setColor}
                         clear={this.clearSearch.bind(this)}
                         empDetails={this.empDetails.bind(this)}
                         rtDetails={this.rtDetails.bind(this)}
@@ -291,8 +285,8 @@ class Diretriz extends Component {
                             showFiles={this.state.showFiles}
                             checkItem={this.checkItem.bind(this)}
                             close={this.closeDetails.bind(this)}
-                            processCollection={this.props.cadastro.processCollection}
-                            filesCollection={this.props.cadastro.filesCollection}
+                            processCollection={this.props.redux.processCollection}
+                            filesCollection={this.props.redux.filesCollection}
                             upload={this.fileUpload.bind(this)}
                             dirStatus={this.state.dirStatus}
                             change={this.handleChange.bind(this)}
@@ -337,8 +331,8 @@ class Diretriz extends Component {
                         showEmp={this.state.showEmpDetails}
                         showRt={this.state.showRtDetails}
                         close={this.closeDetails.bind(this)}
-                        empCollection={this.props.cadastro.empCollection}
-                        rtCollection={this.props.cadastro.rtCollection}
+                        empCollection={this.props.redux.empCollection}
+                        rtCollection={this.props.redux.rtCollection}
                     />
                 </div>
                 <div>
@@ -346,8 +340,8 @@ class Diretriz extends Component {
                         selectedId={this.state.selectedId}
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
-                        processCollection={this.props.cadastro.processCollection}
-                        filesCollection={this.props.cadastro.filesCollection}
+                        processCollection={this.props.redux.processCollection}
+                        filesCollection={this.props.redux.filesCollection}
                         download={this.download.bind(this)}
                     />
                 </div>
@@ -359,7 +353,7 @@ class Diretriz extends Component {
 
 function mapStateToProps(state) {
     return {
-        cadastro: state.cadastro
+        redux: state.cadastro
     }
 }
 

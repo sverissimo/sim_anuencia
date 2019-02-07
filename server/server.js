@@ -251,7 +251,7 @@ app.post('/api/cadastro_emp', (req, res) => {
     cadastroEmp.save((err, doc) => {
         if (err) return res.status(400).send(err);
 
-        res.status(200).json({
+        return res.status(200).json({
             post: true,
             Cadastro_id: doc._id
         })
@@ -265,7 +265,7 @@ app.post('/api/cadastro_rt', (req, res) => {
 
     RT.save((err, doc) => {
         if (err) return res.status(400).send(err);
-        res.status(200).json({
+        return res.status(200).json({
             post: true,
             RT_id: doc._id
         })
@@ -279,7 +279,7 @@ app.post('/api/cadastro_process', (req, res) => {
 
     cadastroProcess.save((err, doc) => {
         if (err) return res.status(400).send(err);
-        res.status(200).json({
+        return res.status(200).json({
             post: true,
             process: doc
         })
@@ -348,7 +348,7 @@ app.put('/api/editProcess/', (req, res) => {
             { '_id': req.body.id },
             {
                 $push: { 'processHistory': req.body.processHistory },
-                $set: { 'status': req.body.status }                
+                $set: { 'status': req.body.status }
             }
         ).then(result => res.json(result))
     }

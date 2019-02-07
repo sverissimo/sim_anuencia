@@ -44,11 +44,14 @@ export function loadFilesData() {
     }
 };
 
+export const setColor = () => {
 
-export function setColor(color) {
-    
-      return {
+    const array = [ 'rgb(104, 119, 133)', 'rgb(84, 104, 102)', 'rgb(105, 117, 153)', 
+    'rgb(88, 103, 88)', 'rgb(117, 116, 101)', 'rgb(117, 117, 137)' ]
+    let color = array[Math.floor(Math.random() * array.length)]
+    return {
         type: 'SET_COLOR',
         payload: color
     }
-};
+  }
+  

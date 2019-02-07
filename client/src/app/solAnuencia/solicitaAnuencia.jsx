@@ -46,15 +46,10 @@ class SolicitaAnuencia extends Component {
     }
 
     componentDidMount() {
-        !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.cadastro.filesCollection[0] ? this.props.loadFilesData() : void 0
-
-        setTimeout(() => {
-            let color = document.getElementById('setcolor').style.backgroundColor
-            this.props.setColor(color)
-        }, 50);
+        !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
+        !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
+        !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
+        !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0
     }
 
     handleSearch(e) {
@@ -121,7 +116,7 @@ class SolicitaAnuencia extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-        const procCollection = this.props.cadastro.processCollection
+        const procCollection = this.props.redux.processCollection
         const { selectedId } = this.state
 
         const label = () => {
@@ -194,9 +189,9 @@ class SolicitaAnuencia extends Component {
     render() {
 
         let { dataMatch, selectedId, checked } = this.state
-        let { processCollection } = this.props.cadastro
+        let { processCollection } = this.props.redux
         let input = this.state.searchValue.toLowerCase()
-        const filteredList = processCollection.filter(el => (el.status === 'Diretrizes Metropolitanas emitidas' || el.status.match('Pendências')) || el.status === 'Aguardando documentação para desmembramento')
+        const filteredList = processCollection.filter(el => (el.status === 'Diretrizes Metropolitanas emitidas' || el.status.match('Pendências')) || el.status === 'Aguardando documentação')
         if (input && !checked) {
             dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
         } else if (checked || (checked && input)) {
@@ -215,7 +210,7 @@ class SolicitaAnuencia extends Component {
         if (process && (process[0].modalidade === 'Loteamento' && (status === 'Diretrizes Metropolitanas emitidas' || status === 'Pendências'))) {
             fileInput1 = solAnuenciaConfig1
             fileInput2 = solAnuenciaConfig2
-        } else if (process && (process[0].modalidade === 'Desmembramento' && (status === 'Aguardando documentação para desmembramento' || status === 'Pendências'))) {
+        } else if (process && (process[0].modalidade === 'Desmembramento' && (status === 'Aguardando documentação' || status === 'Pendências'))) {
             fileInput1 = solDesmembConfig1
             fileInput2 = solDesmembConfig2
         }
@@ -224,12 +219,12 @@ class SolicitaAnuencia extends Component {
                 <div>
                     <SolicitaAnuenciaTemplate
                         data={this.state}
-                        redux={this.props.cadastro}
+                        redux={this.props.redux}
                         search={e => this.handleSearch(e)}
                         searchArray={dataMatch}
                         selectProcess={this.handleSelect.bind(this)}
                         submitFiles={this.handleSubmit.bind(this)}
-                        setColor={this.props.cadastro.setColor}
+                        setColor={this.props.redux.setColor}
                         clear={this.clearSearch.bind(this)}
                         empDetails={this.empDetails.bind(this)}
                         rtDetails={this.rtDetails.bind(this)}
@@ -272,7 +267,7 @@ class SolicitaAnuencia extends Component {
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
                         processCollection={processCollection}
-                        filesCollection={this.props.cadastro.filesCollection}
+                        filesCollection={this.props.redux.filesCollection}
                         download={this.download.bind(this)}
                     />
                     <ShowDetails
@@ -281,8 +276,8 @@ class SolicitaAnuencia extends Component {
                         showEmp={this.state.showEmpDetails}
                         showRt={this.state.showRtDetails}
                         close={this.closeDetails.bind(this)}
-                        empCollection={this.props.cadastro.empCollection}
-                        rtCollection={this.props.cadastro.rtCollection}
+                        empCollection={this.props.redux.empCollection}
+                        rtCollection={this.props.redux.rtCollection}
                     />
                 </div>
             </div >
@@ -292,7 +287,7 @@ class SolicitaAnuencia extends Component {
 
 function mapStateToProps(state) {
     return {
-        cadastro: state.cadastro
+        redux: state.cadastro
     }
 }
 

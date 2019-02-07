@@ -111,7 +111,7 @@ const ShowEmpRow = (props) => {
                     selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(itemArray[i])) : void 0
 
                     return (
-                        <div className="row" key={k} style={{ borderBottom: 'dotted #bbb' }}>
+                        <div className="row" key={k} style={{ borderBottom: '1px dotted #bbb', paddingBottom:'1%' }}>
                             {
                                 i2.map((field, i) =>
                                     field.key !== '_id' ?

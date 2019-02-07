@@ -35,8 +35,8 @@ class CadastroContainer extends React.Component {
         enableEmp: '',
         enableRt: 'disabled',
         enableProcess: 'disabled',
-        empMatch: '',
-        setColor: ''
+        empMatch: null,
+        rtMatch: null,      
     }
 
     componentDidMount() {
@@ -44,10 +44,6 @@ class CadastroContainer extends React.Component {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-
-        let color = document.getElementById('setcolor').style.backgroundColor
-        this.setState({ setColor: color })
-
     }
 
     enableRtInput(e) {
@@ -62,34 +58,36 @@ class CadastroContainer extends React.Component {
         }, 50);
 
     }
-    enableProcessInput(e) {
+    enableProcessInput() {
 
         this.setState({
             enableProcess: '',
             enableEmp: 'disabled',
             enableRt: 'disabled'
         })
-        
-        if (this.props.cadastro.processCollection[0]) {
 
-            const collection = this.props.cadastro.processCollection
-            let procThisYear = []
+        const collection = this.props.cadastro.processCollection
+        let procThisYear = []
 
-            collection.map(el =>
-                procThisYear.push(new Date(el.createdAt).getFullYear())
-            )
+        collection.map(el =>
+            procThisYear.push(new Date(el.createdAt).getFullYear())
+        )
 
-            const currentYear = Number(new Date().getFullYear())
-            let count = procThisYear.filter(el => el === currentYear).length
+        const currentYear = Number(new Date().getFullYear())
+        const proc = procThisYear.filter(el => el === currentYear)
 
-            let nProcess = (count + 1) + '/' + currentYear
+        let count = proc.length
 
-            this.setState({ nProcess: nProcess })
-        }
+        let nProcess = (count + 1) + '/' + currentYear
+
+        this.setState({
+            ...this.state, nProcess: nProcess, enableRt: 'disabled',
+            enableProcess: '', enableEmp: 'disabled'
+        })
+
         setTimeout(() => {
             document.getElementById("nomeEmpreendimento").focus()
         }, 50);
-
 
     }
     enableEmpInput(e) {
@@ -100,8 +98,8 @@ class CadastroContainer extends React.Component {
         })
     }
 
-    handleBlur = event => {
-
+    handleBlur(event) {
+        event.preventDefault()
         if (event.target.name === 'cep' && this.state.empMatch === '') {
 
             axios.get(`http://apps.widenet.com.br/busca-cep/api/cep.json?code=${this.state.cep}`
@@ -120,7 +118,8 @@ class CadastroContainer extends React.Component {
         }
     }
 
-    handleChange = event => {
+    handleChange(event) {
+
         event.preventDefault();
 
         let empMatch = []
@@ -160,16 +159,16 @@ class CadastroContainer extends React.Component {
         }
     };
 
-    handleSubmit = event => {
+    async handleSubmit(e) {
+        e.preventDefault()
 
         let procStatus
-
         if (this.state.modalidade === 'Loteamento') {
             procStatus = 'Processo cadastrado'
         } else {
-            procStatus = 'Aguardando documentação para desmembramento'
+            procStatus = 'Aguardando documentação'
         }
-        
+
         const cadEmp = {
             nome: this.state.nome,
             cpf: this.state.cpf,
@@ -183,12 +182,14 @@ class CadastroContainer extends React.Component {
             cidade: this.state.cidade,
             uf: this.state.uf,
         }
+
         const cadRt = {
             nomeRt: this.state.nomeRt,
             emailRt: this.state.emailRt,
             phoneRt: this.state.phoneRt
         }
-        const cadProcess = {
+
+        let cadProcess = {
             nProcess: this.state.nProcess,
             nomeEmpreendimento: this.state.nomeEmpreendimento,
             modalidade: this.state.modalidade,
@@ -200,8 +201,6 @@ class CadastroContainer extends React.Component {
             vistoria: 'Vistoria não agendada',
             daeDir: 'DAE não recolhida',
             daeAnuencia: 'DAE não recolhida',
-            empId: this.state.empId,
-            rtId: this.state.rtId,            
             processHistory: [
                 {
                     label: 'Processo cadastrado',
@@ -209,32 +208,93 @@ class CadastroContainer extends React.Component {
                 }
             ],
         }
-        if (!this.state.nome || (!this.state.nomeRt || !this.state.nomeEmpreendimento)) {
-            alert('Favor preencher os nomes do empreendedor, RT e processo.')
+        const { empMatch, rtMatch, empId, rtId } = this.state
+
+        if (empMatch && rtMatch) {
+            cadProcess.empId = empId
+            cadProcess.rtId = rtId
+            axios.post('/api/cadastro_process', cadProcess)
+                .then(res => window.location.reload())
+        } else if (empMatch && !rtMatch) {
+            cadProcess.empId = empId
+            axios.post('/api/cadastro_rt', cadRt)
+                .then(res => {
+                    cadProcess.rtId = res.data.RT_id
+                    axios.post('/api/cadastro_process', cadProcess)
+                }).then(res => window.location.reload())
+        } else if (!empMatch && rtMatch) {
+            cadProcess.rtId = rtId
+            axios.post('/api/cadastro_emp', cadEmp)
+                .then(res => {
+                    cadProcess.empId = res.data.Cadastro_id
+                    axios.post('/api/cadastro_process', cadProcess)
+                }).then(res => window.location.reload())
+        } else if (!empMatch && !rtMatch) {
+            axios.post('/api/cadastro_emp', cadEmp)
+                .then(res => {
+                    cadProcess.empId = res.data.Cadastro_id
+                    axios.post('/api/cadastro_rt', cadRt)
+                        .then(res => {
+                            cadProcess.rtId = res.data.RT_id
+                            axios.post('/api/cadastro_process', cadProcess)
+                        }).then(res => window.location.reload())
+                })
         }
-        else if (!this.state.empMatch && (!this.state.empMatch[0] && (!this.state.rtMatch && !this.state.rtMatch[0]))) {
-            axios.post(('/api/cadastro_emp/'), cadEmp)
-                .then(res => cadProcess.empId = res.data.Cadastro_id)
-                .then(res => axios.post('/api/cadastro_rt', cadRt))
+
+        /*  if (!this.state.rtMatch) {
+ 
+             Object.assign(cadObj, { rt: cadRt })
+         } else {
+             Object.assign(cadObj, { rtId: this.state.rtId })
+         }
+         Object.assign(cadObj, { process: cadProcess })
+         console.log(cadObj)
+ 
+         axios.post('/api/cadastro_emp', cadObj.emp)
+             .then(res => console.log(res.data)) */
+
+
+        /* if (!this.state.empMatch && !this.state.rtMatch) {
+            axios.post('/api/cadastro_emp/', cadEmp)
+                .then(res => {
+                    cadProcess.empId = res.data.Cadastro_id
+                })
+                .then(axios.post('/api/cadastro_rt', cadRt))
                 .then(res => cadProcess.rtId = res.data.RT_id)
-                .then(res => axios.post('/api/cadastro_process', cadProcess))
-
-        } else if (!this.state.empMatch && (!this.state.empMatch[0] && (this.state.rtMatch && this.state.rtMatch[0]))) {
-            axios.post(('/api/cadastro_emp/'), cadEmp)
+                .then(axios.post('/api/cadastro_process', cadProcess))
+        } else if (!this.state.empMatch) {
+            axios.post('/api/cadastro_emp', cadEmp)
                 .then(res => cadProcess.empId = res.data.Cadastro_id)
-                .then(res => axios.post('/api/cadastro_process', cadProcess))
-
-        } else if (this.state.empMatch && (this.state.empMatch[0] && (!this.state.rtMatch && !this.state.rtMatch[0]))) {
+                .then(axios.post('/api/cadastro_process', cadProcess))
+        } else if (!this.state.rtMatch) {
             axios.post('/api/cadastro_rt', cadRt)
                 .then(res => cadProcess.rtId = res.data.RT_id)
-                .then(res => axios.post('/api/cadastro_process', cadProcess))
-
-        } else if (this.state.empMatch && (this.state.empMatch[0] && (this.state.rtMatch && this.state.rtMatch[0]))) {
+                .then(axios.post('/api/cadastro_process', cadProcess))
+        } else {
             axios.post('/api/cadastro_process', cadProcess)
+        } */
+
+        /* .then(res => axios.post('/api/cadastro_rt', cadRt))
+        .then(res => cadProcess.rtId = res.data.RT_id)
+        .then(res => axios.post('/api/cadastro_process', cadProcess)) */
+
+        /*  else if (!this.state.empMatch && (!this.state.empMatch[0] && (this.state.rtMatch && this.state.rtMatch[0]))) {
+            await axios.post(('/api/cadastro_emp/'), cadEmp)
+                .then(res => cadProcess.empId = res.data.Cadastro_id)
+                .then(res => axios.post('/api/cadastro_process', cadProcess))
+ 
+        } else if (this.state.empMatch && (this.state.empMatch[0] && (!this.state.rtMatch && !this.state.rtMatch[0]))) {
+            await axios.post('/api/cadastro_rt', cadRt)
+                .then(res => cadProcess.rtId = res.data.RT_id)
+                .then(res => axios.post('/api/cadastro_process', cadProcess))
+ 
+        } else if (this.state.empMatch && (this.state.empMatch[0] && (this.state.rtMatch && this.state.rtMatch[0]))) {
+            await axios.post('/api/cadastro_process', cadProcess)
         }
+ */
     }
 
-    handleBlurName = () => {
+    handleBlurName() {
 
         if (this.state.empMatch && (this.state.empMatch[0] && (this.state.empMatch[0].nome === this.state.nome))) {
             this.setState({
@@ -272,7 +332,7 @@ class CadastroContainer extends React.Component {
         }
     }
 
-    handleBlurRtName = () => {
+    handleBlurRtName() {
 
         if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0].nomeRt === this.state.nomeRt)) {
             this.setState({
@@ -307,21 +367,22 @@ class CadastroContainer extends React.Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <div>
                 <CadTemplate
                     data={this.state}
                     config={this.props.cadastro}
-                    handleChange={(change) => this.handleChange(change)}
-                    handleBlurName={this.handleBlurName}
-                    handleBlurRtName={this.handleBlurRtName}
-                    handleSubmit={(submit) => this.handleSubmit(submit)}
-                    handleBlur={this.handleBlur}
-                    enableRtInput={e => this.enableRtInput(e)}
-                    enableProcessInput={e => this.enableProcessInput(e)}
-                    enableEmpInput={e => this.enableEmpInput(e)}
+                    handleChange={this.handleChange.bind(this)}
+                    handleBlurName={this.handleBlurName.bind(this)}
+                    handleBlurRtName={this.handleBlurRtName.bind(this)}
+                    handleSubmit={this.handleSubmit.bind(this)}
+                    handleBlur={this.handleBlur.bind(this)}
+                    enableRtInput={this.enableRtInput.bind(this)}
+                    enableProcessInput={this.enableProcessInput.bind(this)}
+                    enableEmpInput={this.enableEmpInput.bind(this)}
                     backToRt={this.backToRt.bind(this)}
-                    color={this.state.setColor}
+                    color={this.props.cadastro.setColor}
                 />
             </div>
         )

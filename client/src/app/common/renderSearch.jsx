@@ -41,7 +41,8 @@ const RenderSearch = (props) => {
                             backgroundColor: color,
                             filter: 'brightness(190%)',
                             padding: '10px 0px 7px 0px',
-                            borderRadius: '10px 10px 5px 5px'
+                            borderRadius: '10px 10px 5px 5px',
+                            justifyContent: 'space-between'
                         }}>
 
                         {

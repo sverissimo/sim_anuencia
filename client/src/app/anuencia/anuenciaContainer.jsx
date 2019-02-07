@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } from '../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData } from '../cadastro/cadActions'
 
 import AnuenciaTemplate from './anuenciaTemplate';
 import ProcessContainer from './processContainer'
@@ -25,26 +25,18 @@ class AnuenciaContainer extends Component {
         rtId: '',
         showFiles: false,
         filesCollection: '',
-
         analiseProc: {
             createdAt: '',
             pendencias: ''
         }
-
     }
 
     componentDidMount() {
-        !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-        !this.props.cadastro.filesCollection[0] ? this.props.loadFilesData() : void 0
-
-        setTimeout(() => {
-            let color = document.getElementById('setcolor').style.backgroundColor
-            this.props.setColor(color)
-        }, 50);
-
-    }
+        !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
+        !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
+        !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
+        !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0        
+ }
 
     handleSearch(e) {
 
@@ -118,7 +110,7 @@ class AnuenciaContainer extends Component {
 
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
-        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Aguardando Análise')
+        const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Análise')
         
         filteredList.sort(function (a, b) {
             let ca = new Date(a.updatedAt)
@@ -150,11 +142,11 @@ class AnuenciaContainer extends Component {
                         !this.state.selectedId ?
                             <AnuenciaTemplate
                                 data={this.state}
-                                redux={this.props.cadastro}
+                                redux={this.props.redux}
                                 search={e => this.handleSearch(e)}
                                 searchArray={dataMatch}
                                 selectProcess={this.handleSelect.bind(this)}                                
-                                setColor={this.props.cadastro.setColor}
+                                setColor={this.props.redux.setColor}
                                 clear={this.clearSearch.bind(this)}
                                 empDetails={this.empDetails.bind(this)}
                                 rtDetails={this.rtDetails.bind(this)}
@@ -164,7 +156,7 @@ class AnuenciaContainer extends Component {
                                 <div>
                                     <ProcessContainer
                                         data={this.state}
-                                        redux={this.props.cadastro}
+                                        redux={this.props.redux}
                                         clear={this.clearSearch.bind(this)}
                                         download={this.download.bind(this)}
                                         close={this.closeDetails.bind(this)}
@@ -175,11 +167,11 @@ class AnuenciaContainer extends Component {
                                 </div> :
                                 <AnuenciaTemplate
                                     data={this.state}
-                                    redux={this.props.cadastro}
+                                    redux={this.props.redux}
                                     search={e => this.handleSearch(e)}
                                     searchArray={dataMatch}
                                     selectProcess={this.handleSelect.bind(this)}                                    
-                                    setColor={this.props.cadastro.setColor}
+                                    setColor={this.props.redux.setColor}
                                     clear={this.clearSearch.bind(this)}
                                     empDetails={this.empDetails.bind(this)}
                                     rtDetails={this.rtDetails.bind(this)}
@@ -193,8 +185,8 @@ class AnuenciaContainer extends Component {
                         showEmp={this.state.showEmpDetails}
                         showRt={this.state.showRtDetails}
                         close={this.closeDetails.bind(this)}
-                        empCollection={this.props.cadastro.empCollection}
-                        rtCollection={this.props.cadastro.rtCollection}
+                        empCollection={this.props.redux.empCollection}
+                        rtCollection={this.props.redux.rtCollection}
                     />
                 </div>
 
@@ -203,8 +195,8 @@ class AnuenciaContainer extends Component {
                         selectedId={this.state.selectedId}
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
-                        processCollection={this.props.cadastro.processCollection}
-                        filesCollection={this.props.cadastro.filesCollection}
+                        processCollection={this.props.redux.processCollection}
+                        filesCollection={this.props.redux.filesCollection}
                         download={this.download.bind(this)}
                     />
                 </div>
@@ -216,12 +208,12 @@ class AnuenciaContainer extends Component {
 
 function mapStateToProps(state) {
     return {
-        cadastro: state.cadastro
+        redux: state.cadastro
     }
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnuenciaContainer);

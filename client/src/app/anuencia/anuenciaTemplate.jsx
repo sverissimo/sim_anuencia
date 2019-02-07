@@ -45,7 +45,7 @@ const AnuenciaTemplate = (props) => {
                     onSelect={selectProcess}
                     checked={data.checked}
                     color={setColor}
-                    fields={[2, 3, 4, 5, 6, 7, 9]}
+                    fields={[1, 2, 3, 4, 5, 6, 8]}
                     renderEmp={true}
                     renderRt={true}
                     empDetails={empDetails}

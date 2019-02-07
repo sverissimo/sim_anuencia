@@ -30,14 +30,9 @@ class solicitaDiretriz extends Component {
     }
 
     componentDidMount() {
-        !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-
-        setTimeout(() => {
-            let color = document.getElementById('setcolor').style.backgroundColor
-            this.props.setColor(color)
-        }, 50);
+        !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
+        !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
+        !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
 
         axios.get('/api/files')
     }
@@ -68,7 +63,7 @@ class solicitaDiretriz extends Component {
         setTimeout(() => {
             document.getElementById(this.state.checked).checked = 'checked';
         }, 20);
-
+        console.log(this.state)
     }
 
     fileUpload(e) {
@@ -113,7 +108,7 @@ class solicitaDiretriz extends Component {
                         fileSize: res.data.file[key][0].size
                     })
                 }
-            })        
+            })
         await axios.put('/api/editProcess', {
             id: this.state.selectedId,
             status: 'Aguardando Diretrizes Metropolitanas',
@@ -140,7 +135,7 @@ class solicitaDiretriz extends Component {
     render() {
 
         let { dataMatch } = this.state
-        const filteredList = this.props.cadastro.processCollection.filter(el => el.status === 'Processo cadastrado')
+        const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Processo cadastrado')
 
         let input = this.state.searchValue.toLowerCase()
         if (filteredList && (input && !this.state.checked)) {
@@ -155,12 +150,12 @@ class solicitaDiretriz extends Component {
             <div>
                 <SolicitaDiretrizTemplate
                     data={this.state}
-                    redux={this.props.cadastro}
+                    redux={this.props.redux}
                     search={e => this.handleSearch(e)}
                     searchArray={dataMatch}
                     selectProcess={this.handleSelect.bind(this)}
                     submitFiles={this.handleSubmit.bind(this)}
-                    setColor={this.props.cadastro.setColor}
+                    setColor={this.props.redux.setColor}
                     clear={this.clearSearch.bind(this)}
                     empDetails={this.empDetails.bind(this)}
                     rtDetails={this.rtDetails.bind(this)}
@@ -184,8 +179,8 @@ class solicitaDiretriz extends Component {
                     showEmp={this.state.showEmpDetails}
                     showRt={this.state.showRtDetails}
                     close={this.closeDetails.bind(this)}
-                    empCollection={this.props.cadastro.empCollection}
-                    rtCollection={this.props.cadastro.rtCollection}
+                    empCollection={this.props.redux.empCollection}
+                    rtCollection={this.props.redux.rtCollection}
                 />
             </div>
         );
@@ -194,7 +189,7 @@ class solicitaDiretriz extends Component {
 
 function mapStateToProps(state) {
     return {
-        cadastro: state.cadastro
+        redux: state.cadastro
     }
 }
 

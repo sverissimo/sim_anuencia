@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const processSchema = mongoose.Schema({
 
+    nProcess: {
+        type: String,
+        trim: true
+    },
     nomeEmpreendimento: {
         type: String,
         trim: true
@@ -17,11 +21,7 @@ const processSchema = mongoose.Schema({
     munEmpreendimento: {
         type: String,
         trim: true
-    },
-    nProcess: {
-        type: String,
-        trim: true
-    },
+    },    
     status: {
         type: String,
         trim: true
@@ -53,14 +53,11 @@ const processSchema = mongoose.Schema({
     rtId: {
         type: String,
         trim: true
-    },
-    fileObjects: [],    
+    },     
     processHistory: [],
 
 }, { timestamps: true });
 
-
-//solDirDocs, status, datacgt, datavist, dirmetfiles, solAPfiles, EmiteApfiles, anaises
 const processModel = mongoose.model('Processo', processSchema);
 
 module.exports = { processModel }

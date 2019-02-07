@@ -152,15 +152,15 @@ const CadTemplate = (props) => {
                                     onChange={props.handleChange}
                                     disabled={props.data.enableProcess}
                                 >
-                                    { modal }
+                                    {modal}
                                 </Input>
                             </div>
 
                             <div className="col s4" >
-                                <Input                                    
+                                <Input
                                     name='munEmpreendimento'
                                     type='select'
-                                    label='Município'                                                                       
+                                    label='Município'
                                     defaultValue={props.data.munEmpreendimento}
                                     onChange={props.handleChange}
                                     disabled={props.data.enableProcess}
@@ -172,7 +172,10 @@ const CadTemplate = (props) => {
                     </fieldset>
                     <div>
                         <BackButton onClick={props.backToRt} disabled={props.data.enableProcess} icon='arrow_back' />
-                        <input className="btn right" type="submit" disabled={props.data.enableProcess} value="Cadastrar processo" style={{ margin: '20px 0px' }} />
+                        <input
+                            type='submit' className="btn right" disabled={props.data.enableProcess}
+                            style={{ margin: '20px 0px' }} value='Cadastrar processo' />
+
                     </div>
                     <br />
                     <br />

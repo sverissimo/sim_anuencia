@@ -1,16 +1,9 @@
 export const configLabels = [
-
     {
-        name: 'fileObjects',
-        label: 'Arquivos',
+        name: 'processHistory',
+        label: 'Histórico do Processo',
         div: 'col s1'
-    },
-    
-    {
-        name: 'pendencias',
-        label: 'Pendências',
-        div: 'col s1'
-    },
+    },    
     {
         name: '_id',
         label: 'ID',
@@ -44,7 +37,7 @@ export const configLabels = [
     {
         name: 'status',
         label: 'Status do processo',
-        div: 'col s2'
+        div: 'col s1'
     },
     {
         name: 'tecnico',
@@ -95,8 +88,7 @@ export const configLabels = [
         name: '__v',
         label: 'version',
         div: 'col s1'
-    },
-    
+    },    
 ]
 
 export const solDirConfig = [
