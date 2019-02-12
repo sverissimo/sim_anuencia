@@ -175,15 +175,15 @@ export const configRtLabels = [
         name: 'nomeRt',
         label: 'Nome',
         div: 'col s1'
+    },    
+    {
+        name: 'emailRt',
+        label: 'E-mail',
+        div: 'col s2'
     },
     {
         name: 'phoneRt',
         label: 'Telefone',
-        div: 'col s2'
-    },
-    {
-        name: 'emailRt',
-        label: 'E-mail',
         div: 'col s2'
     },
 ]

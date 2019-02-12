@@ -16,7 +16,7 @@ const ShowEmpRow = (props) => {
         searchMatch = emps
         selectedFields = empFields
         headerLabels = configEmpLabels
-        divConfig = ['col s2', 'col s2', 'col s2', 'col s2', 'col s2']
+        divConfig = ['col s2', 'col s2', 'col s2', 'col s1', 'col s1']
     } else if ((rts && rts[0]) && data.edit === false) {
         searchMatch = rts
         selectedFields = rtFields

@@ -175,14 +175,14 @@ class CadastroContainer extends React.Component {
         const cadEmp = {
             nome: this.state.nome,
             cpf: this.state.cpf,
-            phone: this.state.phone,
-            cep: this.state.cep,
-            numero: this.state.numero,
-            complemento: this.state.complemento,
-            email: this.state.email,
             rua: this.state.rua,
-            bairro: this.state.bairro,
+            bairro: this.state.bairro,            
+            cep: this.state.cep,
             cidade: this.state.cidade,
+            phone: this.state.phone,
+            email: this.state.email,
+            numero: this.state.numero,
+            complemento: this.state.complemento,            
             uf: this.state.uf,
         }
 

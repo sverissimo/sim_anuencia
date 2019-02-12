@@ -235,7 +235,7 @@ class ShowEmpContainer extends Component {
                                 emps={emps}
                                 rts={rts}
                                 process={process}
-                                empFields={[1, 3, 6, 7, 8]}
+                                empFields={[1, 2, 3, 6, 7, 8]}
                                 rtFields={[1, 2, 3]}
                                 showRt={false}
                                 fields={[2, 3, 4, 5, 6, 7, 8, 16]}
