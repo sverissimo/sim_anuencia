@@ -112,7 +112,7 @@ export const municipios = {
         name: 'munEmpreendimento',
         label: 'Município:',
         options: ['', 'Baldim', 'Belo Horizonte', 'Betim', 'Brumadinho', 'Caeté', 'Capim Branco', 'Confins',
-            'Contagem', 'Esmeraldas', 'Florestal', 'Ibirité', 'Igarapé', 'Itaguara', 'Itatiaiuçu', 'Jabuticatubas',
+            'Contagem', 'Esmeraldas', 'Florestal', 'Ibirité', 'Igarapé', 'Itaguara', 'Itatiaiuçu', 'Jaboticatubas',
             'Juatuba', 'Lagoa Santa', 'Mário Campos', 'Mateus Leme', 'Matozinhos', 'Nova Lima', 'Nova União',
             'Pedro Leopoldo', 'Raposos', 'Ribeirão das Neves', 'Rio Acima', 'Rio Manso', 'Sabará', 'Santa Luzia',
             'São Joaquim de Bicas', 'São José da Lapa', 'Sarzedo', 'Taquaraçu de Minas', 'Vespasiano']

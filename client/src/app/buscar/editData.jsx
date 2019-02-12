@@ -1,4 +1,14 @@
 import React from 'react';
+import { Input } from 'react-materialize'
+import { modalidade, municipios } from '../config/formConfig'
+
+let selector = municipios.munEmpreendimento.options.map((opt, i) =>
+    <option key={i} value={opt}>{opt}</option>
+)
+
+let modal = modalidade.options.map((opt, i) =>
+    <option key={i} value={opt}>{opt}</option>
+)
 
 const EditData = (props) => {
 
@@ -24,21 +34,47 @@ const EditData = (props) => {
             if (props.data.select === 'emp' && itemArray.length > 14) filterArray = removeLast(itemArray, 3)
             if (props.data.select === 'rt' && itemArray.length > 5) filterArray = removeLast(itemArray, 3)
             if (props.data.select === 'rt' && itemArray.length === 5) filterArray = removeLast(itemArray, 1)
-            if (props.data.select === 'process') filterArray = removeLast(itemArray.slice(2), 8)
+            if (props.data.select === 'process') filterArray = removeLast(itemArray.slice(2), 9)
 
             return filterArray.map((item, i) =>
 
-                item.key !== '_id' ?
-                <div key={i} className="input-field col s3" >
-                    <label className="active">{item.key.replace(/\w/, c => c.toUpperCase())}</label>
-                    <input
-                        type="text"
-                        className="active"
-                        name={item.key}
-                        value={props.data.item[item.key]}
-                        onChange={props.change} />
-                </div>
-                : void 0
+                item.key === '_id' ?
+                    void 0
+                    : item.key === 'modalidade' ?
+                    <div className="col s2" >
+                        <Input
+                            name='modalidade'
+                            type='select'
+                            label='Modalidade'
+                            defaultValue={props.data.item[item.key]}
+                            onChange={props.change}
+                        >
+                            {modal}
+                        </Input>
+                    </div>
+                    : item.key === 'munEmpreendimento' ?
+                        <div className="col s4" >
+                            <Input
+                                name='munEmpreendimento'
+                                type='select'
+                                label='Município'
+                                defaultValue={props.data.item[item.key]}
+                                onChange={props.change}
+                            >
+                                {selector}
+                            </Input>
+                        </div>
+                        :
+                        <div key={i} className="input-field col s3" >
+                            <label className="active">{item.key.replace(/\w/, c => c.toUpperCase())}</label>
+                            <input
+                                type="text"
+                                className="active"
+                                name={item.key}
+                                value={props.data.item[item.key]}
+                                onChange={props.change} />
+                        </div>
+
             )
         } else {
             return null

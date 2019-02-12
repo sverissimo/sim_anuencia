@@ -36,7 +36,7 @@ class CadastroContainer extends React.Component {
         enableRt: 'disabled',
         enableProcess: 'disabled',
         empMatch: null,
-        rtMatch: null,      
+        rtMatch: null,
     }
 
     componentDidMount() {
@@ -161,9 +161,12 @@ class CadastroContainer extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault()
+        
+        const { nome, nomeRt, nomeEmpreendimento, modalidade, munEmpreendimento, empMatch, 
+            rtMatch, empId, rtId } = this.state
 
         let procStatus
-        if (this.state.modalidade === 'Loteamento') {
+        if (modalidade === 'Loteamento') {
             procStatus = 'Processo cadastrado'
         } else {
             procStatus = 'Aguardando documentação'
@@ -208,38 +211,45 @@ class CadastroContainer extends React.Component {
                 }
             ],
         }
-        const { empMatch, rtMatch, empId, rtId } = this.state
-
-        if (empMatch && rtMatch) {
-            cadProcess.empId = empId
-            cadProcess.rtId = rtId
-            axios.post('/api/cadastro_process', cadProcess)
-                .then(res => window.location.reload())
-        } else if (empMatch && !rtMatch) {
-            cadProcess.empId = empId
-            axios.post('/api/cadastro_rt', cadRt)
-                .then(res => {
-                    cadProcess.rtId = res.data.RT_id
-                    axios.post('/api/cadastro_process', cadProcess)
-                }).then(res => window.location.reload())
-        } else if (!empMatch && rtMatch) {
-            cadProcess.rtId = rtId
-            axios.post('/api/cadastro_emp', cadEmp)
-                .then(res => {
-                    cadProcess.empId = res.data.Cadastro_id
-                    axios.post('/api/cadastro_process', cadProcess)
-                }).then(res => window.location.reload())
-        } else if (!empMatch && !rtMatch) {
-            axios.post('/api/cadastro_emp', cadEmp)
-                .then(res => {
-                    cadProcess.empId = res.data.Cadastro_id
-                    axios.post('/api/cadastro_rt', cadRt)
-                        .then(res => {
-                            cadProcess.rtId = res.data.RT_id
-                            axios.post('/api/cadastro_process', cadProcess)
-                        }).then(res => window.location.reload())
-                })
+        
+        if (!nome || !nomeRt || !nomeEmpreendimento) {            
+            alert('Favor preencher os dados do empreendedor, RT e empreendimento.')
+        } else if (!modalidade || !munEmpreendimento) {
+            alert('Favor preencher a modalidade e o município do empreendimento.')
+        } else if (nome && (nomeRt && nomeEmpreendimento && (modalidade && munEmpreendimento))) {
+            if (empMatch && rtMatch) {
+                cadProcess.empId = empId
+                cadProcess.rtId = rtId
+                axios.post('/api/cadastro_process', cadProcess)
+                    .then(res => window.location.reload())
+            } else if (empMatch && !rtMatch) {
+                cadProcess.empId = empId
+                axios.post('/api/cadastro_rt', cadRt)
+                    .then(res => {
+                        cadProcess.rtId = res.data.RT_id
+                        axios.post('/api/cadastro_process', cadProcess)
+                    }).then(res => window.location.reload())
+            } else if (!empMatch && rtMatch) {
+                cadProcess.rtId = rtId
+                axios.post('/api/cadastro_emp', cadEmp)
+                    .then(res => {
+                        cadProcess.empId = res.data.Cadastro_id
+                        axios.post('/api/cadastro_process', cadProcess)
+                    }).then(res => window.location.reload())
+            } else if (!empMatch && !rtMatch) {
+                axios.post('/api/cadastro_emp', cadEmp)
+                    .then(res => {
+                        cadProcess.empId = res.data.Cadastro_id
+                        axios.post('/api/cadastro_rt', cadRt)
+                            .then(res => {
+                                cadProcess.rtId = res.data.RT_id
+                                axios.post('/api/cadastro_process', cadProcess)
+                            }).then(res => window.location.reload())
+                    })
+            }
         }
+
+
 
         /*  if (!this.state.rtMatch) {
  
@@ -367,7 +377,7 @@ class CadastroContainer extends React.Component {
     }
 
     render() {
-        console.log(this.props)
+
         return (
             <div>
                 <CadTemplate
