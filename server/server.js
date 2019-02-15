@@ -37,6 +37,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuen
     }
 });
 
+app.use(express.static('client/build'))
 
 app.use(methodOverride('_method'));
 
@@ -359,6 +360,12 @@ app.post('/api/sendHtml', (req, res) => {
     res.json(req.body.data)
 
 })
+
+if(process.env.NODE_ENV === 'production') {
+    app.get('/*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'))
+    })
+}
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {
