@@ -31,7 +31,7 @@ app.use(function (req, res, next) { //allow cross origin requests
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-mongoose.connect('mongodb://localhost:27017/sim_anuencia_db', (err) => {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db', (err) => {
     if (err) {
         console.log(err);
     }
