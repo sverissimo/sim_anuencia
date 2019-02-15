@@ -75,6 +75,8 @@ class AnuenciaForm extends Component {
 
     render() {
         const { empreend, rt, process } = this.props
+        const enableAnuencia = ()=> this.state.mostrarOficio ? false : 'disabled' 
+        
         return (
             <div style={{ height: '100%' }}>
                 <ReactQuill
@@ -100,8 +102,8 @@ class AnuenciaForm extends Component {
                     rt={rt}
                 />
                 
-                <button className='btn right' onClick={this.enviaPendencias.bind(this)}> Enviar </button>
-                <button style={{marginRight: '10px'}} className='btn right' onClick={this.savePdf.bind(this)}> Pré-visualizar </button>                
+                <button className='btn right' onClick={this.enviaPendencias.bind(this)} disabled={enableAnuencia()}> Enviar </button>
+                <button style={{marginRight: '10px'}} className='btn right' onClick={this.savePdf.bind(this)} disabled={!enableAnuencia()}> Pré-visualizar </button>                
             </div>
         )
     }

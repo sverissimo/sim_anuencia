@@ -248,60 +248,6 @@ class CadastroContainer extends React.Component {
                     })
             }
         }
-
-
-
-        /*  if (!this.state.rtMatch) {
- 
-             Object.assign(cadObj, { rt: cadRt })
-         } else {
-             Object.assign(cadObj, { rtId: this.state.rtId })
-         }
-         Object.assign(cadObj, { process: cadProcess })
-         console.log(cadObj)
- 
-         axios.post('/api/cadastro_emp', cadObj.emp)
-             .then(res => console.log(res.data)) */
-
-
-        /* if (!this.state.empMatch && !this.state.rtMatch) {
-            axios.post('/api/cadastro_emp/', cadEmp)
-                .then(res => {
-                    cadProcess.empId = res.data.Cadastro_id
-                })
-                .then(axios.post('/api/cadastro_rt', cadRt))
-                .then(res => cadProcess.rtId = res.data.RT_id)
-                .then(axios.post('/api/cadastro_process', cadProcess))
-        } else if (!this.state.empMatch) {
-            axios.post('/api/cadastro_emp', cadEmp)
-                .then(res => cadProcess.empId = res.data.Cadastro_id)
-                .then(axios.post('/api/cadastro_process', cadProcess))
-        } else if (!this.state.rtMatch) {
-            axios.post('/api/cadastro_rt', cadRt)
-                .then(res => cadProcess.rtId = res.data.RT_id)
-                .then(axios.post('/api/cadastro_process', cadProcess))
-        } else {
-            axios.post('/api/cadastro_process', cadProcess)
-        } */
-
-        /* .then(res => axios.post('/api/cadastro_rt', cadRt))
-        .then(res => cadProcess.rtId = res.data.RT_id)
-        .then(res => axios.post('/api/cadastro_process', cadProcess)) */
-
-        /*  else if (!this.state.empMatch && (!this.state.empMatch[0] && (this.state.rtMatch && this.state.rtMatch[0]))) {
-            await axios.post(('/api/cadastro_emp/'), cadEmp)
-                .then(res => cadProcess.empId = res.data.Cadastro_id)
-                .then(res => axios.post('/api/cadastro_process', cadProcess))
- 
-        } else if (this.state.empMatch && (this.state.empMatch[0] && (!this.state.rtMatch && !this.state.rtMatch[0]))) {
-            await axios.post('/api/cadastro_rt', cadRt)
-                .then(res => cadProcess.rtId = res.data.RT_id)
-                .then(res => axios.post('/api/cadastro_process', cadProcess))
- 
-        } else if (this.state.empMatch && (this.state.empMatch[0] && (this.state.rtMatch && this.state.rtMatch[0]))) {
-            await axios.post('/api/cadastro_process', cadProcess)
-        }
- */
     }
 
     handleBlurName() {
