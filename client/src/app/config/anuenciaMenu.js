@@ -1,7 +1,7 @@
 const anuenciaMenu = [
     {
         name: 'FileExplorer',
-        img: '/images/search_documents3.png',
+        img: '/images/search_documents4.png',
         label: 'Ver arquivos',
         divStyle: { minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '' },      
     },

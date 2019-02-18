@@ -15,7 +15,7 @@ const SolicitaDiretriz = (props) => {
         <div className="container" style={{width: '90%'}} >
             <Title
                 title='Solicitar Diretrizes Metropolitanas'
-                subtitle='Para solicitar diretrizes metropolitanas, selecione o processo na lista abaixo e 
+                subtitle='Para solicitar diretrizes metropolitanas, selecione o processo na lista abaixo, 
                 faça o upload dos documentos necessários em pdf e clique em "Solicitar Diretrizes".'
                 color={ setColor}
             />

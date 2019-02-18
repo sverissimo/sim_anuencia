@@ -100,18 +100,18 @@ class CadastroContainer extends React.Component {
 
     handleBlur(event) {
         event.preventDefault()
-        if (event.target.name === 'cep' && this.state.empMatch === '') {
-
-            axios.get(`http://apps.widenet.com.br/busca-cep/api/cep.json?code=${this.state.cep}`
-            ).then(res => {
-                this.setState({
-                    ...this.state,
-                    rua: res.data.address,
-                    bairro: res.data.district,
-                    cidade: res.data.city,
-                    uf: res.data.state
+        if (event.target.name === 'cep' && !this.state.empMatch) {
+            let getCep = this.state.cep.replace('.', '')
+            axios.get(`https://api.postmon.com.br/v1/cep/${getCep}`)
+                .then(res => {
+                    this.setState({
+                        ...this.state,
+                        rua: res.data.logradouro,
+                        bairro: res.data.bairro,
+                        cidade: res.data.cidade,
+                        uf: res.data.estado
+                    })
                 })
-            })
 
         } else {
             void 0
@@ -161,8 +161,8 @@ class CadastroContainer extends React.Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-        
-        const { nome, nomeRt, nomeEmpreendimento, modalidade, munEmpreendimento, empMatch, 
+
+        const { nome, nomeRt, nomeEmpreendimento, modalidade, munEmpreendimento, empMatch,
             rtMatch, empId, rtId } = this.state
 
         let procStatus
@@ -176,13 +176,13 @@ class CadastroContainer extends React.Component {
             nome: this.state.nome,
             cpf: this.state.cpf,
             rua: this.state.rua,
-            bairro: this.state.bairro,            
+            bairro: this.state.bairro,
             cep: this.state.cep,
             cidade: this.state.cidade,
             phone: this.state.phone,
             email: this.state.email,
             numero: this.state.numero,
-            complemento: this.state.complemento,            
+            complemento: this.state.complemento,
             uf: this.state.uf,
         }
 
@@ -211,8 +211,8 @@ class CadastroContainer extends React.Component {
                 }
             ],
         }
-        
-        if (!nome || !nomeRt || !nomeEmpreendimento) {            
+
+        if (!nome || !nomeRt || !nomeEmpreendimento) {
             alert('Favor preencher os dados do empreendedor, RT e empreendimento.')
         } else if (!modalidade || !munEmpreendimento) {
             alert('Favor preencher a modalidade e o município do empreendimento.')

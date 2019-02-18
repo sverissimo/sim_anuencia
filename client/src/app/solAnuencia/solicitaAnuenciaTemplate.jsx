@@ -16,8 +16,8 @@ const SolAnuenciaTemplate = (props) => {
         <div className="container" style={{width: '90%'}}>
             <Title
                 title='Solicitar Anuência Prévia'
-                subtitle='Para solicitar anuência prévia, selecione o processo e faça o upload dos documentos 
-                necessários em pdf e clique em "Solicitar Diretrizes".'
+                subtitle='Para solicitar anuência prévia, selecione o processo, faça o upload dos documentos 
+                e projetos e clique em "Solicitar Anuência".'
                 color={ setColor}
             />
             <div className="row">

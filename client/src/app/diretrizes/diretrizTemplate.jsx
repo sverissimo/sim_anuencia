@@ -15,8 +15,8 @@ const Diretriz = (props) => {
         <div className="container" style={{width: '90%'}} >
             <Title
                 title='Diretrizes Metropolitanas'
-                subtitle='Para a emissão de diretrizes metropoilotanas, agendamento a CGT e a vistoria, 
-                faça o upload da diretriz em pdf e clique em "Emitir Diretrizes".'
+                subtitle='Para a emissão de diretrizes metropolitanas, selecione o processo, 
+                verifique os requisitos, faça o upload da diretriz em pdf e clique em "Emitir Diretrizes".'
                 color={ setColor}
             />
             <div className="row">
