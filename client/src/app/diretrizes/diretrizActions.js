@@ -3,13 +3,13 @@ import { loadProcessData } from './../cadastro/cadActions';
 
 export function setDate(date, itemId, event) {
 
-    return dispatch => {                
-        axios.put(('/api/editProcess/'), {
+    return async dispatch => {
+        await axios.put(('/api/editProcess/'), {
             _id: itemId,
-            item: {                
+            item: {
                 [event]: date
             }
         })
-            .then(dispatch(loadProcessData()))
+        dispatch(loadProcessData())
     }
 };

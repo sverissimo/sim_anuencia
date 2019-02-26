@@ -97,7 +97,7 @@ const CadTemplate = (props) => {
                 <form onSubmit={props.handleSubmit}>
                     <fieldset className="input-field"><legend className="input-field"><strong> 1- Interessado </strong></legend>
                         <div className="row">
-                            <div className="input-field col s4">
+                            <div className="input-field col s12 m6 l4">
                                 <input
                                     type="text"
                                     list="empreendList"
@@ -119,7 +119,7 @@ const CadTemplate = (props) => {
                     <ConfirmButton enableInput={props.enableRtInput} enable={props.data.enableEmp} />
                     <fieldset className="input-field"><legend className="input-field"><strong> 2 - Responsável Técnico </strong></legend>
                         <div className="row">
-                            <div className="input-field col s4">
+                            <div className="input-field col s12 m6 l4">
                                 <input
                                     type="text"
                                     list="rtList"
@@ -143,8 +143,8 @@ const CadTemplate = (props) => {
                     <fieldset className="input-field"><legend className="input-field"><strong> 3 - Dados do Empreendimento </strong></legend>
                         <div className="row" >
                             {renderFields(processForm, props.data.enableProcess)}
-                            <div className="col s2" >
-                                <Input
+                            <div className="col s12 m4 l2" >
+                                <Input                                    
                                     name='modalidade'
                                     type='select'
                                     label='Modalidade'
@@ -156,7 +156,7 @@ const CadTemplate = (props) => {
                                 </Input>
                             </div>
 
-                            <div className="col s4" >
+                            <div className="col s12 m4 l3" >
                                 <Input
                                     name='munEmpreendimento'
                                     type='select'

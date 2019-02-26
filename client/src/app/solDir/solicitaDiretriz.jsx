@@ -38,7 +38,6 @@ class solicitaDiretriz extends Component {
     }
 
     handleSearch(e) {
-
         this.setState({ ...this.state, searchValue: e.target.value, checked: false });
         let clearRadio = document.getElementsByName('group1')
         clearRadio.forEach(radio => radio.checked = false)
@@ -53,20 +52,16 @@ class solicitaDiretriz extends Component {
         })
     }
 
-    handleSelect(e) {
-
-        this.setState({
+    async handleSelect(e) {
+        await this.setState({
             ...this.state,
             selectedId: e.target.value.replace(/,/g, ''),
             checked: e.currentTarget.id
         })
-        setTimeout(() => {
-            document.getElementById(this.state.checked).checked = 'checked';
-        }, 20);
-        console.log(this.state)
+        document.getElementById(this.state.checked).checked = 'checked';
     }
 
-    fileUpload(e) {
+    async fileUpload(e) {
 
         let formData = new FormData()
         formData.append('processId', this.state.selectedId)
@@ -74,22 +69,16 @@ class solicitaDiretriz extends Component {
             ...this.state, [e.target.name]: e.target.files[0]
         })
         let k = []
-        solDirConfig.map(item => k.push(item.nameInput))
+        await solDirConfig.map(item => k.push(item.nameInput))
 
-
-        setTimeout(() => {
-            k.forEach(inputName => {
-                for (let keys in this.state) {
-                    keys.match(inputName) ?
-                        (formData.append(inputName, this.state[keys]))
-                        : void 0
-                }
-            })
-        }, 100);
-
-        setTimeout(() => {
-            this.setState({ form: formData })
-        }, 200);
+        await k.forEach(inputName => {
+            for (let keys in this.state) {
+                keys.match(inputName) ?
+                    (formData.append(inputName, this.state[keys]))
+                    : void 0
+            }
+        })
+        this.setState({ form: formData })
     }
 
     async handleSubmit(e) {
@@ -124,6 +113,7 @@ class solicitaDiretriz extends Component {
     empDetails(e) {
         this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
     }
+
     rtDetails(e) {
         this.setState({ showEmpDetails: false, showRtDetails: true, rtId: e.target.id })
     }
@@ -151,7 +141,7 @@ class solicitaDiretriz extends Component {
                 <SolicitaDiretrizTemplate
                     data={this.state}
                     redux={this.props.redux}
-                    search={e => this.handleSearch(e)}
+                    search={this.handleSearch.bind(this)}
                     searchArray={dataMatch}
                     selectProcess={this.handleSelect.bind(this)}
                     submitFiles={this.handleSubmit.bind(this)}
@@ -183,7 +173,7 @@ class solicitaDiretriz extends Component {
                     rtCollection={this.props.redux.rtCollection}
                 />
             </div>
-        );
+        )
     }
 }
 

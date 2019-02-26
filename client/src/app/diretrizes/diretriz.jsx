@@ -68,7 +68,7 @@ class Diretriz extends Component {
     }
 
     clearSearch(e) {
-        let dirStatus = this.state.dirStatus
+        let { dirStatus }= this.state
         dirStatus.cgtOk = false
         dirStatus.vistoriaOk = false
         dirStatus.dirMunOk = false
@@ -82,34 +82,24 @@ class Diretriz extends Component {
         })
     }
 
-    handleSelect(e) {
-
-        this.setState({
+    async handleSelect(e) {
+        await this.setState({
             ...this.state,
             selectedId: e.target.value.replace(/,/g, ''),
             checked: e.currentTarget.id
         })
-        setTimeout(() => {
-            document.getElementById(this.state.checked).checked = 'checked';
-        }, 20);
-
+        document.getElementById(this.state.checked).checked = 'checked';
     }
 
-    fileUpload(e) {
+    async fileUpload(e) {
 
         let formData = new FormData()
         formData.append('processId', this.state.selectedId)
-        this.setState({
+        await this.setState({
             ...this.state, [e.target.name]: e.target.files[0]
         })
-
-        setTimeout(() => {
-            formData.append('diretrizFile', this.state.diretrizFile)
-        }, 100);
-
-        setTimeout(() => {
-            this.setState({ form: formData })
-        }, 200);
+        await formData.append('diretrizFile', this.state.diretrizFile)
+        this.setState({ form: formData })
     }
 
     async handleSubmit(e) {
@@ -151,6 +141,7 @@ class Diretriz extends Component {
     empDetails(e) {
         this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
     }
+    
     rtDetails(e) {
         this.setState({ showEmpDetails: false, showRtDetails: true, rtId: e.target.id })
     }
@@ -178,7 +169,6 @@ class Diretriz extends Component {
         let { cgtOk, vistoriaOk, daeOk, dirMunOk } = dirStatus
         cgtOk === true && (vistoriaOk === true && (dirMunOk === true && daeOk === true)) ?
             this.setState({ anexaDiretriz: true }) : this.setState({ anexaDiretriz: false })
-
     }
 
     handleChange(e) {
@@ -228,10 +218,10 @@ class Diretriz extends Component {
     }
 
     setDate = d => {
-        this.state.cgtCalendar ? this.setState({ m: d._d, cgt: d._d })
+        this.state.cgtCalendar ?
+            this.setState({ m: d._d, cgt: d._d })
             :
             this.setState({ m: d._d, vistoria: d._d })
-
     }
 
     renderInput = (props, openCalendar, closeCalendar) => {
@@ -242,7 +232,6 @@ class Diretriz extends Component {
         props.className = 'center-align'
         return (
             <div>
-
                 <i className="material-icons right" style={{ cursor: 'pointer', color: 'red' }} onClick={closeCalendar}>close</i>
                 <i className="material-icons" style={{ cursor: 'pointer', color: 'gold' }} onClick={clear}>backspace</i>
                 <input className="red" {...props} />

@@ -6,8 +6,7 @@ import showDate from './showDate'
 const labels = (fieldName) => {
 
     let allFilesArray = []
-    allFilesArray = allFilesLabels()
-    console.log(allFilesArray)
+    allFilesArray = allFilesLabels()    
     let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
     return label[0].label
 }

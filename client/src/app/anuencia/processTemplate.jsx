@@ -58,8 +58,9 @@ const ProcessTemplate = (props) => {
             <div>
                 <div className="row" align='center' style={{
                     border: '1px solid #ddd',
-                    backgroundColor: 'aliceblue',
-                    fontSize: '1.3rem',
+                    borderRadius: '8px',
+                    backgroundColor: '#efefef',
+                    fontSize: '1.2rem',
                     fontFamily: 'calibri',
                     marginTop: '15px',
 

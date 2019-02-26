@@ -39,13 +39,10 @@ class AnuenciaContainer extends Component {
  }
 
     handleSearch(e) {
-
         this.setState({ ...this.state, searchValue: e.target.value, checked: false });
-
     }
 
     clearSearch(e) {
-
         this.setState({
             ...this.state, checked: null,
             selectedId: null, searchValue: '', showFiles: null
@@ -53,7 +50,6 @@ class AnuenciaContainer extends Component {
     }
 
     handleSelect(e) {
-
         this.setState({
             ...this.state,
             selectedId: e.target.value.replace(/,/g, ''),
@@ -64,6 +60,7 @@ class AnuenciaContainer extends Component {
     empDetails(e) {
         this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
     }
+
     rtDetails(e) {
         this.setState({ showEmpDetails: false, showRtDetails: true, rtId: e.target.id })
     }
@@ -90,8 +87,7 @@ class AnuenciaContainer extends Component {
         analiseProc.createdAt = new Date()
         this.setState({
             analiseProc: analiseProc
-        })
-        console.log(this.state.analiseProc)
+        })        
     }
 
     enviaPendencias(e) {

@@ -52,14 +52,9 @@ class ShowEmpContainer extends Component {
         }
     }
 
-    handleSearchBar = (e) => {
-        this.setState({
-            ...this.state, search: e.target.value,
-        })
-
-        setTimeout(() => {
-            this.props.changeHandler(this.state.search)
-        }, 30);
+    async handleSearchBar (e) {
+        await this.setState({ search: e.target.value })
+        this.props.changeHandler(this.state.search)
     }
 
     handleSelect = (e) => {
@@ -128,6 +123,7 @@ class ShowEmpContainer extends Component {
     empDetails(e) {
         this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
     }
+
     rtDetails(e) {
         this.setState({ showEmpDetails: false, showRtDetails: true, rtId: e.target.id })
     }
@@ -139,7 +135,6 @@ class ShowEmpContainer extends Component {
     showInfo(e) {
         let proc = this.props.cadastro.processCollection.filter(el => el._id.match(e.target.id))
         this.setState({ showInfo: true, process: proc[0] })
-        
     }
 
     showLog(e) {
@@ -148,7 +143,6 @@ class ShowEmpContainer extends Component {
 
     hideLog() {
         this.setState({ logIndex: '', showInfo: false })
-        console.log(this.state)
     }
 
     clearLog() {
@@ -167,24 +161,25 @@ class ShowEmpContainer extends Component {
         let emps = []
         let rts = []
         let process = []
-        let searchString = this.state.search.trim().toLowerCase();
+        let { search, select } = this.state
+        let searchString = search.trim().toLowerCase();
 
-        if (this.state.search && this.state.select === 'emp') {
-            emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString))
-        } else if (!this.state.search && this.state.select === 'emp') {
-            emps = this.props.cadastro.empCollection.slice(0, 10)
+        if (search && (search.length > 2 && select === 'emp')) {
+            emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString)).slice(0, 20)
+        } else if ((!search || search.length <= 2) && select === 'emp') {
+            emps = this.props.cadastro.empCollection.slice(0, 30)
         }
 
-        if (this.state.search && this.state.select === 'rt') {
-            rts = this.props.cadastro.rtCollection.filter((el) => el.nomeRt.toLowerCase().match(searchString))
-        } else if (!this.state.search && this.state.select === 'rt') {
-            rts = this.props.cadastro.rtCollection.slice(0, 300)
+        if (search && (search.length > 2 && select === 'rt')) {
+            rts = this.props.cadastro.rtCollection.filter((el) => el.nomeRt.toLowerCase().match(searchString)).slice(0, 20)
+        } else if ((!search || search.length <= 2) && select === 'rt') {
+            rts = this.props.cadastro.rtCollection.slice(0, 30)
         }
 
-        if (this.state.search && this.state.select === 'process') {
-            process = this.props.cadastro.processCollection.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString))
-        } else if (!this.state.search && this.state.select === 'process') {
-            process = this.props.cadastro.processCollection
+        if (search && (search.length > 2 && select === 'process')) {
+            process = this.props.cadastro.processCollection.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString)).slice(0, 20)
+        } else if ((!search || search.length <= 2) && select === 'process') {
+            process = this.props.cadastro.processCollection.slice(0, 30)
 
             process.sort(function (a, b) {
                 let ca = new Date(a.updatedAt)
@@ -205,8 +200,8 @@ class ShowEmpContainer extends Component {
         return (
             <div className="container" style={{ width: '90%' }} >
                 <BuscaTemplate
-                    search={this.state.search}
-                    select={this.state.select}
+                    search={search}
+                    select={select}
                     edit={this.state.edit}
                     redux={this.props.cadastro}
                     onSelect={this.handleSelect}
@@ -217,45 +212,45 @@ class ShowEmpContainer extends Component {
                     this.state.showInfo ?
                         <div>
                             <ProcessInfo
-                            process={this.state.process}                                                      
-                            logDetails={this.state.logDetails}                                       
-                            index={this.state.logIndex}
-                            showLog={this.showLog.bind(this)}
-                            hideLog={this.hideLog.bind(this)}
-                            clearLog={this.clearLog.bind(this)}
-                            download={this.download.bind(this)}
-                            soloComponent={true}
-                            />
-                        </div>
-                        : null }
-                        <div>
-                            <BuscaRow
-                                data={this.state}
-                                redux={this.props.cadastro}
-                                emps={emps}
-                                rts={rts}
-                                process={process}
-                                empFields={[1, 2, 3, 6, 7, 8]}
-                                rtFields={[1, 2, 3]}
-                                showRt={false}
-                                fields={[2, 3, 4, 5, 6, 7, 8, 16]}
-                                divConfig={['col s1', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
-                                edit={this.enableEdit.bind(this)}
-                                deleteOne={this.deleteHandler.bind(this)}
-                                color={this.props.cadastro.setColor}
-                                empDetails={this.empDetails.bind(this)}
-                                rtDetails={this.rtDetails.bind(this)}
-                                showInfo={this.showInfo.bind(this)}
+                                process={this.state.process}
+                                logDetails={this.state.logDetails}
+                                index={this.state.logIndex}
+                                showLog={this.showLog.bind(this)}
+                                hideLog={this.hideLog.bind(this)}
                                 clearLog={this.clearLog.bind(this)}
+                                download={this.download.bind(this)}
+                                soloComponent={true}
                             />
-                            <EditData
-                                redux={this.props.cadastro}
-                                data={this.state}
-                                disableEdit={this.disableEdit.bind(this)}
-                                change={e => this.editValue(e)}
-                                submit={e => this.saveEdit(e)} />
                         </div>
-                
+                        : null}
+                <div>
+                    <BuscaRow
+                        data={this.state}
+                        redux={this.props.cadastro}
+                        emps={emps}
+                        rts={rts}
+                        process={process}
+                        empFields={[1, 2, 3, 6, 7, 8]}
+                        rtFields={[1, 2, 3]}
+                        showRt={false}
+                        fields={[2, 3, 4, 5, 6, 7, 8, 16]}
+                        divConfig={['col s1', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
+                        edit={this.enableEdit.bind(this)}
+                        deleteOne={this.deleteHandler.bind(this)}
+                        color={this.props.cadastro.setColor}
+                        empDetails={this.empDetails.bind(this)}
+                        rtDetails={this.rtDetails.bind(this)}
+                        showInfo={this.showInfo.bind(this)}
+                        clearLog={this.clearLog.bind(this)}
+                    />
+                    <EditData
+                        redux={this.props.cadastro}
+                        data={this.state}
+                        disableEdit={this.disableEdit.bind(this)}
+                        change={e => this.editValue(e)}
+                        submit={e => this.saveEdit(e)} />
+                </div>
+
 
                 <div>
                     {this.state.edit ? <BackButton
@@ -263,7 +258,7 @@ class ShowEmpContainer extends Component {
                     /> : null}
 
                     <UpdateButton
-                        form={`${this.state.select}`}
+                        form={`${select}`}
                         display={this.state.edit}
                     />
                     <ShowDetails

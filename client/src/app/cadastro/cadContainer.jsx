@@ -46,25 +46,16 @@ class CadastroContainer extends React.Component {
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
     }
 
-    enableRtInput(e) {
-
-        this.setState({
+    async enableRtInput(e) {
+        await this.setState({
             enableEmp: 'disabled',
             enableRt: '',
             enableProcess: 'disabled',
         })
-        setTimeout(() => {
-            document.getElementById("rtInput").focus()
-        }, 50);
-
+        document.getElementById("rtInput").focus()
     }
-    enableProcessInput() {
 
-        this.setState({
-            enableProcess: '',
-            enableEmp: 'disabled',
-            enableRt: 'disabled'
-        })
+    async enableProcessInput() {
 
         const collection = this.props.cadastro.processCollection
         let procThisYear = []
@@ -77,19 +68,15 @@ class CadastroContainer extends React.Component {
         const proc = procThisYear.filter(el => el === currentYear)
 
         let count = proc.length
-
         let nProcess = (count + 1) + '/' + currentYear
 
-        this.setState({
+        await this.setState({
             ...this.state, nProcess: nProcess, enableRt: 'disabled',
             enableProcess: '', enableEmp: 'disabled'
         })
-
-        setTimeout(() => {
-            document.getElementById("nomeEmpreendimento").focus()
-        }, 50);
-
+        document.getElementById("nomeEmpreendimento").focus()
     }
+
     enableEmpInput(e) {
         this.setState({
             enableRt: 'disabled',
@@ -288,25 +275,20 @@ class CadastroContainer extends React.Component {
         }
     }
 
-    handleBlurRtName() {
+    async handleBlurRtName() {
 
         if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0].nomeRt === this.state.nomeRt)) {
-            this.setState({
+            await this.setState({
                 rtId: this.state.rtMatch[0]._id,
                 phoneRt: this.state.rtMatch[0].phoneRt,
                 emailRt: this.state.rtMatch[0].emailRt,
             })
+            if (this.state.enableEmp !== '') {
+                this.enableProcessInput()
+            }
 
-            setTimeout(() => {
-                if (this.state.enableEmp !== '') {
-                    this.enableProcessInput()
-                }
-            }, 200);
-
-
-        } else if (this.state.rtMatch && (this.state.rtMatch[0] && this.state.rtMatch[0] !== this.state.nomeRt)) {
-            this.setState({
-                ...this.state,
+        } else {
+            this.setState({             
                 rtId: '',
                 phoneRt: '',
                 emailRt: '',

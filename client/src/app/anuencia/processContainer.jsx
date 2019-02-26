@@ -59,34 +59,29 @@ class ProcessContainer extends Component {
         this.setState({ logDetails: false, logIndex: '' })
     }
 
-    fileUpload(e) {
+    async fileUpload(e) {
 
+        let k = ['notaTecnica', 'anuenciaFile']
         let formData = new FormData()
         formData.append('processId', this.state.selectedId)
-        this.setState({
+        await this.setState({
             ...this.state, [e.target.name]: e.target.files[0]
         })
 
-        let k = ['notaTecnica', 'anuenciaFile']
-
-        setTimeout(() => {
-            k.forEach(inputName => {
-                for (let keys in this.state) {
-                    keys.match(inputName) ?
-                        (formData.append(inputName, this.state[keys]))
-                        : void 0
-                }
-            })
-        }, 150);
-        setTimeout(() => {
-            this.setState({ form: formData })            
-        }, 250);
+        await k.forEach(inputName => {
+            for (let keys in this.state) {
+                keys.match(inputName) ?
+                    (formData.append(inputName, this.state[keys]))
+                    : void 0
+            }
+        })
+        this.setState({ form: formData })
     }
 
     async handleSubmit(e) {
         e.preventDefault()
         let filesArray = []
-        if (!this.state.notaTecnica || !this.state.anuenciaFile) {            
+        if (!this.state.notaTecnica || !this.state.anuenciaFile) {
             alert('Favor anexar a nota técnica e a certidão de anuência')
         } else {
             await axios.post('/api/anuenciaUpload', this.state.form)
@@ -102,7 +97,7 @@ class ProcessContainer extends Component {
                             fileSize: res.data.file[key][0].size
                         })
                     }
-                })            
+                })
             await axios.put('/api/editProcess', {
                 id: this.state.selectedId,
                 status: 'Processo Anuído',

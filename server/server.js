@@ -1,16 +1,15 @@
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const crypto = require('crypto')
-const config = require('./config/config').get(process.env.NODE_ENV);
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 Grid.mongo = mongoose.mongo;
 const path = require('path');
 const methodOverride = require('method-override')
-//const gfs = Grid(conn.db);
 
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
@@ -31,7 +30,9 @@ app.use(function (req, res, next) { //allow cross origin requests
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db', (err) => {
+
+const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db');
+mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
     if (err) {
         console.log(err);
     }
@@ -41,15 +42,13 @@ app.use(express.static('client/build'))
 
 app.use(methodOverride('_method'));
 
-const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db');
-
-const conn = mongoose.createConnection(mongoURI);
+const conn = mongoose.connection
 
 let gfs;
 
 conn.once('open', () => {
     // Init stream
-    gfs = Grid(conn.db, mongoose.mongo);
+    gfs = Grid(conn.db);
     gfs.collection('uploads');
 });
 

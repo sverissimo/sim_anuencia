@@ -1,13 +1,13 @@
 export const processForm = {
     nomeEmpreendimento: {
-        divClassName: 'input-field col s4',
+        divClassName: 'input-field col s12 m6 l4',
         type: 'text',
         name: 'nomeEmpreendimento',
         label: 'Nome do Empreendimento:',
         onBlur: null
     },
     area: {
-        divClassName: 'input-field col s2',
+        divClassName: 'input-field col s12 m4 l2',
         type: 'text',
         name: 'area',
         label: 'Área total da Gleba (m²):',
@@ -18,14 +18,14 @@ export const processForm = {
 export const rtForm = {
 
     phoneRt: {
-        divClassName: 'input-field col s2',
+        divClassName: 'input-field col s12 m6 l2',
         type: 'text',
         name: 'phoneRt',
         label: 'Telefone',
         onBlur: null
     },
     emailRt: {
-        divClassName: 'input-field col s4',
+        divClassName: 'input-field col s12 m6 l4',
         type: 'text',
         name: 'emailRt',
         label: 'E-mail',
@@ -35,61 +35,61 @@ export const rtForm = {
 
 export const empreendForm = {
     cpf: {
-        divClassName: 'input-field col s2',
+        divClassName: 'input-field col s12 m3 l2',
         type: 'text',
         name: 'cpf',
         label: 'CPF / CNPJ',
     },
     phone: {
-        divClassName: 'input-field col s2',
+        divClassName: 'input-field col s12 m3 l2',
         type: 'text',
         name: 'phone',
         label: 'Telefone',
     },
     email: {
-        divClassName: 'input-field col s3',
+        divClassName: 'input-field col s12 m6 l3',
         type: 'text',
         name: 'email',
         label: 'E-mail',
     },
     CEP: {
-        divClassName: 'input-field col s1',
+        divClassName: 'input-field col s12 m3 l1',
         type: 'text',
         name: 'cep',
         label: 'CEP',
     },
     numero: {
-        divClassName: 'input-field col s1',
+        divClassName: 'input-field col s12 m3 l1',
         type: 'text',
         name: 'numero',
         label: 'Número',
     },
     complemento: {
-        divClassName: 'input-field col s2',
+        divClassName: 'input-field col s12 m3 l2',
         type: 'text',
         name: 'complemento',
         label: 'Complemento',
     },
     rua: {
-        divClassName: 'input-field col s3',
+        divClassName: 'input-field col s12 m6 l3',
         type: 'text',
         name: 'rua',
         label: 'Rua',
     },
     bairro: {
-        divClassName: 'input-field col s2',
+        divClassName: 'input-field col s12 m3 l2',
         type: 'text',
         name: 'bairro',
         label: 'Bairro',
     },
     cidade: {
-        divClassName: 'input-field col s2',
+        divClassName: 'input-field col s12 m4 l2',
         type: 'text',
         name: 'cidade',
         label: 'Cidade',
     },
     uf: {
-        divClassName: 'input-field col s1',
+        divClassName: 'input-field col s12 m3 l1',
         type: 'text',
         name: 'uf',
         label: 'Estado',
@@ -98,7 +98,7 @@ export const empreendForm = {
 
 export const modalidade = {
     
-        divClassName: 'input-field col s2',        
+        divClassName: 'input-field col s12 m4 l2',        
         name: 'modalidade',
         label: 'Modalidade:',
         options: ['', 'Desmembramento', 'Loteamento']
@@ -107,7 +107,7 @@ export const modalidade = {
 }
 export const municipios = {
     munEmpreendimento: {
-        divClassName: 'input-field col s2',
+        divClassName: 'input-field col s12 m4 l2',
         type: 'text',
         name: 'munEmpreendimento',
         label: 'Município:',

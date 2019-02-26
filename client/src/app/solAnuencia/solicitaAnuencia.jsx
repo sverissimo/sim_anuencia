@@ -68,20 +68,16 @@ class SolicitaAnuencia extends Component {
         })
     }
 
-    handleSelect(e) {
-
-        this.setState({
+    async handleSelect(e) {
+        await this.setState({
             ...this.state,
             selectedId: e.target.value.replace(/,/g, ''),
             checked: e.currentTarget.id
         })
-        setTimeout(() => {
-            document.getElementById(this.state.checked).checked = 'checked';
-        }, 20);
-
+        document.getElementById(this.state.checked).checked = 'checked';
     }
 
-    fileUpload(e) {
+    async fileUpload(e) {
 
         let formData = new FormData()
         formData.append('processId', this.state.selectedId)
@@ -97,21 +93,15 @@ class SolicitaAnuencia extends Component {
             tooltip: 'Planta de localização com delimitação da área em análise e indicação do perímetro urbano, em escala de 1:10000'
         })
 
-        allFields.map(item => k.push(item.nameInput))
-        setTimeout(() => {
-            k.forEach(inputName => {
-                for (let keys in this.state) {
-                    keys.match(inputName) ?
-                        formData.append(inputName, this.state[keys])
-                        : void 0
-                }
-            })
-        }, 100);
-
-        setTimeout(() => {
-            this.setState({ form: formData })
-            console.log(this.state)
-        }, 200);
+        await allFields.map(item => k.push(item.nameInput))
+        await k.forEach(inputName => {
+            for (let keys in this.state) {
+                keys.match(inputName) ?
+                    formData.append(inputName, this.state[keys])
+                    : void 0
+            }
+        })
+        this.setState({ form: formData })
     }
 
     async handleSubmit(e) {

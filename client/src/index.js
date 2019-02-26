@@ -15,7 +15,6 @@ import Header from './app/common/header';
 const store = applyMiddleware(promise, multi, thunk)(createStore);
 
 const App = () => {
-console.log()
     return (
         <Provider store={store(rootReducer)}>
             <BrowserRouter>
