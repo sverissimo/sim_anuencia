@@ -112,7 +112,7 @@ class ProcessContainer extends Component {
     }
 
     render() {
-        let { clear, data, redux, close, download, changeValue } = this.props
+        let { clear, data, redux, close, changeValue } = this.props
         let process
         let empreend
         let rt
@@ -131,8 +131,7 @@ class ProcessContainer extends Component {
                     <ProcessTemplate
                         data={data}
                         redux={redux}
-                        clear={clear}
-                        download={download}
+                        clear={clear}                        
                         close={close}
                         process={process}
                         empreend={empreend}

@@ -7,7 +7,7 @@ import { BackButton } from '../common/buttons'
 const AnuenciaTemplate = (props) => {
 
     let { setColor, search, searchArray, selectProcess, data, redux,
-        empDetails, rtDetails, download, showFiles } = props
+        empDetails, rtDetails, showFiles } = props
 
     let selectedProcess
     void selectedProcess
@@ -49,8 +49,7 @@ const AnuenciaTemplate = (props) => {
                     renderEmp={true}
                     renderRt={true}
                     empDetails={empDetails}
-                    rtDetails={rtDetails}
-                    download={download}
+                    rtDetails={rtDetails}                    
                     showFiles={showFiles}
                 />
 

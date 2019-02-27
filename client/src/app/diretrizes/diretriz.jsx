@@ -148,14 +148,7 @@ class Diretriz extends Component {
 
     closeDetails() {
         this.setState({ showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
-    }
-
-    download(e) {
-        axios.get('/api/download/' + e.target.id)
-            .then(res => {
-                window.location.href = '/api/download/' + res.headers.fileid;
-            })
-    }
+    }  
 
     showFiles(e) {
         this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
@@ -265,8 +258,7 @@ class Diretriz extends Component {
                         setColor={this.props.redux.setColor}
                         clear={this.clearSearch.bind(this)}
                         empDetails={this.empDetails.bind(this)}
-                        rtDetails={this.rtDetails.bind(this)}
-                        download={this.download.bind(this)}
+                        rtDetails={this.rtDetails.bind(this)}                        
                         showFiles={this.showFiles.bind(this)}
                     >
                         <DiretrizRow
@@ -330,8 +322,7 @@ class Diretriz extends Component {
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
                         processCollection={this.props.redux.processCollection}
-                        filesCollection={this.props.redux.filesCollection}
-                        download={this.download.bind(this)}
+                        filesCollection={this.props.redux.filesCollection}                        
                     />
                 </div>
                 }

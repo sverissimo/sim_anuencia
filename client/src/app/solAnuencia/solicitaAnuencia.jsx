@@ -13,7 +13,6 @@ import ShowFiles from '../common/showFiles'
 
 class SolicitaAnuencia extends Component {
 
-
     state = {
         searchValue: '',
         dataMatch: [],
@@ -157,20 +156,14 @@ class SolicitaAnuencia extends Component {
     empDetails(e) {
         this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
     }
+
     rtDetails(e) {
         this.setState({ showEmpDetails: false, showRtDetails: true, rtId: e.target.id })
     }
 
     closeDetails() {
         this.setState({ showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
-    }
-
-    download(e) {
-        axios.get('/api/download/' + e.target.id)
-            .then(res => {
-                window.location.href = '/api/download/' + res.headers.fileid;
-            })
-    }
+    }  
 
     showFiles(e) {
         this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
@@ -257,8 +250,7 @@ class SolicitaAnuencia extends Component {
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
                         processCollection={processCollection}
-                        filesCollection={this.props.redux.filesCollection}
-                        download={this.download.bind(this)}
+                        filesCollection={this.props.redux.filesCollection}                        
                     />
                     <ShowDetails
                         empId={this.state.empId}

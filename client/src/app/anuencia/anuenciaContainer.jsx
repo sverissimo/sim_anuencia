@@ -69,13 +69,6 @@ class AnuenciaContainer extends Component {
         this.setState({ selectedId: null, showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
     }
 
-    download(e) {
-        axios.get('/api/download/' + e.target.id)
-            .then(res => {
-                window.location.href = '/api/download/' + res.headers.fileid;
-            })
-    }
-
     showFiles(e) {
         this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
     }
@@ -145,16 +138,14 @@ class AnuenciaContainer extends Component {
                                 setColor={this.props.redux.setColor}
                                 clear={this.clearSearch.bind(this)}
                                 empDetails={this.empDetails.bind(this)}
-                                rtDetails={this.rtDetails.bind(this)}
-                                download={this.download.bind(this)}
+                                rtDetails={this.rtDetails.bind(this)}                                
                                 showFiles={this.showFiles.bind(this)}
                             /> : !this.state.showFiles ?
                                 <div>
                                     <ProcessContainer
                                         data={this.state}
                                         redux={this.props.redux}
-                                        clear={this.clearSearch.bind(this)}
-                                        download={this.download.bind(this)}
+                                        clear={this.clearSearch.bind(this)}                                        
                                         close={this.closeDetails.bind(this)}
                                         match={this.props.match}
                                         changeValue={this.handleChange.bind(this)}
@@ -170,8 +161,7 @@ class AnuenciaContainer extends Component {
                                     setColor={this.props.redux.setColor}
                                     clear={this.clearSearch.bind(this)}
                                     empDetails={this.empDetails.bind(this)}
-                                    rtDetails={this.rtDetails.bind(this)}
-                                    download={this.download.bind(this)}
+                                    rtDetails={this.rtDetails.bind(this)}                                    
                                     showFiles={this.showFiles.bind(this)}
                                 />
                     }
@@ -192,8 +182,7 @@ class AnuenciaContainer extends Component {
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
                         processCollection={this.props.redux.processCollection}
-                        filesCollection={this.props.redux.filesCollection}
-                        download={this.download.bind(this)}
+                        filesCollection={this.props.redux.filesCollection}                        
                     />
                 </div>
                 }

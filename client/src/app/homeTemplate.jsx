@@ -6,7 +6,7 @@ const HomeTemplate = (props) => {
  
   return (
     <div>
-      <div className="card-panel" style={{backgroundImage: "url(" +'/images/home_bg.jpg'+")"}}>
+      <div className="card-panel" style={{backgroundImage: `url(${"/images/home_bg.jpg"})`}}>
         <div className="container">
           <h1 className="display-3"> <strong>
             <span style={{ color: 'white' }} >Bem-vindo ao SIM</span> </strong> </h1>

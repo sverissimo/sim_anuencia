@@ -100,9 +100,8 @@ app.get('/api/download/:id', function (req, res) {
             // set the proper content type 
             res.set({
                 'Content-Type': file.contentType,
-                'Content-Disposition': `attachment; filename=${file.metadata.originalName}`,
-                'fileId': file._id,
-                'uploadDate': file.uploadDate
+                'Content-Disposition': 'attachment',                                
+                'originalName': file.metadata.originalName
             });
 
             // Return response

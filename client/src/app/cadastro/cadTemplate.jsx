@@ -108,7 +108,7 @@ const CadTemplate = (props) => {
                                     value={props.data.nome}
                                     onBlur={props.handleBlurName}
                                     disabled={props.data.enableEmp}
-                                    autoFocus="true"
+                                    autoFocus={true}
                                 />
                                 <label className="active" htmlFor="nome">Nome</label>
                                 {autoComplete(props.config.empCollection, 'empreendList', props.data.nome)}

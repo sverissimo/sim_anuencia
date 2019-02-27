@@ -10,7 +10,7 @@ import ProcessInfo from '../common/processInfo'
 
 const ProcessTemplate = (props) => {
     const { redux, clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
-        showLog, clearLog, log, download, close, upload, submit } = props
+        showLog, clearLog, log, close, upload, submit } = props
 
     const returnComponent = (name) => {
         switch (name) {
@@ -20,8 +20,7 @@ const ProcessTemplate = (props) => {
                     showFiles={data.showFiles}
                     close={close}
                     processCollection={redux.processCollection}
-                    filesCollection={redux.filesCollection}
-                    download={download}
+                    filesCollection={redux.filesCollection}                    
                     process={process}
                 />
 
@@ -45,8 +44,7 @@ const ProcessTemplate = (props) => {
                     showLog={showLog}
                     logDetails={log.logDetails}
                     index={log.logIndex}
-                    clearLog={clearLog}
-                    download={download}
+                    clearLog={clearLog}                    
                 />
 
             default:

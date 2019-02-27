@@ -6,7 +6,7 @@ import { BackButton } from '../common/buttons'
 const Diretriz = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails, download, showFiles} = props
+        children, empDetails, rtDetails, showFiles} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
@@ -47,8 +47,7 @@ const Diretriz = (props) => {
                 renderEmp={true}
                 renderRt={true}
                 empDetails={empDetails}
-                rtDetails={rtDetails}
-                download={download}
+                rtDetails={rtDetails}                
                 showFiles={showFiles}
                 />
                 

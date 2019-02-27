@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { allFilesLabels } from '../config/configLabels'
 import showDate from './showDate'
 import formatFileSize from '../config/formatFileSize'
-import { soloStyle }from '../config/soloStyle'
-import { CloseWindow }from '../common/buttons'
+import { soloStyle } from '../config/soloStyle'
+import { CloseWindow } from '../common/buttons'
+import download from './downloadFile'
 
 const labels = (fieldName) => {
 
@@ -20,12 +21,12 @@ class LogDetails extends Component {
     }
 
     render() {
-        const { process, index, clearLog, download, soloComponent, hideLog } = this.props
+        const { process, index, clearLog, soloComponent, hideLog } = this.props
         const log = process.processHistory[index]
 
         return (
             <div style={soloStyle(soloComponent, ['15%', '70%'])}>
-                 {
+                {
                     soloComponent === true ?
                         <div className="row" style={{ textAlign: 'center' }}>
                             <div style={{
@@ -35,7 +36,7 @@ class LogDetails extends Component {
                             }}>
                                 <CloseWindow close={hideLog} />
                             </div>
-                           
+
                         </div>
                         : null
                 }
@@ -87,11 +88,12 @@ class LogDetails extends Component {
                                             <div className="col s1">
                                                 <img alt="" src="/images/genericFile.png" />
                                             </div>
-                                            <div id={file.id}
-                                                style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
-                                                className="col s11"
-                                                onClick={download}>
-                                                {labels(file.fieldName)}
+                                            <div className="col s11">
+                                                <span id={file.id}
+                                                    style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
+                                                    onClick={download}>
+                                                    {labels(file.fieldName)}
+                                                </span>
                                             </div>
 
                                         </div>
@@ -111,7 +113,7 @@ class LogDetails extends Component {
                     <div className="col s1 left" style={{ marginTop: '1%' }}>
                         <strong>
                             <i className='material-icons'
-                                style={{ marginTop:'10%', color: 'teal', cursor: 'pointer', border: '1px solid #bbb', borderRadius: '55%' }}
+                                style={{ marginTop: '10%', color: 'teal', cursor: 'pointer', border: '1px solid #bbb', borderRadius: '55%' }}
                                 onClick={clearLog}
                             > arrow_back
                             </i>

@@ -5,7 +5,7 @@ import { soloStyle } from '../config/soloStyle'
 import { CloseWindow }from '../common/buttons'
 
 const ProcessInfo = (props) => {
-    const { logDetails, index, process, showLog, clearLog, download, soloComponent, hideLog } = props
+    const { logDetails, index, process, showLog, clearLog, soloComponent, hideLog } = props
 
     if (logDetails === false) {
         return (
@@ -61,8 +61,7 @@ const ProcessInfo = (props) => {
         return <LogDetails
             process={process}
             index={index}
-            clearLog={clearLog}
-            download={download}
+            clearLog={clearLog}            
             soloComponent={soloComponent}
             hideLog={hideLog}
         />

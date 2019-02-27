@@ -149,13 +149,6 @@ class ShowEmpContainer extends Component {
         this.setState({ logDetails: false, logIndex: '' })
     }
 
-    download(e) {
-        axios.get('/api/download/' + e.target.id)
-            .then(res => {
-                window.location.href = '/api/download/' + res.headers.fileid;
-            })
-    }
-
     render() {
 
         let emps = []
@@ -217,8 +210,7 @@ class ShowEmpContainer extends Component {
                                 index={this.state.logIndex}
                                 showLog={this.showLog.bind(this)}
                                 hideLog={this.hideLog.bind(this)}
-                                clearLog={this.clearLog.bind(this)}
-                                download={this.download.bind(this)}
+                                clearLog={this.clearLog.bind(this)}                                
                                 soloComponent={true}
                             />
                         </div>
