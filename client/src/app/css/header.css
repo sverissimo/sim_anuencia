@@ -20,3 +20,19 @@ body {
     font-size: 0.8rem;
     overflow-y: scroll    
 }
+
+.tableHeader {
+    font-size: 0.9rem;
+    font-family: 'Segoe UI';
+    font-weight: 600;
+    filter: brightness(190%);
+    padding: 10px 0px 7px 0px;
+    border-radius: 10px 10px 5px 5px;
+    justify-content: space-between
+}
+
+.link {
+     text-decoration: underline; 
+     cursor: pointer; 
+     color: blue
+}

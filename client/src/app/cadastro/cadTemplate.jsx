@@ -14,11 +14,6 @@ const CadTemplate = (props) => {
         <option key={i} value={opt}>{opt}</option>
     )
 
-    const title = () => (
-        <div className="valign-wrapper" >
-            Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.
-        </div>
-    )
     const renderFields = (data, enableInput) => {
         let configArray = [];
         for (let keys in data) {
@@ -31,6 +26,7 @@ const CadTemplate = (props) => {
 
         return configArray.map((item, i) => {
             let config = item.settings
+            
             return (
                 <div key={i} className={config.divClassName}>
                     <input type={config.type}
@@ -90,7 +86,7 @@ const CadTemplate = (props) => {
             <div className="tab-pane fade show active" id="empreend">
                 <Title
                     title='Cadastro de Processos'
-                    subtitle={title()}
+                    subtitle='Preencha os dados do interessado e RT do processo. Caso o interessado e RT não estejam cadastrados, um novo cadastro será gerado automaticamente.'
                     color={props.color}
                 />
 

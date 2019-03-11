@@ -12,6 +12,13 @@ import ShowDetails from '../common/showDetails'
 
 class solicitaDiretriz extends Component {
 
+    constructor() {
+        super()
+        this.escFunction = (event) =>{
+            if (event.keyCode === 27) this.closeDetails()        
+        }
+    }    
+
     state = {
         searchValue: '',
         dataMatch: [],
@@ -35,6 +42,11 @@ class solicitaDiretriz extends Component {
         !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
 
         axios.get('/api/files')
+        document.addEventListener("keydown", this.escFunction, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.escFunction, false);
     }
 
     handleSearch(e) {

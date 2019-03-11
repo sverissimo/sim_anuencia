@@ -1,5 +1,5 @@
 import React from 'react';
-    import { CloseWindow } from '../common/buttons'
+import { CloseWindow } from '../common/buttons'
 import fieldConfig from '../config/fieldConfig'
 
 const ShowDetails = (props) => {

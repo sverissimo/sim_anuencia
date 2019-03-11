@@ -17,6 +17,10 @@ import ShowFiles from '../common/showFiles';
 
 class Diretriz extends Component {
 
+    constructor() {
+        super()        
+        this.escFunction = this.escFunction.bind(this)
+    }
     state = {
         searchValue: '',
         dataMatch: [],
@@ -48,11 +52,23 @@ class Diretriz extends Component {
 
     }
 
+    escFunction(event) {
+        if (event.keyCode === 27) {
+            (this.state.cgtCalendar || this.state.vistoriaCalendar) && this.hideCalendar()  
+            this.closeDetails()
+        }
+    }
     componentDidMount() {
         !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
         !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0
+
+        document.addEventListener("keydown", this.escFunction, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.escFunction, false);
     }
 
     handleSearch(e) {
@@ -68,7 +84,7 @@ class Diretriz extends Component {
     }
 
     clearSearch(e) {
-        let { dirStatus }= this.state
+        let { dirStatus } = this.state
         dirStatus.cgtOk = false
         dirStatus.vistoriaOk = false
         dirStatus.dirMunOk = false
@@ -141,14 +157,14 @@ class Diretriz extends Component {
     empDetails(e) {
         this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
     }
-    
+
     rtDetails(e) {
         this.setState({ showEmpDetails: false, showRtDetails: true, rtId: e.target.id })
     }
 
     closeDetails() {
         this.setState({ showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
-    }  
+    }
 
     showFiles(e) {
         this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
@@ -258,7 +274,7 @@ class Diretriz extends Component {
                         setColor={this.props.redux.setColor}
                         clear={this.clearSearch.bind(this)}
                         empDetails={this.empDetails.bind(this)}
-                        rtDetails={this.rtDetails.bind(this)}                        
+                        rtDetails={this.rtDetails.bind(this)}
                         showFiles={this.showFiles.bind(this)}
                     >
                         <DiretrizRow
@@ -322,7 +338,7 @@ class Diretriz extends Component {
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
                         processCollection={this.props.redux.processCollection}
-                        filesCollection={this.props.redux.filesCollection}                        
+                        filesCollection={this.props.redux.filesCollection}
                     />
                 </div>
                 }

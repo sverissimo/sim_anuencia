@@ -87,7 +87,7 @@ class CadastroContainer extends React.Component {
 
     handleBlur(event) {
         event.preventDefault()
-        if (event.target.name === 'cep' && !this.state.empMatch) {
+        if (event.target.name === 'cep') {            
             let getCep = this.state.cep.replace('.', '')
             axios.get(`https://api.postmon.com.br/v1/cep/${getCep}`)
                 .then(res => {
@@ -99,7 +99,6 @@ class CadastroContainer extends React.Component {
                         uf: res.data.estado
                     })
                 })
-
         } else {
             void 0
         }
@@ -137,7 +136,6 @@ class CadastroContainer extends React.Component {
                 this.setState({
                     ...this.state, [event.target.name]: event.target.value, rtMatch: rtMatch
                 })
-
             }
         } else {
             this.setState({
@@ -254,7 +252,7 @@ class CadastroContainer extends React.Component {
                 cidade: this.state.empMatch[0].cidade,
                 uf: this.state.empMatch[0].uf
             })
-            this.enableRtInput();
+            this.enableRtInput()
 
         } else {
             this.setState({

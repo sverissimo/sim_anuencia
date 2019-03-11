@@ -10,6 +10,13 @@ import ShowDetails from '../common/showDetails'
 import ShowFiles from '../common/showFiles';
 
 class AnuenciaContainer extends Component {
+  
+    constructor() {
+        super()
+        this.escFunction = (event) => {
+            if (!this.state.checked && event.keyCode === 27) this.closeDetails()        
+        }
+    }    
 
     state = {
         searchValue: '',
@@ -35,8 +42,13 @@ class AnuenciaContainer extends Component {
         !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
-        !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0        
- }
+        !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0
+        document.addEventListener("keydown", this.escFunction, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.escFunction, false);
+    }
 
     handleSearch(e) {
         this.setState({ ...this.state, searchValue: e.target.value, checked: false });
@@ -56,7 +68,7 @@ class AnuenciaContainer extends Component {
             checked: e.currentTarget.id
         })
     }
-   
+
     empDetails(e) {
         this.setState({ showEmpDetails: true, showRtDetails: false, empId: e.target.id })
     }
@@ -80,7 +92,7 @@ class AnuenciaContainer extends Component {
         analiseProc.createdAt = new Date()
         this.setState({
             analiseProc: analiseProc
-        })        
+        })
     }
 
     enviaPendencias(e) {
@@ -100,7 +112,7 @@ class AnuenciaContainer extends Component {
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
         const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Análise')
-        
+
         filteredList.sort(function (a, b) {
             let ca = new Date(a.updatedAt)
             let cb = new Date(b.updatedAt)
@@ -134,22 +146,22 @@ class AnuenciaContainer extends Component {
                                 redux={this.props.redux}
                                 search={e => this.handleSearch(e)}
                                 searchArray={dataMatch}
-                                selectProcess={this.handleSelect.bind(this)}                                
+                                selectProcess={this.handleSelect.bind(this)}
                                 setColor={this.props.redux.setColor}
                                 clear={this.clearSearch.bind(this)}
                                 empDetails={this.empDetails.bind(this)}
-                                rtDetails={this.rtDetails.bind(this)}                                
+                                rtDetails={this.rtDetails.bind(this)}
                                 showFiles={this.showFiles.bind(this)}
                             /> : !this.state.showFiles ?
                                 <div>
                                     <ProcessContainer
                                         data={this.state}
                                         redux={this.props.redux}
-                                        clear={this.clearSearch.bind(this)}                                        
+                                        clear={this.clearSearch.bind(this)}
                                         close={this.closeDetails.bind(this)}
                                         match={this.props.match}
                                         changeValue={this.handleChange.bind(this)}
-                                        showFiles={this.state.showFiles}    
+                                        showFiles={this.state.showFiles}
                                     />
                                 </div> :
                                 <AnuenciaTemplate
@@ -157,11 +169,11 @@ class AnuenciaContainer extends Component {
                                     redux={this.props.redux}
                                     search={e => this.handleSearch(e)}
                                     searchArray={dataMatch}
-                                    selectProcess={this.handleSelect.bind(this)}                                    
+                                    selectProcess={this.handleSelect.bind(this)}
                                     setColor={this.props.redux.setColor}
                                     clear={this.clearSearch.bind(this)}
                                     empDetails={this.empDetails.bind(this)}
-                                    rtDetails={this.rtDetails.bind(this)}                                    
+                                    rtDetails={this.rtDetails.bind(this)}
                                     showFiles={this.showFiles.bind(this)}
                                 />
                     }
@@ -182,7 +194,7 @@ class AnuenciaContainer extends Component {
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
                         processCollection={this.props.redux.processCollection}
-                        filesCollection={this.props.redux.filesCollection}                        
+                        filesCollection={this.props.redux.filesCollection}
                     />
                 </div>
                 }

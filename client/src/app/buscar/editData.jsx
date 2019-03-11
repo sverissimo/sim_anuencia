@@ -41,7 +41,7 @@ const EditData = (props) => {
                 item.key === '_id' ?
                     void 0
                     : item.key === 'modalidade' ?
-                    <div className="col s2" >
+                    <div className="col s2" key={i+100} >
                         <Input
                             name='modalidade'
                             type='select'
@@ -53,7 +53,7 @@ const EditData = (props) => {
                         </Input>
                     </div>
                     : item.key === 'munEmpreendimento' ?
-                        <div className="col s4" >
+                        <div className="col s4" key={i+200}>
                             <Input
                                 name='munEmpreendimento'
                                 type='select'
@@ -74,7 +74,6 @@ const EditData = (props) => {
                                 value={props.data.item[item.key]}
                                 onChange={props.change} />
                         </div>
-
             )
         } else {
             return null

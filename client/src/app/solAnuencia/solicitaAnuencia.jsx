@@ -13,6 +13,13 @@ import ShowFiles from '../common/showFiles'
 
 class SolicitaAnuencia extends Component {
 
+    constructor() {
+        super()
+        this.escFunction = (event) =>{
+            if (event.keyCode === 27) this.closeDetails()        
+        }
+    }    
+
     state = {
         searchValue: '',
         dataMatch: [],
@@ -49,6 +56,11 @@ class SolicitaAnuencia extends Component {
         !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
         !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0
+        document.addEventListener("keydown", this.escFunction, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.escFunction, false);
     }
 
     handleSearch(e) {
@@ -163,7 +175,7 @@ class SolicitaAnuencia extends Component {
 
     closeDetails() {
         this.setState({ showEmpDetails: false, showRtDetails: false, showFiles: false, empId: '', rtId: '' })
-    }  
+    }
 
     showFiles(e) {
         this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
@@ -250,7 +262,7 @@ class SolicitaAnuencia extends Component {
                         showFiles={this.state.showFiles}
                         close={this.closeDetails.bind(this)}
                         processCollection={processCollection}
-                        filesCollection={this.props.redux.filesCollection}                        
+                        filesCollection={this.props.redux.filesCollection}
                     />
                     <ShowDetails
                         empId={this.state.empId}

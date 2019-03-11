@@ -14,12 +14,13 @@ const titleSubtitle = (props) => {
             </div>
             {
                 subtitle ?
-                    <div className="card-panel" style={{
+                    <div className="card-panel valign-wrapper" style={{
                         marginBottom: '10px',
+                        maxHeight: '10px',                                              
                         backgroundColor: color,
                         filter: 'brightness(200%)',
                         borderRadius: '10px 10px',
-                        fontSize: '1.2rem',
+                        fontSize: '1rem',
                         fontWeight: 500,
                         fontFamily: 'Calibri'
                     }}>

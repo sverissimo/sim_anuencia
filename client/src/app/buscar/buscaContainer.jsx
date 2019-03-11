@@ -14,6 +14,14 @@ import ProcessInfo from '../common/processInfo';
 
 class ShowEmpContainer extends Component {
 
+    constructor() {
+        super()
+        this.escFunction = (e)=> {
+            if(e.keyCode === 27) 
+            (this.state.showEmpDetails || this.state.showRtDetails) && this.closeDetails() 
+            this.state.showInfo && this.hideLog()
+        }
+    }
     state = {
         search: '',
         select: 'process',
@@ -38,6 +46,11 @@ class ShowEmpContainer extends Component {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
+        document.addEventListener("keydown", this.escFunction, false);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keydown", this.escFunction, false);
     }
 
     deleteHandler = (item) => {
@@ -52,7 +65,7 @@ class ShowEmpContainer extends Component {
         }
     }
 
-    async handleSearchBar (e) {
+    async handleSearchBar(e) {
         await this.setState({ search: e.target.value })
         this.props.changeHandler(this.state.search)
     }
@@ -210,7 +223,7 @@ class ShowEmpContainer extends Component {
                                 index={this.state.logIndex}
                                 showLog={this.showLog.bind(this)}
                                 hideLog={this.hideLog.bind(this)}
-                                clearLog={this.clearLog.bind(this)}                                
+                                clearLog={this.clearLog.bind(this)}
                                 soloComponent={true}
                             />
                         </div>

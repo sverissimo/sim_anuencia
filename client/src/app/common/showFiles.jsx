@@ -19,7 +19,7 @@ const ShowFiles = (props) => {
             <div className='container z-depth-3'
                 style={{
                     position: 'fixed',
-                    top: '30%',
+                    top: '25%',
                     right: '15%',
                     left: '15%',
                     height: '50%',

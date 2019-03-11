@@ -43,11 +43,8 @@ const ShowEmpRow = (props) => {
 
     return (
         <div className="z-depth-3" style={{ padding: '0px 11px', borderRadius: '10px' }}>
-            <div className="row "
-                style={{
-                    fontSize: 16,
-                    fontFamily: 'arial',
-                    fontWeight: 'bold',
+            <div className="row tableHeader"
+                style={{                    
                     backgroundColor: color,
                     filter: 'brightness(190%)',
                     padding: '5px 0px',
