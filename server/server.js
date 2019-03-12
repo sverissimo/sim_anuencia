@@ -114,15 +114,19 @@ app.get('/api/download/:id', function (req, res) {
 app.post('/api/mail', (req, res) => {
     const { to, subject, text } = req.body
 
+    let answer
+
     const transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
-            xoauth2: xoauth2.createXOAuth2Generator({
-                user: 'my.email@gmail.com',
-                clientId: '',
-                clientSecret: '',
-                refreshToken: ''
-            })
+            type: 'OAuth2',
+            user: 'sverissimo2@gmail.com',
+            clientId: '1090912032936-cv28jc67a7g22f3r0ec6p6gnqo8gcbng.apps.googleusercontent.com',
+            clientSecret: '95qygWOd7byB81wqNkG87hTv',
+            refreshToken: '1/mBIPF0B9cqfPn73-sz9auVWO6WY3TM2IYY34PZl68Cw',
+            accessToken: 'ya29.GlvKBm-h2sQaiNjhHTyvPT5qYww4pEV0hz5Z3i-7QoS0EjlyyG3wKhPPr7dDEiMFZPDlQGNkwyE9trXuSIU8x2QlXWLeoKXx8CA88ASJAt3oti6Qp0YmDVnp97c-'
         }
     })
 
@@ -135,11 +139,13 @@ app.post('/api/mail', (req, res) => {
 
     transporter.sendMail(mailOptions, function (err, res) {
         if (err) {
-            console.log('Error');
+            console.log(err);
         } else {
             console.log('Email Sent');
+            answer = res.config.data
         }
     })
+    res.json(answer)
 })
 
 app.post('/api/solDirUpload', upload.fields([
