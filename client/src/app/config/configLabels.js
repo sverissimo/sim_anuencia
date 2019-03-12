@@ -97,6 +97,10 @@ export const solDirConfig = [
         nameInput: 'dirMunFile'
     },
     {
+        label: 'Delimitação da área do empreendimento (em formato kml)',
+        nameInput: 'kml'
+    },
+    {
         label: 'Levantamento Planialtimétrico',
         nameInput: 'levPlanFile'
     },
@@ -193,6 +197,11 @@ export const solAnuenciaConfig1 = [
         nameInput: 'regImovel',
         label: 'Registro do Imóvel',
         tooltip: 'Certidão de Registro do Imóvel com negativa de ônus, emitida em até 30 dias antes da entrada do processo na Prefeitura Municipal.'
+    },
+    {
+        nameInput: 'CNDOnus',
+        label: 'Certidão Negativa de ônus reais',
+        tooltip: 'Certidão Negativa de ônus reais.'
     },
     {
         nameInput: 'CNDMun',

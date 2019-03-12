@@ -11,6 +11,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './rootReducer';
 import Routes from './routes';
 import Header from './app/common/header';
+import Messages from './app/common/messages'
 
 const store = applyMiddleware(promise, multi, thunk)(createStore);
 
@@ -25,6 +26,7 @@ const App = () => {
                     <Routes />
                 </div>
             </BrowserRouter>
+            <Messages />
         </Provider>
     )
 

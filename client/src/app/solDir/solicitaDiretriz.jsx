@@ -3,12 +3,13 @@ import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, setColor } from './../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, setColor, reduxToastr } from './../cadastro/cadActions'
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
 import { solDirConfig } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
+import formatEmail from '../config/formatEmail'
 
 class solicitaDiretriz extends Component {
 
@@ -80,6 +81,7 @@ class solicitaDiretriz extends Component {
         this.setState({
             ...this.state, [e.target.name]: e.target.files[0]
         })
+
         let k = []
         await solDirConfig.map(item => k.push(item.nameInput))
 
@@ -95,41 +97,46 @@ class solicitaDiretriz extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-        /*    let filesArray = []
-           await axios.post('/api/solDirUpload', this.state.form)
-               .then(res => {
-   
-                   for (let key in res.data.file) {
-                       filesArray.push({
-                           fieldName: res.data.file[key][0].fieldname,
-                           id: res.data.file[key][0].id,
-                           originalName: res.data.file[key][0].originalname,
-                           uploadDate: res.data.file[key][0].uploadDate,
-                           contentType: res.data.file[key][0].contentType,
-                           fileSize: res.data.file[key][0].size
-                       })
-                   }
-               })
-           await axios.put('/api/editProcess', {
-               id: this.state.selectedId,
-               status: 'Aguardando Diretrizes Metropolitanas',
-               processHistory: {
-                   label: 'Diretrizes metropolitanas solicitadas',
-                   createdAt: new Date(),
-                   files: filesArray
-               }
-           }) */
         const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
-        
-        axios.post('/api/mail', {
-            to: 'sverissimo2@gmail.com, sandro.verissimo@agenciarmbh.mg.gov.br',
-            subject: 'Atualização do processo - Diretrizes Metropolitanas solicitadas',
-            text: `O email é ${emp.email}, o do rt: ${rt.emailRt}`,                        
+
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        let filesArray = []
+        await axios.post('/api/solDirUpload', this.state.form)
+            .then(res => {
+
+                for (let key in res.data.file) {
+                    filesArray.push({
+                        fieldName: res.data.file[key][0].fieldname,
+                        id: res.data.file[key][0].id,
+                        originalName: res.data.file[key][0].originalname,
+                        uploadDate: res.data.file[key][0].uploadDate,
+                        contentType: res.data.file[key][0].contentType,
+                        fileSize: res.data.file[key][0].size
+                    })
+                }
+            })
+        await axios.put('/api/editProcess', {
+            id: this.state.selectedId,
+            status: 'Aguardando Diretrizes Metropolitanas',
+            processHistory: {
+                label: 'Diretrizes metropolitanas solicitadas',
+                createdAt: new Date(),
+                files: filesArray
+            }
         })
-        .then(res => console.log(res))
-        //window.location.reload()
+
+        await axios.post('/api/mail', {
+            to: `${emp.email}, ${rt.emailRt}`,
+            subject: `Atualização do processo ${nomeEmpreendimento} - Diretrizes Metropolitanas solicitadas`,
+            html: formatEmail(emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.'),
+        })
+            .then(res => reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.'))
+            .catch(e => e.response.data.errors.forEach(err => reduxToastr('err', err)))
+        setTimeout(() => {
+            window.location.reload()
+        }, 2000);
     }
 
     empDetails(e) {

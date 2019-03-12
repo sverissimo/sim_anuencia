@@ -10,7 +10,7 @@ Grid.mongo = mongoose.mongo;
 const path = require('path');
 const methodOverride = require('method-override')
 const nodemailer = require('nodemailer')
-const xoauth2 = require('xoauth2');
+require('dotenv').config()
 
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
@@ -112,29 +112,30 @@ app.get('/api/download/:id', function (req, res) {
 });
 
 app.post('/api/mail', (req, res) => {
-    const { to, subject, text } = req.body
+    const { to, subject, html } = req.body
 
     let answer
 
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            type: 'OAuth2',
-            user: 'sverissimo2@gmail.com',
-            clientId: '1090912032936-cv28jc67a7g22f3r0ec6p6gnqo8gcbng.apps.googleusercontent.com',
-            clientSecret: '95qygWOd7byB81wqNkG87hTv',
-            refreshToken: '1/mBIPF0B9cqfPn73-sz9auVWO6WY3TM2IYY34PZl68Cw',
-            accessToken: 'ya29.GlvKBm-h2sQaiNjhHTyvPT5qYww4pEV0hz5Z3i-7QoS0EjlyyG3wKhPPr7dDEiMFZPDlQGNkwyE9trXuSIU8x2QlXWLeoKXx8CA88ASJAt3oti6Qp0YmDVnp97c-'
-        }
+        host:   process.env.MAILHOST,
+        port: 587,
+        secure: false,
+        ignoreTLS: false,
+        auth: {            
+            user: process.env.MAILUSER,
+            pass: process.env.MAILPASS
+        },
+        tls: {
+            // do not fail on invalid certs
+            rejectUnauthorized: false
+          }
     })
 
     const mailOptions = {
-        from: 'My Name <my.email@gmail.com>',
+        from: 'sandro.verissimo@agenciarmbh.mg.gov.br',
         to: to,
         subject: subject,
-        text: text
+        html: html
     }
 
     transporter.sendMail(mailOptions, function (err, res) {
@@ -152,6 +153,8 @@ app.post('/api/solDirUpload', upload.fields([
 
     {
         name: "dirMunFile", maxCount: 1
+    }, {
+        name: "kml", maxCount: 1
     }, {
         name: "levPlanFile", maxCount: 1
     }, {
@@ -197,6 +200,8 @@ app.post('/api/solAnuenciaUpload', upload.fields([
 
     {
         name: "regImovel", maxCount: 1
+    }, {
+        name: "CNDOnus", maxCount: 1
     }, {
         name: "CNDMun", maxCount: 1
     }, {
@@ -405,5 +410,5 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {
-    console.log(`Running...`)
+    console.log('Running...')
 })

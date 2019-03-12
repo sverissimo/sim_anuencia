@@ -51,7 +51,7 @@ const DiretrizRow = (props) => {
             <form action="#">
                 {
                     selectedFields.map((i, k) =>
-                        <div className="row" key={k}>
+                        (i[1] !== 'cgt' || (i[1] === 'cgt' && processo.area > 300000)) && <div className="row" key={k}>
                             <input type="checkbox"
                                 id={i[2]}
                                 onClick={checkItem} />

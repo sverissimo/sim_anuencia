@@ -36,3 +36,16 @@ body {
      cursor: pointer; 
      color: blue
 }
+
+.email {
+    position: relative; 
+    border-radius: 15px;
+    font-size: 1rem; 
+    font-family: 'Segoe UI';
+    width: 100%; 
+    background-color: white; 
+    padding: 15px 0px 0px 30px; 
+    border: 1px solid rgb(221, 221, 221); 
+    margin-bottom: 25px;
+    padding-bottom: 3px
+}
