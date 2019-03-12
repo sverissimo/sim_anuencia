@@ -14,10 +14,10 @@ class solicitaDiretriz extends Component {
 
     constructor() {
         super()
-        this.escFunction = (event) =>{
-            if (event.keyCode === 27) this.closeDetails()        
+        this.escFunction = (event) => {
+            if (event.keyCode === 27) this.closeDetails()
         }
-    }    
+    }
 
     state = {
         searchValue: '',
@@ -95,31 +95,41 @@ class solicitaDiretriz extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-        let filesArray = []
-        await axios.post('/api/solDirUpload', this.state.form)
-            .then(res => {
-
-                for (let key in res.data.file) {
-                    filesArray.push({
-                        fieldName: res.data.file[key][0].fieldname,
-                        id: res.data.file[key][0].id,
-                        originalName: res.data.file[key][0].originalname,
-                        uploadDate: res.data.file[key][0].uploadDate,
-                        contentType: res.data.file[key][0].contentType,
-                        fileSize: res.data.file[key][0].size
-                    })
-                }
-            })
-        await axios.put('/api/editProcess', {
-            id: this.state.selectedId,
-            status: 'Aguardando Diretrizes Metropolitanas',
-            processHistory: {
-                label: 'Diretrizes metropolitanas solicitadas',
-                createdAt: new Date(),
-                files: filesArray
-            }
+        /*    let filesArray = []
+           await axios.post('/api/solDirUpload', this.state.form)
+               .then(res => {
+   
+                   for (let key in res.data.file) {
+                       filesArray.push({
+                           fieldName: res.data.file[key][0].fieldname,
+                           id: res.data.file[key][0].id,
+                           originalName: res.data.file[key][0].originalname,
+                           uploadDate: res.data.file[key][0].uploadDate,
+                           contentType: res.data.file[key][0].contentType,
+                           fileSize: res.data.file[key][0].size
+                       })
+                   }
+               })
+           await axios.put('/api/editProcess', {
+               id: this.state.selectedId,
+               status: 'Aguardando Diretrizes Metropolitanas',
+               processHistory: {
+                   label: 'Diretrizes metropolitanas solicitadas',
+                   createdAt: new Date(),
+                   files: filesArray
+               }
+           }) */
+        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
+        const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
+        const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
+        
+        axios.post('/api/mail', {
+            to: 'sverissimo2@gmail.com, sandro.verissimo@agenciarmbh.mg.gov.br',
+            subject: 'Atualização do processo - Diretrizes Metropolitanas solicitadas',
+            text: `O email é ${emp.email}, o do rt: ${rt.emailRt}`,                        
         })
-        window.location.reload()
+        .then(res => console.log(res))
+        //window.location.reload()
     }
 
     empDetails(e) {

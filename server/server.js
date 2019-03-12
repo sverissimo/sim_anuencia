@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -10,6 +9,8 @@ const Grid = require('gridfs-stream');
 Grid.mongo = mongoose.mongo;
 const path = require('path');
 const methodOverride = require('method-override')
+const nodemailer = require('nodemailer')
+const xoauth2 = require('xoauth2');
 
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
@@ -21,11 +22,11 @@ const app = express();
 
 app.use(function (req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Credentials", true);
     next();
-});
+})
 
 
 app.use(bodyParser.json());
@@ -100,7 +101,7 @@ app.get('/api/download/:id', function (req, res) {
             // set the proper content type 
             res.set({
                 'Content-Type': file.contentType,
-                'Content-Disposition': 'attachment',                                
+                'Content-Disposition': 'attachment',
                 'originalName': file.metadata.originalName
             });
 
@@ -109,6 +110,37 @@ app.get('/api/download/:id', function (req, res) {
         }
     });
 });
+
+app.post('/api/mail', (req, res) => {
+    const { to, subject, text } = req.body
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            xoauth2: xoauth2.createXOAuth2Generator({
+                user: 'my.email@gmail.com',
+                clientId: '',
+                clientSecret: '',
+                refreshToken: ''
+            })
+        }
+    })
+
+    const mailOptions = {
+        from: 'My Name <my.email@gmail.com>',
+        to: to,
+        subject: subject,
+        text: text
+    }
+
+    transporter.sendMail(mailOptions, function (err, res) {
+        if (err) {
+            console.log('Error');
+        } else {
+            console.log('Email Sent');
+        }
+    })
+})
 
 app.post('/api/solDirUpload', upload.fields([
 
@@ -359,7 +391,7 @@ app.post('/api/sendHtml', (req, res) => {
 
 })
 
-if(process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
     app.get('/*', (req, res) => {
         res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'))
     })
