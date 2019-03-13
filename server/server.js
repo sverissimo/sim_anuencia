@@ -143,7 +143,7 @@ app.post('/api/mail', (req, res) => {
             console.log(err);
         } else {
             console.log('Email Sent');
-            answer = res.config.data
+            answer = res
         }
     })
     res.json(answer)

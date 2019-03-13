@@ -66,7 +66,7 @@ const SolicitaDiretriz = (props) => {
                     data.selectedId && data.checked  ?
                         (<div>
                             <fieldset>
-                                <legend style={{ fontSize: '1.3rem' }}>
+                                <legend>
                                     {nameParc[0].nomeEmpreendimento} - Documentos para solicitação de diretrizes
                                 </legend>
                                 {children}

@@ -67,9 +67,8 @@ const Diretriz = (props) => {
                 {
                     data.selectedId && data.checked  ?
                         (<div>
-                            <fieldset 
-                            style={{ paddingBottom: '0px', marginBottom: '20px'}}>
-                                <legend style={{ fontSize: '1.3rem' }}>
+                            <fieldset>
+                                <legend>
                                     {nameParc[0].nomeEmpreendimento} - Diretrizes Metropolitanas
                                 </legend>
                                 {children}

@@ -6,9 +6,8 @@ const DiretrizRow = (props) => {
     let { processCollection, selectedId, checkItem, change, dirStatus, anexaDiretriz,
         enviaPendencias, showCalendar } = props
 
-    let temp = processCollection.filter(el => el._id.match(selectedId))
-    let processo = temp[0]
-
+    let processo = processCollection.filter(el => el._id.match(selectedId))[0]
+    
     let selectedFields = [['CGT', 'cgt', 'cgtOk'], ['Vistoria', 'vistoria', 'vistoriaOk'],
     ['Diretriz Municipal', 'dirMunOk', 'dirMunOk'], ['Pagamento da DAE', 'daeOk', 'daeOk']]
 
@@ -44,10 +43,7 @@ const DiretrizRow = (props) => {
     }
 
     return (
-        <div
-            className="row col s12"
-            style={{ padding: "10px", paddingLeft: "20px", paddingRight: "20px", margin: 0 }}
-        >
+        <div className="row col s12 fieldsetChild">
             <form action="#">
                 {
                     selectedFields.map((i, k) =>

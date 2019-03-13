@@ -4,12 +4,13 @@ import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, setColor, reduxToastr } from './../cadastro/cadActions'
+import { sendMail } from '../common/sendMail'
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
 import { solDirConfig } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
-import formatEmail from '../config/formatEmail'
+
 
 class solicitaDiretriz extends Component {
 
@@ -103,40 +104,39 @@ class solicitaDiretriz extends Component {
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
         let filesArray = []
-        await axios.post('/api/solDirUpload', this.state.form)
-            .then(res => {
+        alert("I'm elfo")
+        try {
+            await axios.post('/api/solDirUpload', this.state.form)
+                .then(res => {
 
-                for (let key in res.data.file) {
-                    filesArray.push({
-                        fieldName: res.data.file[key][0].fieldname,
-                        id: res.data.file[key][0].id,
-                        originalName: res.data.file[key][0].originalname,
-                        uploadDate: res.data.file[key][0].uploadDate,
-                        contentType: res.data.file[key][0].contentType,
-                        fileSize: res.data.file[key][0].size
-                    })
+                    for (let key in res.data.file) {
+                        filesArray.push({
+                            fieldName: res.data.file[key][0].fieldname,
+                            id: res.data.file[key][0].id,
+                            originalName: res.data.file[key][0].originalname,
+                            uploadDate: res.data.file[key][0].uploadDate,
+                            contentType: res.data.file[key][0].contentType,
+                            fileSize: res.data.file[key][0].size
+                        })
+                    }
+                })
+            await axios.put('/api/editProcess', {
+                id: this.state.selectedId,
+                status: 'Aguardando Diretrizes Metropolitanas',
+                processHistory: {
+                    label: 'Diretrizes metropolitanas solicitadas',
+                    createdAt: new Date(),
+                    files: filesArray
                 }
             })
-        await axios.put('/api/editProcess', {
-            id: this.state.selectedId,
-            status: 'Aguardando Diretrizes Metropolitanas',
-            processHistory: {
-                label: 'Diretrizes metropolitanas solicitadas',
-                createdAt: new Date(),
-                files: filesArray
-            }
-        })
-
-        await axios.post('/api/mail', {
-            to: `${emp.email}, ${rt.emailRt}`,
-            subject: `Atualização do processo ${nomeEmpreendimento} - Diretrizes Metropolitanas solicitadas`,
-            html: formatEmail(emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.'),
-        })
-            .then(res => reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.'))
-            .catch(e => e.response.data.errors.forEach(err => reduxToastr('err', err)))
-        setTimeout(() => {
-            window.location.reload()
-        }, 2000);
+                .then(alert('Aahmmm...'))
+                .then(reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.'))
+                .then(alert('hi'))
+        } catch (err) {
+            console.log(err)
+            reduxToastr('Erro!', 'Uma ou mais solicitações não foram concluídas com sucesso.')
+        }        
+        sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')        
     }
 
     empDetails(e) {

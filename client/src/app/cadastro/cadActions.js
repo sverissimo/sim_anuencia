@@ -63,3 +63,4 @@ export const reduxToastr = (status, input) => {
         return toastr.error('erro', input)
     }
 }
+

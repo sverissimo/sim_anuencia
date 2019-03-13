@@ -4,7 +4,7 @@ import 'react-redux-toastr/lib/css/react-redux-toastr.min.css'
 
 export default props => (
     <ReduxToastr 
-    timeOut={2000}
+    timeOut={5000}
     newestOnTop={false}
     preventDuplicates
     position="top-right"

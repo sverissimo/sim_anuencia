@@ -7,8 +7,9 @@ import styles from '../css/react-datetime.css'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } from '../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from '../cadastro/cadActions'
 import { setDate } from './diretrizActions'
+import { sendMail } from '../common/sendMail'
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
@@ -18,7 +19,7 @@ import ShowFiles from '../common/showFiles';
 class Diretriz extends Component {
 
     constructor() {
-        super()        
+        super()
         this.escFunction = this.escFunction.bind(this)
     }
     state = {
@@ -54,7 +55,7 @@ class Diretriz extends Component {
 
     escFunction(event) {
         if (event.keyCode === 27) {
-            (this.state.cgtCalendar || this.state.vistoriaCalendar) && this.hideCalendar()  
+            (this.state.cgtCalendar || this.state.vistoriaCalendar) && this.hideCalendar()
             this.closeDetails()
         }
     }
@@ -104,7 +105,14 @@ class Diretriz extends Component {
             selectedId: e.target.value.replace(/,/g, ''),
             checked: e.currentTarget.id
         })
-        document.getElementById(this.state.checked).checked = 'checked';
+        document.getElementById(this.state.checked).checked = 'checked'
+        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
+
+        let dirStatus = { ...this.state.dirStatus }
+        if (processo.area <= 300000) {
+            dirStatus.cgtOk = true
+            this.setState({dirStatus})
+        }        
     }
 
     async fileUpload(e) {
@@ -120,38 +128,63 @@ class Diretriz extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
+        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
+        const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
+        const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
+
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
         let filesArray = [];
-        await axios.post('/api/diretrizUpload', this.state.form)
-            .then(res => {
-                for (let key in res.data.file) {
-                    filesArray.push(
-                        res.data.file[key][0].fieldname,
-                        res.data.file[key][0].id,
-                        res.data.file[key][0].originalname,
-                        res.data.file[key][0].uploadDate,
-                        res.data.file[key][0].size,
-                        res.data.file[key][0].contentType
-                    )
+        try {
+            await axios.post('/api/diretrizUpload', this.state.form)
+                .then(res => {
+                    for (let key in res.data.file) {
+                        filesArray.push(
+                            res.data.file[key][0].fieldname,
+                            res.data.file[key][0].id,
+                            res.data.file[key][0].originalname,
+                            res.data.file[key][0].uploadDate,
+                            res.data.file[key][0].size,
+                            res.data.file[key][0].contentType
+                        )
+                    }
+                })
+            let fileObject = {
+                fieldName: filesArray[0],
+                id: filesArray[1],
+                originalName: filesArray[2],
+                uploadDate: filesArray[3],
+                fileSize: filesArray[4],
+                contentType: filesArray[5]
+            }
+            await axios.put('/api/editProcess', {
+                id: this.state.selectedId,
+                status: 'Diretrizes Metropolitanas emitidas',
+                processHistory: {
+                    label: 'Diretrizes Metropolitanas emitidas',
+                    createdAt: new Date(),
+                    files: [fileObject]
                 }
             })
-        let fileObject = {
-            fieldName: filesArray[0],
-            id: filesArray[1],
-            originalName: filesArray[2],
-            uploadDate: filesArray[3],
-            fileSize: filesArray[4],
-            contentType: filesArray[5]
-        }
-        await axios.put('/api/editProcess', {
-            id: this.state.selectedId,
-            status: 'Diretrizes Metropolitanas emitidas',
-            processHistory: {
-                label: 'Diretrizes Metropolitanas emitidas',
-                createdAt: new Date(),
-                files: [fileObject]
-            }
-        })
-        window.location.reload()
+                .then(res =>
+                    reduxToastr('sucess', 'Diretrizes Metropolitanas emitidas.'))                    
+                    
+        } catch (err) {
+            console.log(err)
+            reduxToastr('err', 'Erro!')
+        }        
+        
+        sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas emitidas.')
+
+        /*   await axios.post('/api/mail', {
+              to: `${emp.email}, ${rt.emailRt}`,
+              subject: `Atualização do processo ${nomeEmpreendimento} - Diretrizes Metropolitanas solicitadas`,
+              html: formatEmail(emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.'),
+          }).then(res => console.log(res))
+  
+  
+          setTimeout(() => {
+              window.location.reload()
+          }, 1000); */
     }
 
     empDetails(e) {
