@@ -7,7 +7,7 @@ const DiretrizRow = (props) => {
         enviaPendencias, showCalendar } = props
 
     let processo = processCollection.filter(el => el._id.match(selectedId))[0]
-    
+
     let selectedFields = [['CGT', 'cgt', 'cgtOk'], ['Vistoria', 'vistoria', 'vistoriaOk'],
     ['Diretriz Municipal', 'dirMunOk', 'dirMunOk'], ['Pagamento da DAE', 'daeOk', 'daeOk']]
 
@@ -81,11 +81,12 @@ const DiretrizRow = (props) => {
                         <div>
                             <label
                                 style={{
-                                    fontSize: "16px", paddingTop: "15px",
-                                    fontWeight: 450,
+                                    fontSize: "1.3rem", paddingTop: "3%",
+                                    fontFamily: "Calibri",
+                                    fontWeight: 600,
                                     color: "black"
-                                }}>
-                                Anexar Diretriz Metropolitana
+                                }}>                                
+                                    Anexar Diretriz Metropolitana                                
                             </label>
                             <div className="row file-field input-field" >
                                 <div className="file-path-wrapper row">

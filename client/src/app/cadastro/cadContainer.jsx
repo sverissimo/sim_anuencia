@@ -3,14 +3,14 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadEmpData, loadRtData, loadProcessData } from './cadActions';
+import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from './cadActions';
+import { sendMail } from '../common/sendMail'
 
 import CadTemplate from './cadTemplate';
 
 class CadastroContainer extends React.Component {
 
     state = {
-
         empId: '',
         rtId: '',
         nome: '',
@@ -87,7 +87,7 @@ class CadastroContainer extends React.Component {
 
     handleBlur(event) {
         event.preventDefault()
-        if (event.target.name === 'cep') {            
+        if (event.target.name === 'cep') {
             let getCep = this.state.cep.replace('.', '')
             axios.get(`https://api.postmon.com.br/v1/cep/${getCep}`)
                 .then(res => {
@@ -205,33 +205,37 @@ class CadastroContainer extends React.Component {
             if (empMatch && rtMatch) {
                 cadProcess.empId = empId
                 cadProcess.rtId = rtId
-                axios.post('/api/cadastro_process', cadProcess)
-                    .then(res => window.location.reload())
+                await axios.post('/api/cadastro_process', cadProcess)
             } else if (empMatch && !rtMatch) {
                 cadProcess.empId = empId
-                axios.post('/api/cadastro_rt', cadRt)
+                await axios.post('/api/cadastro_rt', cadRt)
                     .then(res => {
                         cadProcess.rtId = res.data.RT_id
                         axios.post('/api/cadastro_process', cadProcess)
-                    }).then(res => window.location.reload())
+                    })
             } else if (!empMatch && rtMatch) {
                 cadProcess.rtId = rtId
-                axios.post('/api/cadastro_emp', cadEmp)
+                await axios.post('/api/cadastro_emp', cadEmp)
                     .then(res => {
                         cadProcess.empId = res.data.Cadastro_id
                         axios.post('/api/cadastro_process', cadProcess)
-                    }).then(res => window.location.reload())
+                    })
             } else if (!empMatch && !rtMatch) {
-                axios.post('/api/cadastro_emp', cadEmp)
+                await axios.post('/api/cadastro_emp', cadEmp)
                     .then(res => {
                         cadProcess.empId = res.data.Cadastro_id
                         axios.post('/api/cadastro_rt', cadRt)
                             .then(res => {
                                 cadProcess.rtId = res.data.RT_id
                                 axios.post('/api/cadastro_process', cadProcess)
-                            }).then(res => window.location.reload())
+                            })
                     })
             }
+            await reduxToastr('sucess', 'Processo Cadastrado.')
+            await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')            
+            setTimeout(() => {
+                window.location.reload()
+            }, 2500);
         }
     }
 
@@ -286,7 +290,7 @@ class CadastroContainer extends React.Component {
             }
 
         } else {
-            this.setState({             
+            this.setState({
                 rtId: '',
                 phoneRt: '',
                 emailRt: '',
@@ -332,7 +336,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CadastroContainer);

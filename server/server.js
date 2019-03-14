@@ -118,15 +118,15 @@ app.post('/api/mail', (req, res) => {
 
     const transporter = nodemailer.createTransport({
         host:   process.env.MAILHOST,
-        port: 587,
-        secure: false,
-        ignoreTLS: false,
+        port: 587,        
+        ignoreTLS: false,        
         auth: {            
             user: process.env.MAILUSER,
             pass: process.env.MAILPASS
         },
         tls: {
             // do not fail on invalid certs
+            secureProtocol: "TLSv1_2_method",
             rejectUnauthorized: false
           }
     })
@@ -143,7 +143,7 @@ app.post('/api/mail', (req, res) => {
             console.log(err);
         } else {
             console.log('Email Sent');
-            answer = res
+            answer = res.status
         }
     })
     res.json(answer)

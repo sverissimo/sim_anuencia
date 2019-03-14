@@ -3,7 +3,8 @@ import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor } from './../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from './../cadastro/cadActions'
+import { sendMail } from '../common/sendMail'
 
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolAnuenciaFilesRow from './solAnuenciaFilesRow';
@@ -15,10 +16,10 @@ class SolicitaAnuencia extends Component {
 
     constructor() {
         super()
-        this.escFunction = (event) =>{
-            if (event.keyCode === 27) this.closeDetails()        
+        this.escFunction = (event) => {
+            if (event.keyCode === 27) this.closeDetails()
         }
-    }    
+    }
 
     state = {
         searchValue: '',
@@ -119,7 +120,11 @@ class SolicitaAnuencia extends Component {
         e.preventDefault()
         const procCollection = this.props.redux.processCollection
         const { selectedId } = this.state
+        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
+        const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
+        const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
         const label = () => {
             let entradaCounter = []
             if (procCollection.length > 0) {
@@ -139,30 +144,40 @@ class SolicitaAnuencia extends Component {
         }
 
         let filesArray = [];
-        await axios.post('/api/solAnuenciaUpload', this.state.form)
-            .then(res => {
-                for (let key in res.data.file) {
-                    filesArray.push({
-                        fieldName: res.data.file[key][0].fieldname,
-                        id: res.data.file[key][0].id,
-                        originalName: res.data.file[key][0].originalname,
-                        uploadDate: res.data.file[key][0].uploadDate,
-                        contentType: res.data.file[key][0].contentType,
-                        fileSize: res.data.file[key][0].size
-                    })
+        try {
+            await axios.post('/api/solAnuenciaUpload', this.state.form)
+                .then(res => {
+                    for (let key in res.data.file) {
+                        filesArray.push({
+                            fieldName: res.data.file[key][0].fieldname,
+                            id: res.data.file[key][0].id,
+                            originalName: res.data.file[key][0].originalname,
+                            uploadDate: res.data.file[key][0].uploadDate,
+                            contentType: res.data.file[key][0].contentType,
+                            fileSize: res.data.file[key][0].size
+                        })
+                    }
+                })
+            const label2 = label()
+            await axios.put('/api/editProcess', {
+                id: this.state.selectedId,
+                status: 'Aguardando Análise',
+                processHistory: {
+                    label: label2,
+                    createdAt: new Date(),
+                    files: filesArray
                 }
             })
-        const label2 = label()
-        await axios.put('/api/editProcess', {
-            id: this.state.selectedId,
-            status: 'Aguardando Análise',
-            processHistory: {
-                label: label2,
-                createdAt: new Date(),
-                files: filesArray
-            }
-        })
-        window.location.reload()
+            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Anuência Prévia solicitada.')
+            await reduxToastr('sucess', 'Anuência Prévia solicitada.')            
+            await this.clearSearch()
+            await this.closeDetails()
+            this.props.loadProcessData() && this.props.loadFilesData()                    
+
+        } catch (err) {
+            console.log(err)
+            reduxToastr('err', err.toString())
+        }
     }
 
     empDetails(e) {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import ProcessTemplate from './processTemplate'
+import { sendMail } from '../common/sendMail'
+import { reduxToastr } from './../cadastro/cadActions'
 
 class ProcessContainer extends Component {
 
@@ -80,34 +82,56 @@ class ProcessContainer extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
+       
+        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.props.data.selectedId))[0]
+        const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
+        const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
+
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+       
         let filesArray = []
         if (!this.state.notaTecnica || !this.state.anuenciaFile) {
             alert('Favor anexar a nota técnica e a certidão de anuência')
         } else {
-            await axios.post('/api/anuenciaUpload', this.state.form)
-                .then(res => {
+            try {
 
-                    for (let key in res.data.file) {
-                        filesArray.push({
-                            fieldName: res.data.file[key][0].fieldname,
-                            id: res.data.file[key][0].id,
-                            originalName: res.data.file[key][0].originalname,
-                            uploadDate: res.data.file[key][0].uploadDate,
-                            contentType: res.data.file[key][0].contentType,
-                            fileSize: res.data.file[key][0].size
-                        })
+                await axios.post('/api/anuenciaUpload', this.state.form)
+                    .then(res => {
+
+                        for (let key in res.data.file) {
+                            filesArray.push({
+                                fieldName: res.data.file[key][0].fieldname,
+                                id: res.data.file[key][0].id,
+                                originalName: res.data.file[key][0].originalname,
+                                uploadDate: res.data.file[key][0].uploadDate,
+                                contentType: res.data.file[key][0].contentType,
+                                fileSize: res.data.file[key][0].size
+                            })
+                        }
+                    })
+                await axios.put('/api/editProcess', {
+                    id: this.state.selectedId,
+                    status: 'Processo Anuído',
+                    processHistory: {
+                        label: 'Processo Anuído',
+                        createdAt: new Date(),
+                        files: filesArray
                     }
                 })
-            await axios.put('/api/editProcess', {
-                id: this.state.selectedId,
-                status: 'Processo Anuído',
-                processHistory: {
-                    label: 'Processo Anuído',
-                    createdAt: new Date(),
-                    files: filesArray
-                }
-            })
-            window.location.reload()
+
+                await reduxToastr('sucess', 'Processo Anuído.')
+                await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Processo Anuído.')
+                await this.props.clear()
+                await this.props.close()
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1500);
+
+            } catch (err) {
+                console.log(err)
+                reduxToastr('err', err.toString())
+            }
+
         }
     }
 
@@ -131,7 +155,7 @@ class ProcessContainer extends Component {
                     <ProcessTemplate
                         data={data}
                         redux={redux}
-                        clear={clear}                        
+                        clear={clear}
                         close={close}
                         process={process}
                         empreend={empreend}

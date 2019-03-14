@@ -111,8 +111,8 @@ class Diretriz extends Component {
         let dirStatus = { ...this.state.dirStatus }
         if (processo.area <= 300000) {
             dirStatus.cgtOk = true
-            this.setState({dirStatus})
-        }        
+            this.setState({ dirStatus })
+        }
     }
 
     async fileUpload(e) {
@@ -128,6 +128,7 @@ class Diretriz extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
+        const newStatus = 'Diretrizes Metropolitanas emitidas'
         const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
@@ -158,33 +159,24 @@ class Diretriz extends Component {
             }
             await axios.put('/api/editProcess', {
                 id: this.state.selectedId,
-                status: 'Diretrizes Metropolitanas emitidas',
+                status: newStatus,
                 processHistory: {
-                    label: 'Diretrizes Metropolitanas emitidas',
+                    label: newStatus,
                     createdAt: new Date(),
                     files: [fileObject]
                 }
             })
-                .then(res =>
-                    reduxToastr('sucess', 'Diretrizes Metropolitanas emitidas.'))                    
-                    
+
+            await reduxToastr('sucess', newStatus)
+            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus+'.')
+            await this.clearSearch()
+            await this.closeDetails()
+            this.props.loadProcessData() && this.props.loadFilesData() 
+
         } catch (err) {
             console.log(err)
-            reduxToastr('err', 'Erro!')
-        }        
-        
-        sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas emitidas.')
-
-        /*   await axios.post('/api/mail', {
-              to: `${emp.email}, ${rt.emailRt}`,
-              subject: `Atualização do processo ${nomeEmpreendimento} - Diretrizes Metropolitanas solicitadas`,
-              html: formatEmail(emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.'),
-          }).then(res => console.log(res))
-  
-  
-          setTimeout(() => {
-              window.location.reload()
-          }, 1000); */
+            reduxToastr('err', err.toString())
+        }
     }
 
     empDetails(e) {
@@ -224,24 +216,40 @@ class Diretriz extends Component {
 
     async enviaPendencias(e) {
         e.preventDefault()
-        let dirStatus = this.state.dirStatus
+        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
+        const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
+        const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
-        await axios.put('/api/editProcess', {
-            id: this.state.selectedId,
-            status: 'Processo cadastrado',
-            processHistory: {
-                label: 'Pendências para emissão de diretrizes',
-                createdAt: new Date(),
-                pendencias: dirStatus.pendencias,
-                dirCheckList: {
-                    cgtOk: dirStatus.cgtOk,
-                    vistoriaOk: dirStatus.vistoriaOk,
-                    daeOk: dirStatus.daeOk,
-                    dirMunOk: dirStatus.dirMunOk,
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        
+        const newStatus='Pendências para emissão de Diretrizes Metropolitanas.'
+        let dirStatus = this.state.dirStatus
+        try {
+            await axios.put('/api/editProcess', {
+                id: this.state.selectedId,
+                status: 'Processo cadastrado',
+                processHistory: {
+                    label: 'Pendências para emissão de diretrizes',
+                    createdAt: new Date(),
+                    pendencias: dirStatus.pendencias,
+                    dirCheckList: {
+                        cgtOk: dirStatus.cgtOk,
+                        vistoriaOk: dirStatus.vistoriaOk,
+                        daeOk: dirStatus.daeOk,
+                        dirMunOk: dirStatus.dirMunOk,
+                    }
                 }
-            }
-        })
-        window.location.reload()
+            })
+            await reduxToastr('sucess', newStatus)
+            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus)
+            await this.clearSearch()
+            await this.closeDetails()
+            this.props.loadProcessData()
+
+        } catch (err) {
+            console.log(err)
+            reduxToastr('err', err.toString())
+        }
     }
 
     showCalendar(el) {

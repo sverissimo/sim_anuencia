@@ -4,7 +4,7 @@ const solicitaDiretrizRow = (props) => {
 
     return (
         <div
-            className="row col s12"
+            className="row"
             style={{ padding: "10px", paddingLeft: "20px", paddingRight: "20px", margin: 0 }}
         >
             <label

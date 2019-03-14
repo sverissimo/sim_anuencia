@@ -31,6 +31,7 @@ const ProcessTemplate = (props) => {
                     rt={rt}
                     value={data.analiseProc.pendencias}
                     changeValue={changeValue}
+                    close={close}
                 />
             case 'Anuencia':
                 return <Anuencia

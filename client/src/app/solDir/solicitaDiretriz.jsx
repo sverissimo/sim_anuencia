@@ -104,7 +104,6 @@ class solicitaDiretriz extends Component {
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
         let filesArray = []
-        alert("I'm elfo")
         try {
             await axios.post('/api/solDirUpload', this.state.form)
                 .then(res => {
@@ -129,14 +128,17 @@ class solicitaDiretriz extends Component {
                     files: filesArray
                 }
             })
-                .then(alert('Aahmmm...'))
-                .then(reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.'))
-                .then(alert('hi'))
+
+            await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')
+            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
+            await this.clearSearch()
+            await this.closeDetails()
+            this.props.loadProcessData()
+
         } catch (err) {
             console.log(err)
-            reduxToastr('Erro!', 'Uma ou mais solicitações não foram concluídas com sucesso.')
+            reduxToastr('err', err.toString())
         }        
-        sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')        
     }
 
     empDetails(e) {
@@ -178,20 +180,20 @@ class solicitaDiretriz extends Component {
                     clear={this.clearSearch.bind(this)}
                     empDetails={this.empDetails.bind(this)}
                     rtDetails={this.rtDetails.bind(this)}
-                >
-                    {
-                        solDirConfig.map((item, i) => {
-                            return (
-                                <SolicitaDiretrizRow
-                                    object={item}
-                                    key={i}
-                                    upload={this.fileUpload.bind(this)}
-                                />
-                            )
-                        })
-                    }
+                >                 
+                        {
+                            solDirConfig.map((item, i) => {
+                                return (
+                                    <SolicitaDiretrizRow
+                                        object={item}
+                                        key={i}
+                                        upload={this.fileUpload.bind(this)}
+                                    />
+                                )
+                            })
+                        }                 
                 </SolicitaDiretrizTemplate>
-
+                
                 <ShowDetails
                     empId={this.state.empId}
                     rtId={this.state.rtId}

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData } from '../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, reduxToastr } from '../cadastro/cadActions'
 
 import AnuenciaTemplate from './anuenciaTemplate';
 import ProcessContainer from './processContainer'
@@ -10,13 +9,13 @@ import ShowDetails from '../common/showDetails'
 import ShowFiles from '../common/showFiles';
 
 class AnuenciaContainer extends Component {
-  
+
     constructor() {
         super()
         this.escFunction = (event) => {
-            if (!this.state.checked && event.keyCode === 27) this.closeDetails()        
+            if (!this.state.checked && event.keyCode === 27) this.closeDetails()
         }
-    }    
+    }
 
     state = {
         searchValue: '',
@@ -93,18 +92,6 @@ class AnuenciaContainer extends Component {
         this.setState({
             analiseProc: analiseProc
         })
-    }
-
-    enviaPendencias(e) {
-
-        let analiseProc = this.state.analiseProc
-        analiseProc.createdAt = new Date()
-
-        axios.put('api/pendencias', {
-            id: this.state.selectedId,
-            pendencias: analiseProc
-        })
-            .then(res => console.log(res))
     }
 
     render() {
@@ -210,7 +197,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnuenciaContainer);
