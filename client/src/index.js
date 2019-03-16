@@ -12,19 +12,28 @@ import rootReducer from './rootReducer';
 import Routes from './routes';
 import Header from './app/common/header';
 import Messages from './app/common/messages'
+import Login from './app/auth/login'
 
 const store = applyMiddleware(promise, multi, thunk)(createStore);
 
 const App = () => {
+    let user = false
     return (
         <Provider store={store(rootReducer)}>
             <BrowserRouter>
-                <div>
-                    <header>
-                        <Header />
-                    </header>
-                    <Routes />
-                </div>
+                    {
+                        !user ?
+                            <div>
+                                <Login />
+                            </div>
+                            :
+                            <div>
+                                <header>
+                                    <Header />
+                                </header>
+                                <Routes />
+                            </div>
+                    }
             </BrowserRouter>
             <Messages />
         </Provider>
