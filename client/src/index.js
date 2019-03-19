@@ -21,19 +21,12 @@ const App = () => {
     return (
         <Provider store={store(rootReducer)}>
             <BrowserRouter>
-                    {
-                        !user ?
-                            <div>
-                                <Login />
-                            </div>
-                            :
-                            <div>
-                                <header>
-                                    <Header />
-                                </header>
-                                <Routes />
-                            </div>
-                    }
+                <div>
+                    <header>
+                        <Header />
+                    </header>
+                    <Routes />
+                </div>
             </BrowserRouter>
             <Messages />
         </Provider>

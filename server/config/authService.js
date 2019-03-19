@@ -1,0 +1,68 @@
+const bcrypt = require('bcrypt-nodejs');
+const jwt = require('jsonwebtoken');
+const { User } = require('../models/user')
+
+const emailRegex = /\S+@\S+\.\S+/
+//const passwordRegex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})/
+
+const signup = (req, res, next) => {
+    const name = req.body.name || ''
+    const email = req.body.email || ''
+    const password = req.body.password || ''
+    const confirmPassword = req.body.confirmPassword || ''
+
+
+    if (!email.match(emailRegex)) {
+        return res.status(400).send({ errors: ['O e-mail informa está inválido'] })
+    }
+    /*   if (!password.match(passwordRegex)) {
+          return res.status(400).send({
+              errors: [
+                  "Senha precisar ter: uma letra maiúscula, uma letra minúscula, um número, uma caractere especial(@#$ %) e tamanho entre 6 - 20."
+              ]
+          })
+      } */
+    const salt = bcrypt.genSaltSync()
+    const passwordHash = bcrypt.hashSync(password, salt)
+    if (!bcrypt.compareSync(confirmPassword, passwordHash)) {
+        return res.status(400).send('Senhas não conferem.')
+    }
+    
+    User.findOne({ email }, (err, user) => {
+        if (err) {
+            return sendErrorsFromDB(res, err)
+        } else if (user) {
+            return res.status(400).send('Usuário já cadastrado.')
+        } else {
+            const newUser = new User({ name, email, password: passwordHash, role: 'admin' })
+            newUser.save((err, user) => {
+                if (err) {
+                    return sendErrorsFromDB(res, err)
+                } else {
+                    //login(req, res, next)
+                    return res.send(user)
+                }
+            })
+        }
+    })
+}
+
+const login = (req, res, next) => {
+    const email = req.body.email || ''
+    const password = req.body.password || ''
+    User.findOne({ email }, (err, user) => {
+        if (err) {
+            return res.status(400).send(err)
+        } else if (user && bcrypt.compareSync(password, user.password)) {
+            
+            const token = jwt.sign(user.toJSON(), process.env.AUTHSECRET, {
+                expiresIn: 60*60})
+            const { name, email } = user
+            res.cookie( 'auth', token ).send({name, email})
+        } else {
+            return res.status(400).send('Usuário/Senha inválidos')
+        }
+    })
+}
+
+module.exports = { signup, login }

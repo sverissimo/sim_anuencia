@@ -44,6 +44,15 @@ class CadastroContainer extends React.Component {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
+        
+       /*  axios.post('/api/user', {
+            "name": "Another guy",
+            "email":"aguy@tsts.com",
+            "password":"password123",
+            "confirmPassword": "password123"
+        })
+        .then(res=> console.log(document.cookie))
+         */
     }
 
     async enableRtInput(e) {

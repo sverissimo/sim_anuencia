@@ -12,10 +12,15 @@ const methodOverride = require('method-override')
 const nodemailer = require('nodemailer')
 require('dotenv').config()
 
+const { User } = require('./models/user');
+const { auth } = require('./config/auth');
+const { signup, login } = require('./config/authService');
+
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
 const { processModel } = require('./models/processModel');
 const { filesModel } = require('./models/filesModel');
+
 
 const app = express();
 
@@ -42,6 +47,9 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
 app.use(express.static('client/build'))
 
 app.use(methodOverride('_method'));
+
+app.post('/api/login',  login)
+app.post('/api/signup',  signup)
 
 const conn = mongoose.connection
 
@@ -117,10 +125,10 @@ app.post('/api/mail', (req, res) => {
     let answer
 
     const transporter = nodemailer.createTransport({
-        host:   process.env.MAILHOST,
-        port: 587,        
-        ignoreTLS: false,        
-        auth: {            
+        host: process.env.MAILHOST,
+        port: 587,
+        ignoreTLS: false,
+        auth: {
             user: process.env.MAILUSER,
             pass: process.env.MAILPASS
         },
@@ -128,7 +136,7 @@ app.post('/api/mail', (req, res) => {
             // do not fail on invalid certs
             secureProtocol: "TLSv1_2_method",
             rejectUnauthorized: false
-          }
+        }
     })
 
     const mailOptions = {
@@ -397,8 +405,8 @@ app.put('/api/editProcess/', (req, res) => {
 })
 
 app.post('/api/sendHtml', (req, res) => {
-    console.log(req.body.data)
-    res.json(req.body.data)
+    console.log(req.body.nomeRt)
+    res.send(req.body)
 
 })
 
