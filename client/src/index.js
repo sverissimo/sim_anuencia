@@ -9,20 +9,20 @@ import thunk from 'redux-thunk';
 
 import rootReducer from './rootReducer';
 import Messages from './app/common/messages'
-import App from './authOrApp'
+import AuthOrApp from './authOrApp'
 
 const store = applyMiddleware(promise, multi, thunk)(createStore);
 
 
-const Application = () => {
+const App = () => {
 
     return (
         <Provider store={store(rootReducer)}>
-            <App />
+            <AuthOrApp />
             <Messages />
         </Provider>
     )
 };
 
-ReactDOM.render(<Application />, document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))
 

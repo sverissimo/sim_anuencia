@@ -12,12 +12,13 @@ const auth = router.use((req, res, next) => {
             return res.status(403).send('No token provided.')
         }
         let token = req.headers.cookie.replace('_sim-ad=', '')
-        jwt.verify(token, process.env.AUTHSECRET, function (err, decoded) {
-            
+        jwt.verify(token, process.env.AUTHSECRET, function (err, decoded) {            
             if (err) {
-                return res.status(403).send(err)
+                console.log('token expired!!!!')
+                return res.status(403).send(err)          
             } else {
                 req.decoded = decoded                
+                console.log(decoded.name)
                 next()
             }
         })

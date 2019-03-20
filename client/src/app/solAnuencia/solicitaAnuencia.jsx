@@ -176,7 +176,10 @@ class SolicitaAnuencia extends Component {
 
         } catch (err) {
             console.log(err)
-            reduxToastr('err', err.toString())
+            reduxToastr('Erro!', 'Sessão expirada!')
+            setTimeout(() => {
+                window.location.reload()
+            }, 1900);
         }
     }
 

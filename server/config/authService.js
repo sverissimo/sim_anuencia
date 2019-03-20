@@ -57,7 +57,7 @@ const login = (req, res, next) => {
             user = { name: user.name, role: user.role }
 
             const token = jwt.sign(user, process.env.AUTHSECRET, {
-                expiresIn: 10 * 60
+                expiresIn: 10
             })
             //const { name, email } = user
             res.cookie('_sim-ad', token, { maxAge: 1000*10 }).send(user)

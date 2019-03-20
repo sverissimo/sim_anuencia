@@ -82,13 +82,13 @@ class ProcessContainer extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-       
+
         const processo = this.props.redux.processCollection.filter(el => el._id.match(this.props.data.selectedId))[0]
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
-       
+
         let filesArray = []
         if (!this.state.notaTecnica || !this.state.anuenciaFile) {
             alert('Favor anexar a nota técnica e a certidão de anuência')
@@ -129,7 +129,10 @@ class ProcessContainer extends Component {
 
             } catch (err) {
                 console.log(err)
-                reduxToastr('err', err.toString())
+                reduxToastr('Erro!', 'Sessão expirada!')
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1900);
             }
 
         }

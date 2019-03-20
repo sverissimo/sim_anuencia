@@ -137,8 +137,11 @@ class solicitaDiretriz extends Component {
 
         } catch (err) {
             console.log(err)
-            reduxToastr('err', err.toString())
-        }        
+            reduxToastr('Erro!', 'Sessão expirada!')
+            setTimeout(() => {
+                window.location.reload()
+            }, 1900);
+        }
     }
 
     empDetails(e) {
@@ -180,20 +183,20 @@ class solicitaDiretriz extends Component {
                     clear={this.clearSearch.bind(this)}
                     empDetails={this.empDetails.bind(this)}
                     rtDetails={this.rtDetails.bind(this)}
-                >                 
-                        {
-                            solDirConfig.map((item, i) => {
-                                return (
-                                    <SolicitaDiretrizRow
-                                        object={item}
-                                        key={i}
-                                        upload={this.fileUpload.bind(this)}
-                                    />
-                                )
-                            })
-                        }                 
+                >
+                    {
+                        solDirConfig.map((item, i) => {
+                            return (
+                                <SolicitaDiretrizRow
+                                    object={item}
+                                    key={i}
+                                    upload={this.fileUpload.bind(this)}
+                                />
+                            )
+                        })
+                    }
                 </SolicitaDiretrizTemplate>
-                
+
                 <ShowDetails
                     empId={this.state.empId}
                     rtId={this.state.rtId}

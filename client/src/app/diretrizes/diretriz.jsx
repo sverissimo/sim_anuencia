@@ -168,14 +168,17 @@ class Diretriz extends Component {
             })
 
             await reduxToastr('sucess', newStatus)
-            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus+'.')
+            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus + '.')
             await this.clearSearch()
             await this.closeDetails()
-            this.props.loadProcessData() && this.props.loadFilesData() 
+            this.props.loadProcessData() && this.props.loadFilesData()
 
         } catch (err) {
             console.log(err)
-            reduxToastr('err', err.toString())
+            reduxToastr('Erro!', 'Sessão expirada!')
+            setTimeout(() => {
+                window.location.reload()
+            }, 1900);
         }
     }
 
@@ -221,8 +224,8 @@ class Diretriz extends Component {
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
-        
-        const newStatus='Pendências para emissão de Diretrizes Metropolitanas.'
+
+        const newStatus = 'Pendências para emissão de Diretrizes Metropolitanas.'
         let dirStatus = this.state.dirStatus
         try {
             await axios.put('/api/editProcess', {
@@ -248,7 +251,10 @@ class Diretriz extends Component {
 
         } catch (err) {
             console.log(err)
-            reduxToastr('err', err.toString())
+            reduxToastr('Erro!', 'Sessão expirada!')
+            setTimeout(() => {
+                window.location.reload()
+            }, 1900);
         }
     }
 

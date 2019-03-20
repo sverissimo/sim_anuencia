@@ -43,7 +43,7 @@ class CadastroContainer extends React.Component {
 
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0       
+        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
     }
 
     async enableRtInput(e) {
@@ -202,40 +202,50 @@ class CadastroContainer extends React.Component {
         } else if (!modalidade || !munEmpreendimento) {
             alert('Favor preencher a modalidade e o município do empreendimento.')
         } else if (nome && (nomeRt && nomeEmpreendimento && (modalidade && munEmpreendimento))) {
-            if (empMatch && rtMatch) {
-                cadProcess.empId = empId
-                cadProcess.rtId = rtId
-                await axios.post('/api/cadastro_process', cadProcess)
-            } else if (empMatch && !rtMatch) {
-                cadProcess.empId = empId
-                await axios.post('/api/cadastro_rt', cadRt)
-                    .then(res => {
-                        cadProcess.rtId = res.data.RT_id
-                        axios.post('/api/cadastro_process', cadProcess)
-                    })
-            } else if (!empMatch && rtMatch) {
-                cadProcess.rtId = rtId
-                await axios.post('/api/cadastro_emp', cadEmp)
-                    .then(res => {
-                        cadProcess.empId = res.data.Cadastro_id
-                        axios.post('/api/cadastro_process', cadProcess)
-                    })
-            } else if (!empMatch && !rtMatch) {
-                await axios.post('/api/cadastro_emp', cadEmp)
-                    .then(res => {
-                        cadProcess.empId = res.data.Cadastro_id
-                        axios.post('/api/cadastro_rt', cadRt)
-                            .then(res => {
-                                cadProcess.rtId = res.data.RT_id
-                                axios.post('/api/cadastro_process', cadProcess)
-                            })
-                    })
+            try {
+
+                if (empMatch && rtMatch) {
+                    cadProcess.empId = empId
+                    cadProcess.rtId = rtId
+                    await axios.post('/api/cadastro_process', cadProcess)
+                } else if (empMatch && !rtMatch) {
+                    cadProcess.empId = empId
+                    await axios.post('/api/cadastro_rt', cadRt)
+                        .then(res => {
+                            cadProcess.rtId = res.data.RT_id
+                            axios.post('/api/cadastro_process', cadProcess)
+                        })
+                } else if (!empMatch && rtMatch) {
+                    cadProcess.rtId = rtId
+                    await axios.post('/api/cadastro_emp', cadEmp)
+                        .then(res => {
+                            cadProcess.empId = res.data.Cadastro_id
+                            axios.post('/api/cadastro_process', cadProcess)
+                        })
+                } else if (!empMatch && !rtMatch) {
+                    await axios.post('/api/cadastro_emp', cadEmp)
+                        .then(res => {
+                            cadProcess.empId = res.data.Cadastro_id
+                            axios.post('/api/cadastro_rt', cadRt)
+                                .then(res => {
+                                    cadProcess.rtId = res.data.RT_id
+                                    axios.post('/api/cadastro_process', cadProcess)
+                                })
+                        })
+                }
+                await reduxToastr('sucess', 'Processo Cadastrado.')
+                await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')
+                setTimeout(() => {
+                    window.location.reload()
+                }, 2500)
+            } catch (err) {
+                console.log(err)
+                reduxToastr('Erro!', 'Sessão expirada!')
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1900);
             }
-            await reduxToastr('sucess', 'Processo Cadastrado.')
-            await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')
-            setTimeout(() => {
-                window.location.reload()
-            }, 2500);
+
         }
     }
 
@@ -331,7 +341,7 @@ class CadastroContainer extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        cadastro: state.cadastro        
+        cadastro: state.cadastro
     }
 }
 

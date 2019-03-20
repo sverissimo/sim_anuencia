@@ -7,10 +7,10 @@ import Header from './app/common/header';
 import Messages from './app/common/messages'
 import Login from './app/auth/login'
 
-const App = (props) => {
+const AuthOrApp = (props) => {
         
     return (
-        (document.cookie) ? < div >
+        (document.cookie && props.auth.login) ? < div >
             <BrowserRouter>
                 <div>
                     <header>
@@ -33,5 +33,5 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(AuthOrApp)
 

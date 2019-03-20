@@ -89,6 +89,7 @@ const storage = new GridFsStorage({
 });
 const upload = multer({ storage });
 
+app.use(auth)
 
 app.get('/api/download/:id', function (req, res) {
 
@@ -264,7 +265,7 @@ app.get('/api/files', (req, res) => {
 })
 
 
-app.get('/api/showEmpreend', (req, res) => {
+app.get('/api/showEmpreend', auth, (req, res) => {
 
     empreendedor.find().sort({ nome: 1 }).exec((err, doc) => {
         if (err) return err;

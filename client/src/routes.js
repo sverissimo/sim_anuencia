@@ -20,15 +20,13 @@ class Routes extends Component {
     }
 
     componentWillMount() {
-        if (document.cookie.match('_sim-ad')) {
+        if (document.cookie.match('_sim-ad') && this.props.auth.login) {
             this.setState({ loggedIn: true })
-        } 
+        }
     }
     render() {
-        if (!document.cookie.match('_sim-ad')) {
-            this.setState({ loggedIn: false })
-        } 
-        if (this.state.loggedIn) {
+
+        if (this.state.loggedIn && (document.cookie.match('_sim-ad') && this.props.auth.login)) {
             return <Switch>
                 <Route path='/' exact component={Home} />
                 <Route path='/cadastro' component={CadastroContainer} />
@@ -40,6 +38,7 @@ class Routes extends Component {
                 <Route path='/Anuencia' exact component={Anuencia} />
             </Switch>
         } else {
+            this.setState({ loggedIn: false })            
             this.props.logout()
             window.location.reload()
         }

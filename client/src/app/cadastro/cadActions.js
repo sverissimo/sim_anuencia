@@ -5,14 +5,11 @@ import { logout } from '../auth/authActions';
 export const loadEmpData = () => {
 
     const request = axios.get('/api/showEmpreend')
-        .then(res => {
-            if (res.status === 403) {
-                logout()
-            } else {
-                return res.data
-            }
+        .then(res => res.data)
+        .catch(err => {
+            console.log(err)
+            toastr.error('Erro', 'Sessão expirada!')
         })
-        .catch(err => console.log(err))
     return {
         type: 'LOAD_EMP_DATA',
         payload: request
@@ -24,7 +21,10 @@ export function loadRtData() {
 
     const request = axios.get('/api/showRt')
         .then(res => res.data)
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err)
+            toastr.error('Erro', 'Sessão expirada!')
+        })
     return {
         type: 'LOAD_RT_DATA',
         payload: request
@@ -35,7 +35,10 @@ export function loadProcessData() {
 
     const request = axios.get('/api/showProcess')
         .then(res => res.data)
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err)
+            toastr.error('Erro', 'Sessão expirada!')
+        })
     return {
         type: 'LOAD_PROCESS_DATA',
         payload: request
@@ -46,7 +49,10 @@ export function loadFilesData() {
 
     const request = axios.get('/api/files')
         .then(res => res.data)
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err)
+            toastr.error('Erro', 'Sessão expirada!')
+        })
     return {
         type: 'LOAD_FILES_DATA',
         payload: request
@@ -68,7 +74,7 @@ export const reduxToastr = (status, input) => {
     if (status === 'sucess') {
         return toastr.success('Operação realizada com sucesso', input)
     } else {
-        return toastr.error('erro', input)
+        return toastr.error('Erro', input)
     }
 }
 

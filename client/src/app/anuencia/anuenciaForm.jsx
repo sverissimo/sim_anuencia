@@ -54,8 +54,8 @@ class AnuenciaForm extends Component {
 
     async enviaPendencias(e) {
         e.preventDefault()
-        const {process, empreend, rt} = this.props
-        
+        const { process, empreend, rt } = this.props
+
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = process
 
 
@@ -77,7 +77,7 @@ class AnuenciaForm extends Component {
             })
 
             await reduxToastr('sucess', 'Pendências para a emissão de anuência.')
-            await sendMail(empreend.email, rt.emailRt, empreend.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Pendências para a emissão de anuência.')                    
+            await sendMail(empreend.email, rt.emailRt, empreend.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Pendências para a emissão de anuência.')
             await this.props.close()
             setTimeout(() => {
                 window.location.reload()
@@ -85,7 +85,10 @@ class AnuenciaForm extends Component {
 
         } catch (err) {
             console.log(err)
-            reduxToastr('err', err.toString())
+            reduxToastr('Erro!', 'Sessão expirada!')
+            setTimeout(() => {
+                window.location.reload()
+            }, 1900);
         }
     }
 
