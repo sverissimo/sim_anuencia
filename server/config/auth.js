@@ -1,15 +1,27 @@
-const { User } = require('./../models/user');
+var express = require('express')
+var router = express.Router()
+const jwt = require('jsonwebtoken')
 
-let auth = (req, res, next) => {
-    let token = req.cookies.auth;
-
-    User.findByToken(token, (err, user) => {
-        if (err) throw err;
-        if (!user) return res.status(401).send('no access');
-
-        req.token = token
-        next();
-    })
-}
+const auth = router.use((req, res, next) => {
+    // CORS preflight request
+    if (req.method === 'OPTIONS') {
+        next()
+    } else {
+                    
+        if (!req.headers.cookie) {
+            return res.status(403).send('No token provided.')
+        }
+        let token = req.headers.cookie.replace('_sim-ad=', '')
+        jwt.verify(token, process.env.AUTHSECRET, function (err, decoded) {
+            
+            if (err) {
+                return res.status(403).send(err)
+            } else {
+                req.decoded = decoded                
+                next()
+            }
+        })
+    }
+})
 
 module.exports = { auth }

@@ -28,7 +28,7 @@ const app = express();
 app.use(function (req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     res.header("Access-Control-Allow-Credentials", true);
     next();
 })
@@ -48,8 +48,8 @@ app.use(express.static('client/build'))
 
 app.use(methodOverride('_method'));
 
-app.post('/api/login',  login)
-app.post('/api/signup',  signup)
+app.post('/api/login', login)
+app.post('/api/signup', signup)
 
 const conn = mongoose.connection
 
@@ -404,10 +404,11 @@ app.put('/api/editProcess/', (req, res) => {
     }
 })
 
-app.post('/api/sendHtml', (req, res) => {
-    console.log(req.body.nomeRt)
-    res.send(req.body)
-
+app.post('/api/sendHtml', auth, (req, res, next) => {       
+    next()
+}, (req, res) => {
+    console.log(req.decoded)
+    res.send('ok')
 })
 
 if (process.env.NODE_ENV === 'production') {

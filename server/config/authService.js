@@ -13,7 +13,7 @@ const signup = (req, res, next) => {
 
 
     if (!email.match(emailRegex)) {
-        return res.status(400).send({ errors: ['O e-mail informa está inválido'] })
+        return res.status(400).send({ errors: ['O e-mail inválido'] })
     }
     /*   if (!password.match(passwordRegex)) {
           return res.status(400).send({
@@ -27,17 +27,17 @@ const signup = (req, res, next) => {
     if (!bcrypt.compareSync(confirmPassword, passwordHash)) {
         return res.status(400).send('Senhas não conferem.')
     }
-    
+
     User.findOne({ email }, (err, user) => {
         if (err) {
-            return sendErrorsFromDB(res, err)
+            return err
         } else if (user) {
             return res.status(400).send('Usuário já cadastrado.')
         } else {
             const newUser = new User({ name, email, password: passwordHash, role: 'admin' })
             newUser.save((err, user) => {
                 if (err) {
-                    return sendErrorsFromDB(res, err)
+                    return err
                 } else {
                     //login(req, res, next)
                     return res.send(user)
@@ -54,11 +54,13 @@ const login = (req, res, next) => {
         if (err) {
             return res.status(400).send(err)
         } else if (user && bcrypt.compareSync(password, user.password)) {
-            
-            const token = jwt.sign(user.toJSON(), process.env.AUTHSECRET, {
-                expiresIn: 60*60})
-            const { name, email } = user
-            res.cookie( 'auth', token ).send({name, email})
+            user = { name: user.name, role: user.role }
+
+            const token = jwt.sign(user, process.env.AUTHSECRET, {
+                expiresIn: 10 * 60
+            })
+            //const { name, email } = user
+            res.cookie('_sim-ad', token, { maxAge: 1000*10 }).send(user)
         } else {
             return res.status(400).send('Usuário/Senha inválidos')
         }

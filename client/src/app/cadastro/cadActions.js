@@ -1,16 +1,24 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr'
+import { logout } from '../auth/authActions';
 
 export const loadEmpData = () => {
 
     const request = axios.get('/api/showEmpreend')
-        .then(res => res.data)
+        .then(res => {
+            if (res.status === 403) {
+                logout()
+            } else {
+                return res.data
+            }
+        })
         .catch(err => console.log(err))
     return {
         type: 'LOAD_EMP_DATA',
         payload: request
     }
-};
+}
+
 
 export function loadRtData() {
 

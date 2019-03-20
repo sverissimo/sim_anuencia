@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 
@@ -9,30 +8,21 @@ import multi from 'redux-multi';
 import thunk from 'redux-thunk';
 
 import rootReducer from './rootReducer';
-import Routes from './routes';
-import Header from './app/common/header';
 import Messages from './app/common/messages'
-import Login from './app/auth/login'
+import App from './authOrApp'
 
 const store = applyMiddleware(promise, multi, thunk)(createStore);
 
-const App = () => {
-    let user = false
+
+const Application = () => {
+
     return (
         <Provider store={store(rootReducer)}>
-            <BrowserRouter>
-                <div>
-                    <header>
-                        <Header />
-                    </header>
-                    <Routes />
-                </div>
-            </BrowserRouter>
+            <App />
             <Messages />
         </Provider>
     )
-
 };
 
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<Application />, document.getElementById('root'))
 

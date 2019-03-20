@@ -43,16 +43,7 @@ class CadastroContainer extends React.Component {
 
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-        
-       /*  axios.post('/api/user', {
-            "name": "Another guy",
-            "email":"aguy@tsts.com",
-            "password":"password123",
-            "confirmPassword": "password123"
-        })
-        .then(res=> console.log(document.cookie))
-         */
+        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0       
     }
 
     async enableRtInput(e) {
@@ -241,7 +232,7 @@ class CadastroContainer extends React.Component {
                     })
             }
             await reduxToastr('sucess', 'Processo Cadastrado.')
-            await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')            
+            await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')
             setTimeout(() => {
                 window.location.reload()
             }, 2500);
@@ -340,7 +331,7 @@ class CadastroContainer extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        cadastro: state.cadastro
+        cadastro: state.cadastro        
     }
 }
 

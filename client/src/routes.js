@@ -1,5 +1,8 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, { Component } from 'react';
+import { withRouter, Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { logout } from './app/auth/authActions'
 
 import Home from './app/home';
 import CadastroContainer from './app/cadastro/cadContainer';
@@ -8,21 +11,48 @@ import SolicitaDiretriz from './app/solDir/solicitaDiretriz';
 import diretriz from './app/diretrizes/diretriz';
 import SolicitaAnuencia from './app/solAnuencia/solicitaAnuencia';
 import EditData from './app/buscar/editData'
-import Anuencia from './app/anuencia/anuenciaContainer' ;
+import Anuencia from './app/anuencia/anuenciaContainer';
 
-const Routes = () => {
-    return (
-        <Switch>
-            <Route path='/' exact component={Home} />
-            <Route path='/cadastro' component={CadastroContainer} />
-            <Route path='/solicitaDiretriz' component={SolicitaDiretriz} />
-            <Route path='/diretrizes' component={diretriz} />
-            <Route path='/solicitaAnuencia' component={SolicitaAnuencia} />
-            <Route path='/showEmpreend' component={BuscaContainer} />
-            <Route path='/editData' component={EditData} />
-            <Route path='/Anuencia' exact component={Anuencia} />            
-        </Switch>
-    );
-};
+class Routes extends Component {
 
-export default Routes;
+    state = {
+        loggedIn: false
+    }
+
+    componentWillMount() {
+        if (document.cookie.match('_sim-ad')) {
+            this.setState({ loggedIn: true })
+        } 
+    }
+    render() {
+        if (!document.cookie.match('_sim-ad')) {
+            this.setState({ loggedIn: false })
+        } 
+        if (this.state.loggedIn) {
+            return <Switch>
+                <Route path='/' exact component={Home} />
+                <Route path='/cadastro' component={CadastroContainer} />
+                <Route path='/solicitaDiretriz' component={SolicitaDiretriz} />
+                <Route path='/diretrizes' component={diretriz} />
+                <Route path='/solicitaAnuencia' component={SolicitaAnuencia} />
+                <Route path='/showEmpreend' component={BuscaContainer} />
+                <Route path='/editData' component={EditData} />
+                <Route path='/Anuencia' exact component={Anuencia} />
+            </Switch>
+        } else {
+            this.props.logout()
+            window.location.reload()
+        }
+    }
+}
+
+
+const mapStateToProps = (state) => {
+    return { auth: state.auth }
+}
+
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators({ logout }, dispatch)
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Routes))
