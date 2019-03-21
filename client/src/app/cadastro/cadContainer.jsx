@@ -7,6 +7,7 @@ import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from './cadActi
 import { sendMail } from '../common/sendMail'
 
 import CadTemplate from './cadTemplate';
+import { logout } from '../auth/logout';
 
 class CadastroContainer extends React.Component {
 
@@ -40,7 +41,6 @@ class CadastroContainer extends React.Component {
     }
 
     componentDidMount() {
-
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
@@ -233,19 +233,12 @@ class CadastroContainer extends React.Component {
                                 })
                         })
                 }
-                await reduxToastr('sucess', 'Processo Cadastrado.')
+                await reduxToastr('sucess', cadProcess.nomeEmpreendimento, 'Processo Cadastrado.')
                 await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')
-                setTimeout(() => {
-                    window.location.reload()
-                }, 2500)
+                window.location.reload()
             } catch (err) {
-                console.log(err)
-                reduxToastr('Erro!', 'Sessão expirada!')
-                setTimeout(() => {
-                    window.location.reload()
-                }, 1900);
+                logout(err)
             }
-
         }
     }
 

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr'
-import { logout } from '../auth/authActions';
 
 export const loadEmpData = () => {
 
@@ -8,7 +7,7 @@ export const loadEmpData = () => {
         .then(res => res.data)
         .catch(err => {
             console.log(err)
-            toastr.error('Erro', 'Sessão expirada!')
+            toastr.error('Erro', 'Sessão expirada.')
         })
     return {
         type: 'LOAD_EMP_DATA',
@@ -16,14 +15,13 @@ export const loadEmpData = () => {
     }
 }
 
-
 export function loadRtData() {
 
     const request = axios.get('/api/showRt')
         .then(res => res.data)
         .catch(err => {
             console.log(err)
-            toastr.error('Erro', 'Sessão expirada!')
+            toastr.error('Erro', 'Sessão expirada.')
         })
     return {
         type: 'LOAD_RT_DATA',
@@ -37,7 +35,7 @@ export function loadProcessData() {
         .then(res => res.data)
         .catch(err => {
             console.log(err)
-            toastr.error('Erro', 'Sessão expirada!')
+            toastr.error('Erro', 'Sessão expirada.')
         })
     return {
         type: 'LOAD_PROCESS_DATA',
@@ -51,7 +49,7 @@ export function loadFilesData() {
         .then(res => res.data)
         .catch(err => {
             console.log(err)
-            toastr.error('Erro', 'Sessão expirada!')
+            toastr.error('Erro', 'Sessão expirada.')
         })
     return {
         type: 'LOAD_FILES_DATA',
@@ -70,9 +68,10 @@ export const setColor = () => {
     }
 }
 
-export const reduxToastr = (status, input) => {
+export const reduxToastr = (status, input, titulo) => {
+    const title = titulo || 'Operação realizada com sucesso'
     if (status === 'sucess') {
-        return toastr.success('Operação realizada com sucesso', input)
+        return toastr.success(title, input)
     } else {
         return toastr.error('Erro', input)
     }

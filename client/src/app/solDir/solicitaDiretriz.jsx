@@ -3,8 +3,9 @@ import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, setColor, reduxToastr } from './../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
+import { logout } from '../auth/logout'
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
@@ -133,14 +134,10 @@ class solicitaDiretriz extends Component {
             await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
             await this.clearSearch()
             await this.closeDetails()
-            this.props.loadProcessData()
+            this.props.loadProcessData() && this.props.loadFilesData()
 
         } catch (err) {
-            console.log(err)
-            reduxToastr('Erro!', 'Sessão expirada!')
-            setTimeout(() => {
-                window.location.reload()
-            }, 1900);
+            logout(err)
         }
     }
 
@@ -218,7 +215,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, setColor }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(solicitaDiretriz);

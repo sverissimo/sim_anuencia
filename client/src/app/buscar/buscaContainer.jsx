@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData } from '../cadastro/cadActions';
+import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from '../cadastro/cadActions';
 import { deleteEmp, deleteRt, deleteProcess, handleEdit, disableEdit, changeHandler } from './buscaActions';
 import { BackButton, UpdateButton } from './../common/buttons';
+import { logout } from '../auth/logout';
 
 import ShowDetails from '../common/showDetails'
 import EditData from './editData';
@@ -16,9 +17,9 @@ class ShowEmpContainer extends Component {
 
     constructor() {
         super()
-        this.escFunction = (e)=> {
-            if(e.keyCode === 27) 
-            (this.state.showEmpDetails || this.state.showRtDetails) && this.closeDetails() 
+        this.escFunction = (e) => {
+            if (e.keyCode === 27)
+                (this.state.showEmpDetails || this.state.showRtDetails) && this.closeDetails()
             this.state.showInfo && this.hideLog()
         }
     }
@@ -113,24 +114,34 @@ class ShowEmpContainer extends Component {
         }
     }
 
-    saveEdit = (e) => {
-
+    async saveEdit(e) {
+        e.preventDefault()
         if (this.state.item && this.state.select === 'emp') {
-            axios.put(('/api/editEmp'), {
+            await axios.put(('/api/editEmp'), {
                 item: this.state.item
             })
+                .then(this.setState({ edit: false }))
+                .catch(err => logout(err))
+            this.props.loadEmpData()
         }
         if (this.state.item && this.state.select === 'rt') {
-            axios.put(('/api/editRt'), {
+            await axios.put(('/api/editRt'), {
                 item: this.state.item
-            }).catch(err => alert(err))
+            })
+                .then(this.setState({ edit: false }))
+                .catch(err => logout(err))
+            this.props.loadRtData()
         }
         if (this.state.item && this.state.select === 'process') {
-            axios.put(('/api/editProcess'), {
+            await axios.put(('/api/editProcess'), {
                 _id: this.state.item._id,
                 item: this.state.item
-            }).catch(err => alert(err))
+            })
+                .then(this.setState({ edit: false }))
+                .catch(err => logout(err))
+            this.props.loadProcessData()
         }
+
     }
 
     empDetails(e) {
@@ -288,7 +299,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, deleteEmp, deleteRt, deleteProcess, handleEdit, disableEdit, changeHandler }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, deleteEmp, deleteRt, deleteProcess, handleEdit, disableEdit, changeHandler, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShowEmpContainer);

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { logout } from '../auth/logout';
 
 const downloadFile = (e) => {
     axios({
@@ -15,8 +16,7 @@ const downloadFile = (e) => {
     })
         .catch(err => {
             console.log(err)
-            alert('Erro! Sessão expirada.')
-            window.location.reload()
+            logout(err)
         })
 }
 

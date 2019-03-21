@@ -23,7 +23,7 @@ const loginTemplate = (props) => {
                     </div>
                     <div className="row">
                         <div className="input-field col s12">
-                            <input className="btn cyan waves-effect waves-light right" type="submit" name="action" value="submit" />
+                            <input className="btn cyan waves-effect waves-light right" type="submit" name="action" value="submit" style={{ backgroundColor: 'transparent' }} />
 
                         </div>
                     </div>

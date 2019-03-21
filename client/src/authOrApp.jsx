@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom';
 
 import Routes from './routes';
@@ -8,9 +8,9 @@ import Messages from './app/common/messages'
 import Login from './app/auth/login'
 
 const AuthOrApp = (props) => {
-        
+    
     return (
-        (document.cookie && props.auth.login) ? < div >
+        (document.cookie && (props.auth.login || localStorage.getItem('login'))) ? <div>
             <BrowserRouter>
                 <div>
                     <header>

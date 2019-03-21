@@ -3,7 +3,8 @@ import axios from 'axios';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { login, signup } from './authActions'
+import { login } from './authActions'
+import { reduxToastr } from '../cadastro/cadActions'
 
 import LoginTemplate from './loginTemplate'
 import SignupTemplate from './signupTemplate'
@@ -26,15 +27,20 @@ class Login extends Component {
 
     async login(e) {
         e.preventDefault()
-        let authData
+        let user
         await axios.post('/api/login', {
             email: this.state.email,
             password: this.state.password,
         })
-            .then(res => authData = res.data)
+            .then(res => user = res.data)
 
-        authData.token = document.cookie.replace('_sim-ad=', '')
-        this.props.login(authData)
+        let authenticate = () => document.cookie.match('_sim-ad=', '') ? true : false
+        await localStorage.setItem('login', authenticate())
+
+        for (let [key, value] of Object.entries(user)) {
+            await localStorage.setItem(key, value)
+        }
+        this.props.login(true)
     }
 
     async signup(e) {
@@ -42,8 +48,10 @@ class Login extends Component {
         let newUser
         await axios.post('/api/signup', this.state)
             .then(res => newUser = res.data)
-        newUser.token = document.cookie.replace('_sim-ad=', '')
-        this.props.login(newUser)
+        reduxToastr('sucess', 'Usuário criado com sucesso', newUser.name)
+        setTimeout(() => {
+            window.location.reload()
+        }, 2000);
     }
 
     render() {
@@ -83,15 +91,14 @@ class Login extends Component {
         )
     }
 }
-
 const mapStateToProps = (state) => {
     return {
-        auth: state.auth
+
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ login, signup }, dispatch)
+    return bindActionCreators({ login, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

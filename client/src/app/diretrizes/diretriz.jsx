@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from '../cadastro/cadActions'
 import { setDate } from './diretrizActions'
 import { sendMail } from '../common/sendMail'
+import { logout } from '../auth/logout';
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
@@ -174,11 +175,7 @@ class Diretriz extends Component {
             this.props.loadProcessData() && this.props.loadFilesData()
 
         } catch (err) {
-            console.log(err)
-            reduxToastr('Erro!', 'Sessão expirada!')
-            setTimeout(() => {
-                window.location.reload()
-            }, 1900);
+            logout(err)
         }
     }
 
@@ -250,11 +247,7 @@ class Diretriz extends Component {
             this.props.loadProcessData()
 
         } catch (err) {
-            console.log(err)
-            reduxToastr('Erro!', 'Sessão expirada!')
-            setTimeout(() => {
-                window.location.reload()
-            }, 1900);
+            logout(err)
         }
     }
 

@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
+import { logout } from '../auth/logout';
 
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolAnuenciaFilesRow from './solAnuenciaFilesRow';
@@ -168,18 +169,16 @@ class SolicitaAnuencia extends Component {
                     files: filesArray
                 }
             })
+            reduxToastr('sucess', 'Anuência Prévia solicitada.')
             await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Anuência Prévia solicitada.')
-            await reduxToastr('sucess', 'Anuência Prévia solicitada.')            
             await this.clearSearch()
             await this.closeDetails()
-            this.props.loadProcessData() && this.props.loadFilesData()                    
+            await this.props.loadProcessData() && this.props.loadFilesData()
+            console.log('ok')
+            
 
         } catch (err) {
-            console.log(err)
-            reduxToastr('Erro!', 'Sessão expirada!')
-            setTimeout(() => {
-                window.location.reload()
-            }, 1900);
+            logout(err)
         }
     }
 

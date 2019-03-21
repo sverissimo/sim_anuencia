@@ -3,9 +3,11 @@ import axios from 'axios'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import ReactQuill from 'react-quill';
+
 import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from '../cadastro/cadActions'
 import MostrarOficio from './mostrarOficio'
 import { sendMail } from '../common/sendMail'
+import { logout } from '../auth/logout';
 
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -79,16 +81,10 @@ class AnuenciaForm extends Component {
             await reduxToastr('sucess', 'Pendências para a emissão de anuência.')
             await sendMail(empreend.email, rt.emailRt, empreend.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Pendências para a emissão de anuência.')
             await this.props.close()
-            setTimeout(() => {
-                window.location.reload()
-            }, 1500);
+            this.props.loadProcessData()
 
         } catch (err) {
-            console.log(err)
-            reduxToastr('Erro!', 'Sessão expirada!')
-            setTimeout(() => {
-                window.location.reload()
-            }, 1900);
+            logout(err)
         }
     }
 

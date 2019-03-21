@@ -1,23 +1,14 @@
-export function login(user) {
+export function login(conf) {
     return {
         type: 'LOGIN',
-        payload: user
+        payload: conf
     }
 }
 
-export function signup(user) {
-    const data = () => {
-       
-    }
-    return {
-        type: 'SIGNUP',
-        payload: data
-    }
-}
-
-export function logout() {
+export function logout(logout) {
+    localStorage.clear('login', false)
     return {
         type: 'LOG_OUT',
-        payload: false
+        payload: logout
     }
 }

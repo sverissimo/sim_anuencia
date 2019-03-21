@@ -9,9 +9,9 @@ const HomeTemplate = (props) => {
       <div className="card-panel" style={{backgroundImage: `url(${"/images/home_bg.jpg"})`}}>
         <div className="container">
           <h1 className="display-3"> <strong>
-            <span style={{ color: 'white' }} >Bem-vindo ao SIM</span> </strong> </h1>
+            <span style={{ color: 'white' }} >Anuência Digital</span> </strong> </h1>
           <h4 style={{ color: 'white' }}>
-            Módulo Anuência Prévia (versão beta)
+            (versão beta)
           </h4>
           <p className="btn btn-primary btn-lg" href="" role="button" style={{ backgroundColor: color }}>Saiba mais &raquo;</p>
         </div>

@@ -11,7 +11,6 @@ const signup = (req, res, next) => {
     const password = req.body.password || ''
     const confirmPassword = req.body.confirmPassword || ''
 
-
     if (!email.match(emailRegex)) {
         return res.status(400).send({ errors: ['O e-mail inválido'] })
     }
@@ -54,13 +53,12 @@ const login = (req, res, next) => {
         if (err) {
             return res.status(400).send(err)
         } else if (user && bcrypt.compareSync(password, user.password)) {
-            user = { name: user.name, role: user.role }
+            user = { _id: user._id, name: user.name, role: user.role }
 
             const token = jwt.sign(user, process.env.AUTHSECRET, {
-                expiresIn: 10
-            })
-            //const { name, email } = user
-            res.cookie('_sim-ad', token, { maxAge: 1000*10 }).send(user)
+                expiresIn: 30
+            })            
+            res.cookie('_sim-ad', token, { maxAge: 1000*30 }).send(user)
         } else {
             return res.status(400).send('Usuário/Senha inválidos')
         }

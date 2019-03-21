@@ -3,6 +3,7 @@ import axios from 'axios'
 import ProcessTemplate from './processTemplate'
 import { sendMail } from '../common/sendMail'
 import { reduxToastr } from './../cadastro/cadActions'
+import { logout } from '../auth/logout';
 
 class ProcessContainer extends Component {
 
@@ -128,11 +129,7 @@ class ProcessContainer extends Component {
                 }, 1500);
 
             } catch (err) {
-                console.log(err)
-                reduxToastr('Erro!', 'Sessão expirada!')
-                setTimeout(() => {
-                    window.location.reload()
-                }, 1900);
+                logout(err)
             }
 
         }
