@@ -17,11 +17,11 @@ const OficioHeader = (props) => {
             <div className="row">
 
                 <img className="col s12"
-                    src="/images/governo_header2.jpg"
+                    src="/images/governo_header3.jpg"
                     style={{ paddingRight: '20px'}}
                    
                     alt="" /></div>
-            <p className="oficioHeader" ><strong>OF. Nº &nbsp;&nbsp;&nbsp; / {new Date().getFullYear()}-Agência RMBH.DR</strong>
+            <p className="oficioHeader" >
                 <span className="right">Belo Horizonte, {date()}.</span></p>
             <br></br>
             <p className="ql-align-justify" style={line}> {pref.vocativo1} </p>

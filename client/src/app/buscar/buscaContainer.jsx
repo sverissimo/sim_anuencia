@@ -133,15 +133,13 @@ class ShowEmpContainer extends Component {
             this.props.loadRtData()
         }
         if (this.state.item && this.state.select === 'process') {
-            await axios.put(('/api/editProcess'), {
-                _id: this.state.item._id,
-                item: this.state.item
-            })
+            let item = Object.assign({}, this.state.item)
+            delete item.processHistory            
+            await axios.put(('/api/editProcess'), { item: item })
                 .then(this.setState({ edit: false }))
                 .catch(err => logout(err))
             this.props.loadProcessData()
         }
-
     }
 
     empDetails(e) {

@@ -18,7 +18,6 @@ const auth = router.use((req, res, next) => {
                 return res.status(403).send(err)          
             } else {
                 req.decoded = decoded                
-                console.log(decoded.name)
                 next()
             }
         })

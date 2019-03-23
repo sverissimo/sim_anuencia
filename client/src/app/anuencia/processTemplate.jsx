@@ -11,7 +11,7 @@ import ProcessInfo from '../common/processInfo'
 const ProcessTemplate = (props) => {
     const { redux, clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
         showLog, clearLog, log, close, upload, submit } = props
-
+    
     const returnComponent = (name) => {
         switch (name) {
             case 'FileExplorer':
@@ -20,7 +20,7 @@ const ProcessTemplate = (props) => {
                     showFiles={data.showFiles}
                     close={close}
                     processCollection={redux.processCollection}
-                    filesCollection={redux.filesCollection}                    
+                    filesCollection={redux.filesCollection}
                     process={process}
                 />
 
@@ -29,6 +29,7 @@ const ProcessTemplate = (props) => {
                     process={process}
                     empreend={empreend}
                     rt={rt}
+                    tecnicos={redux.tecCollection}                    
                     value={data.analiseProc.pendencias}
                     changeValue={changeValue}
                     close={close}
@@ -45,7 +46,7 @@ const ProcessTemplate = (props) => {
                     showLog={showLog}
                     logDetails={log.logDetails}
                     index={log.logIndex}
-                    clearLog={clearLog}                    
+                    clearLog={clearLog}
                 />
 
             default:
@@ -105,7 +106,7 @@ const ProcessTemplate = (props) => {
                 <div style={{ minHeight: '50vh', border: '1px solid #ddd', borderRadius: '2%', marginBottom: '2%' }}>
                     {
                         selectedOption === '' ?
-                            <div className='col push-s4' style={{paddingTop: '20%'}}>
+                            <div className='col push-s4' style={{ paddingTop: '20%' }}>
                                 <h5>
                                     Selecione uma das opçoes acima.
                                 </h5>
@@ -133,7 +134,6 @@ const ProcessTemplate = (props) => {
                         :
                         null
                 }
-
             </div>
         </div>
     )

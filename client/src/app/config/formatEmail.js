@@ -16,7 +16,7 @@ const formatEmail = (empreend, modalidade, nomeEmpreendimento, munEmpreendimento
             <strong>A/C ${empreend}</strong>
             <br />
             <p>Foi registrada uma movimentação do processo que solicita a emissão de Anuência 
-                Prévia para o ${modalidade} ${nomeEmpreendimento}, situado no município de 
+                Prévia para o ${modalidade} <strong>${nomeEmpreendimento}</strong>, situado no município de 
                 ${munEmpreendimento}:</p>
 
             <p><strong> ${status} </strong></p>

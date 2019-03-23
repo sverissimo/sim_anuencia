@@ -57,6 +57,21 @@ export function loadFilesData() {
     }
 };
 
+export function loadTecnicos() {
+
+    const tecnicos = axios.get('/api/tecnicos')
+        .then(res => res.data)
+        .catch(err => {
+            console.log(err)
+            toastr.error('Erro', 'Sessão expirada.')
+        })
+
+    return {
+        type: 'LOAD_TECNICOS',
+        payload: tecnicos
+    }
+}
+
 export const setColor = () => {
 
     const array = ['rgb(104, 119, 133)', 'rgb(84, 104, 102)', 'rgb(105, 117, 153)',

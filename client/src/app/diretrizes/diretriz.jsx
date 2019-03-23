@@ -7,10 +7,11 @@ import styles from '../css/react-datetime.css'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from '../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, setColor, reduxToastr } from '../cadastro/cadActions'
 import { setDate } from './diretrizActions'
 import { sendMail } from '../common/sendMail'
-import { logout } from '../auth/logout';
+import { logout } from '../auth/logout'
+import { getTecnico } from '../common/getTecnico'
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
@@ -61,10 +62,14 @@ class Diretriz extends Component {
         }
     }
     componentDidMount() {
-        !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
-        !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0
+
+        let { empCollection, rtCollection, processCollection, tecCollection } = this.props.redux
+        !empCollection[0] ? this.props.loadEmpData() : void 0
+        !processCollection[0] ? this.props.loadProcessData() : void 0
+        !rtCollection[0] ? this.props.loadRtData() : void 0
+        !tecCollection[0] ? this.props.loadTecnicos() : void 0
+
+        this.props.loadFilesData()
 
         document.addEventListener("keydown", this.escFunction, false);
     }
@@ -134,7 +139,8 @@ class Diretriz extends Component {
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
+        
         let filesArray = [];
         try {
             await axios.post('/api/diretrizUpload', this.state.form)
@@ -159,12 +165,15 @@ class Diretriz extends Component {
                 contentType: filesArray[5]
             }
             await axios.put('/api/editProcess', {
-                id: this.state.selectedId,
-                status: newStatus,
+                item: {
+                    _id: this.state.selectedId,
+                    status: newStatus,
+                },
                 processHistory: {
                     label: newStatus,
                     createdAt: new Date(),
-                    files: [fileObject]
+                    files: [fileObject],
+                    user: tecnico
                 }
             })
 
@@ -220,26 +229,32 @@ class Diretriz extends Component {
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
 
         const newStatus = 'Pendências para emissão de Diretrizes Metropolitanas.'
         let dirStatus = this.state.dirStatus
+        
         try {
-            await axios.put('/api/editProcess', {
-                id: this.state.selectedId,
-                status: 'Processo cadastrado',
-                processHistory: {
-                    label: 'Pendências para emissão de diretrizes',
-                    createdAt: new Date(),
-                    pendencias: dirStatus.pendencias,
-                    dirCheckList: {
-                        cgtOk: dirStatus.cgtOk,
-                        vistoriaOk: dirStatus.vistoriaOk,
-                        daeOk: dirStatus.daeOk,
-                        dirMunOk: dirStatus.dirMunOk,
+            await axios.put('/api/editProcess',
+                {
+                    item: {
+                        _id: this.state.selectedId,
+                        status: 'Processo cadastrado',
+                    },
+                    processHistory: {
+                        label: 'Pendências para emissão de diretrizes',
+                        createdAt: new Date(),
+                        pendencias: dirStatus.pendencias,
+                        dirCheckList: {
+                            cgtOk: dirStatus.cgtOk,
+                            vistoriaOk: dirStatus.vistoriaOk,
+                            daeOk: dirStatus.daeOk,
+                            dirMunOk: dirStatus.dirMunOk,
+                        },
+                        user: tecnico
                     }
                 }
-            })
+            )
             await reduxToastr('sucess', newStatus)
             await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus)
             await this.clearSearch()
@@ -293,6 +308,7 @@ class Diretriz extends Component {
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
         const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
+        
         if (input && !this.state.checked) {
             dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
         } else if (this.state.checked || (this.state.checked && input)) {
@@ -394,7 +410,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, setDate }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, setColor, setDate }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Diretriz);

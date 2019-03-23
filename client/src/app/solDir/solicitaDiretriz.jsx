@@ -3,9 +3,10 @@ import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from './../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, setColor, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
+import { getTecnico } from '../common/getTecnico'
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
@@ -40,11 +41,15 @@ class solicitaDiretriz extends Component {
     }
 
     componentDidMount() {
-        !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
-        !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
 
-        axios.get('/api/files')
+        let { empCollection, rtCollection, processCollection, tecCollection } = this.props.redux
+        !empCollection[0] ? this.props.loadEmpData() : void 0
+        !processCollection[0] ? this.props.loadProcessData() : void 0
+        !rtCollection[0] ? this.props.loadRtData() : void 0
+        !tecCollection[0] ? this.props.loadTecnicos() : void 0
+
+        this.props.loadFilesData()
+
         document.addEventListener("keydown", this.escFunction, false);
     }
 
@@ -104,6 +109,12 @@ class solicitaDiretriz extends Component {
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+
+        const { tecCollection } = this.props.redux
+        const tecnico = tecCollection.filter(el => el.municipios.some(mun => mun === processo.munEmpreendimento))[0]
+        
+        const user = getTecnico()
+
         let filesArray = []
         try {
             await axios.post('/api/solDirUpload', this.state.form)
@@ -120,15 +131,21 @@ class solicitaDiretriz extends Component {
                         })
                     }
                 })
-            await axios.put('/api/editProcess', {
-                id: this.state.selectedId,
-                status: 'Aguardando Diretrizes Metropolitanas',
-                processHistory: {
-                    label: 'Diretrizes metropolitanas solicitadas',
-                    createdAt: new Date(),
-                    files: filesArray
+            await axios.put('/api/editProcess',
+                {
+                    item: {
+                        _id: this.state.selectedId,
+                        status: 'Aguardando Diretrizes Metropolitanas',
+                        tecnico: tecnico.name + ' ' + tecnico.surName
+                    },
+                    processHistory: {
+                        label: 'Diretrizes metropolitanas solicitadas',
+                        createdAt: new Date(),
+                        files: filesArray,
+                        user: user
+                    }
                 }
-            })
+            )
 
             await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')
             await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
@@ -215,7 +232,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, setColor }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(solicitaDiretriz);

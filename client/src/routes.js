@@ -15,7 +15,7 @@ import EditData from './app/buscar/editData'
 import Anuencia from './app/anuencia/anuenciaContainer';
 
 const Routes = () => {
-
+    const userRole = localStorage.getItem('role')
     if (document.cookie.match('_sim-ad')) {
         return <Switch>
             <Route path='/' exact component={Home} />

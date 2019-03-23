@@ -2,8 +2,12 @@ import React from 'react';
 import OficioHeader from './oficioHeader'
 
 const MostrarOficio = (props) => {
-    let { mostrarOficio, content, redux, process, empreend, rt } = props
-
+    let { mostrarOficio, content, redux, process, empreend, rt, tecnicos } = props
+    
+    const nome = process.tecnico.split(' ')[0]
+    const sobreNome = process.tecnico.split(' ')[1]
+    const tecnico = tecnicos.filter(el=> el.name.match(nome) && el.surName.match(sobreNome))[0]
+        
     if (mostrarOficio) {
         return (
             <div id='oficio'
@@ -27,9 +31,9 @@ const MostrarOficio = (props) => {
                 <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 <center>
                     <strong>
-                        <p>Técnico Responsável</p>
+                        <p>{tecnico.name} {tecnico.surName}</p>
                     </strong>
-                    <p>CAU 1234567890</p>
+                    <p>CAU/MG {tecnico.cau}</p>
                 </center>
             </div>
         )

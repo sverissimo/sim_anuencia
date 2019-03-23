@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData, reduxToastr } from '../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, reduxToastr } from '../cadastro/cadActions'
 
 import AnuenciaTemplate from './anuenciaTemplate';
 import ProcessContainer from './processContainer'
@@ -38,10 +38,13 @@ class AnuenciaContainer extends Component {
     }
 
     componentDidMount() {
-        !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
-        !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0
+        let { empCollection, rtCollection, processCollection, filesCollection, tecCollection } = this.props.redux
+        !empCollection[0] ? this.props.loadEmpData() : void 0
+        !processCollection[0] ? this.props.loadProcessData() : void 0
+        !rtCollection[0] ? this.props.loadRtData() : void 0
+        !filesCollection[0] ? this.props.loadFilesData() : void 0
+        !tecCollection[0] ? this.props.loadTecnicos() : void 0
+
         document.addEventListener("keydown", this.escFunction, false);
     }
 
@@ -197,7 +200,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, reduxToastr }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnuenciaContainer);

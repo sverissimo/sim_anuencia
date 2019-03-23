@@ -8,6 +8,7 @@ import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from '../cadast
 import MostrarOficio from './mostrarOficio'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout';
+import { getTecnico } from '../common/getTecnico'
 
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -43,7 +44,7 @@ class AnuenciaForm extends Component {
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
 
         let color = document.getElementById('setcolor').style.backgroundColor
-        this.setState({ setColor: color })
+        this.setState({ setColor: color })        
     }
 
     handleChange(value) {
@@ -58,8 +59,9 @@ class AnuenciaForm extends Component {
         e.preventDefault()
         const { process, empreend, rt } = this.props
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento } = process
+        const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = process
 
+        const user = tecnico
 
         const pendCounter = this.props.process.processHistory.filter(log => log.label.match('Análise'))
 
@@ -69,12 +71,15 @@ class AnuenciaForm extends Component {
         this.setState({ oficio: oficio })
         try {
             await axios.put('/api/editProcess', {
-                id: this.props.process._id,
-                status: 'Pendências',
+                item: {
+                    _id: this.props.process._id,
+                    status: 'Pendências',
+                },
                 processHistory: {
                     label: label,
                     createdAt: new Date(),
-                    pendencias: oficio
+                    pendencias: oficio,
+                    user: user
                 }
             })
 
@@ -89,7 +94,7 @@ class AnuenciaForm extends Component {
     }
 
     render() {
-        const { empreend, rt, process } = this.props
+        const { empreend, rt, process, tecnicos } = this.props
         const enableAnuencia = () => this.state.mostrarOficio ? false : 'disabled'
 
         return (
@@ -115,6 +120,7 @@ class AnuenciaForm extends Component {
                     process={process}
                     empreend={empreend}
                     rt={rt}
+                    tecnicos={tecnicos}
                 />
 
                 <button className='btn right' onClick={this.enviaPendencias.bind(this)} disabled={enableAnuencia()}> Enviar </button>

@@ -35,13 +35,13 @@ const Count = (props) => {
 
 class Header extends Component {
 
-componentWillMount() {
-    this.props.setColor()
-}
+    componentWillMount() {
+        this.props.setColor()
+    }
 
     render() {
-
         const { process, color } = this.props
+        const userRole = localStorage.getItem('role')
 
         return (
             <nav>

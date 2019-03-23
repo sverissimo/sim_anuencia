@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from './cadActions';
 import { sendMail } from '../common/sendMail'
+import { getTecnico } from '../common/getTecnico'
 
 import CadTemplate from './cadTemplate';
 import { logout } from '../auth/logout';
@@ -150,6 +151,8 @@ class CadastroContainer extends React.Component {
         const { nome, nomeRt, nomeEmpreendimento, modalidade, munEmpreendimento, empMatch,
             rtMatch, empId, rtId } = this.state
 
+        const user = getTecnico()
+
         let procStatus
         if (modalidade === 'Loteamento') {
             procStatus = 'Processo cadastrado'
@@ -193,6 +196,7 @@ class CadastroContainer extends React.Component {
                 {
                     label: 'Processo cadastrado',
                     createdAt: new Date(),
+                    user: user
                 }
             ],
         }
@@ -235,7 +239,9 @@ class CadastroContainer extends React.Component {
                 }
                 await reduxToastr('sucess', cadProcess.nomeEmpreendimento, 'Processo Cadastrado.')
                 await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')
-                window.location.reload()
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1600);
             } catch (err) {
                 logout(err)
             }

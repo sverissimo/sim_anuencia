@@ -88,7 +88,7 @@ class ProcessContainer extends Component {
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
 
         let filesArray = []
         if (!this.state.notaTecnica || !this.state.anuenciaFile) {
@@ -111,12 +111,15 @@ class ProcessContainer extends Component {
                         }
                     })
                 await axios.put('/api/editProcess', {
-                    id: this.state.selectedId,
-                    status: 'Processo Anuído',
+                    item: {
+                        _id: this.state.selectedId,
+                        status: 'Processo Anuído',
+                    },
                     processHistory: {
                         label: 'Processo Anuído',
                         createdAt: new Date(),
-                        files: filesArray
+                        files: filesArray,
+                        user: tecnico
                     }
                 })
 

@@ -5,7 +5,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
-import { logout } from '../auth/logout';
+import { logout } from '../auth/logout'
+import { getTecnico } from '../common/getTecnico'
 
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolAnuenciaFilesRow from './solAnuenciaFilesRow';
@@ -126,6 +127,8 @@ class SolicitaAnuencia extends Component {
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        const user = getTecnico()
+
         const label = () => {
             let entradaCounter = []
             if (procCollection.length > 0) {
@@ -161,12 +164,15 @@ class SolicitaAnuencia extends Component {
                 })
             const label2 = label()
             await axios.put('/api/editProcess', {
-                id: this.state.selectedId,
-                status: 'Aguardando Análise',
+                item: {
+                    _id: this.state.selectedId,
+                    status: 'Aguardando Análise',
+                },
                 processHistory: {
                     label: label2,
                     createdAt: new Date(),
-                    files: filesArray
+                    files: filesArray,
+                    user: user
                 }
             })
             reduxToastr('sucess', 'Anuência Prévia solicitada.')
@@ -175,7 +181,7 @@ class SolicitaAnuencia extends Component {
             await this.closeDetails()
             await this.props.loadProcessData() && this.props.loadFilesData()
             console.log('ok')
-            
+
 
         } catch (err) {
             logout(err)

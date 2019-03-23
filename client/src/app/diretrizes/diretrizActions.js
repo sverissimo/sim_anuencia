@@ -8,15 +8,15 @@ export function setDate(date, itemId, event) {
         try {
 
             await axios.put(('/api/editProcess/'), {
-                _id: itemId,
                 item: {
+                    _id: itemId,
                     [event]: date
                 }
             })
                 .then(dispatch(loadProcessData()))
         }
         catch (err) {
-            console.log(err)            
+            console.log(err)
             dispatch(logout(false))
         }
     }

@@ -7,6 +7,7 @@ const emailRegex = /\S+@\S+\.\S+/
 
 const signup = (req, res, next) => {
     const name = req.body.name || ''
+    const surName = req.body.surName || ''
     const email = req.body.email || ''
     const password = req.body.password || ''
     const confirmPassword = req.body.confirmPassword || ''
@@ -33,7 +34,7 @@ const signup = (req, res, next) => {
         } else if (user) {
             return res.status(400).send('Usuário já cadastrado.')
         } else {
-            const newUser = new User({ name, email, password: passwordHash, role: 'admin' })
+            const newUser = new User({ name, surName, email, password: passwordHash, role: 'admin' })
             newUser.save((err, user) => {
                 if (err) {
                     return err
@@ -53,12 +54,12 @@ const login = (req, res, next) => {
         if (err) {
             return res.status(400).send(err)
         } else if (user && bcrypt.compareSync(password, user.password)) {
-            user = { _id: user._id, name: user.name, role: user.role }
+            user = { _id: user._id, name: user.name, surName: user.surName, role: user.role }
 
             const token = jwt.sign(user, process.env.AUTHSECRET, {
-                expiresIn: 30
+                expiresIn: 300
             })            
-            res.cookie('_sim-ad', token, { maxAge: 1000*30 }).send(user)
+            res.cookie('_sim-ad', token, { maxAge: 1000*300 }).send(user)
         } else {
             return res.status(400).send('Usuário/Senha inválidos')
         }

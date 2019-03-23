@@ -20,6 +20,7 @@ const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
 const { processModel } = require('./models/processModel');
 const { filesModel } = require('./models/filesModel');
+const { tecModel } = require('./models/tecnicos');
 
 
 const app = express();
@@ -47,6 +48,28 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
 app.use(express.static('client/build'))
 
 app.use(methodOverride('_method'));
+
+/* app.post('/cad', async (req, res) => {
+
+    await req.body.forEach(obj => {
+
+        const tecnicos = new tecModel(obj)
+        tecnicos.save((err, doc) => {
+            if (err) return res.status(400).send(err);
+        })
+    })
+    return res.status(200).send(doc)
+}) */
+
+app.post('/cad', async (req, res) => {
+
+    const tecnicos = new tecModel(req.body)
+    tecnicos.save((err, doc) => {
+        if (err) return res.status(400).send(err);
+
+        return res.status(200).send(doc)
+    })
+})
 
 app.post('/api/login', login)
 app.post('/api/signup', signup)
@@ -88,6 +111,7 @@ const storage = new GridFsStorage({
     }
 });
 const upload = multer({ storage });
+
 
 app.use(auth)
 
@@ -141,7 +165,7 @@ app.post('/api/mail', (req, res) => {
     })
 
     const mailOptions = {
-        from: 'sandro.verissimo@agenciarmbh.mg.gov.br',
+        from: 'Anuência Digital <anuencia.digital@agenciarmbh.mg.gov.br>',
         to: to,
         subject: subject,
         html: html
@@ -289,6 +313,14 @@ app.get('/api/showProcess', (req, res) => {
     });
 });
 
+app.get('/api/tecnicos', (req, res) => {
+
+    tecModel.find().exec((err, doc) => {
+        if (err) return err;
+        res.send(doc)
+    })
+})
+
 app.get('api/findEmp', (req, res) => {
     empreendedor.find({ nome: { $eq: req.params } }).exec((err, doc) => {
         if (err) return err;
@@ -387,25 +419,15 @@ app.put('/api/editRt/', (req, res) => {
 })
 
 app.put('/api/editProcess/', (req, res) => {
-
-    if (req.body.item) {
-        processModel.updateOne(
-            { '_id': req.body._id },
-            { $set: req.body.item }
-        ).then(result => res.json(result))
-
-    } else {
-        processModel.updateOne(
-            { '_id': req.body.id },
-            {
-                $push: { 'processHistory': req.body.processHistory },
-                $set: { 'status': req.body.status }
-            }
-        ).then(result => res.json(result))
-    }
+    processModel.updateOne(
+        { '_id': req.body.item._id },
+        {
+            $push: { 'processHistory': req.body.processHistory },
+            $set: req.body.item
+        }).then(result => res.json(result))
 })
 
-app.post('/api/sendHtml', auth, (req, res, next) => {       
+app.post('/api/sendHtml', auth, (req, res, next) => {
     next()
 }, (req, res) => {
     console.log(req.decoded)

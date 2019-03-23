@@ -33,10 +33,14 @@ class Login extends Component {
             password: this.state.password,
         })
             .then(res => user = res.data)
+            .catch(err=> {
+                reduxToastr('Erro', 'Usuário/senha invalidos.')
+                return null
+            })
 
         let authenticate = () => document.cookie.match('_sim-ad=', '') ? true : false
         await localStorage.setItem('login', authenticate())
-
+        if (!user) return 
         for (let [key, value] of Object.entries(user)) {
             await localStorage.setItem(key, value)
         }
@@ -55,6 +59,7 @@ class Login extends Component {
     }
 
     render() {
+
         let { registered } = this.state
         return (
             <div>
