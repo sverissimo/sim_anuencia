@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, setColor, reduxToastr } from './../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, setColor, loading, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
 import { getTecnico } from '../common/getTecnico'
@@ -12,7 +12,6 @@ import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
 import { solDirConfig } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
-
 
 class solicitaDiretriz extends Component {
 
@@ -112,10 +111,11 @@ class solicitaDiretriz extends Component {
 
         const { tecCollection } = this.props.redux
         const tecnico = tecCollection.filter(el => el.municipios.some(mun => mun === processo.munEmpreendimento))[0]
-        
+
         const user = getTecnico()
 
         let filesArray = []
+        this.props.loading(true)
         try {
             await axios.post('/api/solDirUpload', this.state.form)
                 .then(res => {
@@ -131,24 +131,23 @@ class solicitaDiretriz extends Component {
                         })
                     }
                 })
-            await axios.put('/api/editProcess',
-                {
-                    item: {
-                        _id: this.state.selectedId,
-                        status: 'Aguardando Diretrizes Metropolitanas',
-                        tecnico: tecnico.name + ' ' + tecnico.surName
-                    },
-                    processHistory: {
-                        label: 'Diretrizes metropolitanas solicitadas',
-                        createdAt: new Date(),
-                        files: filesArray,
-                        user: user
-                    }
+            await axios.put('/api/editProcess', {
+                item: {
+                    _id: this.state.selectedId,
+                    status: 'Aguardando Diretrizes Metropolitanas',
+                    tecnico: tecnico.name + ' ' + tecnico.surName
+                },
+                processHistory: {
+                    label: 'Diretrizes metropolitanas solicitadas',
+                    createdAt: new Date(),
+                    files: filesArray,
+                    user: user
                 }
+            }
             )
-
-            await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')
             await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
+            await this.props.loading(false)
+            await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')            
             await this.clearSearch()
             await this.closeDetails()
             this.props.loadProcessData() && this.props.loadFilesData()
@@ -232,7 +231,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, setColor }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, loading, setColor }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(solicitaDiretriz);

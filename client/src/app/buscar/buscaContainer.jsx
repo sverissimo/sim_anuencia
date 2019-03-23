@@ -135,6 +135,7 @@ class ShowEmpContainer extends Component {
         if (this.state.item && this.state.select === 'process') {
             let item = Object.assign({}, this.state.item)
             delete item.processHistory            
+            
             await axios.put(('/api/editProcess'), { item: item })
                 .then(this.setState({ edit: false }))
                 .catch(err => logout(err))

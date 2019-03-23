@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, reduxToastr } from './../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, loading, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
 import { getTecnico } from '../common/getTecnico'
@@ -148,6 +148,7 @@ class SolicitaAnuencia extends Component {
         }
 
         let filesArray = [];
+        this.props.loading(true)
         try {
             await axios.post('/api/solAnuenciaUpload', this.state.form)
                 .then(res => {
@@ -175,6 +176,7 @@ class SolicitaAnuencia extends Component {
                     user: user
                 }
             })
+            this.props.loading(false)
             reduxToastr('sucess', 'Anuência Prévia solicitada.')
             await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Anuência Prévia solicitada.')
             await this.clearSearch()
@@ -309,7 +311,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, loading }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SolicitaAnuencia);

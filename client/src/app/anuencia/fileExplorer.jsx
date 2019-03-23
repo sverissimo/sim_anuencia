@@ -26,7 +26,7 @@ const FileExplorer = (props) => {
                                             id={file.id}
                                             key={index}
                                             style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
-                                            onClick={download}>
+                                            onClick={(e)=>download(e, file.originalName)}>
                                             {file.originalName}
                                         </span>
                                     </div>

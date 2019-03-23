@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import ReactQuill from 'react-quill';
 
-import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from '../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loading, reduxToastr } from '../cadastro/cadActions'
 import MostrarOficio from './mostrarOficio'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout';
@@ -67,8 +67,8 @@ class AnuenciaForm extends Component {
 
         const label = `Análise ${pendCounter.length + 1}`
         const oficio = document.getElementById('oficio').outerHTML
-
-        this.setState({ oficio: oficio })
+        this.props.loading(true)
+        this.setState({ oficio: oficio })        
         try {
             await axios.put('/api/editProcess', {
                 item: {
@@ -82,7 +82,7 @@ class AnuenciaForm extends Component {
                     user: user
                 }
             })
-
+            this.props.loading(false)
             await reduxToastr('sucess', 'Pendências para a emissão de anuência.')
             await sendMail(empreend.email, rt.emailRt, empreend.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Pendências para a emissão de anuência.')
             await this.props.close()
@@ -137,7 +137,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, reduxToastr }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loading, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnuenciaForm);

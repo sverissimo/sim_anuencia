@@ -91,7 +91,7 @@ class LogDetails extends Component {
                                             <div className="col s11">
                                                 <span id={file.id}
                                                     style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
-                                                    onClick={download}>
+                                                    onClick={(e)=>download(e, file.originalName)}>
                                                     {labels(file.fieldName)}
                                                 </span>
                                             </div>

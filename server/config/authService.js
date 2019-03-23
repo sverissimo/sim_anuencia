@@ -57,9 +57,9 @@ const login = (req, res, next) => {
             user = { _id: user._id, name: user.name, surName: user.surName, role: user.role }
 
             const token = jwt.sign(user, process.env.AUTHSECRET, {
-                expiresIn: 300
+                expiresIn: 60*60*4
             })            
-            res.cookie('_sim-ad', token, { maxAge: 1000*300 }).send(user)
+            res.cookie('_sim-ad', token, { maxAge: 1000*60*60*4 }).send(user)
         } else {
             return res.status(400).send('Usuário/Senha inválidos')
         }

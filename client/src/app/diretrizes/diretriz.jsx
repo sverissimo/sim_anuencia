@@ -7,7 +7,7 @@ import styles from '../css/react-datetime.css'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, setColor, reduxToastr } from '../cadastro/cadActions'
+import { loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, setColor, loading, reduxToastr } from '../cadastro/cadActions'
 import { setDate } from './diretrizActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
@@ -141,7 +141,8 @@ class Diretriz extends Component {
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
         
-        let filesArray = [];
+        let filesArray = []
+        this.props.loading(true)
         try {
             await axios.post('/api/diretrizUpload', this.state.form)
                 .then(res => {
@@ -176,7 +177,7 @@ class Diretriz extends Component {
                     user: tecnico
                 }
             })
-
+            this.props.loading(false)
             await reduxToastr('sucess', newStatus)
             await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus + '.')
             await this.clearSearch()
@@ -233,10 +234,9 @@ class Diretriz extends Component {
 
         const newStatus = 'Pendências para emissão de Diretrizes Metropolitanas.'
         let dirStatus = this.state.dirStatus
-        
+        this.props.loading(true)
         try {
-            await axios.put('/api/editProcess',
-                {
+            await axios.put('/api/editProcess', {
                     item: {
                         _id: this.state.selectedId,
                         status: 'Processo cadastrado',
@@ -255,6 +255,7 @@ class Diretriz extends Component {
                     }
                 }
             )
+            await this.props.loading(false)
             await reduxToastr('sucess', newStatus)
             await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus)
             await this.clearSearch()
@@ -410,7 +411,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, setColor, setDate }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, loading, setColor, setDate }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Diretriz);

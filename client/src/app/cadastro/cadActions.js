@@ -92,3 +92,10 @@ export const reduxToastr = (status, input, titulo) => {
     }
 }
 
+export const loading = (on) => {
+    
+        return {
+            type: 'LOADING',
+            payload: on
+    }
+}

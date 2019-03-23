@@ -26,8 +26,8 @@ const initState = {
     empId: '',
     editItem: false,
     search: '',
-    setColor: ''
-
+    setColor: '',
+    loading: false
 }
 
 const CadReducer = (state = initState, action) => {
@@ -50,6 +50,9 @@ const CadReducer = (state = initState, action) => {
 
         case 'SET_COLOR':
             return { ...state, setColor: action.payload }
+
+        case 'LOADING':
+            return { ...state, loading: action.payload }
 
         default:
             return state

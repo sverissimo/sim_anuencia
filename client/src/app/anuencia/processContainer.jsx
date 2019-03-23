@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux'
+
 import ProcessTemplate from './processTemplate'
 import { sendMail } from '../common/sendMail'
-import { reduxToastr } from './../cadastro/cadActions'
+import { loading, reduxToastr } from './../cadastro/cadActions'
 import { logout } from '../auth/logout';
 
 class ProcessContainer extends Component {
@@ -90,6 +93,7 @@ class ProcessContainer extends Component {
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
 
+        this.props.loading(true)
         let filesArray = []
         if (!this.state.notaTecnica || !this.state.anuenciaFile) {
             alert('Favor anexar a nota técnica e a certidão de anuência')
@@ -122,7 +126,7 @@ class ProcessContainer extends Component {
                         user: tecnico
                     }
                 })
-
+                this.props.loading(false)
                 await reduxToastr('sucess', 'Processo Anuído.')
                 await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Processo Anuído.')
                 await this.props.clear()
@@ -180,4 +184,14 @@ class ProcessContainer extends Component {
     }
 };
 
-export default ProcessContainer;
+const mapStateToProps = (state) => {
+    return {
+        cadastro: state.cadastro
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({ loading, reduxToastr }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProcessContainer);

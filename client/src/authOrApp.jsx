@@ -6,9 +6,10 @@ import Routes from './routes';
 import Header from './app/common/header';
 import Messages from './app/common/messages'
 import Login from './app/auth/login'
+import Loading from './app/common/loading'
 
 const AuthOrApp = (props) => {
-    
+    let loading = props.render.loading
     return (
         (document.cookie && (props.auth.login || localStorage.getItem('login'))) ? <div>
             <BrowserRouter>
@@ -20,6 +21,7 @@ const AuthOrApp = (props) => {
                 </div>
             </BrowserRouter>
             <Messages />
+            {loading && <Loading />}
         </div> :
             <div>
                 <Login />
@@ -29,7 +31,8 @@ const AuthOrApp = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        auth: state.auth
+        auth: state.auth,
+        render: state.cadastro
     }
 }
 

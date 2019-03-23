@@ -49,27 +49,6 @@ app.use(express.static('client/build'))
 
 app.use(methodOverride('_method'));
 
-/* app.post('/cad', async (req, res) => {
-
-    await req.body.forEach(obj => {
-
-        const tecnicos = new tecModel(obj)
-        tecnicos.save((err, doc) => {
-            if (err) return res.status(400).send(err);
-        })
-    })
-    return res.status(200).send(doc)
-}) */
-
-app.post('/cad', async (req, res) => {
-
-    const tecnicos = new tecModel(req.body)
-    tecnicos.save((err, doc) => {
-        if (err) return res.status(400).send(err);
-
-        return res.status(200).send(doc)
-    })
-})
 
 app.post('/api/login', login)
 app.post('/api/signup', signup)
@@ -131,15 +110,14 @@ app.get('/api/download/:id', function (req, res) {
                 filename: file.filename,
                 root: "uploads"
             });
-            // set the proper content type 
+            // set the proper content type
             res.set({
                 'Content-Type': file.contentType,
-                'Content-Disposition': 'attachment',
-                'originalName': file.metadata.originalName
+                'Content-Disposition': 'attachment',                
             });
 
             // Return response
-            return readstream.pipe(res);
+            return readstream.pipe(res)
         }
     });
 });
@@ -289,7 +267,7 @@ app.get('/api/files', (req, res) => {
 })
 
 
-app.get('/api/showEmpreend', auth, (req, res) => {
+app.get('/api/showEmpreend', (req, res) => {
 
     empreendedor.find().sort({ nome: 1 }).exec((err, doc) => {
         if (err) return err;
@@ -419,19 +397,19 @@ app.put('/api/editRt/', (req, res) => {
 })
 
 app.put('/api/editProcess/', (req, res) => {
-    processModel.updateOne(
-        { '_id': req.body.item._id },
-        {
-            $push: { 'processHistory': req.body.processHistory },
-            $set: req.body.item
-        }).then(result => res.json(result))
-})
-
-app.post('/api/sendHtml', auth, (req, res, next) => {
-    next()
-}, (req, res) => {
-    console.log(req.decoded)
-    res.send('ok')
+    if (req.body.processHistory) {
+        processModel.updateOne(
+            { '_id': req.body.item._id },
+            {
+                $push: { 'processHistory': req.body.processHistory },
+                $set: req.body.item
+            }).then(result => res.json(result))
+    } else {
+        processModel.updateOne(
+            { '_id': req.body.item._id },
+            { $set: req.body.item })
+            .then(result => res.json(result))
+    }
 })
 
 if (process.env.NODE_ENV === 'production') {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from './cadActions';
+import { loadEmpData, loadRtData, loadProcessData, loading, reduxToastr } from './cadActions';
 import { sendMail } from '../common/sendMail'
 import { getTecnico } from '../common/getTecnico'
 
@@ -206,6 +206,7 @@ class CadastroContainer extends React.Component {
         } else if (!modalidade || !munEmpreendimento) {
             alert('Favor preencher a modalidade e o município do empreendimento.')
         } else if (nome && (nomeRt && nomeEmpreendimento && (modalidade && munEmpreendimento))) {
+            this.props.loading(true)
             try {
 
                 if (empMatch && rtMatch) {
@@ -236,12 +237,13 @@ class CadastroContainer extends React.Component {
                                     axios.post('/api/cadastro_process', cadProcess)
                                 })
                         })
-                }
-                await reduxToastr('sucess', cadProcess.nomeEmpreendimento, 'Processo Cadastrado.')
-                await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')
-                setTimeout(() => {
+                }                
+                this.props.loading(false)
+                await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')                
+                await reduxToastr('sucess', cadProcess.nomeEmpreendimento, 'Processo Cadastrado.')                
+                setTimeout(() => {                    
                     window.location.reload()
-                }, 1600);
+                }, 1600)
             } catch (err) {
                 logout(err)
             }
@@ -345,7 +347,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, reduxToastr }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loading, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CadastroContainer);
