@@ -41,8 +41,7 @@ class Header extends Component {
 
     render() {
         const { process, color } = this.props
-        const userRole = localStorage.getItem('role')
-
+        
         return (
             <nav>
                 <div className="nav-wrapper" style={{ paddingLeft: 30, paddingRight: 30, backgroundColor: color }} id="setcolor" >

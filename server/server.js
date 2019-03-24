@@ -113,7 +113,7 @@ app.get('/api/download/:id', function (req, res) {
             // set the proper content type
             res.set({
                 'Content-Type': file.contentType,
-                'Content-Disposition': 'attachment',                
+                'Content-Disposition': 'attachment',
             });
 
             // Return response
@@ -122,28 +122,22 @@ app.get('/api/download/:id', function (req, res) {
     });
 });
 
-app.post('/api/mail', (req, res) => {
+app.post('/api/mail', (req, res) => {    
     const { to, subject, html } = req.body
-
     let answer
 
     const transporter = nodemailer.createTransport({
         host: process.env.MAILHOST,
-        port: 587,
-        ignoreTLS: false,
+        port: 465,
+        secureConnection: true, // use SSL        
         auth: {
             user: process.env.MAILUSER,
             pass: process.env.MAILPASS
         },
-        tls: {
-            // do not fail on invalid certs
-            secureProtocol: "TLSv1_2_method",
-            rejectUnauthorized: false
-        }
     })
 
     const mailOptions = {
-        from: 'Anuência Digital <anuencia.digital@agenciarmbh.mg.gov.br>',
+        from: 'anuencia.digital@agenciarmbh.mg.gov.br',
         to: to,
         subject: subject,
         html: html
@@ -152,8 +146,7 @@ app.post('/api/mail', (req, res) => {
     transporter.sendMail(mailOptions, function (err, res) {
         if (err) {
             console.log(err);
-        } else {
-            console.log('Email Sent');
+        } else {                       
             answer = res.status
         }
     })

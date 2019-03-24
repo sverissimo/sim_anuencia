@@ -182,8 +182,7 @@ class SolicitaAnuencia extends Component {
             await this.clearSearch()
             await this.closeDetails()
             await this.props.loadProcessData() && this.props.loadFilesData()
-            console.log('ok')
-
+            console.log('')
 
         } catch (err) {
             logout(err)
@@ -250,7 +249,7 @@ class SolicitaAnuencia extends Component {
                         rtDetails={this.rtDetails.bind(this)}
                         array={solAnuenciaConfig1}
                         array2={solAnuenciaConfig2}
-                        showFiles={this.showFiles.bind(this)}
+                        showFiles={this.showFiles.bind(this)}                        
                     >
                         {
                             fileInput1.map((item, i) => {

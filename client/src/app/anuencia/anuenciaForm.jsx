@@ -8,7 +8,7 @@ import { loadEmpData, loadRtData, loadProcessData, loading, reduxToastr } from '
 import MostrarOficio from './mostrarOficio'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout';
-import { getTecnico } from '../common/getTecnico'
+//import { getTecnico } from '../common/getTecnico'
 
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons

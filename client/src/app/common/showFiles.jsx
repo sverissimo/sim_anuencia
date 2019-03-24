@@ -19,12 +19,12 @@ const ShowFiles = (props) => {
             <div className='container z-depth-3'
                 style={{
                     position: 'fixed',
-                    top: '25%',
+                    top: '8%',
                     right: '15%',
                     left: '15%',
-                    height: '50%',
+                    height: '85%',
                     borderRadius: '15px',
-                    backgroundColor: 'white',
+                    backgroundColor: '#fbfbfb',
                     padding: '15px 0px 0px 30px',
                     border: '1px solid #ddd',
                     marginBottom: '25px',

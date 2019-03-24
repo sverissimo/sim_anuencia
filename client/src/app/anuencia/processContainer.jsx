@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import ProcessTemplate from './processTemplate'
 import { sendMail } from '../common/sendMail'
-import { loading, reduxToastr } from './../cadastro/cadActions'
+import { loadProcessData, loadFilesData, loading, reduxToastr } from './../cadastro/cadActions'
 import { logout } from '../auth/logout';
 
 class ProcessContainer extends Component {
@@ -36,20 +36,20 @@ class ProcessContainer extends Component {
         if (id !== this.state.selectedOption) {
             let format = {
                 stylez:
-                {
-                    minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
-                    borderTopRightRadius: '15%'
-                },
+                    {
+                        minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
+                        borderTopRightRadius: '15%'
+                    },
                 class: 'col s12 m6 l3 z-depth-2'
             }
             return format
         } else {
             let format = {
                 stylez:
-                {
-                    minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
-                    borderTopRightRadius: '15%', backgroundColor: '#fcfcfc'
-                },
+                    {
+                        minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
+                        borderTopRightRadius: '15%', backgroundColor: '#fcfcfc'
+                    },
                 class: 'col s12 m6 l3'
             }
             return format
@@ -93,11 +93,11 @@ class ProcessContainer extends Component {
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
 
-        this.props.loading(true)
         let filesArray = []
         if (!this.state.notaTecnica || !this.state.anuenciaFile) {
             alert('Favor anexar a nota técnica e a certidão de anuência')
         } else {
+            this.props.loading(true)
             try {
 
                 await axios.post('/api/anuenciaUpload', this.state.form)
@@ -126,14 +126,12 @@ class ProcessContainer extends Component {
                         user: tecnico
                     }
                 })
-                this.props.loading(false)
                 await reduxToastr('sucess', 'Processo Anuído.')
                 await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Processo Anuído.')
-                await this.props.clear()
-                await this.props.close()
                 setTimeout(() => {
-                    window.location.reload()
-                }, 1500);
+                    this.props.loading(false)
+                    this.props.loadProcessData(); this.props.loadFilesData()
+                }, 1250);
 
             } catch (err) {
                 logout(err)
@@ -191,7 +189,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ loading, reduxToastr }, dispatch)
+    return bindActionCreators({ loadProcessData, loadFilesData, loading, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProcessContainer);

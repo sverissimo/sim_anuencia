@@ -58,8 +58,8 @@ const SolAnuenciaTemplate = (props) => {
                     icon='clear'
                     onClick={props.clear}                  
                     />
-                </div>
-            </div>
+                </div>                
+            </div>            
             <div>
                 {
                     data.selectedId && data.checked  ?
@@ -91,7 +91,7 @@ const SolAnuenciaTemplate = (props) => {
                         )
                         : null
                 }
-            </div>
+            </div>           
         </div>
     );
 };

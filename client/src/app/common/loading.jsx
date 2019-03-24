@@ -4,7 +4,7 @@ const Loading = () => {
     return (
         <div style={{
             position: 'fixed',
-            top: '25%',
+            top: '40%',
             right: '15%',
             left: '15%',
             height: '50%',
@@ -13,7 +13,7 @@ const Loading = () => {
             textAlign: 'center',
             zIndex: 1
         }}>
-            <img src="/images/loading.gif" alt="" height="70px" width="70px" />
+            <img src="/images/loading.gif" alt="" height="60px" width="60px" />
         </div>
     );
 };

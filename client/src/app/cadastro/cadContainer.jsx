@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadEmpData, loadRtData, loadProcessData, loading, reduxToastr } from './cadActions';
+import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loading, reduxToastr } from './cadActions';
 import { sendMail } from '../common/sendMail'
 import { getTecnico } from '../common/getTecnico'
 
@@ -42,9 +42,11 @@ class CadastroContainer extends React.Component {
     }
 
     componentDidMount() {
-        !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
+        let { empCollection, rtCollection, processCollection, tecCollection } = this.props.cadastro
+        !empCollection[0] ? this.props.loadEmpData() : void 0
+        !processCollection[0] ? this.props.loadProcessData() : void 0
+        !rtCollection[0] ? this.props.loadRtData() : void 0
+        !tecCollection[0] ? this.props.loadTecnicos() : void 0
     }
 
     async enableRtInput(e) {
@@ -153,6 +155,9 @@ class CadastroContainer extends React.Component {
 
         const user = getTecnico()
 
+        const { tecCollection } = this.props.cadastro
+        const tecnicoAlocado = tecCollection.filter(el => el.municipios.some(mun => mun === this.state.munEmpreendimento))[0]
+
         let procStatus
         if (modalidade === 'Loteamento') {
             procStatus = 'Processo cadastrado'
@@ -200,7 +205,9 @@ class CadastroContainer extends React.Component {
                 }
             ],
         }
-
+        if (this.state.modalidade === 'Desmembramento') {
+            cadProcess.tecnico = tecnicoAlocado.name + ' ' + tecnicoAlocado.surName
+        }
         if (!nome || !nomeRt || !nomeEmpreendimento) {
             alert('Favor preencher os dados do empreendedor, RT e empreendimento.')
         } else if (!modalidade || !munEmpreendimento) {
@@ -237,11 +244,11 @@ class CadastroContainer extends React.Component {
                                     axios.post('/api/cadastro_process', cadProcess)
                                 })
                         })
-                }                
+                }
                 this.props.loading(false)
-                await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')                
-                await reduxToastr('sucess', cadProcess.nomeEmpreendimento, 'Processo Cadastrado.')                
-                setTimeout(() => {                    
+                await sendMail(cadEmp.email, cadRt.emailRt, cadEmp.nome, cadProcess.modalidade, cadProcess.nomeEmpreendimento, cadProcess.munEmpreendimento, 'Processo cadastrado.')
+                reduxToastr('sucess', cadProcess.nomeEmpreendimento, 'Processo Cadastrado.')
+                setTimeout(() => {
                     window.location.reload()
                 }, 1600)
             } catch (err) {
@@ -347,7 +354,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loading, reduxToastr }, dispatch)
+    return bindActionCreators({ loadEmpData, loadRtData, loadProcessData, loadTecnicos, loading, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CadastroContainer);

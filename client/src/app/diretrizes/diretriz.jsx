@@ -11,7 +11,7 @@ import { loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, 
 import { setDate } from './diretrizActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
-import { getTecnico } from '../common/getTecnico'
+//import { getTecnico } from '../common/getTecnico'
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';

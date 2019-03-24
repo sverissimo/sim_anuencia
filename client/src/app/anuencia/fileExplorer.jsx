@@ -13,13 +13,18 @@ const FileExplorer = (props) => {
 
             {
                 log.map((el, i) =>
-                    <div style={{ border: '1px solid #ddd', paddingLeft: '2%' }} key={i + 1000}>
+                    <div style={{ border: '1px solid #ddd', padding: '1% 0 0 1%' }} key={i + 1000}>
                         <div className='row' align="center">
-                            <h5>{el.label} em {showDate(el.createdAt)}</h5>
+                            <span style={{ fontSize:'1rem', fontWeight:500}} >{el.label} em {showDate(el.createdAt)}</span>
+                        </div>
+                        <div className='row' style={{ fontSize:'0.9rem', padding: '0.8% 0', backgroundColor:'#f7f7f7', fontWeight:500, borderBottom: '1px solid #ddd', borderTop: '1px solid #ddd'}}>
+                            <div className="col s5 left">Documento</div>
+                            <div className="col s4 left">Nome do arquivo</div>
+                            <div className="col s3 center">Tamanho</div>
                         </div>
                         <div className='row'>
                             {el.files.map((file, index) =>
-                                <div className='row' key={(index + 100)}>
+                                <div className='row' key={(index + 100)} style={{ paddingLeft: '1%' }} >
                                     <div className='col s5'>{fileLabel(file.fieldName)}</div>
                                     <div className='col s4'>
                                         <span
@@ -30,7 +35,7 @@ const FileExplorer = (props) => {
                                             {file.originalName}
                                         </span>
                                     </div>
-                                    <div className='col s3'>{formatFileSize(file.fileSize)}</div>
+                                    <div className='col s3 center'>{formatFileSize(file.fileSize)}</div>
                                 </div>
                             )}
                         </div>

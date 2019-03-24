@@ -7,7 +7,7 @@ export const soloStyle = (soloComponent, height) => {
             left: '15%',
             height: height[1],
             borderRadius: '15px',
-            backgroundColor: '#fcfcfc',            
+            backgroundColor: '#fbfbfb',            
             border: '2px solid #aaa',
             marginBottom: '25px',
             marginTop: '25px',

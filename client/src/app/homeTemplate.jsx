@@ -7,13 +7,12 @@ const HomeTemplate = (props) => {
   return (
     <div>
       <div className="card-panel" style={{backgroundImage: `url(${"/images/home_bg.jpg"})`}}>
-        <div className="container">
+        <div className="container" style={{paddingBottom: '2%'}}>
           <h1 className="display-3"> <strong>
             <span style={{ color: 'white' }} >Anuência Digital</span> </strong> </h1>
           <h6 style={{ color: 'white', fontWeight: '500' }}>
             Versão 1.0.3
-          </h6>
-          <p className="btn btn-primary btn-lg" href="" role="button" style={{ backgroundColor: color }}>Saiba mais &raquo;</p>
+          </h6>          
         </div>
       </div>
 
