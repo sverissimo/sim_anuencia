@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr'
+import tecnicosArmbh from '../config/tecnicos.json'
 
 export const loadEmpData = () => {
 
@@ -59,16 +60,11 @@ export function loadFilesData() {
 
 export function loadTecnicos() {
 
-    const tecnicos = axios.get('/api/tecnicos')
-        .then(res => res.data)
-        .catch(err => {
-            console.log(err)
-            toastr.error('Erro', 'Sessão expirada.')
-        })
+    console.log(tecnicosArmbh)
 
     return {
         type: 'LOAD_TECNICOS',
-        payload: tecnicos
+        payload: tecnicosArmbh
     }
 }
 

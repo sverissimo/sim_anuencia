@@ -1,0 +1,90 @@
+[
+{   
+    "municipios" : [],
+    "name" : "Adalberto",
+    "surName" : "Stanley",
+    "email" : "adalberto.alves@agenciarmbh.mg.gov.br",
+    "cau" : "A51846-8"
+},
+{ 
+    "municipios" : [ 
+        "Betim", 
+        "Contagem", 
+        "Esmeraldas", 
+        "Florestal", 
+        "Juatuba", 
+        "Ribeirão das Neves"
+    ],
+    "name" : "Ananda",
+    "surName" : "Camargo",
+    "email" : "ananda.silva@agenciarmbh.mg.gov.br",
+    "cau" : "A70787-2"
+},
+{ 
+    "municipios" : [],
+    "name" : "Fabrício",
+    "surName" : "Pallione",
+    "email" : "fabricio.avelar@agenciarmbh.mg.gov.br",
+    "cau" : "A94523-4"
+},
+{
+     "municipios" : [ 
+        "Brumadinho", 
+        "Igarapé", 
+        "Itaguara", 
+        "Itatiaiuçu", 
+        "Mateus Leme", 
+        "Rio Manso", 
+        "São Joaquim de Bicas"
+    ],
+    "name" : "Flávio",
+    "surName" : "Neves",
+    "email" : "flavio.neves@agenciarmbh.mg.gov.br",
+    "cau" : "A21460-4"
+},
+{
+     "municipios" : [ 
+        "Caeté", 
+        "Jaboticatubas", 
+        "Nova União", 
+        "Sabará", 
+        "Santa Luzia", 
+        "Taquaraçu de Minas", 
+        "Vespasiano"
+    ],
+    "name" : "Gabriela",
+    "surName" : "Mara",
+    "email" : "gabriela.batista@agenciarmbh.mg.gov.br",
+    "cau" : "213171-4"
+},
+{
+     "municipios" : [ 
+        "Baldim", 
+        "Confins", 
+        "Capim Branco", 
+        "Lagoa Santa", 
+        "Matozinhos", 
+        "Pedro Leopoldo", 
+        "São José da Lapa"
+    ],
+    "name" : "Viviane",
+    "surName" : "Cota",
+    "email" : "viviane.cota@agenciarmbh.mg.gov.br",
+    "cau" : "A44546-0"
+},
+{
+     "municipios" : [ 
+        "Belo Horizonte", 
+        "Ibirité", 
+        "Mário Campos", 
+        "Nova Lima", 
+        "Raposos", 
+        "Rio Acima", 
+        "Sarzedo"
+    ],
+    "name" : "Sílvia",
+    "surName" : "Gramiscelli",
+    "email" : "silvia.reis@agenciarmbh.mg.gov.br",
+    "cau" : "210980-8" 
+}
+]

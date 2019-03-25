@@ -145,9 +145,9 @@ class solicitaDiretriz extends Component {
                 }
             }
             )
-            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
-            await this.props.loading(false)
+            this.props.loading(false)
             await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')            
+            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')            
             await this.clearSearch()
             await this.closeDetails()
             this.props.loadProcessData() && this.props.loadFilesData()
