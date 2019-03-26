@@ -25,7 +25,10 @@ const userSchema = mongoose.Schema({
     },
     municipio: {
         type: String,
-    }
+    },    
+    verified: {
+        type: Boolean
+    },
 })
 
 const User = mongoose.model('User', userSchema)

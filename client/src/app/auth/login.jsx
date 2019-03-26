@@ -3,7 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { login } from './authActions'
+import { login, verify } from './authActions'
 import { reduxToastr } from '../cadastro/cadActions'
 
 import LoginTemplate from './loginTemplate'
@@ -33,18 +33,28 @@ class Login extends Component {
             password: this.state.password,
         })
             .then(res => user = res.data)
-            .catch(err=> {
+            .catch(err => {
                 reduxToastr('Erro', 'Usuário/senha invalidos.')
                 return null
             })
 
-        let authenticate = () => document.cookie.match('_sim-ad=', '') ? true : false
-        await localStorage.setItem('login', authenticate())
-        if (!user) return 
-        for (let [key, value] of Object.entries(user)) {
-            await localStorage.setItem(key, value)
+        if (user === 'Aguardando verificação do usuário.') {
+            await localStorage.setItem('verified', false)
+            this.props.login(true); this.props.verify(false)
+            return null
         }
-        this.props.login(true)
+        
+        let authenticate = () => document.cookie.match('_sim-ad=', '') ? true : false
+
+        await localStorage.setItem('login', authenticate())
+        if (!user) return
+        if (user.verified) {
+            
+            for (let [key, value] of Object.entries(user)) {
+                await localStorage.setItem(key, value)
+            }
+            this.props.login(true); this.props.verify(true)
+        }
     }
 
     async signup(e) {
@@ -89,10 +99,8 @@ class Login extends Component {
                     {
                         !registered && <p className="link right" onClick={() => this.setState({ registered: true })}> Já é cadastrado? Faça o login.</p>
                     }
-
                 </div>
             </div>
-
         )
     }
 }
@@ -103,7 +111,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({ login, reduxToastr }, dispatch)
+    return bindActionCreators({ login, verify, reduxToastr }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

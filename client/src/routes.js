@@ -1,18 +1,19 @@
-import React from 'react';
-import { withRouter, Switch, Route } from 'react-router-dom';
+import React from 'react'
+import { withRouter, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { reduxToastr } from './app/cadastro/cadActions'
 import { logout } from './app/auth/logout'
 
 import Home from './app/home';
-import CadastroContainer from './app/cadastro/cadContainer';
-import BuscaContainer from './app/buscar/buscaContainer';
-import SolicitaDiretriz from './app/solDir/solicitaDiretriz';
-import diretriz from './app/diretrizes/diretriz';
-import SolicitaAnuencia from './app/solAnuencia/solicitaAnuencia';
+import CadastroContainer from './app/cadastro/cadContainer'
+import BuscaContainer from './app/buscar/buscaContainer'
+import SolicitaDiretriz from './app/solDir/solicitaDiretriz'
+import diretriz from './app/diretrizes/diretriz'
+import SolicitaAnuencia from './app/solAnuencia/solicitaAnuencia'
 import EditData from './app/buscar/editData'
-import Anuencia from './app/anuencia/anuenciaContainer';
+import Anuencia from './app/anuencia/anuenciaContainer'
+import Users from './app/auth/users'
 
 const Routes = () => {
     //const userRole = localStorage.getItem('role')
@@ -26,6 +27,7 @@ const Routes = () => {
             <Route path='/showEmpreend' component={BuscaContainer} />
             <Route path='/editData' component={EditData} />
             <Route path='/Anuencia' exact component={Anuencia} />
+            <Route path='/users' exact component={Users} />
         </Switch>
     } else {
         logout()

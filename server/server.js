@@ -122,7 +122,7 @@ app.get('/api/download/:id', function (req, res) {
     });
 });
 
-app.post('/api/mail', (req, res) => {    
+app.post('/api/mail', (req, res) => {
     const { to, subject, html } = req.body
     let answer
 
@@ -146,7 +146,7 @@ app.post('/api/mail', (req, res) => {
     transporter.sendMail(mailOptions, function (err, res) {
         if (err) {
             console.log(err);
-        } else {                       
+        } else {
             answer = res.status
         }
     })
@@ -287,6 +287,13 @@ app.get('/api/showProcess', (req, res) => {
 app.get('/api/tecnicos', (req, res) => {
 
     tecModel.find().exec((err, doc) => {
+        if (err) return err;
+        res.send(doc)
+    })
+})
+
+app.get('/api/users', (req, res) => {
+    User.find().exec((err, doc) => {
         if (err) return err;
         res.send(doc)
     })

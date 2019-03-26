@@ -34,7 +34,7 @@ const ShowEmpTemplate = (props) => {
                                     value={props.search}
                                     onChange={props.change}
                                     type="search"
-                                    placeholder="procurar... (mostrando 30 primeiros resultados)"
+                                    placeholder="digite pelo menos 3 dígitos para procurar"
                                     aria-label="Search" />
                             </form>
                         </div>

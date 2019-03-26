@@ -11,6 +11,7 @@ const signup = (req, res, next) => {
     const email = req.body.email || ''
     const password = req.body.password || ''
     const confirmPassword = req.body.confirmPassword || ''
+    const verified = false
 
     if (!email.match(emailRegex)) {
         return res.status(400).send({ errors: ['O e-mail inválido'] })
@@ -34,7 +35,7 @@ const signup = (req, res, next) => {
         } else if (user) {
             return res.status(400).send('Usuário já cadastrado.')
         } else {
-            const newUser = new User({ name, surName, email, password: passwordHash, role: 'admin' })
+            const newUser = new User({ name, surName, email, password: passwordHash, role: 'admin', verified })
             newUser.save((err, user) => {
                 if (err) {
                     return err
@@ -47,19 +48,25 @@ const signup = (req, res, next) => {
     })
 }
 
-const login = (req, res, next) => {
+const login = async (req, res, next) => {
     const email = req.body.email || ''
     const password = req.body.password || ''
+
     User.findOne({ email }, (err, user) => {
         if (err) {
             return res.status(400).send(err)
         } else if (user && bcrypt.compareSync(password, user.password)) {
-            user = { _id: user._id, name: user.name, surName: user.surName, role: user.role }
+            user = { _id: user._id, name: user.name, surName: user.surName, role: user.role, verified: user.verified }
 
-            const token = jwt.sign(user, process.env.AUTHSECRET, {
-                expiresIn: 60*60*4
-            })            
-            res.cookie('_sim-ad', token, { maxAge: 1000*60*60*4 }).send(user)
+            if (user.verified) {
+                const token = jwt.sign(user, process.env.AUTHSECRET, {
+                    expiresIn: 60 * 60 * 4
+                })
+                res.cookie('_sim-ad', token, { maxAge: 1000 * 60 * 60 * 4 }).send(user)
+            } else {
+                res.send('Aguardando verificação do usuário.')
+            }
+
         } else {
             return res.status(400).send('Usuário/Senha inválidos')
         }

@@ -58,9 +58,7 @@ export function loadFilesData() {
     }
 };
 
-export function loadTecnicos() {
-
-    console.log(tecnicosArmbh)
+export function loadTecnicos() {   
 
     return {
         type: 'LOAD_TECNICOS',
@@ -89,9 +87,8 @@ export const reduxToastr = (status, input, titulo) => {
 }
 
 export const loading = (on) => {
-    
-        return {
-            type: 'LOADING',
-            payload: on
+    return {
+        type: 'LOADING',
+        payload: on
     }
 }

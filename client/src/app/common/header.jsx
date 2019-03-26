@@ -56,7 +56,7 @@ class Header extends Component {
                         <li><Link to="/solicitaAnuencia">Solicitar Anuência Prévia <Count process={process} item='Diretrizes Metropolitanas emitidas' /></Link></li>
                         <li><Link to="/Anuencia">Emitir Anuência Prévia <Count process={process} item='Aguardando Análise' /></Link></li>
                         <li><Link to="/showEmpreend">Gerenciar Dados </Link></li>
-                        <li><Link to=""><i className="material-icons left">person</i></Link></li>
+                        <li><Link to="/users"><i className="material-icons left">person</i></Link></li>
                         <li><Link to=""><i className="material-icons left">mail</i></Link></li>
                     </ul>
                     <ul className="side-nav" id="mobile-demo">
@@ -66,7 +66,7 @@ class Header extends Component {
                         <li><Link to="/solicitaAnuencia">Solicitar Anuência Prévia</Link></li>
                         <li><Link to="/Anuencia">Emitir Anuência Prévia</Link></li>
                         <li><Link to="/showEmpreend">Buscar</Link></li>
-                        <li><Link to="">Login</Link></li>
+                        <li><Link to="/users">Login</Link></li>
                         <li><Link to="">Contato</Link></li>
                     </ul>
                 </div>
