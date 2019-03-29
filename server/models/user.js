@@ -15,6 +15,9 @@ const userSchema = mongoose.Schema({
         trim: true,
         unique: 1
     },
+    municipio: {
+        type: String,
+    },  
     password: {
         type: String,
         required: true,
@@ -22,10 +25,7 @@ const userSchema = mongoose.Schema({
     },
     role: {
         type: String,
-    },
-    municipio: {
-        type: String,
-    },    
+    },   
     verified: {
         type: Boolean
     },

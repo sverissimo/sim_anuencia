@@ -22,9 +22,7 @@ const { processModel } = require('./models/processModel');
 const { filesModel } = require('./models/filesModel');
 const { tecModel } = require('./models/tecnicos');
 
-
-const app = express();
-
+const app = express()
 
 app.use(function (req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
@@ -33,7 +31,6 @@ app.use(function (req, res, next) { //allow cross origin requests
     res.header("Access-Control-Allow-Credentials", true);
     next();
 })
-
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -47,8 +44,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
 
 app.use(express.static('client/build'))
 
-app.use(methodOverride('_method'));
-
+app.use(methodOverride('_method'))
 
 app.post('/api/login', login)
 app.post('/api/signup', signup)
@@ -354,46 +350,40 @@ app.post('/api/findEmpreend/:id', (req, res) => {
     })
 });
 
-app.delete('/api/deleteEmp/:id', function (req, res) {
-    empreendedor.deleteOne({ '_id': req.params.id })
+app.delete('/api/delete/:item', (req, res) => {
+    const el = req.query.el
+    let collection
+    if (el === 'emp') collection = empreendedor
+    if (el === 'rt') collection = CadastroRt
+    if (el === 'process') collection = processModel
+    if (el === 'user') collection = User
+
+    collection.deleteOne({ '_id': req.query.id })
         .exec()
         .then(result => {
             res.status(200).json(result)
         })
+        .catch(err => res.status(400).send(err))
 })
 
-app.delete("/api/deleteRt/:id", function (req, res) {
+app.put('/api/edit', (req, res) => {
+    const el = req.body.el
+    let items = req.body.item    
+    if (!items[0]) items = [req.body.item]
 
-    CadastroRt.deleteOne({ '_id': req.params.id })
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-})
+    let collection
+    if (el === 'emp') collection = empreendedor
+    if (el === 'rt') collection = CadastroRt
+    if (el === 'user') collection = User
 
-app.delete('/api/deleteProcess/:id', function (req, res) {
+    items.forEach(user => {
 
-    processModel.deleteOne({ '_id': req.params.id })
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-})
-
-app.put('/api/editEmp/', (req, res) => {
-
-    empreendedor.updateOne(
-        { '_id': req.body.item._id },
-        { $set: req.body.item }
-    ).then(result => res.json(result))
-})
-
-app.put('/api/editRt/', (req, res) => {
-
-    CadastroRt.updateOne(
-        { '_id': req.body.item._id },
-        { $set: req.body.item }
-    ).then(result => res.json(result))
+        collection.find({ '_id': user._id }).updateOne(
+            { $set:  user }
+        )
+            .then(res =>console.log(res))
+    })
+    res.send('ok')
 })
 
 app.put('/api/editProcess/', (req, res) => {

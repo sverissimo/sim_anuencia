@@ -55,6 +55,10 @@ fieldset legend {
      color: blue
 }
 
+.click {     
+        cursor: pointer;     
+}
+
 .email {
     position: relative; 
     border-radius: 15px;

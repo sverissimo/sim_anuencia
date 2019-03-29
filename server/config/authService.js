@@ -6,11 +6,12 @@ const emailRegex = /\S+@\S+\.\S+/
 //const passwordRegex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})/
 
 const signup = (req, res, next) => {
-    const name = req.body.name || ''
+/*     const name = req.body.name || ''
     const surName = req.body.surName || ''
     const email = req.body.email || ''
     const password = req.body.password || ''
-    const confirmPassword = req.body.confirmPassword || ''
+    const confirmPassword = req.body.confirmPassword || '' */
+    const {name, surName, email, password, confirmPassword, municipio} = req.body || ''
     const verified = false
 
     if (!email.match(emailRegex)) {
@@ -35,7 +36,7 @@ const signup = (req, res, next) => {
         } else if (user) {
             return res.status(400).send('Usuário já cadastrado.')
         } else {
-            const newUser = new User({ name, surName, email, password: passwordHash, role: 'admin', verified })
+            const newUser = new User({ name, surName, email, municipio, password: passwordHash, role: 'não atribuído', verified })
             newUser.save((err, user) => {
                 if (err) {
                     return err
