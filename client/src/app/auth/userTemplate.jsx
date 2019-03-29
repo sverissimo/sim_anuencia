@@ -1,9 +1,10 @@
 import React from 'react';
 
 const Role = (props) => {
+    let { id, presentValue, handleChange } = props
     return (
-        <select className='browser-default'>
-            <option value={props.presentValue}>{props.presentValue}</option>
+        <select id={id} className='browser-default' onChange={handleChange}>
+            <option value={presentValue}>{presentValue}</option>
             <option value="admin">Administrador</option>
             <option value="tecnico">Técnico da Agência</option>
             <option value="prefeitura">Técnico da Prefeitura</option>
@@ -13,8 +14,8 @@ const Role = (props) => {
 
 const UserTemplate = (props) => {
 
-    let { users } = props
-    
+    let { users, handleChange, verifyUser } = props    
+
     return (
 
         <div>
@@ -37,14 +38,19 @@ const UserTemplate = (props) => {
                                     <td>{user.email}</td>
                                     <td>{user.email}</td>
                                     <td>
-                                        <Role
+                                        <Role 
+                                        id={user._id}
                                             presentValue={user.role}
+                                            handleChange={handleChange}
                                         />
-
                                     </td>
                                     <td className='center'>
-                                        <input id={i} type="checkbox" name="myTextEditBox" value="checked" />
-                                        <label htmlFor={i}></label>
+                                        <input id={`v_${user._id}`}
+                                        type="checkbox" 
+                                        checked={user.verified ? 'checked' : ''} 
+                                        onChange={verifyUser}
+                                        />
+                                        <label htmlFor={`v_${user._id}`}></label>
                                     </td>
                                 </tr>
                             ))
@@ -54,7 +60,7 @@ const UserTemplate = (props) => {
 
                     <tr>
                         <td></td><td></td><td></td><td></td>
-                        <td  className='center'>
+                        <td className='center'>
                             <i style={{ color: 'teal' }} value='salvar' className="material-icons small">save</i>
                         </td>
                     </tr>

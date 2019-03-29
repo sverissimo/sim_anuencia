@@ -4,11 +4,50 @@ import { bindActionCreators } from 'redux'
 import { getUsers } from './authActions'
 import Title from '../common/titleSubtitle'
 import UserTemplate from './userTemplate'
+import Axios from 'axios';
 
 class Users extends Component {
 
+    state = {
+        users: [],
+        role: '',
+        verified: ''
+
+    }
     async componentDidMount() {
-        this.props.getUsers()
+        await this.props.getUsers()
+        this.setState({ users: this.props.auth.usersCollection })
+    }
+
+    handleChange(e) {
+
+        let { users } = this.state
+        let selectedUser = users.filter(user => user._id.match(e.target.id))[0]
+        let userIndex = users.indexOf(selectedUser)
+        users[userIndex].role = e.target.value
+        this.setState({
+            users: users
+        })
+        console.log(this.state.users[userIndex])
+    }
+
+    verifyUser(e) {
+
+        let { users } = this.state
+        let selectedUser = users.filter(user => `v_${user._id}`.match(e.target.id))[0]
+        let userIndex = users.indexOf(selectedUser)
+        users[userIndex].verified = !users[userIndex].verified
+        console.log(users[userIndex])
+
+        this.setState({
+            users: users
+        })
+
+
+        /* axios.put('/api/verifyUser', {
+            _id: e.target._id,
+            verified: verify
+        }) */
     }
 
     editUsers(e) {
@@ -16,7 +55,7 @@ class Users extends Component {
     }
 
     render() {
-        let users = this.props.auth.usersCollection
+        let users = this.state.users
 
         return (
             <div className="container" style={{ width: '95%' }} >
@@ -29,6 +68,8 @@ class Users extends Component {
                 </div>
                 <UserTemplate
                     users={users}
+                    handleChange={this.handleChange.bind(this)}
+                    verifyUser={this.verifyUser.bind(this)}
                 />
             </div>
 
