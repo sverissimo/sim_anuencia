@@ -74,8 +74,7 @@ class Users extends Component {
                 </div>
                 <UserTemplate
                     users={users}
-                    handleChange={this.handleChange.bind(this)}
-                    verifyUser={this.verifyUser.bind(this)}
+                    handleChange={this.handleChange.bind(this)}                    
                     deleteUser={this.deleteUser.bind(this)}
                     editUsers={this.editUsers.bind(this)}
                 />

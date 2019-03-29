@@ -15,7 +15,7 @@ const signup = (req, res, next) => {
     const verified = false
 
     if (!email.match(emailRegex)) {
-        return res.status(400).send({ errors: ['O e-mail inválido'] })
+        return res.send('E-mail inválido.')
     }
     /*   if (!password.match(passwordRegex)) {
           return res.status(400).send({
@@ -27,16 +27,16 @@ const signup = (req, res, next) => {
     const salt = bcrypt.genSaltSync()
     const passwordHash = bcrypt.hashSync(password, salt)
     if (!bcrypt.compareSync(confirmPassword, passwordHash)) {
-        return res.status(400).send('Senhas não conferem.')
+        return res.send('Senhas não conferem.')
     }
 
     User.findOne({ email }, (err, user) => {
         if (err) {
             return err
         } else if (user) {
-            return res.status(400).send('Usuário já cadastrado.')
+            return res.send('Usuário já cadastrado.')
         } else {
-            const newUser = new User({ name, surName, email, municipio, password: passwordHash, role: 'não atribuído', verified })
+            const newUser = new User({ name, surName, email, municipio, password: passwordHash, role: 'empreend', verified })
             newUser.save((err, user) => {
                 if (err) {
                     return err

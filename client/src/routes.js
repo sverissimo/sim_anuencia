@@ -16,18 +16,21 @@ import Anuencia from './app/anuencia/anuenciaContainer'
 import Users from './app/auth/users'
 
 const Routes = () => {
-    //const userRole = localStorage.getItem('role')
+    const userRole = localStorage.getItem('role')
+    const prefeitura = userRole === 'admin' || userRole === 'prefeitura'
+    const agencia = userRole === 'admin' || userRole === 'tecnico'
+
     if (document.cookie.match('_sim-ad')) {
         return <Switch>
             <Route path='/' exact component={Home} />
-            <Route path='/cadastro' component={CadastroContainer} />
-            <Route path='/solicitaDiretriz' component={SolicitaDiretriz} />
-            <Route path='/diretrizes' component={diretriz} />
-            <Route path='/solicitaAnuencia' component={SolicitaAnuencia} />
+            {prefeitura && <Route path='/cadastro' component={CadastroContainer} />}
+            {prefeitura && <Route path='/solicitaDiretriz' component={SolicitaDiretriz} />}
+            {agencia && <Route path='/diretrizes' component={diretriz} />}
+            {prefeitura && <Route path='/solicitaAnuencia' component={SolicitaAnuencia} />}
             <Route path='/showEmpreend' component={BuscaContainer} />
-            <Route path='/editData' component={EditData} />
-            <Route path='/Anuencia' exact component={Anuencia} />
-            <Route path='/users' exact component={Users} />
+            {<Route path='/Anuencia' exact component={Anuencia} />}
+            {agencia && <Route path='/editData' component={EditData} />}
+            {userRole === 'admin' && <Route path='/users' exact component={Users} />}
         </Switch>
     } else {
         logout()

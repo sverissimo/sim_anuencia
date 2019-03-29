@@ -4,17 +4,18 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import '../css/header.css'
 
+import { configHeader } from '../config/configHeader'
 import { setColor } from '../cadastro/cadActions'
 
 const Count = (props) => {
 
-    let { item, process } = props
+    let { item, processo } = props
 
-    if (process && process.length > 0) {
+    if (processo && processo.length > 0) {
 
-        let counter = process.filter(el => el.status.match(item)).length
+        let counter = processo.filter(el => el.status.match(item)).length
         if (item === 'Diretrizes Metropolitanas emitidas') {
-            counter += (process.filter(el => el.status.match('Pendências')).length + process.filter(el => el.status.match('Aguardando documentação')).length)
+            counter += (processo.filter(el => el.status.match('Pendências')).length + processo.filter(el => el.status.match('Aguardando documentação')).length)
         }
         return (
             <div style={{ display: 'inline-block' }}>
@@ -40,8 +41,9 @@ class Header extends Component {
     }
 
     render() {
-        const { process, color } = this.props
-        
+        const { processo, color } = this.props
+        const userRole = localStorage.getItem('role')
+        const menu = [{ className: 'right hide-on-med-and-down', id: '' }, { className: 'side-nav', id: "mobile-demo" }]
         return (
             <nav>
                 <div className="nav-wrapper" style={{ paddingLeft: 30, paddingRight: 30, backgroundColor: color }} id="setcolor" >
@@ -49,36 +51,34 @@ class Header extends Component {
                         <i className="material-icons" style={{ fontSize: "30px" }} >home</i>
                     </Link>
                     <Link to="" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></Link>
-                    <ul className="right hide-on-med-and-down">
-                        <li><Link to="/cadastro">Cadastro</Link></li>
-                        <li><Link to="/solicitaDiretriz">Solicitar Diretrizes Metropolitanas <Count process={process} item='Processo cadastrado' /></Link></li>
-                        <li><Link to="/diretrizes">Diretrizes Metropolitanas <Count process={process} item='Aguardando Diretrizes Metropolitanas' /></Link></li>
-                        <li><Link to="/solicitaAnuencia">Solicitar Anuência Prévia <Count process={process} item='Diretrizes Metropolitanas emitidas' /></Link></li>
-                        <li><Link to="/Anuencia">Emitir Anuência Prévia <Count process={process} item='Aguardando Análise' /></Link></li>
-                        <li><Link to="/showEmpreend">Gerenciar Dados </Link></li>
-                        <li><Link to="/users"><i className="material-icons left">person</i></Link></li>
-                        <li><Link to=""><i className="material-icons left">mail</i></Link></li>
-                    </ul>
-                    <ul className="side-nav" id="mobile-demo">
-                        <li><Link to="/cadastro">Cadastro</Link></li>
-                        <li><Link to="/solicitaDiretriz">Solicitar Diretrizes</Link></li>
-                        <li><Link to="/diretrizes">Diretrizes Metropolitanas</Link></li>
-                        <li><Link to="/solicitaAnuencia">Solicitar Anuência Prévia</Link></li>
-                        <li><Link to="/Anuencia">Emitir Anuência Prévia</Link></li>
-                        <li><Link to="/showEmpreend">Buscar</Link></li>
-                        <li><Link to="/users">Login</Link></li>
-                        <li><Link to="">Contato</Link></li>
-                    </ul>
+                    {
+                        menu.map((e, index) => (
+                            <ul className={e.className} id={e.id} key={index}>
+                                {
+                                    configHeader(userRole).map((el, i) => (
+                                        <li key={i + 100}>
+                                            <Link to={el.endPoint}>{el.label}
+                                                {el.item
+                                                    ? <Count processo={processo} item={el.item} />
+                                                    : <span />}
+                                            </Link>
+                                        </li>
+                                    ))
+                                }
+                                {userRole === 'admin' && <li><Link to="/users"><i className="material-icons left">person</i></Link></li>}
+                                <li><Link to="/"><i className="material-icons left">mail</i></Link></li>
+                            </ul>
+                        ))
+                    }
                 </div>
             </nav>
         )
     }
-
-};
+}
 
 const mapStateToProps = (state) => {
     return {
-        process: state.cadastro.processCollection,
+        processo: state.cadastro.processCollection,
         color: state.cadastro.setColor
     }
 }
@@ -86,7 +86,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({ setColor }, dispatch)
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)
 

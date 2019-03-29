@@ -43,13 +43,13 @@ class Login extends Component {
             this.props.login(true); this.props.verify(false)
             return null
         }
-        
+
         let authenticate = () => document.cookie.match('_sim-ad=', '') ? true : false
 
         await localStorage.setItem('login', authenticate())
         if (!user) return
         if (user.verified) {
-            
+
             for (let [key, value] of Object.entries(user)) {
                 await localStorage.setItem(key, value)
             }
@@ -61,11 +61,18 @@ class Login extends Component {
         e.preventDefault()
         let newUser
         await axios.post('/api/signup', this.state)
-            .then(res => newUser = res.data)
-        reduxToastr('sucess', 'Usuário criado com sucesso', newUser.name)
-        setTimeout(() => {
-            window.location.reload()
-        }, 2000);
+            .then(res => {
+                if (res.data === 'Senhas não conferem.' || res.data === 'Usuário já cadastrado.' || res.data === 'E-mail inválido.' ) {
+                    reduxToastr('err', res.data)
+                } else {
+                    newUser = res.data
+                    reduxToastr('sucess', 'Usuário criado com sucesso', newUser.name)
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 2000);
+                }
+            })
+            .catch(err => console.log(err.message))
     }
 
     render() {

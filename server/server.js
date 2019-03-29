@@ -257,7 +257,7 @@ app.get('/api/files', (req, res) => {
 
 
 app.get('/api/showEmpreend', (req, res) => {
-
+    console.log(req.decoded)
     empreendedor.find().sort({ nome: 1 }).exec((err, doc) => {
         if (err) return err;
         res.send(doc);
@@ -368,7 +368,7 @@ app.delete('/api/delete/:item', (req, res) => {
 
 app.put('/api/edit', (req, res) => {
     const el = req.body.el
-    let items = req.body.item    
+    let items = req.body.item
     if (!items[0]) items = [req.body.item]
 
     let collection
@@ -379,9 +379,9 @@ app.put('/api/edit', (req, res) => {
     items.forEach(user => {
 
         collection.find({ '_id': user._id }).updateOne(
-            { $set:  user }
+            { $set: user }
         )
-            .then(res =>console.log(res))
+            .then(res => console.log(res))
     })
     res.send('ok')
 })

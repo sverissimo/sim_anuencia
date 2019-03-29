@@ -8,6 +8,7 @@ const Role = (props) => {
             <option value="admin">Administrador</option>
             <option value="tecnico">Técnico da Agência</option>
             <option value="prefeitura">{`Prefeitura de ${municipio}`}</option>
+            <option value="empreend">Empreendedor</option>
         </select>
     )
 }
