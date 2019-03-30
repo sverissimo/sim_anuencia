@@ -34,7 +34,7 @@ const Routes = () => {
         </Switch>
     } else {
         logout()
-        return <h5 style={{ marginTop: '30%' }}>Sessão expirada!</h5>
+        return <h5 style={{ marginTop: '25%' }}>Sessão expirada!</h5>
     }
 }
 

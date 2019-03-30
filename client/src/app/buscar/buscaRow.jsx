@@ -8,6 +8,8 @@ const ShowEmpRow = (props) => {
     let { redux, emps, rts, process, empFields, rtFields, showRt, edit, deleteOne, data, fields,
         divConfig, color, empDetails, rtDetails, showInfo, clearLog } = props
 
+    const userRole = localStorage.getItem('role')
+
     let searchMatch = []
     let selectedFields
     let headerLabels = []
@@ -44,7 +46,7 @@ const ShowEmpRow = (props) => {
     return (
         <div className="z-depth-3" style={{ padding: '0px 11px', borderRadius: '10px' }}>
             <div className="row tableHeader"
-                style={{                    
+                style={{
                     backgroundColor: color,
                     filter: 'brightness(190%)',
                     padding: '5px 0px',
@@ -108,7 +110,7 @@ const ShowEmpRow = (props) => {
                     selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(itemArray[i])) : void 0
 
                     return (
-                        <div className="row" key={k} style={{ borderBottom: '1px dotted #bbb', paddingBottom:'1%' }}>
+                        <div className="row" key={k} style={{ borderBottom: '1px dotted #bbb', paddingBottom: '1%' }}>
                             {
                                 i2.map((field, i) =>
                                     field.key !== '_id' ?
@@ -153,22 +155,22 @@ const ShowEmpRow = (props) => {
                                             verticalAlign: 'middle'
                                         }}>
                                         <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
-                                        <EditButton edit={edit} id={item._id} />
-                                        <DeleteButton delete={deleteOne} id={item._id} />
+                                        <EditButton edit={edit} id={item._id} userRole={userRole} />
+                                        <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} />
                                     </div>
                                     :
                                     <div className="col s2 right"
                                         style={{
                                             display: 'flex',
-                                            justifyContent: 'space-around',                                            
+                                            justifyContent: 'space-around',
                                             maxWidth: '95px',
                                             margin: '0 auto',
                                             padding: '0px 5px',
                                             height: '100%',
                                             verticalAlign: 'middle'
                                         }}>
-                                        <EditButton edit={edit} id={item._id} />
-                                        <DeleteButton delete={deleteOne} id={item._id} />
+                                        <EditButton edit={edit} id={item._id} userRole={userRole} />
+                                        <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} />
                                     </div>
                             }
 

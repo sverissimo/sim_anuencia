@@ -15,6 +15,7 @@ require('dotenv').config()
 const { User } = require('./models/user');
 const { auth } = require('./config/auth');
 const { signup, login } = require('./config/authService');
+const { dataFilter } = require('./config/filter.js')
 
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
@@ -160,13 +161,12 @@ app.post('/api/solDirUpload', upload.fields([
     }, {
         name: "dirDaeFile", maxCount: 1
     }]
-),
-    (req, res) => {
+), (req, res) => {
 
-        res.json({
-            file: req.files,
-        });
+    res.json({
+        file: req.files,
     });
+});
 
 
 app.post('/api/diretrizUpload', upload.fields([
@@ -174,12 +174,11 @@ app.post('/api/diretrizUpload', upload.fields([
     {
         name: "diretrizFile", maxCount: 1
     }]
-),
-    (req, res) => {
-        res.json({
-            file: req.files,
-        });
+), (req, res) => {
+    res.json({
+        file: req.files,
     });
+});
 
 app.post('/api/anuenciaUpload', upload.fields([
 
@@ -189,12 +188,11 @@ app.post('/api/anuenciaUpload', upload.fields([
     {
         name: "anuenciaFile", maxCount: 1
     }]
-),
-    (req, res) => {
-        res.json({
-            file: req.files,
-        });
+), (req, res) => {
+    res.json({
+        file: req.files,
     });
+});
 
 app.post('/api/solAnuenciaUpload', upload.fields([
 
@@ -246,22 +244,50 @@ app.post('/api/solAnuenciaUpload', upload.fields([
 
 app.get('/api/files', (req, res) => {
 
-
     filesModel.find().sort({ uploadDate: -1 }).exec((err, doc) => {
         if (err) throw err;
         res.send(doc)
-
     });
-
 })
 
 
 app.get('/api/showEmpreend', (req, res) => {
-    console.log(req.decoded)
-    empreendedor.find().sort({ nome: 1 }).exec((err, doc) => {
-        if (err) return err;
-        res.send(doc);
-    });
+
+    let user = req.decoded
+
+    if (user.role === 'prefeitura') {
+        let emps = []
+
+        processModel.find({ 'munEmpreendimento': user.municipio }, (err, processes) => {
+            if (err) throw err
+            processes.forEach(async proc => {
+                await empreendedor.findOne({ '_id': proc.empId }, (erro, doc) => {
+                    if (erro) console.log(erro)
+                    emps.push(doc)
+                })
+                res.status(200).send(emps)
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+
+
+    } else if (user.role === 'empreend') {
+        empreendedor.find({ 'email': user.email }, (err, doc) => {
+            if (err) console.log(err)
+            res.send(doc)
+        })
+
+    } else {
+        empreendedor.find().sort({ nome: 1 }).exec((err, doc) => {
+            if (err) return err;
+
+            res.send(doc);
+        })
+    }
+
+
+
 });
 
 app.get('/api/showRt', (req, res) => {
@@ -272,12 +298,45 @@ app.get('/api/showRt', (req, res) => {
     });
 });
 
-app.get('/api/showProcess', (req, res) => {
+app.get('/api/showProcess', async (req, res) => {
 
-    processModel.find().sort({ nomeEmpreendimento: 1 }).exec((err, doc) => {
-        if (err) return err;
-        res.send(doc);
-    });
+    let user = req.decoded
+    if (user.role === 'prefeitura') {
+        processModel
+            .find({ 'munEmpreendimento': user.municipio })
+            .sort({ nomeEmpreendimento: 1 })
+            .exec((err, collection) => {
+                if (err) return err
+                res.send(collection)
+            })
+    }
+
+    else if (user.role === 'empreend') {
+
+        empreendedor.findOne({ 'email': user.email }).exec((err, doc) => {
+            if (err) return err
+            if (doc) {
+                processModel
+                    .find({ 'empId': doc._id })
+                    .sort({ nomeEmpreendimento: 1 })
+                    .exec((err, collection) => {
+                        if (err) return err
+                        res.send(collection)
+                    })
+            } else res.send([])
+        })
+
+    } else {
+        processModel
+            .find()
+            .sort({ nomeEmpreendimento: 1 })
+            .exec((err, collection) => {
+                if (err) return err
+                res.send(collection)
+            })
+    }
+
+
 });
 
 app.get('/api/tecnicos', (req, res) => {
@@ -289,65 +348,62 @@ app.get('/api/tecnicos', (req, res) => {
 })
 
 app.get('/api/users', (req, res) => {
-    User.find().exec((err, doc) => {
-        if (err) return err;
-        res.send(doc)
-    })
-})
+    if (req.decoded.role === 'admin') {
+        let filteredDocs = []
+        User.find().exec((err, docs) => {
+            if (err) return err;
+            docs.forEach(doc => {
+                let { _id, name, surName, email, municipio, role, verified } = doc
+                filteredDocs.push({ _id, name, surName, email, municipio, role, verified })
+                console.log(filteredDocs)
+            })
 
-app.get('api/findEmp', (req, res) => {
-    empreendedor.find({ nome: { $eq: req.params } }).exec((err, doc) => {
-        if (err) return err;
-        res.send(doc);
-    })
+            res.send(filteredDocs)
+        })
+    } else res.status(403).send('Este usuário não possui permissões para esta solicitação')
 })
 
 app.post('/api/cadastro_emp', (req, res) => {
 
-    const cadastroEmp = new empreendedor(req.body);
-    cadastroEmp.save((err, doc) => {
-        if (err) return res.status(400).send(err);
+    if (req.decoded.role === 'admin' || req.decoded.role === 'prefeitura') {
+        const cadastroEmp = new empreendedor(req.body);
+        cadastroEmp.save((err, doc) => {
+            if (err) return res.status(400).send(err);
 
-        return res.status(200).json({
-            post: true,
-            Cadastro_id: doc._id
+            return res.status(200).json({
+                post: true,
+                Cadastro_id: doc._id
+            })
         })
-    });
-
+    } else res.status(403).send('Este usuário não possui permissões para esta solicitação')
 });
 
 app.post('/api/cadastro_rt', (req, res) => {
 
-    const RT = new CadastroRt(req.body);
-
-    RT.save((err, doc) => {
-        if (err) return res.status(400).send(err);
-        return res.status(200).json({
-            post: true,
-            RT_id: doc._id
-        })
-    });
-
+    if (req.decoded.role === 'admin' || req.decoded.role === 'prefeitura') {
+        const RT = new CadastroRt(req.body);
+        RT.save((err, doc) => {
+            if (err) return res.status(400).send(err);
+            return res.status(200).json({
+                post: true,
+                RT_id: doc._id
+            })
+        });
+    } else res.status(403).send('Este usuário não possui permissões para esta solicitação')
 });
 
 app.post('/api/cadastro_process', (req, res) => {
 
-    const cadastroProcess = new processModel(req.body);
-
-    cadastroProcess.save((err, doc) => {
-        if (err) return res.status(400).send(err);
-        return res.status(200).json({
-            post: true,
-            process: doc
-        })
-    });
-
-});
-
-app.post('/api/findEmpreend/:id', (req, res) => {
-    Empreend.findById(req.param._id, (err, doc) => {
-        !err ? res.send(doc) : console.log(err);
-    })
+    if (req.decoded.role === 'admin' || req.decoded.role === 'prefeitura') {
+        const cadastroProcess = new processModel(req.body);
+        cadastroProcess.save((err, doc) => {
+            if (err) return res.status(400).send(err);
+            return res.status(200).json({
+                post: true,
+                process: doc
+            })
+        });
+    } else res.status(403).send('Este usuário não possui permissões para esta solicitação')
 });
 
 app.delete('/api/delete/:item', (req, res) => {
@@ -358,12 +414,15 @@ app.delete('/api/delete/:item', (req, res) => {
     if (el === 'process') collection = processModel
     if (el === 'user') collection = User
 
-    collection.deleteOne({ '_id': req.query.id })
-        .exec()
-        .then(result => {
-            res.status(200).json(result)
-        })
-        .catch(err => res.status(400).send(err))
+    if (req.decoded.role === 'admin') {
+        collection.deleteOne({ '_id': req.query.id })
+            .exec()
+            .then(result => {
+                res.status(200).json(result)
+            })
+            .catch(err => res.status(400).send(err))
+    } else res.status(403).send('Este usuário não possui permissões para esta solicitação')
+
 })
 
 app.put('/api/edit', (req, res) => {
@@ -376,29 +435,36 @@ app.put('/api/edit', (req, res) => {
     if (el === 'rt') collection = CadastroRt
     if (el === 'user') collection = User
 
-    items.forEach(user => {
-
-        collection.find({ '_id': user._id }).updateOne(
-            { $set: user }
-        )
-            .then(res => console.log(res))
-    })
-    res.send('ok')
+    if (req.decoded.role === 'admin') {
+        items.forEach(user => {
+            collection.find({ '_id': user._id }).updateOne(
+                { $set: user }
+            )
+                .then(res => res.send('ok, modified.'))
+        })
+    } else {
+        res.status(403).send('Este usuário não possui permissões para esta solicitação')
+    }
 })
 
 app.put('/api/editProcess/', (req, res) => {
-    if (req.body.processHistory) {
-        processModel.updateOne(
-            { '_id': req.body.item._id },
-            {
-                $push: { 'processHistory': req.body.processHistory },
-                $set: req.body.item
-            }).then(result => res.json(result))
+
+    if (req.decoded.role !== 'empreend') {
+        if (req.body.processHistory) {
+            processModel.updateOne(
+                { '_id': req.body.item._id },
+                {
+                    $push: { 'processHistory': req.body.processHistory },
+                    $set: req.body.item
+                }).then(result => res.json(result))
+        } else {
+            processModel.updateOne(
+                { '_id': req.body.item._id },
+                { $set: req.body.item })
+                .then(result => res.json(result))
+        }
     } else {
-        processModel.updateOne(
-            { '_id': req.body.item._id },
-            { $set: req.body.item })
-            .then(result => res.json(result))
+        res.status(403).send('Este usuário não possui permissões para esta solicitação')
     }
 })
 

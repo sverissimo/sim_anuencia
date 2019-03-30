@@ -5,7 +5,9 @@ import tecnicosArmbh from '../config/tecnicos.json'
 export const loadEmpData = () => {
 
     const request = axios.get('/api/showEmpreend')
-        .then(res => res.data)
+        .then(res => {            
+            return res.data
+        })
         .catch(err => {
             console.log(err)
             toastr.error('Erro', 'Sessão expirada.')
@@ -58,7 +60,7 @@ export function loadFilesData() {
     }
 };
 
-export function loadTecnicos() {   
+export function loadTecnicos() {
 
     return {
         type: 'LOAD_TECNICOS',

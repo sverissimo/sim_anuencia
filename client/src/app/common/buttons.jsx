@@ -31,30 +31,35 @@ export const BackButton = (props) => {
 }
 
 export const DeleteButton = (props) => {
-    return (
-        <div>
-            <i className="material-icons"
-                style={{ fontSize: '24px', color: 'red', cursor: 'pointer' }}
-                title='Apagar'
-                onClick={() => props.delete(props.id)}
-            >
-                delete_outline
-            </i>
 
-        </div>
-    )
+    if (props.userRole === 'admin') {
+        return (
+            <div>
+                <i className="material-icons"
+                    style={{ fontSize: '24px', color: 'red', cursor: 'pointer' }}
+                    title='Apagar'
+                    onClick={() => props.delete(props.id)}
+                >
+                    delete_outline
+            </i>
+            </div>
+        )
+    } else return <span></span>
 }
 
 export const EditButton = (props) => {
-    return (
-        <div>
-            <i className="material-icons"
-                style={{ fontSize: '24px', color: 'teal', cursor: 'pointer' }}
-                title='Editar'
-                onClick={() => props.edit(props.id)}
-            >edit</i>
-        </div>
-    )
+
+    if (props.userRole === 'admin') {
+        return (
+            <div>
+                <i className="material-icons"
+                    style={{ fontSize: '24px', color: 'teal', cursor: 'pointer' }}
+                    title='Editar'
+                    onClick={() => props.edit(props.id)}
+                >edit</i>
+            </div>
+        )
+    } else return <span></span>
 }
 
 export const UpdateButton = (props) => {
@@ -89,7 +94,7 @@ export const InfoButton = props => {
                 onClick={showInfo}
                 style={{ fontSize: '24px', color: '#1D90EE', cursor: 'pointer' }}
                 title='Informações'
-                >                
+            >
                 info
             </i>
         </div>

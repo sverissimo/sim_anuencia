@@ -17,6 +17,7 @@ class Users extends Component {
     async componentDidMount() {
         await this.props.getUsers()
         this.setState({ users: this.props.auth.usersCollection })
+        console.log(this.state.users)
     }
 
     handleChange(e) {
@@ -54,10 +55,14 @@ class Users extends Component {
 
     async deleteUser(e) {
         const id = e.target.id.replace('d_', '')
-        await axios.delete(`/api/delete/item?id=${id}&el=user`)
-            .catch(err => console.log(err))
-        await this.props.getUsers()
-        this.setState({ users: this.props.auth.usersCollection })
+        const user = this.state.users.filter(user=> user._id.match(id))[0]
+        
+        if (window.confirm(`Excluir ${user.name} ${user.surName}?`)) {
+            await axios.delete(`/api/delete/item?id=${id}&el=user`)
+                .catch(err => console.log(err))
+            await this.props.getUsers()
+            this.setState({ users: this.props.auth.usersCollection })
+        }
     }
 
     render() {
@@ -74,7 +79,7 @@ class Users extends Component {
                 </div>
                 <UserTemplate
                     users={users}
-                    handleChange={this.handleChange.bind(this)}                    
+                    handleChange={this.handleChange.bind(this)}
                     deleteUser={this.deleteUser.bind(this)}
                     editUsers={this.editUsers.bind(this)}
                 />

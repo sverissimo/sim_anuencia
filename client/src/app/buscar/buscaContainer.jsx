@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, reduxToastr } from '../cadastro/cadActions';
 import { handleEdit, disableEdit, changeHandler } from './buscaActions';
 import { BackButton, UpdateButton } from './../common/buttons';
-import { logout } from '../auth/logout';
 
 import ShowDetails from '../common/showDetails'
 import EditData from './editData';
@@ -47,7 +46,7 @@ class ShowEmpContainer extends Component {
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
         !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-        document.addEventListener("keydown", this.escFunction, false);
+        document.addEventListener("keydown", this.escFunction, false)
     }
 
     componentWillUnmount() {
@@ -57,11 +56,13 @@ class ShowEmpContainer extends Component {
     async deleteHandler(id) {
 
         const { select } = this.state
-        await axios.delete(`/api/delete/item?id=${id}&el=${select}`)
-            .catch(err => console.log(err))
-        if (select === 'emp') this.props.loadEmpData()
-        if (select === 'rt') this.props.loadRtData()
-        if (select === 'process') this.props.loadProcessData()
+        if (window.confirm('Excluir registro?')) {
+            await axios.delete(`/api/delete/item?id=${id}&el=${select}`)
+                .catch(err => console.log(err))
+            if (select === 'emp') this.props.loadEmpData()
+            if (select === 'rt') this.props.loadRtData()
+            if (select === 'process') this.props.loadProcessData()
+        }
     }
 
     async handleSearchBar(e) {
@@ -98,6 +99,7 @@ class ShowEmpContainer extends Component {
             item: itemObj[0],
             edit: true
         })
+
     }
 
     disableEdit = () => {
@@ -113,7 +115,7 @@ class ShowEmpContainer extends Component {
     }
 
     async saveEdit(e) {
-              
+
         if (this.state.item && this.state.select !== 'process') {
             const { select } = this.state
             await axios.put(('/api/edit'), {

@@ -57,7 +57,7 @@ const login = async (req, res, next) => {
         if (err) {
             return res.status(400).send(err)
         } else if (user && bcrypt.compareSync(password, user.password)) {
-            user = { _id: user._id, name: user.name, surName: user.surName, role: user.role, verified: user.verified }
+            user = { _id: user._id, name: user.name, surName: user.surName, email:user.email, municipio: user.municipio, role: user.role, verified: user.verified }
 
             if (user.verified) {
                 const token = jwt.sign(user, process.env.AUTHSECRET, {
