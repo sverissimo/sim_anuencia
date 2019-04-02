@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, loading, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
-import { getTecnico } from '../common/getTecnico'
 
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolAnuenciaFilesRow from './solAnuenciaFilesRow';
@@ -127,7 +126,7 @@ class SolicitaAnuencia extends Component {
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
-        const user = getTecnico()
+        const user = { ...localStorage }
 
         const label = () => {
             let entradaCounter = []
@@ -173,7 +172,10 @@ class SolicitaAnuencia extends Component {
                     label: label2,
                     createdAt: new Date(),
                     files: filesArray,
-                    user: user
+                    user: {
+                        nome: user.name + ' ' + user.surName,
+                        email: user.email
+                    }
                 }
             })
             this.props.loading(false)

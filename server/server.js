@@ -15,7 +15,6 @@ require('dotenv').config()
 const { User } = require('./models/user');
 const { auth } = require('./config/auth');
 const { signup, login } = require('./config/authService');
-const { dataFilter } = require('./config/filter.js')
 
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
@@ -271,7 +270,6 @@ app.get('/api/showEmpreend', (req, res) => {
             console.log(err)
         })
 
-
     } else if (user.role === 'empreend') {
         empreendedor.find({ 'email': user.email }, (err, doc) => {
             if (err) console.log(err)
@@ -280,22 +278,39 @@ app.get('/api/showEmpreend', (req, res) => {
 
     } else {
         empreendedor.find().sort({ nome: 1 }).exec((err, doc) => {
-            if (err) return err;
+            if (err) return err
+            res.send(doc)
+        })
+    }
+})
 
+app.get('/api/showRt', (req, res) => {
+
+    let user = req.decoded
+
+    if (user.role === 'prefeitura') {
+        let rts = []
+
+        processModel.find({ 'munEmpreendimento': user.municipio }, (err, processes) => {
+            if (err) throw err
+            processes.forEach(async proc => {
+                await CadastroRt.findOne({ '_id': proc.rtId }, (erro, doc) => {
+                    if (erro) console.log(erro)
+                    rts.push(doc)
+                })
+                res.status(200).send(rts)
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    } else if (user.role !== 'empreend') {
+        CadastroRt.find().sort({ nomeRt: 1 }).exec((err, doc) => {
+            if (err) return err;
             res.send(doc);
         })
     }
 
 
-
-});
-
-app.get('/api/showRt', (req, res) => {
-
-    CadastroRt.find().sort({ nomeRt: 1 }).exec((err, doc) => {
-        if (err) return err;
-        res.send(doc);
-    });
 });
 
 app.get('/api/showProcess', async (req, res) => {
@@ -355,7 +370,6 @@ app.get('/api/users', (req, res) => {
             docs.forEach(doc => {
                 let { _id, name, surName, email, municipio, role, verified } = doc
                 filteredDocs.push({ _id, name, surName, email, municipio, role, verified })
-                console.log(filteredDocs)
             })
 
             res.send(filteredDocs)
@@ -440,7 +454,7 @@ app.put('/api/edit', (req, res) => {
             collection.find({ '_id': user._id }).updateOne(
                 { $set: user }
             )
-                .then(res => res.send('ok, modified.'))
+                .then(response => res.send(response))
         })
     } else {
         res.status(403).send('Este usuário não possui permissões para esta solicitação')

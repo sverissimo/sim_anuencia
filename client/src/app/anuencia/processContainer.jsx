@@ -36,20 +36,20 @@ class ProcessContainer extends Component {
         if (id !== this.state.selectedOption) {
             let format = {
                 stylez:
-                    {
-                        minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
-                        borderTopRightRadius: '15%'
-                    },
+                {
+                    minHeight: '8vh', border: '1px solid #ddd', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
+                    borderTopRightRadius: '15%'
+                },
                 class: 'col s12 m6 l3 z-depth-2'
             }
             return format
         } else {
             let format = {
                 stylez:
-                    {
-                        minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
-                        borderTopRightRadius: '15%', backgroundColor: '#fcfcfc'
-                    },
+                {
+                    minHeight: '8vh', border: '2px solid #bbb', borderRadius: '2%', borderBottom: '', borderTopLeftRadius: '15%',
+                    borderTopRightRadius: '15%', backgroundColor: '#fcfcfc'
+                },
                 class: 'col s12 m6 l3'
             }
             return format
@@ -91,8 +91,10 @@ class ProcessContainer extends Component {
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
-
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        const user = { ...localStorage }
+        const tecnico = this.props.redux.tecCollection.filter(el => el.email.match(user.email))[0]
+        
         let filesArray = []
         if (!this.state.notaTecnica || !this.state.anuenciaFile) {
             alert('Favor anexar a nota técnica e a certidão de anuência')
@@ -118,12 +120,16 @@ class ProcessContainer extends Component {
                     item: {
                         _id: this.state.selectedId,
                         status: 'Processo Anuído',
+                        tecnico: tecnico.name + ' ' + tecnico.surName
                     },
                     processHistory: {
                         label: 'Processo Anuído',
                         createdAt: new Date(),
                         files: filesArray,
-                        user: tecnico
+                        user: {
+                            nome: tecnico.name + ' ' + tecnico.surName,
+                            email: tecnico.email
+                        }
                     }
                 })
                 await reduxToastr('sucess', 'Processo Anuído.')

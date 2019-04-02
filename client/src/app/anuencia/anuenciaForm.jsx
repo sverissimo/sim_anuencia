@@ -59,27 +59,31 @@ class AnuenciaForm extends Component {
         e.preventDefault()
         const { process, empreend, rt } = this.props
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = process
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = process
 
-        const user = tecnico
+        const user = {...localStorage}
 
         const pendCounter = this.props.process.processHistory.filter(log => log.label.match('Análise'))
 
         const label = `Análise ${pendCounter.length + 1}`
         const oficio = document.getElementById('oficio').outerHTML
-        this.props.loading(true)
+        this.props.loading(true)        
         this.setState({ oficio: oficio })        
         try {
             await axios.put('/api/editProcess', {
                 item: {
                     _id: this.props.process._id,
                     status: 'Pendências',
+                    tecnico: user.name + ' ' + user.surName
                 },
                 processHistory: {
                     label: label,
                     createdAt: new Date(),
                     pendencias: oficio,
-                    user: user
+                    user: {
+                        nome: user.name + ' ' + user.surName,
+                        email: user.email
+                    }
                 }
             })
             this.props.loading(false)

@@ -6,5 +6,5 @@ export const sendMail = async (email, emailRt, empName, modalidade, nomeEmpreend
         to: `${email}, ${emailRt}`,
         subject: `Atualização do processo ${nomeEmpreendimento} - ${status}`,
         html: formatEmail(empName, modalidade, nomeEmpreendimento, munEmpreendimento, status),
-    }).then(res => console.log(res))
+    }).then(res => console.log('ok'))
 }

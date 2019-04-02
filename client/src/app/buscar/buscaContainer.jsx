@@ -43,10 +43,18 @@ class ShowEmpContainer extends Component {
     }
 
     componentDidMount() {
+
+        const user = { ...localStorage }
+
         !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
+        if (user.role !== 'empreend') !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
         document.addEventListener("keydown", this.escFunction, false)
+
+        setTimeout(() => {
+
+            console.log(this.props.cadastro)
+        }, 450);
     }
 
     componentWillUnmount() {

@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 
 import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loading, reduxToastr } from './cadActions';
 import { sendMail } from '../common/sendMail'
-import { getTecnico } from '../common/getTecnico'
 
 import CadTemplate from './cadTemplate';
 import { logout } from '../auth/logout';
@@ -153,7 +152,7 @@ class CadastroContainer extends React.Component {
         const { nome, nomeRt, nomeEmpreendimento, modalidade, munEmpreendimento, empMatch,
             rtMatch, empId, rtId } = this.state
 
-        const user = getTecnico()
+        const user = { ...localStorage }
 
         const { tecCollection } = this.props.cadastro
         const tecnicoAlocado = tecCollection.filter(el => el.municipios.some(mun => mun === this.state.munEmpreendimento))[0]
@@ -201,7 +200,10 @@ class CadastroContainer extends React.Component {
                 {
                     label: 'Processo cadastrado',
                     createdAt: new Date(),
-                    user: user
+                    user: {
+                        nome: user.name + ' ' + user.surName,
+                        email: user.email
+                    }
                 }
             ],
         }

@@ -6,7 +6,7 @@ import { CloseWindow } from '../common/buttons'
 
 const ProcessInfo = (props) => {
     const { logDetails, index, process, showLog, clearLog, soloComponent, hideLog } = props
-
+        
     if (logDetails === false) {
         return (
             <div style={soloStyle(soloComponent, ['15%', '70%'])}>
@@ -29,7 +29,7 @@ const ProcessInfo = (props) => {
                 <div className="row" style={{ padding: '2% 0% 0% 3%', fontSize: '18px' }}>
                     <div className="col s12 m4"> <strong>Status do processo</strong> </div>
                     <div className="col s12 m4 center"> <strong>Usuário</strong> </div>
-                    <div className="col s12 m4 " style={{ paddingLeft:'9%', fontsize: '10px' }}> <strong>Data</strong> </div>
+                    <div className="col s12 m4 " style={{ paddingLeft: '9%', fontsize: '10px' }}> <strong>Data</strong> </div>
                 </div>
                 {process.processHistory.map((el, i) =>
                     <div className="row" key={i} style={{ paddingLeft: '3%' }}>
@@ -40,7 +40,7 @@ const ProcessInfo = (props) => {
                                         {el.label}
                                     </div>
                                     <div className="col s12 m4 center">
-                                        {el.user || ' '}
+                                        {(el.user.nome ||  ' ')}
                                     </div>
                                     <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
                                 </div>
@@ -55,7 +55,7 @@ const ProcessInfo = (props) => {
                                         </span>
                                     </div>
                                     <div className="col s12 m4 center">
-                                        {el.user || ' '}
+                                        {el.user.nome || ' '}
                                     </div>
                                     <div className="col s12 m3 center" > {showDate(el.createdAt)}</div>
                                 </div>

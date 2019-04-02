@@ -11,7 +11,6 @@ import { loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, 
 import { setDate } from './diretrizActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
-//import { getTecnico } from '../common/getTecnico'
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
@@ -139,7 +138,8 @@ class Diretriz extends Component {
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        const user = { ...localStorage }
         
         let filesArray = []
         this.props.loading(true)
@@ -169,12 +169,16 @@ class Diretriz extends Component {
                 item: {
                     _id: this.state.selectedId,
                     status: newStatus,
+                    tecnico: user.name + ' ' + user.surName
                 },
                 processHistory: {
                     label: newStatus,
                     createdAt: new Date(),
                     files: [fileObject],
-                    user: tecnico
+                    user: {
+                        nome: user.name + ' ' + user.surName,
+                        email: user.email
+                    }
                 }
             })
             this.props.loading(false)
@@ -230,30 +234,36 @@ class Diretriz extends Component {
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento, tecnico } = processo
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+
+        const user = { ...localStorage }
 
         const newStatus = 'Pendências para emissão de Diretrizes Metropolitanas.'
         let dirStatus = this.state.dirStatus
         this.props.loading(true)
         try {
             await axios.put('/api/editProcess', {
-                    item: {
-                        _id: this.state.selectedId,
-                        status: 'Processo cadastrado',
+                item: {
+                    _id: this.state.selectedId,
+                    status: 'Processo cadastrado',
+                    tecnico: user.name + ' ' + user.surName
+                },
+                processHistory: {
+                    label: 'Pendências para emissão de diretrizes',
+                    createdAt: new Date(),
+                    pendencias: dirStatus.pendencias,
+                    dirCheckList: {
+                        cgtOk: dirStatus.cgtOk,
+                        vistoriaOk: dirStatus.vistoriaOk,
+                        daeOk: dirStatus.daeOk,
+                        dirMunOk: dirStatus.dirMunOk,
                     },
-                    processHistory: {
-                        label: 'Pendências para emissão de diretrizes',
-                        createdAt: new Date(),
-                        pendencias: dirStatus.pendencias,
-                        dirCheckList: {
-                            cgtOk: dirStatus.cgtOk,
-                            vistoriaOk: dirStatus.vistoriaOk,
-                            daeOk: dirStatus.daeOk,
-                            dirMunOk: dirStatus.dirMunOk,
-                        },
-                        user: tecnico
+                    user: {
+                        nome: user.name + ' ' + user.surName,
+                        email: user.email
                     }
                 }
+            }
             )
             await this.props.loading(false)
             await reduxToastr('sucess', newStatus)
@@ -309,7 +319,7 @@ class Diretriz extends Component {
         let { dataMatch } = this.state
         let input = this.state.searchValue.toLowerCase()
         const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
-        
+
         if (input && !this.state.checked) {
             dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
         } else if (this.state.checked || (this.state.checked && input)) {

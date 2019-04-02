@@ -4,9 +4,8 @@ import OficioHeader from './oficioHeader'
 const MostrarOficio = (props) => {
     let { mostrarOficio, content, redux, process, empreend, rt, tecnicos } = props
     
-    const nome = process.tecnico.split(' ')[0]
-    const sobreNome = process.tecnico.split(' ')[1]
-    const tecnico = tecnicos.filter(el=> el.name.match(nome) && el.surName.match(sobreNome))[0]
+    const loggedUser = localStorage.getItem('email')
+    const tecnico = tecnicos.filter(el=> el.email.match(loggedUser))[0]
         
     if (mostrarOficio) {
         return (

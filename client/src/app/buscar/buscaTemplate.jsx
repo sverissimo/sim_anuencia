@@ -5,7 +5,7 @@ import './../css/styles.css';
 const ShowEmpTemplate = (props) => {
 
     let { edit } = props
-
+    const user = { ...localStorage }
     return (
         <div>
 
@@ -23,7 +23,7 @@ const ShowEmpTemplate = (props) => {
                             <select className="browser-default" value={props.select} onChange={props.onSelect}>
                                 <option value="" key="1" label="Selecionar">Selecionar </option>
                                 <option value="emp" key="2" label="Empreendedor">Empreendedor </option>
-                                <option value="rt" key="3" label="Responsável Técnico">Responsável Técnico </option>
+                                {user.role !== 'empreend' && <option value="rt" key="3" label="Responsável Técnico">Responsável Técnico </option>}
                                 <option value="process" key="4" label="Processo">Processo </option>
                             </select>
                         </div>
@@ -39,7 +39,7 @@ const ShowEmpTemplate = (props) => {
                             </form>
                         </div>
                     </div>
-                    : <h5 style={{marginBottom: '40px'}}>Editar dados</h5>
+                    : <h5 style={{ marginBottom: '40px' }}>Editar dados</h5>
             }
         </div>
     )

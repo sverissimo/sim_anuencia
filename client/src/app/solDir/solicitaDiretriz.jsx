@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, setColor, loading, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
-import { getTecnico } from '../common/getTecnico'
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
@@ -112,7 +111,7 @@ class solicitaDiretriz extends Component {
         const { tecCollection } = this.props.redux
         const tecnico = tecCollection.filter(el => el.municipios.some(mun => mun === processo.munEmpreendimento))[0]
 
-        const user = getTecnico()
+        const user = { ...localStorage }
 
         let filesArray = []
         this.props.loading(true)
@@ -141,7 +140,10 @@ class solicitaDiretriz extends Component {
                     label: 'Diretrizes metropolitanas solicitadas',
                     createdAt: new Date(),
                     files: filesArray,
-                    user: user
+                    user: {
+                        nome: user.name + ' ' + user.surName,
+                        email: user.email
+                    }
                 }
             }
             )
