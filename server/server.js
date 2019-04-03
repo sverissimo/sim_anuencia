@@ -255,28 +255,69 @@ app.get('/api/showEmpreend', (req, res) => {
     let user = req.decoded
 
     if (user.role === 'prefeitura') {
-        let emps = []
+        const getProcesses = () => {
+            return new Promise((resolve, reject) => {
+                processModel.find({ 'munEmpreendimento': user.municipio })
+                    .then(res => resolve(res))
+                    .catch(e => reject(e))
+            })
+        }
 
-        processModel.find({ 'munEmpreendimento': user.municipio }, (err, processes) => {
-            if (err) throw err
-            processes.forEach(async proc => {
-                await empreendedor.findOne({ '_id': proc.empId }, (erro, doc) => {
-                    if (erro) console.log(erro)
-                    emps.push(doc)
-                })
+        const getRts = (processes) => {
+
+            let empIds = []
+            processes.forEach(proc => empIds.push(proc.empId))
+            empreendedor.find({ '_id': { $in: empIds } }).exec((erro, emps) => {
+                if (erro) console.log(erro)
                 res.status(200).send(emps)
             })
-        }).catch(err => {
-            console.log(err)
-        })
+        }
+        getProcesses()
+            .then(res => getRts(res))
+    }
 
-    } else if (user.role === 'empreend') {
+    else if (user.role === 'empreend') {
         empreendedor.find({ 'email': user.email }, (err, doc) => {
             if (err) console.log(err)
             res.send(doc)
         })
 
-    } else {
+    }
+
+    else if (user.role === 'rt') {
+
+
+        const getRtId = (user) => {
+            return new Promise((resolve, reject) => {
+                CadastroRt.findOne({ 'emailRt': user.email })
+                    .then(res => resolve(res._id))
+                    .catch(e => reject(e))
+            })
+        }
+
+        const getProcesses = (rtId) => {
+            return new Promise((resolve, reject) => {
+                processModel.find({ 'rtId': rtId })
+                    .then(res => resolve(res))
+                    .catch(e => reject(e))
+            })
+        }
+
+        const getEmps = (processes) => {
+            console.log(processes)
+            let empIds = []
+            processes.forEach(proc => empIds.push(proc.empId))
+            empreendedor.find({ '_id': { $in: empIds } }).exec((erro, emps) => {
+                if (erro) console.log(erro)
+                res.status(200).send(emps)
+            })
+        }
+        getRtId(user)
+            .then(res => getProcesses(res))
+            .then(res => getEmps(res))
+    }
+
+    else if (user.role === 'admin' || user.role === 'tecnico') {
         empreendedor.find().sort({ nome: 1 }).exec((err, doc) => {
             if (err) return err
             res.send(doc)
@@ -289,26 +330,28 @@ app.get('/api/showRt', (req, res) => {
     let user = req.decoded
 
     if (user.role === 'prefeitura') {
-        let rts = []
 
-        processModel.find({ 'munEmpreendimento': user.municipio }, (err, processes) => {
-            if (err) throw err
-            processes.forEach(async proc => {
-                await CadastroRt.findOne({ '_id': proc.rtId }, (erro, doc) => {
-                    if (erro) console.log(erro)
-                    rts.push(doc)
-                })
+        const getProcesses = () => {
+            return new Promise((resolve, reject) => {
+                processModel.find({ 'munEmpreendimento': user.municipio })
+                    .then(res => resolve(res))
+                    .catch(e => reject(e))
+            })
+        }
+        const getRts = (procs) => {
+            let rtIds = []
+            procs.forEach(proc => rtIds.push(proc.rtId))
+            CadastroRt.find({ _id: { $in: rtIds } }).exec((err, rts) => {
+                if (err) console.log(err)
                 res.status(200).send(rts)
             })
-        }).catch(err => {
-            console.log(err)
-        })
-    } else if (user.role !== 'empreend') {
-        CadastroRt.find().sort({ nomeRt: 1 }).exec((err, doc) => {
-            if (err) return err;
-            res.send(doc);
-        })
-    } else if (user.role === 'empreend') {
+        }
+        getProcesses()
+            .then(res => getRts(res))
+
+    }
+
+    else if (user.role === 'empreend') {
         const getEmpId = (usuario) => {
             return new Promise((resolve, reject) => {
                 empreendedor.findOne({ 'email': usuario.email })
@@ -317,37 +360,35 @@ app.get('/api/showRt', (req, res) => {
             })
         }
 
-        getProcesses = (userId) => {
+        const getProcesses = (userId) => {
             return new Promise((resolve, reject) => {
                 processModel.find({ 'empId': userId })
                     .then(res => resolve(res))
                     .catch(e => reject(e))
             })
         }
-        getRts = (processes) => {
+        const getRts = (processes) => {
             let rtIds = []
             processes.forEach(p => {
                 rtIds.push(p.rtId)
-            })               
-            CadastroRt.find({_id: {$in: rtIds}}).exec((err, doc)=>{
+            })
+            CadastroRt.find({ _id: { $in: rtIds } }).exec((err, doc) => {
                 if (err) console.log(err)
-                console.log(doc)
                 res.status(200).send(doc)
             })
-
         }
-
         getEmpId(user)
             .then(response => getProcesses(response))
-            .then(response => getRts(response)            
-            
-
-            )
-        //  .then(response3 => console.log('fuck', response3))
+            .then(response => getRts(response))
     }
 
-
-});
+    else if (user.role !== 'rt') {
+        CadastroRt.find().sort({ nomeRt: 1 }).exec((err, doc) => {
+            if (err) return err;
+            res.send(doc);
+        })
+    }
+})
 
 app.get('/api/showProcess', async (req, res) => {
 
@@ -362,17 +403,21 @@ app.get('/api/showProcess', async (req, res) => {
             })
     }
 
-    else if (user.role === 'empreend') {
+    else if (user.role === 'empreend' || user.role === 'rt') {
+        let collection, mail, query
 
-        empreendedor.findOne({ 'email': user.email }).exec((err, doc) => {
+        if (user.role === 'empreend') { collection = empreendedor; mail = 'email'; query = 'empId' }
+        if (user.role === 'rt') { collection = CadastroRt; mail = 'emailRt'; query = 'rtId' }
+
+        collection.findOne({ [mail]: user.email }).exec((err, doc) => {
             if (err) return err
             if (doc) {
                 processModel
-                    .find({ 'empId': doc._id })
+                    .find({ [query]: doc._id })
                     .sort({ nomeEmpreendimento: 1 })
-                    .exec((err, collection) => {
+                    .exec((err, procCollection) => {
                         if (err) return err
-                        res.send(collection)
+                        res.send(procCollection)
                     })
             } else res.send([])
         })
@@ -386,9 +431,7 @@ app.get('/api/showProcess', async (req, res) => {
                 res.send(collection)
             })
     }
-
-
-});
+})
 
 app.get('/api/tecnicos', (req, res) => {
 

@@ -43,15 +43,15 @@ class ShowEmpContainer extends Component {
     }
 
     componentDidMount() {
+        let { empCollection, rtCollection, processCollection } = this.props.cadastro
+        const userRole = localStorage.getItem('role')
 
-        !this.props.cadastro.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.cadastro.rtCollection[0] ? this.props.loadRtData() : void 0
-        !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
-        document.addEventListener("keydown", this.escFunction, false)
-    setTimeout(() => {
-        console.log(this.props.cadastro)
-    }, 2500);
-    
+        if (userRole !== 'rt') {          
+            !rtCollection[0] ? this.props.loadRtData() : void 0
+        }
+        !empCollection[0] ? this.props.loadEmpData() : void 0
+        !processCollection[0] ? this.props.loadProcessData() : void 0
+        document.addEventListener("keydown", this.escFunction, false)        
     }
 
     componentWillUnmount() {
@@ -179,27 +179,28 @@ class ShowEmpContainer extends Component {
         let process = []
         let { search, select } = this.state
         let searchString = search.trim().toLowerCase();
+        const { empCollection, rtCollection, processCollection } = this.props.cadastro
 
-        if (search && (search.length > 2 && select === 'emp')) {
-            emps = this.props.cadastro.empCollection.filter((el) => el.nome.toLowerCase().match(searchString)).slice(0, 20)
+        if (search && (search.length > 2 && (select === 'emp' && empCollection))) {
+            emps = empCollection.filter((el) => el.nome.toLowerCase().match(searchString)).slice(0, 20)
         } else if ((!search || search.length <= 2) && select === 'emp') {
-            emps = this.props.cadastro.empCollection.slice(0, 30)
+            emps = empCollection.slice(0, 30)
         }
 
-        if (search && (search.length > 2 && select === 'rt')) {
-            rts = this.props.cadastro.rtCollection.filter((el) => el.nomeRt.toLowerCase().match(searchString)).slice(0, 20)
+        if (search && (search.length > 2 && (select === 'rt' && rtCollection))) {
+            rts = rtCollection.filter((el) => el.nomeRt.toLowerCase().match(searchString)).slice(0, 20)
         } else if ((!search || search.length <= 2) && select === 'rt') {
-            rts = this.props.cadastro.rtCollection.slice(0, 30)
+            rts = rtCollection.slice(0, 30)
         }
 
-        if (search && (search.length > 2 && select === 'process')) {
-            process = this.props.cadastro.processCollection.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString)).slice(0, 20)
-        } else if ((!search || search.length <= 2) && select === 'process') {
-            process = this.props.cadastro.processCollection.slice(0, 30)
+        if (search && (search.length > 2 && (select === 'process' && processCollection))) {            
+            process = processCollection.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString)).slice(0, 20)
+        } else if ((!search || search.length <= 2) && select === 'process') {            
+            process = processCollection.slice(0, 30)
 
             process.sort(function (a, b) {
                 let ca = new Date(a.updatedAt)
-                let cb = new Date(b.updatedAt)
+                let cb = new Date(b.updatedAt)                
                 if (ca && cb) {
 
                     if (cb.getTime() > ca.getTime()) {
@@ -211,8 +212,7 @@ class ShowEmpContainer extends Component {
                     return null
                 }
             })
-        }
-
+        }        
         return (
             <div className="container" style={{ width: '90%' }} >
                 <BuscaTemplate
@@ -247,7 +247,7 @@ class ShowEmpContainer extends Component {
                         process={process}
                         empFields={[1, 2, 3, 6, 7, 8]}
                         rtFields={[1, 2, 3]}
-                        showRt={false}
+                        showRt={true}
                         fields={[2, 3, 4, 5, 6, 7, 8, 16]}
                         divConfig={['col s1', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
                         edit={this.enableEdit.bind(this)}
@@ -258,6 +258,8 @@ class ShowEmpContainer extends Component {
                         showInfo={this.showInfo.bind(this)}
                         clearLog={this.clearLog.bind(this)}
                     />
+
+
                     <EditData
                         redux={this.props.cadastro}
                         data={this.state}

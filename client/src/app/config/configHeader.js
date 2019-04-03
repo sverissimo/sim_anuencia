@@ -41,10 +41,10 @@ const admin = [prefeitura[0], prefeitura[1], agencia[0], prefeitura[2], agencia[
 }]
 
 const empreend = [
-{
-    endPoint: '/showEmpreend',
-    label: 'Gerenciar Dados'
-}]
+    {
+        endPoint: '/showEmpreend',
+        label: 'Gerenciar Dados'
+    }]
 
 
 export const configHeader = (role) => {
@@ -58,7 +58,9 @@ export const configHeader = (role) => {
             return admin
         case 'empreend':
             return empreend
-            
+        case 'rt':
+            return empreend
+
         default:
             return
     }

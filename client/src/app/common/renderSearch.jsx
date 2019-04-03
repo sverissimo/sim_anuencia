@@ -113,7 +113,7 @@ const RenderSearch = (props) => {
                     <div style={{ textAlign: 'center', padding: '4% 0' }}>
                         <strong>
                             Nenhum processo encontrado.
-                 </strong>
+                        </strong>
                     </div>
             }
         </div >

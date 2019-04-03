@@ -28,7 +28,7 @@ const Routes = () => {
             {agencia && <Route path='/diretrizes' component={diretriz} />}
             {prefeitura && <Route path='/solicitaAnuencia' component={SolicitaAnuencia} />}
             <Route path='/showEmpreend' component={BuscaContainer} />
-            {<Route path='/Anuencia' exact component={Anuencia} />}
+            {agencia && <Route path='/Anuencia' exact component={Anuencia} />}
             {agencia && <Route path='/editData' component={EditData} />}
             {userRole === 'admin' && <Route path='/users' exact component={Users} />}
         </Switch>

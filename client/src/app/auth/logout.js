@@ -5,7 +5,7 @@ const clearCookie = () => {
     const d = new Date(); //Create an date object
     d.setTime(d.getTime() - (1000 * 60 * 60 * 24)); //Set the time to the past. 1000 milliseonds = 1 second
     const expires = "expires=" + d.toGMTString()    
-    document.cookie = '_sim-ad' + '=' + '; ' + expires
+    document.cookie = '_sim-ad=; ' + expires
 
 }
 

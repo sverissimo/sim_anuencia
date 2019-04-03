@@ -13,15 +13,14 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const user = { ...localStorage }
-
+    
     this.props.loadEmpData();
-    if (user.role !== 'empreend') this.props.loadRtData();
+    this.props.loadRtData();
     this.props.loadProcessData();
 
     setTimeout(() => {
       let color = document.getElementById('setcolor').style.backgroundColor
-      this.setState({ setColor: color })
+      this.setState({ setColor: color })    
     }, 450)
   }
 
@@ -32,7 +31,7 @@ class Home extends Component {
     return (
       <div>
         <HomeTemplate>
-          {user.role === 'empreend' && <HomeEmpreend color={this.state.setColor} user={user} />}
+          {(user.role === 'empreend' || user.role === 'rt') && <HomeEmpreend color={this.state.setColor} user={user} />}
           {(user.role === 'prefeitura' || user.role === 'admin') && <HomePref color={this.state.setColor} />}
         </HomeTemplate>
       </div>
