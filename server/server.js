@@ -308,6 +308,42 @@ app.get('/api/showRt', (req, res) => {
             if (err) return err;
             res.send(doc);
         })
+    } else if (user.role === 'empreend') {
+        const getEmpId = (usuario) => {
+            return new Promise((resolve, reject) => {
+                empreendedor.findOne({ 'email': usuario.email })
+                    .then(res => resolve(res._id))
+                    .catch(e => reject(e))
+            })
+        }
+
+        getProcesses = (userId) => {
+            return new Promise((resolve, reject) => {
+                processModel.find({ 'empId': userId })
+                    .then(res => resolve(res))
+                    .catch(e => reject(e))
+            })
+        }
+        getRts = (processes) => {
+            let rtIds = []
+            processes.forEach(p => {
+                rtIds.push(p.rtId)
+            })               
+            CadastroRt.find({_id: {$in: rtIds}}).exec((err, doc)=>{
+                if (err) console.log(err)
+                console.log(doc)
+                res.status(200).send(doc)
+            })
+
+        }
+
+        getEmpId(user)
+            .then(response => getProcesses(response))
+            .then(response => getRts(response)            
+            
+
+            )
+        //  .then(response3 => console.log('fuck', response3))
     }
 
 

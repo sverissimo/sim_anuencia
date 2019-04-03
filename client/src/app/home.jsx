@@ -23,7 +23,6 @@ class Home extends Component {
       let color = document.getElementById('setcolor').style.backgroundColor
       this.setState({ setColor: color })
     }, 450)
-
   }
 
   render() {

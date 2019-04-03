@@ -5,7 +5,7 @@ import tecnicosArmbh from '../config/tecnicos.json'
 export const loadEmpData = () => {
 
     const request = axios.get('/api/showEmpreend')
-        .then(res => {            
+        .then(res => {
             return res.data
         })
         .catch(err => {
@@ -94,3 +94,6 @@ export const loading = (on) => {
         payload: on
     }
 }
+
+/* let ids = [];
+return res.data.filter(item => ids.includes(item._id) ? false : ids.push(item._id)); */

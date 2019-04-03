@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import '../css/header.css'
 
+import { logout } from '../auth/logout'
 import { configHeader } from '../config/configHeader'
 import { setColor } from '../cadastro/cadActions'
 
@@ -66,7 +67,7 @@ class Header extends Component {
                                     ))
                                 }
                                 {userRole === 'admin' && <li><Link to="/users"><i className="material-icons left">person</i></Link></li>}
-                                <li><Link to="/"><i className="material-icons left">mail</i></Link></li>
+                                <li><Link to="/"><i className="material-icons left" onClick={()=> logout()} title='Sair'>logout</i></Link></li>
                             </ul>
                         ))
                     }
