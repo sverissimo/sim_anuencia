@@ -109,7 +109,7 @@ const ShowEmpRow = (props) => {
                         selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(
                             itemArray.filter(el => el.key === i)[0]
                         )) : void 0
-
+                        
                         return (
                             <div className="row" key={k} style={{ borderBottom: '1px dotted #bbb', paddingBottom: '1%' }}>
                                 {

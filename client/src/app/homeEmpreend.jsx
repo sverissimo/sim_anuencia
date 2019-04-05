@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const HomeEmpreend = (props) => {
     let { color, processes } = props
-    console.log(processes)
+    
     return (
         <div style={{ marginTop: '3%' }}>
             

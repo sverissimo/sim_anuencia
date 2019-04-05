@@ -58,7 +58,10 @@ class CadastroContainer extends React.Component {
     }
 
     async enableProcessInput() {
-
+        
+        const user = { ...localStorage }
+        
+        if (user.role === 'prefeitura') await this.setState({munEmpreendimento: user.municipio})
         await this.setState({
             ...this.state, enableRt: 'disabled', enableProcess: '', enableEmp: 'disabled'
         })
@@ -174,7 +177,7 @@ class CadastroContainer extends React.Component {
 
             nomeEmpreendimento: this.state.nomeEmpreendimento,
             modalidade: this.state.modalidade,
-            area: this.state.area,
+            area: this.state.area.replace(/\./g, ''),
             munEmpreendimento: this.state.munEmpreendimento,
             status: procStatus,
             tecnico: 'Técnico não alocado',
@@ -193,13 +196,14 @@ class CadastroContainer extends React.Component {
                 }
             ],
         }
+
         if (this.state.modalidade === 'Desmembramento') {
             cadProcess.tecnico = tecnicoAlocado.name + ' ' + tecnicoAlocado.surName
         }
         if (!nome || !nomeRt || !nomeEmpreendimento) {
             alert('Favor preencher os dados do empreendedor, RT e empreendimento.')
-        } else if (!modalidade || !munEmpreendimento) {
-            alert('Favor preencher a modalidade e o município do empreendimento.')
+        } else if (!modalidade || (!munEmpreendimento && user.role === 'admin')) {
+            alert('Favor preencher a modalidade do empreendimento.')
         } else if (nome && (nomeRt && nomeEmpreendimento && (modalidade && munEmpreendimento))) {
             this.props.loading(true)
             try {

@@ -22,11 +22,16 @@ const RenderSearch = (props) => {
     //****************** HEADER *********************
 
     let fieldsConfig = []
-    fields.map(i => fieldsConfig.push({
-        name: configLabels[i].name,
-        label: configLabels[i].label,
-        div: configLabels[i].div
-    }))
+    fields.forEach(el => {
+        fieldsConfig.push(configLabels.filter(item => item.name === el)[0])
+    })
+
+
+    /*  fields.map(i => fieldsConfig.push({
+         name: configLabels[i].name,
+         label: configLabels[i].label,
+         div: configLabels[i].div
+     })) */
 
     return (
         <div>
@@ -59,8 +64,10 @@ const RenderSearch = (props) => {
                             })
                         }
                         let i2 = []
-                        fields.map(i => i2.push(itemArray[i]))
-
+                        fields && fields.length > 0 ?
+                            fields.map(i => i2.push(itemArray.filter(el => el.key === i)[0]))
+                            : void 0
+                        
                         return (
                             <div className="row" key={k} >
                                 {

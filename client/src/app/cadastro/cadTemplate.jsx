@@ -26,7 +26,7 @@ const CadTemplate = (props) => {
 
         return configArray.map((item, i) => {
             let config = item.settings
-            
+
             return (
                 <div key={i} className={config.divClassName}>
                     <input type={config.type}
@@ -80,6 +80,8 @@ const CadTemplate = (props) => {
             return
         }
     }
+
+    const user = { ...localStorage }
 
     return (
         <div className="container" style={{ width: '90%' }} >
@@ -140,7 +142,7 @@ const CadTemplate = (props) => {
                         <div className="row" >
                             {renderFields(processForm, props.data.enableProcess)}
                             <div className="col s12 m4 l2" >
-                                <Input                                    
+                                <Input
                                     name='modalidade'
                                     type='select'
                                     label='Modalidade'
@@ -153,16 +155,22 @@ const CadTemplate = (props) => {
                             </div>
 
                             <div className="col s12 m4 l3" >
-                                <Input
-                                    name='munEmpreendimento'
-                                    type='select'
-                                    label='Município'
-                                    defaultValue={props.data.munEmpreendimento}
-                                    onChange={props.handleChange}
-                                    disabled={props.data.enableProcess}
-                                >
-                                    {selector}
-                                </Input>
+                                {
+                                    user.role === 'admin' ?
+                                        <Input
+                                            name='munEmpreendimento'
+                                            type='select'
+                                            label='Município'
+                                            defaultValue={props.data.munEmpreendimento}
+                                            onChange={props.handleChange}
+                                            disabled={props.data.enableProcess}
+                                        >
+                                            {selector}
+                                        </Input>
+                                        :
+                                        <div className="input-field col s12 m6 l2">                                                                                           
+                                        </div>
+                                }
                             </div>
                         </div>
                     </fieldset>
@@ -171,14 +179,13 @@ const CadTemplate = (props) => {
                         <input
                             type='submit' className="btn right" disabled={props.data.enableProcess}
                             style={{ margin: '20px 0px' }} value='Cadastrar processo' />
-
                     </div>
                     <br />
                     <br />
                 </form>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default CadTemplate;

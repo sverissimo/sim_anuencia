@@ -42,8 +42,8 @@ const HomePref = (props) => {
     return (
         <div>
             {
-                menu.map(item => (
-                    <div align="center" className="col s12 m6 l3">
+                menu.map((item, i)=> (
+                    <div align="center" className="col s12 m6 l3" key={i}>
                         <img src={item.img}
                             style={{ margin: '10px' }} alt="" width={item.w} height={item.h}/>
                         <h5><b>{item.title}</b></h5>

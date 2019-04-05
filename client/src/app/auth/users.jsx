@@ -16,8 +16,7 @@ class Users extends Component {
 
     async componentDidMount() {
         await this.props.getUsers()
-        this.setState({ users: this.props.auth.usersCollection })
-        console.log(this.state.users)
+        this.setState({ users: this.props.auth.usersCollection })        
     }
 
     handleChange(e) {
