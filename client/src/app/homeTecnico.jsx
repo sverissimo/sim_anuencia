@@ -16,15 +16,15 @@ const menu = [
         link: '/anuencia',
         img: '/images/solAnuencia2.png',
         w:'120px',
-        h:'120px'
+        h:'125px'
     },
     {
         title: 'Acompanhar Processos',
-        text: 'Verifique a documentação enviada, agende a vistoria e a CGT e emita a diretriz metropolitana para os processos cadastrados.',
+        text: 'Visualize os dados dos processos, interesados e RTs. Acompanhe o andamento dos processos e veja seus documentos, projetos e seu histórico.',
         link: '/showEmpreend',
         img: '/images/process_info3.png',
         w:'110px',
-        h:'115px'
+        h:'125px'
     },
 ]
 
@@ -39,7 +39,7 @@ const HomeTecnico = (props) => {
                         <img src={item.img}
                             style={{ margin: '10px' }} alt="" width={item.w} height={item.h}/>
                         <h5><b>{item.title}</b></h5>
-                        <p style={{ textAlign: 'justify', padding:'0 10%' }}>{item.text}</p>
+                        <p style={{ textAlign: 'justify', padding:'0 10%', maxHeight:'75px' }}>{item.text}</p>
                         <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
                             <Link to={item.link} style={{ color: 'white' }}>{item.title}</Link>
                             {' '}&raquo;</p>

@@ -38,7 +38,7 @@ const ShowEmpRow = (props) => {
             fieldsConfig.push(headerLabels.filter(item => item.name === el)[0])
         })
     }
-    
+
     if (searchMatch && searchMatch[0]) {
 
         return (
@@ -70,8 +70,8 @@ const ShowEmpRow = (props) => {
                             </div>
                             : void 0
                     }
-                    <div className='col s1'>
-                        Informações</div>
+                    {(userRole === 'admin' || data.select === 'process') && <div className='col s1'>
+                        Informações</div>}
                 </div>
 
                 {/* ***************** BODY / ROWS ***************** */}
