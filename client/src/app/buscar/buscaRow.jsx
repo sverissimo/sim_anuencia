@@ -7,7 +7,7 @@ const ShowEmpRow = (props) => {
 
     let { redux, emps, rts, process, empFields, rtFields, showRt, edit, deleteOne, data, fields,
         divConfig, color, empDetails, rtDetails, showInfo, clearLog } = props
-    
+
     const userRole = localStorage.getItem('role')
 
     let searchMatch = []
@@ -18,29 +18,27 @@ const ShowEmpRow = (props) => {
         searchMatch = emps
         selectedFields = empFields
         headerLabels = configEmpLabels
-        divConfig = ['col s2', 'col s2', 'col s2', 'col s1', 'col s1']
+        divConfig = ['col s3', 'col s2', 'col s2', 'col s1', 'col s1', 'col s2']
     } else if ((rts && rts[0]) && data.edit === false) {
         searchMatch = rts
         selectedFields = rtFields
         headerLabels = configRtLabels
-        divConfig = ['col s4', 'col s4', 'col s4']
+        divConfig = ['col s4', 'col s3', 'col s4']
     } else if ((process && process[0]) && data.edit === false) {
         searchMatch = process
         selectedFields = fields
         headerLabels = configLabels
-    } 
-    
+    }
+
     //****************** HEADER *********************
 
     let fieldsConfig = []
-    headerLabels.length > 0 ?
-        selectedFields.map(i => fieldsConfig.push({
-            name: headerLabels[i].name,
-            label: headerLabels[i].label,
-            div: headerLabels[i].div
-        }))
-        : void 0
-
+    if (headerLabels.length > 0) {
+        selectedFields.forEach(el => {
+            fieldsConfig.push(headerLabels.filter(item => item.name === el)[0])
+        })
+    }
+    
     if (searchMatch && searchMatch[0]) {
 
         return (
@@ -72,6 +70,8 @@ const ShowEmpRow = (props) => {
                             </div>
                             : void 0
                     }
+                    <div className='col s1'>
+                        Informações</div>
                 </div>
 
                 {/* ***************** BODY / ROWS ***************** */}
@@ -106,7 +106,9 @@ const ShowEmpRow = (props) => {
                         }
 
                         let i2 = []
-                        selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(itemArray[i])) : void 0
+                        selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(
+                            itemArray.filter(el => el.key === i)[0]
+                        )) : void 0
 
                         return (
                             <div className="row" key={k} style={{ borderBottom: '1px dotted #bbb', paddingBottom: '1%' }}>
@@ -139,11 +141,9 @@ const ShowEmpRow = (props) => {
                                         </div>
                                         : <div className='col s1'> </div>
                                 }
-
-
                                 {
                                     data.select === 'process' ?
-                                        <div className="col s2 right"
+                                        <div className="col s2"
                                             style={{
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
@@ -151,7 +151,8 @@ const ShowEmpRow = (props) => {
                                                 margin: '0 auto',
                                                 padding: '0px 5px',
                                                 height: '100%',
-                                                verticalAlign: 'middle'
+                                                verticalAlign: 'middle',
+                                                paddingLeft: `${userRole !== 'admin' && '3%'}`
                                             }}>
                                             <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
                                             <EditButton edit={edit} id={item._id} userRole={userRole} />
@@ -172,14 +173,11 @@ const ShowEmpRow = (props) => {
                                             <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} />
                                         </div>
                                 }
-
                             </div>
                         )
                     })
-
                 }
-
-            </div >
+            </div>
         )
     } else {
         let item = 'processo'
@@ -187,17 +185,13 @@ const ShowEmpRow = (props) => {
         if (data.select === 'rt') item = 'responsável técnico'
 
         return (
-
             <div style={{ textAlign: 'center', padding: '4% 0' }}>
                 <strong>
                     Nenhum {item} encontrado. Verifique se que seu processo foi cadastrado pela prefeitura.
         </strong>
             </div>
-
         )
     }
 }
-
-
 
 export default ShowEmpRow;

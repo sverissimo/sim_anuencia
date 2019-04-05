@@ -46,12 +46,13 @@ class ShowEmpContainer extends Component {
         let { empCollection, rtCollection, processCollection } = this.props.cadastro
         const userRole = localStorage.getItem('role')
 
-        if (userRole !== 'rt') {          
+        if (userRole !== 'rt') {
             !rtCollection[0] ? this.props.loadRtData() : void 0
         }
         !empCollection[0] ? this.props.loadEmpData() : void 0
         !processCollection[0] ? this.props.loadProcessData() : void 0
-        document.addEventListener("keydown", this.escFunction, false)        
+        document.addEventListener("keydown", this.escFunction, false)
+
     }
 
     componentWillUnmount() {
@@ -193,14 +194,14 @@ class ShowEmpContainer extends Component {
             rts = rtCollection.slice(0, 30)
         }
 
-        if (search && (search.length > 2 && (select === 'process' && processCollection))) {            
+        if (search && (search.length > 2 && (select === 'process' && processCollection))) {
             process = processCollection.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString)).slice(0, 20)
-        } else if ((!search || search.length <= 2) && select === 'process') {            
+        } else if ((!search || search.length <= 2) && select === 'process') {
             process = processCollection.slice(0, 30)
 
             process.sort(function (a, b) {
                 let ca = new Date(a.updatedAt)
-                let cb = new Date(b.updatedAt)                
+                let cb = new Date(b.updatedAt)
                 if (ca && cb) {
 
                     if (cb.getTime() > ca.getTime()) {
@@ -212,7 +213,7 @@ class ShowEmpContainer extends Component {
                     return null
                 }
             })
-        }        
+        }
         return (
             <div className="container" style={{ width: '90%' }} >
                 <BuscaTemplate
@@ -245,10 +246,10 @@ class ShowEmpContainer extends Component {
                         emps={emps}
                         rts={rts}
                         process={process}
-                        empFields={[1, 2, 3, 6, 7, 8]}
-                        rtFields={[1, 2, 3]}
-                        showRt={true}
-                        fields={[2, 3, 4, 5, 6, 7, 8, 16]}
+                        empFields={['nome', 'cpf', 'rua', 'cidade', 'phone', 'email']}
+                        rtFields={['nomeRt', 'emailRt', 'phoneRt']}
+                        showRt={false}
+                        fields={['nProcess', 'nomeEmpreendimento', 'modalidade', 'area', 'munEmpreendimento', 'status', 'tecnico', 'updatedAt']}
                         divConfig={['col s1', 'col s2', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1', 'col s1']}
                         edit={this.enableEdit.bind(this)}
                         deleteOne={this.deleteHandler.bind(this)}

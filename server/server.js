@@ -304,7 +304,7 @@ app.get('/api/showEmpreend', (req, res) => {
         }
 
         const getEmps = (processes) => {
-            console.log(processes)
+
             let empIds = []
             processes.forEach(proc => empIds.push(proc.empId))
             empreendedor.find({ '_id': { $in: empIds } }).exec((erro, emps) => {
@@ -488,14 +488,36 @@ app.post('/api/cadastro_rt', (req, res) => {
 app.post('/api/cadastro_process', (req, res) => {
 
     if (req.decoded.role === 'admin' || req.decoded.role === 'prefeitura') {
-        const cadastroProcess = new processModel(req.body);
-        cadastroProcess.save((err, doc) => {
-            if (err) return res.status(400).send(err);
-            return res.status(200).json({
-                post: true,
-                process: doc
+
+        const processCounter = new Promise((resolve, reject) => {
+            processModel.find().exec((err, doc) => {
+                if (err) reject(err)
+                let procThisYear = []
+                doc.map(el =>
+                    procThisYear.push(new Date(el.createdAt).getFullYear())
+                )
+        
+                const currentYear = Number(new Date().getFullYear())
+                const proc = procThisYear.filter(el => el === currentYear)
+        
+                let count = proc.length
+                let nProcess = (count + 1) + '/' + currentYear
+                
+                resolve(nProcess)
             })
-        });
+        })
+
+        processCounter.then(count => {
+            const cadastroProcess = new processModel(Object.assign(req.body, { nProcess: count }))
+            cadastroProcess.save((err, doc) => {
+                if (err) return res.status(400).send(err);
+                return res.status(200).json({
+                    post: true,
+                    process: doc
+                })
+            })
+
+        })
     } else res.status(403).send('Este usuário não possui permissões para esta solicitação')
 });
 

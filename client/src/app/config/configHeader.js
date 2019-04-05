@@ -15,7 +15,7 @@ const prefeitura = [
     },
     {
         endPoint: '/showEmpreend',
-        label: 'Gerenciar Dados'
+        label: 'Consultar Processos'
     }]
 
 const agencia = [
@@ -31,7 +31,7 @@ const agencia = [
     },
     {
         endPoint: '/showEmpreend',
-        label: 'Gerenciar Dados'
+        label: 'Consultar Processos'
     }]
 
 const admin = [prefeitura[0], prefeitura[1], agencia[0], prefeitura[2], agencia[1],
@@ -43,7 +43,7 @@ const admin = [prefeitura[0], prefeitura[1], agencia[0], prefeitura[2], agencia[
 const empreend = [
     {
         endPoint: '/showEmpreend',
-        label: 'Gerenciar Dados'
+        label: 'Consultar Processos'
     }]
 
 

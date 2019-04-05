@@ -59,22 +59,8 @@ class CadastroContainer extends React.Component {
 
     async enableProcessInput() {
 
-        const collection = this.props.cadastro.processCollection
-        let procThisYear = []
-
-        collection.map(el =>
-            procThisYear.push(new Date(el.createdAt).getFullYear())
-        )
-
-        const currentYear = Number(new Date().getFullYear())
-        const proc = procThisYear.filter(el => el === currentYear)
-
-        let count = proc.length
-        let nProcess = (count + 1) + '/' + currentYear
-
         await this.setState({
-            ...this.state, nProcess: nProcess, enableRt: 'disabled',
-            enableProcess: '', enableEmp: 'disabled'
+            ...this.state, enableRt: 'disabled', enableProcess: '', enableEmp: 'disabled'
         })
         document.getElementById("nomeEmpreendimento").focus()
     }
@@ -185,7 +171,7 @@ class CadastroContainer extends React.Component {
         }
 
         let cadProcess = {
-            nProcess: this.state.nProcess,
+
             nomeEmpreendimento: this.state.nomeEmpreendimento,
             modalidade: this.state.modalidade,
             area: this.state.area,

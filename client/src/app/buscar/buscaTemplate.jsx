@@ -13,7 +13,7 @@ const ShowEmpTemplate = (props) => {
             <div>
 
                 <Title
-                    title='Gerenciar Dados'
+                    title='Acompanhar Processos'
                     subtitle={subtitle}
                     color={props.color}
                 />

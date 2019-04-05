@@ -84,7 +84,7 @@ export const reduxToastr = (status, input, titulo) => {
     if (status === 'sucess') {
         return toastr.success(title, input)
     } else {
-        return toastr.error('Erro', input)
+        return toastr.error(title || 'Erro', input)
     }
 }
 

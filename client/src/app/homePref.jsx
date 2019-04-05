@@ -6,17 +6,19 @@ const HomePref = (props) => {
 
     return (
         <div>
-            <div align="center" className="col s12 m3">
+            <div align="center" className="col s12 m6 l3">
                 <img src="/images/cadastro.png"
                     style={{ margin: '10px' }} alt="" width="105" height="120" />
 
                 <h5><b>Cadastrar Processo</b></h5>
-                <p style={{ textAlign: 'justify' }}>Cadastre um novo processo, o interessado e o Responsável técnico. Caso o interessado e RT estejam cadastrados, basta informar o nome e o formulário será preenchido automaticamente.</p>
+                <p style={{ textAlign: 'justify' }}>Cadastre um novo processo, o interessado 
+                e o responsável técnico. Caso o interessado e RT estejam cadastrados, informe 
+                o nome e o formulário será preenchido automaticamente.</p>
                 <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
                     <Link to="/cadastro" style={{ color: 'white' }}>Cadastrar Processo</Link>
                     &raquo;</p>
             </div>
-            <div className="col s12 m3" align="center">
+            <div className="col s12 m6 l3" align="center">
                 <img className="center-align" src="/images/solDir.jpg"
                     style={{ margin: '10px' }} width="105" height="120" alt="" />
 
@@ -30,7 +32,7 @@ const HomePref = (props) => {
                     <Link to="/solicitaDiretriz" style={{ color: 'white' }}>Solicitar Diretrizes</Link>
                     &raquo;</p>
             </div>
-            <div className="col s12 m3" align="center">
+            <div className="col s12 m6 l3" align="center">
                 <img src="/images/solAnuencia.png"
                     style={{ margin: '0px' }} alt="" width="140" height="140" />
 
@@ -40,18 +42,18 @@ const HomePref = (props) => {
                 <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
                     <Link to="/solicitaAnuencia" style={{ color: 'white' }}>Solicitar Anuência &raquo;</Link></p>
             </div>
-            <div className="col s12 m3" align="center">
+            <div className="col s12 m6 l3" align="center">
 
                 <img src="/images/gerenciarProc.png"
                     style={{ margin: '10px' }} alt="" width="120" height="120" />
 
 
-                <h5><b>Gerenciar Dados</b></h5>
-                <p style={{ textAlign: 'justify' }}>Busque, edite e gerencie os dados dos processos,
+                <h5><b>Consultar Processos</b></h5>
+                <p style={{ textAlign: 'justify' }}>Busque e gerencie os dados dos processos,
                 interesados e RTs utilizando os filtros disponíveis. Acompanhe os andamentos e veja os arquivos do processo
             através desta opção.</p>
                 <p className="btn" href="" role="button" style={{ backgroundColor: color }}>
-                    <Link to="/showEmpreend" style={{ color: 'white' }}>Buscar Processo &raquo;</Link></p>
+                    <Link to="/showEmpreend" style={{ color: 'white' }}>Consultar Processos &raquo;</Link></p>
             </div>
         </div>
     );

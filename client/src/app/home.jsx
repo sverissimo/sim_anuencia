@@ -5,6 +5,7 @@ import { loadEmpData, loadRtData, loadProcessData } from './cadastro/cadActions'
 import HomeTemplate from './homeTemplate';
 import HomeEmpreend from './homeEmpreend';
 import HomePref from './homePref';
+import HomeTecnico from './homeTecnico';
 
 class Home extends Component {
 
@@ -30,9 +31,10 @@ class Home extends Component {
 
     return (
       <div>
-        <HomeTemplate>
-          {(user.role === 'empreend' || user.role === 'rt') && <HomeEmpreend color={this.state.setColor} user={user} />}
+        <HomeTemplate user={user}>
+          {(user.role === 'empreend' || user.role === 'rt') && <HomeEmpreend color={this.state.setColor} user={user} processes={this.props.data.processCollection}/>}
           {(user.role === 'prefeitura' || user.role === 'admin') && <HomePref color={this.state.setColor} />}
+          {(user.role === 'tecnico') && <HomeTecnico color={this.state.setColor} />}
         </HomeTemplate>
       </div>
     )
