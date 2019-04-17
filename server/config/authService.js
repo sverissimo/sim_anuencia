@@ -1,26 +1,22 @@
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer')
 const { User } = require('../models/user')
 const { CadastroRt } = require('../models/rtModel')
+const { verifyEmail } = require('../config/verifyEmail')
 
 const emailRegex = /\S+@\S+\.\S+/
 //const passwordRegex = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})/
 
 const signup = (req, res, next) => {
 
-    const { name, surName, email, password, confirmPassword, municipio } = req.body || ''
+    const { name, surName, email, password, confirmPassword, municipio, role } = req.body || ''
     const verified = false
 
     if (!email.match(emailRegex)) {
         return res.send('E-mail inválido.')
     }
-    /*   if (!password.match(passwordRegex)) {
-          return res.status(400).send({
-              errors: [
-                  "Senha precisar ter: uma letra maiúscula, uma letra minúscula, um número, uma caractere especial(@#$ %) e tamanho entre 6 - 20."
-              ]
-          })
-      } */
+
     const salt = bcrypt.genSaltSync()
     const passwordHash = bcrypt.hashSync(password, salt)
     if (!bcrypt.compareSync(confirmPassword, passwordHash)) {
@@ -33,6 +29,17 @@ const signup = (req, res, next) => {
         } else if (user) {
             return res.send('Usuário já cadastrado.')
         } else {
+
+            if (role === 'prefeitura') {
+                const newUser = new User({ name, surName, email, municipio, password: passwordHash, role, verified })
+                newUser.save((err, user) => {
+                    if (err) {
+                        return err
+                    } else {
+                        res.status(200).send(user)
+                    }
+                })
+            }
             const defRole = new Promise((resolve, reject) => {
                 CadastroRt.findOne({ 'emailRt': email })
                     .then(res => {
@@ -41,13 +48,39 @@ const signup = (req, res, next) => {
                     })
                     .catch(e => reject(e))
             })
+
             defRole.then(role => {
                 const newUser = new User({ name, surName, email, municipio, password: passwordHash, role, verified })
-                newUser.save((err, user) => {
+                newUser.save(async (err, user) => {
                     if (err) {
                         return err
                     } else {
-                        return res.send(user)
+                        const transporter = nodemailer.createTransport({
+                            host: process.env.MAILHOST,
+                            port: 465,
+                            secureConnection: true, // use SSL        
+                            auth: {
+                                user: process.env.MAILUSER,
+                                pass: process.env.MAILPASS
+                            },
+                        })
+                    
+                        const mailOptions = {
+                            from: 'anuencia.digital@agenciarmbh.mg.gov.br',
+                            to: user.email,
+                            subject: 'Confirmação de Cadastro',
+                            html: verifyEmail(user.name, `https://www.anuenciadigital.ml/api/vUser?id=${user._id}`)
+                        }
+                    
+                        await transporter.sendMail(mailOptions, function (err, res) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                answer = res.status
+                            }
+                        })
+                        
+                        res.send(user)
                     }
                 })
             })
@@ -82,3 +115,14 @@ const login = async (req, res, next) => {
 }
 
 module.exports = { signup, login }
+
+
+
+
+/*   if (!password.match(passwordRegex)) {
+          return res.status(400).send({
+              errors: [
+                  "Senha precisar ter: uma letra maiúscula, uma letra minúscula, um número, uma caractere especial(@#$ %) e tamanho entre 6 - 20."
+              ]
+          })
+      } */

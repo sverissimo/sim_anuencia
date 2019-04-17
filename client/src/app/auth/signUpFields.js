@@ -18,7 +18,7 @@ const signUpFields = [
         name: 'municipio',
         className: 'mdi-action-account-circle prefix',
         label: 'Município'
-    },
+    },   
     {
         name: 'password',
         className: 'mdi-action-lock-outline prefix',
@@ -28,6 +28,12 @@ const signUpFields = [
         name: 'confirmPassword',
         className: 'mdi-action-lock-outline prefix',
         label: 'Confirme sua senha'
+    },
+    {
+        name: 'role',
+        className: 'mdi-action-account-circle prefix',
+        label: 'Área de Atuação',
+        options: ['Poder público', 'Iniciativa privada']
     }
 ]
 

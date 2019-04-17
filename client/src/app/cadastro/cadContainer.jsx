@@ -133,7 +133,7 @@ class CadastroContainer extends React.Component {
                 ...this.state, [event.target.name]: event.target.value
             })
         }
-    };
+    }
 
     async handleSubmit(e) {
         e.preventDefault()

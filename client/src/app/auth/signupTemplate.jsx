@@ -11,14 +11,41 @@ const signupTemplate = (props) => {
                 <form className="col s12" onSubmit={handleSubmit}>
                     {params.map((el, i) => (
                         <div className="row" key={i}>
-                            <div className="input-field col s12">
-                                <i className={el.className}></i>
-                                <input name={el.name}
-                                    type={el.name === "confirmPassword" ? "password" : el.name === 'email' || el.name === 'password' ? el.name : 'text'}
-                                    className="validate"
-                                    onChange={handleChange} />
-                                <label htmlFor={el.name}>{el.label}</label>
-                            </div>
+                            {
+                                el.name === 'role' ?
+                                    <label>
+                                        {el.label}
+                                        <br /><br />
+                                        <span style={{ marginRight: '5%' }}>
+                                            <input id='ip'
+                                                type="radio"
+                                                name={el.name}
+                                                value='empreend'
+                                                onChange={handleChange} 
+                                            />
+                                            <label htmlFor='ip'> Iniciativa Privada</label>
+                                        </span>
+                                        <span >
+                                            <input id='pp'
+                                                type="radio"
+                                                name={el.name}
+                                                value='prefeitura'
+                                                onChange={handleChange}
+                                            />
+                                            <label htmlFor='pp'> Poder Público</label>
+                                        </span>
+
+                                    </label>
+
+                                    :
+                                    <div className="input-field col s12">
+                                        <input name={el.name}
+                                            type={el.name === "confirmPassword" ? "password" : el.name === 'email' || el.name === 'password' ? el.name : 'text'}
+                                            className="validate"
+                                            onChange={handleChange} />
+                                        <label htmlFor={el.name}>{el.label}</label>
+                                    </div>
+                            }
                         </div>
                     ))}
 
@@ -32,7 +59,7 @@ const signupTemplate = (props) => {
 
                 </form>
             </div>
-        </div>
+        </div >
     );
 };
 

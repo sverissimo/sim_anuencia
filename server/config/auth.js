@@ -3,6 +3,7 @@ var router = express.Router()
 const jwt = require('jsonwebtoken')
 
 const auth = router.use((req, res, next) => {
+    if (req.originalUrl.match('/api/vUser')) next()
     // CORS preflight request
     if (req.method === 'OPTIONS') {
         next()

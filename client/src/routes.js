@@ -19,7 +19,7 @@ const Routes = () => {
     const userRole = localStorage.getItem('role')
     const prefeitura = userRole === 'admin' || userRole === 'prefeitura'
     const agencia = userRole === 'admin' || userRole === 'tecnico'
-
+    
     if (document.cookie.match('_sim-ad')) {
         return <Switch>
             <Route path='/' exact component={Home} />
@@ -30,7 +30,7 @@ const Routes = () => {
             <Route path='/showEmpreend' component={BuscaContainer} />
             {agencia && <Route path='/Anuencia' exact component={Anuencia} />}
             {agencia && <Route path='/editData' component={EditData} />}
-            {userRole === 'admin' && <Route path='/users' exact component={Users} />}
+            {userRole === 'admin' && <Route path='/users' exact component={Users} />}            
         </Switch>
     } else {
         logout()

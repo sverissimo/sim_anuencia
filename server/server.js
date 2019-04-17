@@ -46,8 +46,20 @@ app.use(express.static('client/build'))
 
 app.use(methodOverride('_method'))
 
+
 app.post('/api/login', login)
 app.post('/api/signup', signup)
+
+app.get('/api/vUser', ((req, res) => {
+
+    User.updateOne(
+        { '_id': req.query.id },
+        { $set: { verified: true } },
+        ((err, doc) => {
+            if (err) console.log(err)
+            res.sendFile(path.resolve(__dirname, '../client', 'public', 'userConfirmed.html'))
+        }))
+}))
 
 const conn = mongoose.connection
 
@@ -240,7 +252,6 @@ app.post('/api/solAnuenciaUpload', upload.fields([
     });
 
 
-
 app.get('/api/files', (req, res) => {
 
     filesModel.find().sort({ uploadDate: -1 }).exec((err, doc) => {
@@ -249,9 +260,8 @@ app.get('/api/files', (req, res) => {
     });
 })
 
-
 app.get('/api/showEmpreend', (req, res) => {
-
+    
     let user = req.decoded
 
     if (user.role === 'prefeitura') {
@@ -483,7 +493,7 @@ app.post('/api/cadastro_rt', (req, res) => {
             })
         });
     } else res.status(403).send('Este usuário não possui permissões para esta solicitação')
-});
+})
 
 app.post('/api/cadastro_process', (req, res) => {
 
@@ -496,13 +506,13 @@ app.post('/api/cadastro_process', (req, res) => {
                 doc.map(el =>
                     procThisYear.push(new Date(el.createdAt).getFullYear())
                 )
-        
+
                 const currentYear = Number(new Date().getFullYear())
                 const proc = procThisYear.filter(el => el === currentYear)
-        
+
                 let count = proc.length
                 let nProcess = (count + 1) + '/' + currentYear
-                
+
                 resolve(nProcess)
             })
         })
