@@ -34,7 +34,7 @@ const ProcessInfo = (props) => {
                 {process.processHistory.map((el, i) =>
                     <div className="row" key={i} style={{ paddingLeft: '3%' }}>
                         {
-                            el.label === 'Processo cadastrado' ?
+                            el.label === 'Processo cadastrado' || (el.label === 'Processo Arquivado' || el.label === 'Processo Desarquivado') ?
                                 <div>
                                     <div className="col s12 m4">
                                         {el.label}

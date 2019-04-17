@@ -103,3 +103,21 @@ export const InfoButton = props => {
 
 
 }
+
+export const ArchieveButton = (props) => {
+
+    let { id, archieve, archieved } = props
+    if (props.userRole === 'admin') {
+        return (
+            <div>
+                <i className="material-icons"
+                    style={{ fontSize: '24px', color: archieved ? 'blue' : 'darkorange', cursor: 'pointer' }}
+                    title={archieved ? 'Desarquivar' : 'Arquivar'}
+                    onClick={() => archieve(id, archieved)}
+                >
+                    {archieved ? 'unarchive' : 'archive'}
+            </i>
+            </div>
+        )
+    } else return <span></span>
+}

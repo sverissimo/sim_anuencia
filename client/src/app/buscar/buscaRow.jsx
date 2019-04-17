@@ -1,12 +1,12 @@
 import React from 'react';
 import { configLabels, configEmpLabels, configRtLabels } from '../config/configLabels';
-import { DeleteButton, EditButton, InfoButton } from './../common/buttons'
+import { ArchieveButton, DeleteButton, EditButton, InfoButton } from './../common/buttons'
 import './../css/styles.css';
 
 const ShowEmpRow = (props) => {
 
     let { redux, emps, rts, process, empFields, rtFields, showRt, edit, deleteOne, data, fields,
-        divConfig, color, empDetails, rtDetails, showInfo, clearLog } = props
+        divConfig, color, empDetails, rtDetails, showInfo, clearLog, archieve } = props
 
     const userRole = localStorage.getItem('role')
 
@@ -156,7 +156,8 @@ const ShowEmpRow = (props) => {
                                             }}>
                                             <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
                                             <EditButton edit={edit} id={item._id} userRole={userRole} />
-                                            <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} />
+                                            <ArchieveButton archieve={archieve} id={item._id} userRole={userRole} archieved={data.archieved}/>
+                                            <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} /> 
                                         </div>
                                         :
                                         <div className="col s2 right"

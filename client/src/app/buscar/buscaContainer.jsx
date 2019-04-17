@@ -39,7 +39,8 @@ class ShowEmpContainer extends Component {
         showInfo: '',
         process: '',
         logIndex: '',
-        logDetails: false
+        logDetails: false,
+        archieved: false
     }
 
     componentDidMount() {
@@ -173,12 +174,62 @@ class ShowEmpContainer extends Component {
         this.setState({ logDetails: false, logIndex: '' })
     }
 
+    showArchieved() {
+        this.setState({ archieved: !this.state.archieved })
+    }
+
+    async archieve(id, archieved) {
+        let { processCollection } = this.props.cadastro
+
+        const user = { ...localStorage }
+        const userObj = { nome: user.name + ' ' + user.surName, email: user.email }
+        let updatedObj = {
+            item: {
+                _id: id,
+            },
+            processHistory: {
+                createdAt: new Date(),
+                user: userObj
+            }
+        }
+
+        if (archieved) {
+            const selectedProc = processCollection.filter(el => el._id.match(id))[0] 
+            const historyArray = selectedProc.processHistory
+
+            let lastLog = historyArray.filter(log => log.label !== 'Processo Arquivado')
+                .filter(log => log.label !== 'Processo Desarquivado')
+
+            lastLog = lastLog[lastLog.length - 1]
+
+            let stats = lastLog.label
+            if ((stats.match('Processo cadastrado') || stats.match('Análise ')) && selectedProc.modalidade.match('Desmembramento')) stats = 'Aguardando documentação'
+            if (stats.match('Entrada') || stats.match('Anuência prévia solicitada')) stats = 'Aguardando Análise'
+            if (stats.match('Análise ')) stats = 'Diretrizes Metropolitanas emitidas'
+            if (stats.match('Diretrizes metropolitanas solicitadas')) stats = 'Aguardando Diretrizes Metropolitanas'
+            if (stats.match('Pendências para')) stats = 'Processo cadastrado'
+
+            updatedObj.item.status = stats
+            updatedObj.processHistory.label = 'Processo Desarquivado'
+
+        } else {
+            updatedObj.item.status = 'Processo Arquivado'
+            updatedObj.processHistory.label = 'Processo Arquivado'
+        }
+
+        await axios.put('/api/editProcess/', updatedObj)
+            .catch(err => console.log(err))
+        this.props.loadProcessData()
+
+    }
+
     render() {
 
         let emps = []
         let rts = []
         let process = []
-        let { search, select } = this.state
+        let archievedProcess = []
+        let { search, select, archieved } = this.state
         let searchString = search.trim().toLowerCase();
         const { empCollection, rtCollection, processCollection } = this.props.cadastro
 
@@ -195,9 +246,18 @@ class ShowEmpContainer extends Component {
         }
 
         if (search && (search.length > 2 && (select === 'process' && processCollection))) {
-            process = processCollection.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString)).slice(0, 20)
+            archievedProcess = processCollection.filter(proc => proc.status === 'Processo Anuído' || proc.status === 'Processo Arquivado')
+            if (archieved === true) process = archievedProcess.filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString)).slice(0, 20)
+            else process = processCollection
+                .filter(p => p.status !== 'Processo Arquivado')
+                .filter(p => p.status !== 'Processo Anuído')
+                .filter((el) => el.nomeEmpreendimento.toLowerCase().match(searchString))
+                .slice(0, 20)
+
         } else if ((!search || search.length <= 2) && select === 'process') {
-            process = processCollection.slice(0, 30)
+            archievedProcess = processCollection.filter(proc => proc.status === 'Processo Anuído' || proc.status === 'Processo Arquivado')
+            if (archieved === true) process = archievedProcess
+            else process = processCollection.filter(p => p.status !== 'Processo Arquivado').filter(p => p.status !== 'Processo Anuído').slice(0, 30)
 
             process.sort(function (a, b) {
                 let ca = new Date(a.updatedAt)
@@ -224,6 +284,8 @@ class ShowEmpContainer extends Component {
                     onSelect={this.handleSelect}
                     change={e => this.handleSearchBar(e)}
                     color={this.props.cadastro.setColor}
+                    archieved={this.state.archieved}
+                    showArchieved={this.showArchieved.bind(this)}
                 />
                 {
                     this.state.showInfo ?
@@ -258,8 +320,8 @@ class ShowEmpContainer extends Component {
                         rtDetails={this.rtDetails.bind(this)}
                         showInfo={this.showInfo.bind(this)}
                         clearLog={this.clearLog.bind(this)}
+                        archieve={this.archieve.bind(this)}
                     />
-
 
                     <EditData
                         redux={this.props.cadastro}
