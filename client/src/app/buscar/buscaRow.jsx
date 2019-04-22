@@ -109,7 +109,7 @@ const ShowEmpRow = (props) => {
                         selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(
                             itemArray.filter(el => el.key === i)[0]
                         )) : void 0
-                        
+
                         return (
                             <div className="row" key={k} style={{ borderBottom: '1px dotted #bbb', paddingBottom: '1%' }}>
                                 {
@@ -156,8 +156,8 @@ const ShowEmpRow = (props) => {
                                             }}>
                                             <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
                                             <EditButton edit={edit} id={item._id} userRole={userRole} />
-                                            <ArchieveButton archieve={archieve} id={item._id} userRole={userRole} archieved={data.archieved}/>
-                                            <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} /> 
+                                            <ArchieveButton archieve={archieve} id={item._id} userRole={userRole} archieved={data.archieved} />
+                                            <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} />
                                         </div>
                                         :
                                         <div className="col s2 right"
@@ -185,13 +185,15 @@ const ShowEmpRow = (props) => {
         if (data.select === 'emp') item = 'empreendedor'
         if (data.select === 'rt') item = 'responsável técnico'
 
-        return (
-            <div style={{ textAlign: 'center', padding: '4% 0' }}>
-                <strong>
-                    Nenhum {item} encontrado. Verifique se que seu processo foi cadastrado pela prefeitura.
-        </strong>
-            </div>
-        )
+        if (!data.edit)
+            return (
+                <div style={{ textAlign: 'center', padding: '4% 0' }}>
+                    <strong>
+                        Nenhum {item} encontrado. Verifique se que seu processo foi cadastrado pela prefeitura.
+                </strong>
+                </div>
+            )
+        else return null
     }
 }
 
