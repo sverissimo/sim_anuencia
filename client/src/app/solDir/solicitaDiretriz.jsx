@@ -81,10 +81,25 @@ class solicitaDiretriz extends Component {
 
     async fileUpload(e) {
 
+        let { name, files } = e.target
+        if (name === 'kml' || name === 'dirDaeFile') {            
+            if (files[0] && files[0].size > 2097152) {
+                document.getElementsByName(name)[0].value = ''
+                alert('Arquivo excedeu o limite permitido (2MB)!')
+            }
+        }
+
+        if (name === 'levPlanFile' || name === 'dirMunFile') {        
+            if (files[0] && files[0].size > 3145728) {
+                document.getElementsByName(name)[0].value = ''
+                alert('Arquivo excedeu o limite permitido (3MB)!')
+            }
+        }
+
         let formData = new FormData()
         formData.append('processId', this.state.selectedId)
         this.setState({
-            ...this.state, [e.target.name]: e.target.files[0]
+            ...this.state, [name]: files[0]
         })
 
         let k = []
@@ -116,19 +131,10 @@ class solicitaDiretriz extends Component {
         let filesArray = []
         this.props.loading(true)
         try {
-            await axios.post('/api/solDirUpload', this.state.form)
+            await axios.post('/api/fileUpload', this.state.form)
                 .then(res => {
-
-                    for (let key in res.data.file) {
-                        filesArray.push({
-                            fieldName: res.data.file[key][0].fieldname,
-                            id: res.data.file[key][0].id,
-                            originalName: res.data.file[key][0].originalname,
-                            uploadDate: res.data.file[key][0].uploadDate,
-                            contentType: res.data.file[key][0].contentType,
-                            fileSize: res.data.file[key][0].size
-                        })
-                    }
+                    const files = res.data.file
+                    files.forEach(file => filesArray.push(file))
                 })
             await axios.put('/api/editProcess', {
                 item: {
@@ -148,8 +154,8 @@ class solicitaDiretriz extends Component {
             }
             )
             this.props.loading(false)
-            await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')            
-            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')            
+            await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')
+            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
             await this.clearSearch()
             await this.closeDetails()
             this.props.loadProcessData() && this.props.loadFilesData()

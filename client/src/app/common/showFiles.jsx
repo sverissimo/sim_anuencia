@@ -72,7 +72,7 @@ const ShowFiles = (props) => {
                                         <div className="col s11">
                                             <span id={file._id}
                                                 style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
-                                                onClick={(e)=>download(e, file.metadata.originalName)}>
+                                                onClick={(e) => download(e, file.filename ? file.filename : file.metadata.originalName)}>
                                                 {fileLabel(file.metadata.fieldName)}
                                             </span>
                                         </div>

@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-const crypto = require('crypto')
 const multer = require('multer');
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
@@ -21,6 +20,8 @@ const { CadastroRt } = require('./models/rtModel');
 const { processModel } = require('./models/processModel');
 const { filesModel } = require('./models/filesModel');
 const { tecModel } = require('./models/tecnicos');
+
+const { formatMun } = require('./config/formatMun')
 
 const app = express()
 
@@ -73,32 +74,22 @@ conn.once('open', () => {
 
 // Create storage engine
 const storage = new GridFsStorage({
+
     url: mongoURI,
-
     file: (req, file) => {
-
-        return new Promise((resolve, reject) => {
-            crypto.randomBytes(16, (err, buf) => {
-                if (err) {
-                    return reject(err);
-                }
-                const filename = buf.toString('hex') + '.' + file.originalname.split('.').pop();
-                const fileInfo = {
-                    filename: filename,
-                    metadata: {
-                        'fieldName': file.fieldname,
-                        'originalName': file.originalname,
-                        'processId': req.body.processId
-                    },
-                    bucketName: 'uploads',
-                };
-                resolve(fileInfo);
-            });
-        });
+        const fileInfo = {
+            filename: file.originalname,
+            metadata: {
+                'fieldName': file.fieldname,
+                'processId': req.body.processId
+            },
+            bucketName: 'uploads',
+        }
+        return fileInfo
     }
 });
-const upload = multer({ storage });
 
+const upload = multer({ storage });
 
 app.use(auth)
 
@@ -161,96 +152,20 @@ app.post('/api/mail', (req, res) => {
     res.json(answer)
 })
 
-app.post('/api/solDirUpload', upload.fields([
-
-    {
-        name: "dirMunFile", maxCount: 1
-    }, {
-        name: "kml", maxCount: 1
-    }, {
-        name: "levPlanFile", maxCount: 1
-    }, {
-        name: "dirDaeFile", maxCount: 1
-    }]
-), (req, res) => {
-
-    res.json({
-        file: req.files,
-    });
-});
-
-
-app.post('/api/diretrizUpload', upload.fields([
-
-    {
-        name: "diretrizFile", maxCount: 1
-    }]
-), (req, res) => {
-    res.json({
-        file: req.files,
-    });
-});
-
-app.post('/api/anuenciaUpload', upload.fields([
-
-    {
-        name: "notaTecnica", maxCount: 1
-    },
-    {
-        name: "anuenciaFile", maxCount: 1
-    }]
-), (req, res) => {
-    res.json({
-        file: req.files,
-    });
-});
-
-app.post('/api/solAnuenciaUpload', upload.fields([
-
-    {
-        name: "regImovel", maxCount: 1
-    }, {
-        name: "CNDOnus", maxCount: 1
-    }, {
-        name: "CNDMun", maxCount: 1
-    }, {
-        name: "empRG", maxCount: 1
-    }, {
-        name: "art", maxCount: 1
-    }, {
-        name: "decConform", maxCount: 1
-    }, {
-        name: "daeAnuencia", maxCount: 1
-    }, {
-        name: "memDescritivo", maxCount: 1
-    }, {
-        name: "memDescTp", maxCount: 1
-    }, {
-        name: "cemig", maxCount: 1
-    }, {
-        name: "dtbCopasa", maxCount: 1
-    }, {
-        name: "licAmbental", maxCount: 1
-    }, {
-        name: "levPlan", maxCount: 1
-    }, {
-        name: "projUrb", maxCount: 1
-    }, {
-        name: "mapaIso", maxCount: 1
-    }, {
-        name: "projTer", maxCount: 1
-    }, {
-        name: "projDren", maxCount: 1
-    }, {
-        name: "projDesmemb", maxCount: 1
-    }
-]),
-    (req, res) => {
-        res.json({
-            file: req.files,
-        });
-    });
-
+app.post('/api/fileUpload', upload.any(), (req, res) => {
+    let filesArray = []
+    req.files.forEach(f => {
+        filesArray.push({
+            fieldName: f.fieldname,
+            id: f.id,
+            originalName: f.originalname,
+            uploadDate: f.uploadDate,
+            contentType: f.contentType,
+            fileSize: f.size
+        })
+    })
+    res.json({ file: filesArray });
+})
 
 app.get('/api/files', (req, res) => {
 
@@ -261,13 +176,14 @@ app.get('/api/files', (req, res) => {
 })
 
 app.get('/api/showEmpreend', (req, res) => {
-    
-    let user = req.decoded
 
+    let user = req.decoded    
+    const municipio = formatMun(user.municipio)
+    
     if (user.role === 'prefeitura') {
         const getProcesses = () => {
             return new Promise((resolve, reject) => {
-                processModel.find({ 'munEmpreendimento': user.municipio })
+                processModel.find({ 'munEmpreendimento': municipio })
                     .then(res => resolve(res))
                     .catch(e => reject(e))
             })
@@ -338,12 +254,13 @@ app.get('/api/showEmpreend', (req, res) => {
 app.get('/api/showRt', (req, res) => {
 
     let user = req.decoded
+    const municipio = formatMun(user.municipio)
 
     if (user.role === 'prefeitura') {
 
         const getProcesses = () => {
             return new Promise((resolve, reject) => {
-                processModel.find({ 'munEmpreendimento': user.municipio })
+                processModel.find({ 'munEmpreendimento': municipio })
                     .then(res => resolve(res))
                     .catch(e => reject(e))
             })
@@ -403,9 +320,11 @@ app.get('/api/showRt', (req, res) => {
 app.get('/api/showProcess', async (req, res) => {
 
     let user = req.decoded
+    const municipio = formatMun(user.municipio)
+    
     if (user.role === 'prefeitura') {
         processModel
-            .find({ 'munEmpreendimento': user.municipio })
+            .find({ 'munEmpreendimento': municipio })
             .sort({ nomeEmpreendimento: 1 })
             .exec((err, collection) => {
                 if (err) return err

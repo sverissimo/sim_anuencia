@@ -9,7 +9,7 @@ import download from './downloadFile'
 const labels = (fieldName) => {
 
     let allFilesArray = []
-    allFilesArray = allFilesLabels()
+    allFilesArray = allFilesLabels()    
     let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
     return label[0].label
 }
@@ -23,7 +23,7 @@ class LogDetails extends Component {
     render() {
         const { process, index, clearLog, soloComponent, hideLog } = this.props
         const log = process.processHistory[index]
-
+        
         return (
             <div style={soloStyle(soloComponent, ['8%', '85%'])}>
                 {
@@ -91,7 +91,7 @@ class LogDetails extends Component {
                                             <div className="col s11">
                                                 <span id={file.id}
                                                     style={{ textDecoration: 'underline', cursor: 'pointer', color: 'blue' }}
-                                                    onClick={(e)=>download(e, file.originalName)}>
+                                                    onClick={(e) => download(e, file.originalName)}>
                                                     {labels(file.fieldName)}
                                                 </span>
                                             </div>

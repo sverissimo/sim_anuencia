@@ -8,6 +8,7 @@ import { reduxToastr } from '../cadastro/cadActions'
 
 import LoginTemplate from './loginTemplate'
 import SignupTemplate from './signupTemplate'
+import { formatMun } from '../config/formatMun'
 
 class Login extends Component {
 
@@ -22,7 +23,7 @@ class Login extends Component {
     }
 
     handleChange(e) {
-        this.setState({ [e.target.name]: e.target.value })        
+        this.setState({ [e.target.name]: e.target.value })
     }
 
     async login(e) {
@@ -60,9 +61,10 @@ class Login extends Component {
     async signup(e) {
         e.preventDefault()
         let newUser
-        await axios.post('/api/signup', this.state)
+        await this.setState({ municipio: formatMun(this.state.municipio) })
+        axios.post('/api/signup', this.state)
             .then(res => {
-                if (res.data === 'Senhas não conferem.' || res.data === 'Usuário já cadastrado.' || res.data === 'E-mail inválido.' ) {
+                if (res.data === 'Senhas não conferem.' || res.data === 'Usuário já cadastrado.' || res.data === 'E-mail inválido.') {
                     reduxToastr('err', res.data)
                 } else {
                     newUser = res.data

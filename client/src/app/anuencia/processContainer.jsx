@@ -101,21 +101,11 @@ class ProcessContainer extends Component {
         } else {
             this.props.loading(true)
             try {
-
-                await axios.post('/api/anuenciaUpload', this.state.form)
-                    .then(res => {
-
-                        for (let key in res.data.file) {
-                            filesArray.push({
-                                fieldName: res.data.file[key][0].fieldname,
-                                id: res.data.file[key][0].id,
-                                originalName: res.data.file[key][0].originalname,
-                                uploadDate: res.data.file[key][0].uploadDate,
-                                contentType: res.data.file[key][0].contentType,
-                                fileSize: res.data.file[key][0].size
-                            })
-                        }
-                    })
+                await axios.post('/api/fileUpload', this.state.form)
+                .then(res => {
+                    const files = res.data.file
+                    files.forEach(file => filesArray.push(file))                 
+                })
                 await axios.put('/api/editProcess', {
                     item: {
                         _id: this.state.selectedId,

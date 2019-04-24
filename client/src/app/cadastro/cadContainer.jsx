@@ -8,6 +8,7 @@ import { sendMail } from '../common/sendMail'
 
 import CadTemplate from './cadTemplate';
 import { logout } from '../auth/logout';
+import { formatMun } from '../config/formatMun'
 
 class CadastroContainer extends React.Component {
 
@@ -58,10 +59,11 @@ class CadastroContainer extends React.Component {
     }
 
     async enableProcessInput() {
-        
+
         const user = { ...localStorage }
+        const municipio = formatMun(user.municipio)
         
-        if (user.role === 'prefeitura') await this.setState({munEmpreendimento: user.municipio})
+        if (user.role === 'prefeitura') await this.setState({ munEmpreendimento: municipio })
         await this.setState({
             ...this.state, enableRt: 'disabled', enableProcess: '', enableEmp: 'disabled'
         })

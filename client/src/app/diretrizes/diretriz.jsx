@@ -122,10 +122,17 @@ class Diretriz extends Component {
 
     async fileUpload(e) {
 
+        let { name, files } = e.target
+
+        if (files[0].size > 4194304) {
+            document.getElementsByName(name)[0].value = ''            
+            alert('Arquivo excedeu o limite permitido (4MB)!')
+        }
+
         let formData = new FormData()
         formData.append('processId', this.state.selectedId)
         await this.setState({
-            ...this.state, [e.target.name]: e.target.files[0]
+            ...this.state, [name]: files[0]
         })
         await formData.append('diretrizFile', this.state.diretrizFile)
         this.setState({ form: formData })
@@ -140,31 +147,15 @@ class Diretriz extends Component {
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
         const user = { ...localStorage }
-        
+
         let filesArray = []
         this.props.loading(true)
         try {
-            await axios.post('/api/diretrizUpload', this.state.form)
+            await axios.post('/api/fileUpload', this.state.form)
                 .then(res => {
-                    for (let key in res.data.file) {
-                        filesArray.push(
-                            res.data.file[key][0].fieldname,
-                            res.data.file[key][0].id,
-                            res.data.file[key][0].originalname,
-                            res.data.file[key][0].uploadDate,
-                            res.data.file[key][0].size,
-                            res.data.file[key][0].contentType
-                        )
-                    }
+                    const files = res.data.file
+                    files.forEach(file => filesArray.push(file))
                 })
-            let fileObject = {
-                fieldName: filesArray[0],
-                id: filesArray[1],
-                originalName: filesArray[2],
-                uploadDate: filesArray[3],
-                fileSize: filesArray[4],
-                contentType: filesArray[5]
-            }
             await axios.put('/api/editProcess', {
                 item: {
                     _id: this.state.selectedId,
@@ -174,7 +165,7 @@ class Diretriz extends Component {
                 processHistory: {
                     label: newStatus,
                     createdAt: new Date(),
-                    files: [fileObject],
+                    files: filesArray,
                     user: {
                         nome: user.name + ' ' + user.surName,
                         email: user.email

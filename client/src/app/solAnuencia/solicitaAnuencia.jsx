@@ -91,6 +91,16 @@ class SolicitaAnuencia extends Component {
     }
 
     async fileUpload(e) {
+        const projetos = ['levPlan', 'mapaIso', 'projTer', 'projDren', 'outros']
+        let { name, files } = e.target        
+
+        if (projetos.some(p => p === name) && (files[0] && files[0].size > 5242880)) {
+            document.getElementsByName(name)[0].value = ''
+            alert('Arquivo excedeu o limite permitido (5MB)!')
+        } else if (projetos.filter(p => p === name).length < 1 && (files[0] && (files[0].size > 2097152))) {
+            document.getElementsByName(name)[0].value = ''
+            alert('Arquivo excedeu o limite permitido (2MB)!')
+        }
 
         let formData = new FormData()
         formData.append('processId', this.state.selectedId)
@@ -149,18 +159,10 @@ class SolicitaAnuencia extends Component {
         let filesArray = [];
         this.props.loading(true)
         try {
-            await axios.post('/api/solAnuenciaUpload', this.state.form)
+            await axios.post('/api/fileUpload', this.state.form)
                 .then(res => {
-                    for (let key in res.data.file) {
-                        filesArray.push({
-                            fieldName: res.data.file[key][0].fieldname,
-                            id: res.data.file[key][0].id,
-                            originalName: res.data.file[key][0].originalname,
-                            uploadDate: res.data.file[key][0].uploadDate,
-                            contentType: res.data.file[key][0].contentType,
-                            fileSize: res.data.file[key][0].size
-                        })
-                    }
+                    const files = res.data.file
+                    files.forEach(file => filesArray.push(file))
                 })
             const label2 = label()
             await axios.put('/api/editProcess', {
@@ -251,7 +253,7 @@ class SolicitaAnuencia extends Component {
                         rtDetails={this.rtDetails.bind(this)}
                         array={solAnuenciaConfig1}
                         array2={solAnuenciaConfig2}
-                        showFiles={this.showFiles.bind(this)}                        
+                        showFiles={this.showFiles.bind(this)}
                     >
                         {
                             fileInput1.map((item, i) => {

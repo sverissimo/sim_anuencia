@@ -3,7 +3,7 @@ export const configLabels = [
         name: 'processHistory',
         label: 'Histórico do Processo',
         div: 'col s1'
-    },    
+    },
     {
         name: '_id',
         label: 'ID',
@@ -88,7 +88,7 @@ export const configLabels = [
         name: '__v',
         label: 'version',
         div: 'col s1'
-    },    
+    },
 ]
 
 export const solDirConfig = [
@@ -179,7 +179,7 @@ export const configRtLabels = [
         name: 'nomeRt',
         label: 'Nome',
         div: 'col s1'
-    },    
+    },
     {
         name: 'emailRt',
         label: 'E-mail',
@@ -263,11 +263,6 @@ export const solAnuenciaConfig2 = [
         tooltip: 'mesma escala do Projeto Urbanístico, em sistema de coordenadas UTM e com delimitação e confrontantes compatíveis com a descrição da Certidão de Registro do imóvel'
     },
     {
-        nameInput: 'projUrb',
-        label: 'Projeto Urbanístico',
-        tooltip: 'Com coordenadas UTM, curvas de nível e escala de 1:25000'
-    },
-    {
         nameInput: 'mapaIso',
         label: 'Projeto Urbanístico com mapa de Isodeclividade',
         tooltip: 'Mapa de isodeclividade com intervalos 0 a 30%, 30 a 47% e acima de 47%'
@@ -281,7 +276,12 @@ export const solAnuenciaConfig2 = [
         nameInput: 'projDren',
         label: 'Projeto de Drenagem',
         tooltip: 'Projeto na mesma escala do Projeto Urbanístico e em sistema de coordenadas UTM'
-    }
+    },
+    {
+        nameInput: 'outros',
+        label: 'Outros documentos (somente se solicitado)',
+        tooltip: 'Caso sejam solicitados documentos adicionais, anexe aqui. '
+    }    
 ]
 
 export const solDesmembConfig1 = [
@@ -319,15 +319,15 @@ export const solDesmembConfig1 = [
         nameInput: 'memDescritivo',
         label: 'Memorial descritivo',
         tooltip: 'Descrição sucinta do loteamento com suas características, áreas públicas, equipamentos etc. '
-    }  
+    }
 ]
 
 export const solDesmembConfig2 = [
-    
+
     {
         nameInput: 'projDesmemb',
-        label: 'Projeto de Desmembramento',        
-    },    
+        label: 'Projeto de Desmembramento',
+    },
 ]
 
 export const allFilesLabels = () => {
@@ -360,17 +360,17 @@ export const allFilesLabels = () => {
         },
         {
             nameInput: 'projDesmemb',
-            label: 'Projeto de Desmembramento',        
-        }, 
+            label: 'Projeto de Desmembramento',
+        },
     )
     return allFilesArray
 };
 
 export const fileLabel = (fieldName) => {
-    
-        let allFilesArray = []
-        allFilesArray = allFilesLabels()
-        let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
-        return label[0].label    
+
+    let allFilesArray = []
+    allFilesArray = allFilesLabels()
+    let label = allFilesArray.filter(e => e.nameInput.match(fieldName))
+    return label[0].label
 }
 
