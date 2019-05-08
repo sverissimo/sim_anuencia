@@ -107,7 +107,7 @@ const DiretrizRow = (props) => {
                         </div>
                 }
             </form>
-        </div >
+        </div>
     );
 };
 

@@ -114,7 +114,7 @@ class Diretriz extends Component {
         const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
 
         let dirStatus = { ...this.state.dirStatus }
-        if (processo.area <= 300000) {
+        if (processo.area.replace(/,/g, '.') <= 300000) {
             dirStatus.cgtOk = true
             this.setState({ dirStatus })
         }
@@ -350,9 +350,7 @@ class Diretriz extends Component {
                             showCalendar={this.showCalendar.bind(this)}
                             cgtCalendar={this.state.cgtCalendar}
                             vistoriaCalendar={this.state.vistoriaCalendar}
-                        >
-
-                        </DiretrizRow>
+                        />
                     </DiretrizTemplate>
                     {
                         (this.state.cgtCalendar || this.state.vistoriaCalendar) ?

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr'
 import tecnicosArmbh from '../config/tecnicos.json'
+import { logout } from '../auth/authActions'
 
 export const loadEmpData = () => {
 
@@ -10,7 +11,7 @@ export const loadEmpData = () => {
         })
         .catch(err => {
             console.log(err)
-            toastr.error('Erro', 'Sessão expirada.')
+            toastr.error('Erro', err.toString(), 'Erro'); logout(false)
         })
     return {
         type: 'LOAD_EMP_DATA',
@@ -24,7 +25,7 @@ export function loadRtData() {
         .then(res => res.data)
         .catch(err => {
             console.log(err)
-            toastr.error('Erro', 'Sessão expirada.')
+            toastr.error('Erro', err.toString(), 'Erro'); logout(false)
         })
     return {
         type: 'LOAD_RT_DATA',
@@ -38,7 +39,7 @@ export function loadProcessData() {
         .then(res => res.data)
         .catch(err => {
             console.log(err)
-            toastr.error('Erro', 'Sessão expirada.')
+            toastr.error('Erro', err.toString(), 'Erro'); logout(false)
         })
     return {
         type: 'LOAD_PROCESS_DATA',
@@ -52,7 +53,7 @@ export function loadFilesData() {
         .then(res => res.data)
         .catch(err => {
             console.log(err)
-            toastr.error('Erro', 'Sessão expirada.')
+            toastr.error('Erro', err.toString(), 'Erro'); logout(false)
         })
     return {
         type: 'LOAD_FILES_DATA',
@@ -84,7 +85,7 @@ export const reduxToastr = (status, input, titulo) => {
     if (status === 'sucess') {
         return toastr.success(title, input)
     } else {
-        return toastr.error('Erro!', input)
+        return toastr.error(title || 'Erro', input)
     }
 }
 

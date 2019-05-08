@@ -179,7 +179,7 @@ class CadastroContainer extends React.Component {
 
             nomeEmpreendimento: this.state.nomeEmpreendimento,
             modalidade: this.state.modalidade,
-            area: this.state.area.replace(/\./g, ''),
+            area: this.state.area.replace(/\./g, '').replace(/,/g, '.'),
             munEmpreendimento: this.state.munEmpreendimento,
             status: procStatus,
             tecnico: 'Técnico não alocado',
