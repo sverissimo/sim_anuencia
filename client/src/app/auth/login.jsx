@@ -65,7 +65,7 @@ class Login extends Component {
         axios.post('/api/signup', this.state)
             .then(res => {
                 if (res.data === 'Senhas não conferem.' || res.data === 'Usuário já cadastrado.' || res.data === 'E-mail inválido.') {
-                    reduxToastr('err', res.data)
+                    reduxToastr('err', res.data, 'Erro!')
                 } else {
                     newUser = res.data
                     reduxToastr('sucess', 'Usuário criado com sucesso', newUser.name)

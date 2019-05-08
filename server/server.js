@@ -154,7 +154,7 @@ app.post('/api/mail', (req, res) => {
 
 app.post('/api/fileUpload', upload.any(), (req, res) => {
     let filesArray = []
-    req.files.forEach(f => {
+    if (req.files) req.files.forEach(f => {
         filesArray.push({
             fieldName: f.fieldname,
             id: f.id,

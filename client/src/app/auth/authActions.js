@@ -21,19 +21,16 @@ export function verify(confirmation) {
         type: 'VERIFY',
         payload: confirmation
     }
-
 }
 
 export function getUsers() {
-   
+
     const getUsers = axios.get('/api/users')
         .then(res => res.data)
         .catch(err => console.log(err))
-    
+
     return {
         type: 'GET_USERS',
         payload: getUsers
     }
-
 }
-

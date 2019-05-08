@@ -31,7 +31,7 @@ const CadTemplate = (props) => {
                 <div key={i} className={config.divClassName}>
                     <input type={config.type}
                         id={config.name}
-                        className="active"
+                        className="validate"
                         name={config.name}
                         onChange={props.handleChange}
                         value={props.data[item.id]}
@@ -42,7 +42,7 @@ const CadTemplate = (props) => {
                     <label className="active"
                         htmlFor={config.name}>
                         {config.label}
-                    </label>
+                    </label>                    
                 </div>
             )
         })
@@ -168,7 +168,7 @@ const CadTemplate = (props) => {
                                             {selector}
                                         </Input>
                                         :
-                                        <div className="input-field col s12 m6 l2">                                                                                           
+                                        <div className="input-field col s12 m6 l2">
                                         </div>
                                 }
                             </div>
@@ -178,7 +178,7 @@ const CadTemplate = (props) => {
                         <BackButton onClick={props.backToRt} disabled={props.data.enableProcess} icon='arrow_back' />
                         <input
                             type='submit' className="btn right" disabled={props.data.enableProcess}
-                            style={{ margin: '20px 0px' }} value='Cadastrar processo' />
+                            style={{ marginTop: '20px' }} value='Cadastrar processo' />
                     </div>
                     <br />
                     <br />

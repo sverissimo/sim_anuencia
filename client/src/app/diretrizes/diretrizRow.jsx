@@ -69,8 +69,7 @@ const DiretrizRow = (props) => {
                                     value={dirStatus.pendencias}
                                 />
                                 <button
-                                    className="btn red right"
-                                    style={{ marginBottom: '10px' }}
+                                    className="btn red right"                                    
                                     onClick={enviaPendencias} >
                                     Enviar Pendências
                             </button>

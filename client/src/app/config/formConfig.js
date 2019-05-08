@@ -48,7 +48,7 @@ export const empreendForm = {
     },
     email: {
         divClassName: 'input-field col s12 m6 l3',
-        type: 'text',
+        type: 'email',
         name: 'email',
         label: 'E-mail',
     },

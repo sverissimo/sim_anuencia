@@ -176,7 +176,7 @@ class ProcessContainer extends Component {
             )
         }
     }
-};
+}
 
 const mapStateToProps = (state) => {
     return {

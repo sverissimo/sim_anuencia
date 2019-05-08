@@ -125,7 +125,7 @@ class Diretriz extends Component {
         let { name, files } = e.target
 
         if (files[0].size > 4194304) {
-            document.getElementsByName(name)[0].value = ''            
+            document.getElementsByName(name)[0].value = ''
             alert('Arquivo excedeu o limite permitido (4MB)!')
         }
 
@@ -302,7 +302,7 @@ class Diretriz extends Component {
                 <i className="material-icons" style={{ cursor: 'pointer', color: 'gold' }} onClick={clear}>backspace</i>
                 <input className="red" {...props} />
             </div>
-        );
+        )
     }
 
     render() {
@@ -359,7 +359,7 @@ class Diretriz extends Component {
 
                             <div style={{
                                 position: 'fixed',
-                                top: '33%',
+                                top: '20%',
                                 right: '43%',
                                 width: '253px',
                                 border: '2px solid #ddd',
@@ -398,8 +398,7 @@ class Diretriz extends Component {
                         processCollection={this.props.redux.processCollection}
                         filesCollection={this.props.redux.filesCollection}
                     />
-                </div>
-                }
+                </div>                
             </div>
         );
     }

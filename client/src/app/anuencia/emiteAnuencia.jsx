@@ -13,7 +13,7 @@ const EmiteAnuencia = props => {
         }
     ]
     return (
-        <div style={{ paddingLeft: '10%', marginBottom: '10%' }}>
+        <div style={{ paddingLeft: '10%', marginBottom: '8%' }}>
             <h5>Emitir Anuência Prévia</h5>
 
             {fields.map((field, i) => (
@@ -50,7 +50,7 @@ const EmiteAnuencia = props => {
 
             <button
                 className="btn teal darken-3 right"
-                style={{ margin: '4% 3% 0 0' }}
+                style={{ marginRight: '2%' }}
                 type="submit"
                 onClick={submitFiles}
             >

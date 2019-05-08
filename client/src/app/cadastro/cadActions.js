@@ -84,7 +84,7 @@ export const reduxToastr = (status, input, titulo) => {
     if (status === 'sucess') {
         return toastr.success(title, input)
     } else {
-        return toastr.error(title || 'Erro', input)
+        return toastr.error('Erro!', input)
     }
 }
 
@@ -94,6 +94,3 @@ export const loading = (on) => {
         payload: on
     }
 }
-
-/* let ids = [];
-return res.data.filter(item => ids.includes(item._id) ? false : ids.push(item._id)); */

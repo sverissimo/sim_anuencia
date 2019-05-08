@@ -186,8 +186,7 @@ class AnuenciaContainer extends Component {
                         processCollection={this.props.redux.processCollection}
                         filesCollection={this.props.redux.filesCollection}
                     />
-                </div>
-                }
+                </div>                
             </div>
         );
     }
