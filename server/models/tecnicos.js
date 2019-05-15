@@ -4,7 +4,11 @@ const tecnicoSchema = mongoose.Schema({
     name: {
         type: String,
         trim: true
-    },   
+    },
+    surName: {
+        type: String,
+        trim: true
+    },
     email: {
         type: String,
         trim: true

@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { toastr } from 'react-redux-toastr'
-import tecnicosArmbh from '../config/tecnicos.json'
 import { logout } from '../auth/authActions'
 
 export const loadEmpData = () => {
@@ -63,9 +62,15 @@ export function loadFilesData() {
 
 export function loadTecnicos() {
 
+    const request = axios.get('/api/tecnicos')
+        .then(res => res.data)
+        .catch(err => {
+            console.log(err)
+            toastr.error('Erro', err.toString(), 'Erro'); logout(false)
+        })
     return {
         type: 'LOAD_TECNICOS',
-        payload: tecnicosArmbh
+        payload: request
     }
 }
 

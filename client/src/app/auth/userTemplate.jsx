@@ -16,7 +16,7 @@ const Role = (props) => {
 
 const UserTemplate = (props) => {
 
-    let { users, handleChange, editUsers, deleteUser } = props
+    let { users, handleChange, editUsers, deleteUser, editTec } = props
 
     return (
         <div>
@@ -24,7 +24,7 @@ const UserTemplate = (props) => {
                 <thead>
                     <tr>
                         {['Usuário', 'E-mail', 'Município'].map((th, i) => <th key={i}>{th}</th>)}
-                        {['Permissões', 'Verificado'].map((th, i) => <th key={i} className='center'>{th}</th>)}
+                        {['Permissões', 'Opções', 'Editar'].map((th, i) => <th key={i} className='center'>{th}</th>)}
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +49,7 @@ const UserTemplate = (props) => {
                                             type="checkbox"
                                             checked={user.verified ? 'checked' : ''}
                                             onChange={handleChange}
+                                            title='Confirmar usuário'
                                         />
                                         <label htmlFor={`v_${user._id}`}></label>
                                         <i id={`d_${user._id}`}
@@ -56,8 +57,18 @@ const UserTemplate = (props) => {
                                             onClick={deleteUser}
                                             title='Apagar'
                                         >delete_outlined</i>
-                                        <label htmlFor={`d_${user._id}`}></label>
                                     </td>
+                                    <td className='center'>
+                                        {user.role === 'tecnico' && <i id={`t_${user._id}`}
+                                            className='material-icons grey-text click'
+                                            onClick={editTec}
+                                            title='Editar Técnico'
+                                        >settings</i>
+                                        }
+                                    </td>
+
+
+
                                 </tr>
                             ))
                             :

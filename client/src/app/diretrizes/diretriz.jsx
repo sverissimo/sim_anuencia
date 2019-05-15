@@ -113,10 +113,10 @@ class Diretriz extends Component {
         document.getElementById(this.state.checked).checked = 'checked'
         const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
 
-        let dirStatus = { ...this.state.dirStatus }
-        if (processo.area.replace(/,/g, '.') <= 300000) {
+        let dirStatus = { ...this.state.dirStatus }        
+        if (processo.area.replace(/\./g, '').replace(/,/g, '.') <= 300000) {
             dirStatus.cgtOk = true
-            this.setState({ dirStatus })
+            this.setState({ dirStatus })            
         }
     }
 
@@ -207,7 +207,7 @@ class Diretriz extends Component {
         dirStatus[field] = !this.state.dirStatus[field]
         let { cgtOk, vistoriaOk, daeOk, dirMunOk } = dirStatus
         cgtOk === true && (vistoriaOk === true && (dirMunOk === true && daeOk === true)) ?
-            this.setState({ anexaDiretriz: true }) : this.setState({ anexaDiretriz: false })
+            this.setState({ anexaDiretriz: true }) : this.setState({ anexaDiretriz: false })        
     }
 
     handleChange(e) {
@@ -396,7 +396,7 @@ class Diretriz extends Component {
                         processCollection={this.props.redux.processCollection}
                         filesCollection={this.props.redux.filesCollection}
                     />
-                </div>                
+                </div>
             </div>
         );
     }

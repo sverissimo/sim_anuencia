@@ -70,9 +70,8 @@ conn.once('open', () => {
     // Init stream
     gfs = Grid(conn.db);
     gfs.collection('uploads');
-});
+})
 
-// Create storage engine
 const storage = new GridFsStorage({
 
     url: mongoURI,
@@ -177,9 +176,9 @@ app.get('/api/files', (req, res) => {
 
 app.get('/api/showEmpreend', (req, res) => {
 
-    let user = req.decoded    
+    let user = req.decoded
     const municipio = formatMun(user.municipio)
-    
+
     if (user.role === 'prefeitura') {
         const getProcesses = () => {
             return new Promise((resolve, reject) => {
@@ -321,7 +320,7 @@ app.get('/api/showProcess', async (req, res) => {
 
     let user = req.decoded
     const municipio = formatMun(user.municipio)
-    
+
     if (user.role === 'prefeitura') {
         processModel
             .find({ 'munEmpreendimento': municipio })
@@ -368,6 +367,15 @@ app.get('/api/tecnicos', (req, res) => {
         if (err) return err;
         res.send(doc)
     })
+})
+
+app.put('/api/tecnicos', (req, res) => {
+
+    tecModel.update(
+        { email: req.body.email },
+        req.body,
+        { upsert: true })
+        .then(response => res.send(response))
 })
 
 app.get('/api/users', (req, res) => {

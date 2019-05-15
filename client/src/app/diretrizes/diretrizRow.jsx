@@ -7,6 +7,7 @@ const DiretrizRow = (props) => {
         enviaPendencias, showCalendar } = props
 
     let processo = processCollection.filter(el => el._id.match(selectedId))[0]
+    const realArea = processo.area.replace(/\./g, '').replace(/,/g, '.')    
 
     let selectedFields = [['CGT', 'cgt', 'cgtOk'], ['Vistoria', 'vistoria', 'vistoriaOk'],
     ['Diretriz Municipal', 'dirMunOk', 'dirMunOk'], ['Pagamento da DAE', 'daeOk', 'daeOk']]
@@ -47,7 +48,7 @@ const DiretrizRow = (props) => {
             <form action="#">
                 {
                     selectedFields.map((i, k) =>
-                        (i[1] !== 'cgt' || (i[1] === 'cgt' && processo.area > 300000)) && <div className="row" key={k}>
+                        (i[1] !== 'cgt' || (i[1] === 'cgt' && realArea > 300000)) && <div className="row" key={k}>
                             <input type="checkbox"
                                 id={i[2]}
                                 onClick={checkItem} />
@@ -69,7 +70,7 @@ const DiretrizRow = (props) => {
                                     value={dirStatus.pendencias}
                                 />
                                 <button
-                                    className="btn red right"                                    
+                                    className="btn red right"
                                     onClick={enviaPendencias} >
                                     Enviar Pendências
                             </button>
@@ -84,8 +85,8 @@ const DiretrizRow = (props) => {
                                     fontFamily: "Calibri",
                                     fontWeight: 600,
                                     color: "black"
-                                }}>                                
-                                    Anexar Diretriz Metropolitana                                
+                                }}>
+                                Anexar Diretriz Metropolitana
                             </label>
                             <div className="row file-field input-field" >
                                 <div className="file-path-wrapper row">

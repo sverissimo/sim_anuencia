@@ -6,8 +6,6 @@ import Anuencia from './emiteAnuencia'
 import AnuenciaForm from './anuenciaForm'
 import ProcessInfo from '../common/processInfo'
 
-
-
 const ProcessTemplate = (props) => {
     const { redux, clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
         showLog, clearLog, log, close, upload, submit } = props
@@ -40,7 +38,6 @@ const ProcessTemplate = (props) => {
                     submitFiles={submit}
                 />
             case 'ProcessInfo':
-
                 return <ProcessInfo
                     process={process}
                     showLog={showLog}

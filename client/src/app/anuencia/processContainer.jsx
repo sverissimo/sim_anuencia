@@ -92,9 +92,9 @@ class ProcessContainer extends Component {
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
-        const user = { ...localStorage }
-        const tecnico = this.props.redux.tecCollection.filter(el => el.email.match(user.email))[0]
-        
+        const user = { ...localStorage },
+            { name, surName, email } = user
+
         let filesArray = []
         if (!this.state.notaTecnica || !this.state.anuenciaFile) {
             alert('Favor anexar a nota técnica e a certidão de anuência')
@@ -102,23 +102,23 @@ class ProcessContainer extends Component {
             this.props.loading(true)
             try {
                 await axios.post('/api/fileUpload', this.state.form)
-                .then(res => {
-                    const files = res.data.file
-                    files.forEach(file => filesArray.push(file))                 
-                })
+                    .then(res => {
+                        const files = res.data.file
+                        files.forEach(file => filesArray.push(file))
+                    })
                 await axios.put('/api/editProcess', {
                     item: {
                         _id: this.state.selectedId,
                         status: 'Processo Anuído',
-                        tecnico: tecnico.name + ' ' + tecnico.surName
+                        tecnico: name + ' ' + surName
                     },
                     processHistory: {
                         label: 'Processo Anuído',
                         createdAt: new Date(),
                         files: filesArray,
                         user: {
-                            nome: tecnico.name + ' ' + tecnico.surName,
-                            email: tecnico.email
+                            nome: name + ' ' + surName,
+                            email: email
                         }
                     }
                 })

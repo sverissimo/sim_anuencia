@@ -3,10 +3,13 @@ import OficioHeader from './oficioHeader'
 
 const MostrarOficio = (props) => {
     let { mostrarOficio, content, redux, process, empreend, rt, tecnicos } = props
+
+    const user = { ...localStorage },
+        tecnico = tecnicos.filter(el => el.email.match(user.email))[0],
+        name = tecnico ? tecnico.name : user.name,
+        surName = tecnico ? tecnico.surName : user.surName,
+        cau = tecnico ? tecnico.cau : 'não registrado'
     
-    const loggedUser = localStorage.getItem('email')
-    const tecnico = tecnicos.filter(el=> el.email.match(loggedUser))[0]
-        
     if (mostrarOficio) {
         return (
             <div id='oficio'
@@ -30,14 +33,14 @@ const MostrarOficio = (props) => {
                 <div dangerouslySetInnerHTML={{ __html: content }}></div>
                 <center>
                     <strong>
-                        <p>{tecnico.name} {tecnico.surName}</p>
+                        <p>{name} {surName}</p>
                     </strong>
-                    <p>CAU/MG {tecnico.cau}</p>
+                    <p>CAU/MG {cau}</p>
                 </center>
             </div>
         )
     }
     else return null
-};
+}
 
 export default MostrarOficio;

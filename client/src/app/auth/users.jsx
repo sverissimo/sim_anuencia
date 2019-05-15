@@ -2,21 +2,37 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { getUsers } from './authActions'
-import { reduxToastr } from '../cadastro/cadActions'
+import { reduxToastr, loadTecnicos } from '../cadastro/cadActions'
 
 import Title from '../common/titleSubtitle'
 import UserTemplate from './userTemplate'
+import Tecnicos from './tecnicos'
 import axios from 'axios';
 
 class Users extends Component {
 
+    constructor() {
+        super()
+        this.escFunction = (event) => {
+            if (this.state.editTec && event.keyCode === 27) this.setState({ editTec: false })
+        }
+    }
+
     state = {
         users: [],
+        tecnicos: [],
+        editTec: false,
+        userId: ''
     }
 
     async componentDidMount() {
-        await this.props.getUsers()
-        this.setState({ users: this.props.auth.usersCollection })        
+        const { getUsers, loadTecnicos } = this.props
+        document.addEventListener("keydown", this.escFunction, false)
+
+        await getUsers()
+        await loadTecnicos()
+        const { auth, redux } = this.props
+        this.setState({ users: auth.usersCollection, tecnicos: redux.tecCollection })
     }
 
     handleChange(e) {
@@ -54,8 +70,8 @@ class Users extends Component {
 
     async deleteUser(e) {
         const id = e.target.id.replace('d_', '')
-        const user = this.state.users.filter(user=> user._id.match(id))[0]
-        
+        const user = this.state.users.filter(user => user._id.match(id))[0]
+
         if (window.confirm(`Excluir ${user.name} ${user.surName}?`)) {
             await axios.delete(`/api/delete/item?id=${id}&el=user`)
                 .catch(err => console.log(err))
@@ -64,8 +80,17 @@ class Users extends Component {
         }
     }
 
+    editTec(e) {
+        this.setState({ editTec: !this.state.editTec, userId: e.target.id })
+    }
+
+    refresh() {
+        this.setState({ editTec: !this.state.editTec })
+        reduxToastr('sucess', 'Dados do técnico atualizados')
+    }
+
     render() {
-        let { users } = this.state
+        let { users, userId, tecnicos } = this.state
 
         return (
             <div className="container" style={{ width: '95%' }} >
@@ -81,12 +106,21 @@ class Users extends Component {
                     handleChange={this.handleChange.bind(this)}
                     deleteUser={this.deleteUser.bind(this)}
                     editUsers={this.editUsers.bind(this)}
+                    editTec={this.editTec.bind(this)}
                 />
+                {this.state.editTec && <Tecnicos
+                    users={users}
+                    userId={userId}
+                    tecnicos={tecnicos}
+                    editTec={this.editTec.bind(this)}
+                    refresh={this.refresh.bind(this)}
+                />
+                }
             </div>
 
         )
     }
-};
+}
 
 function mapStateToProps(state) {
     return {
@@ -96,7 +130,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-
-    return bindActionCreators({ getUsers, reduxToastr }, dispatch)
+    return bindActionCreators({ getUsers, reduxToastr, loadTecnicos }, dispatch)
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Users)
