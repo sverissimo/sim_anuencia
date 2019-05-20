@@ -44,7 +44,8 @@ class AnuenciaForm extends Component {
         !this.props.cadastro.processCollection[0] ? this.props.loadProcessData() : void 0
 
         let color = document.getElementById('setcolor').style.backgroundColor
-        this.setState({ setColor: color })        
+        this.setState({ setColor: color })  
+        //console.log(this.props)      
     }
 
     handleChange(value) {
@@ -98,7 +99,7 @@ class AnuenciaForm extends Component {
     }
 
     render() {
-        const { empreend, rt, process, tecnicos } = this.props
+        const { empreend, rt, process, tecnicos, prefeituras } = this.props
         const enableAnuencia = () => this.state.mostrarOficio ? false : 'disabled'
 
         return (
@@ -125,6 +126,7 @@ class AnuenciaForm extends Component {
                     empreend={empreend}
                     rt={rt}
                     tecnicos={tecnicos}
+                    prefeituras={prefeituras}
                 />
 
                 <button className='btn right' onClick={this.enviaPendencias.bind(this)} disabled={enableAnuencia()}> Enviar </button>

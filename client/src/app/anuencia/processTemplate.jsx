@@ -8,7 +8,7 @@ import ProcessInfo from '../common/processInfo'
 
 const ProcessTemplate = (props) => {
     const { redux, clear, data, selectedOption, optionSelect, process, empreend, rt, divConfig, changeValue,
-        showLog, clearLog, log, close, upload, submit } = props
+        showLog, clearLog, log, close, upload, submit, prefeituras } = props
     
     const returnComponent = (name) => {
         switch (name) {
@@ -31,6 +31,7 @@ const ProcessTemplate = (props) => {
                     value={data.analiseProc.pendencias}
                     changeValue={changeValue}
                     close={close}
+                    prefeituras={prefeituras}
                 />
             case 'Anuencia':
                 return <Anuencia

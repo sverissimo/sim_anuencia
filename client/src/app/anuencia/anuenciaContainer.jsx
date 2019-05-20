@@ -60,7 +60,8 @@ class AnuenciaContainer extends Component {
         this.setState({
             ...this.state, checked: null,
             selectedId: null, searchValue: '', showFiles: null
-        });
+        })
+        console.log(e.target)
     }
 
     handleSelect(e) {

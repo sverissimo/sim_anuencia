@@ -1,9 +1,8 @@
 import React from 'react';
 import '../css/reactQuill.css'
-import prefeituras from '../config/prefeituras.json'
 
 const OficioHeader = (props) => {
-    const { empreend, process } = props
+    const { empreend, process, prefeituras } = props
 
     function date() {
         const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]

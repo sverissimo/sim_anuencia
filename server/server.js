@@ -20,6 +20,7 @@ const { CadastroRt } = require('./models/rtModel');
 const { processModel } = require('./models/processModel');
 const { filesModel } = require('./models/filesModel');
 const { tecModel } = require('./models/tecnicos');
+const { prefModel } = require('./models/prefeituras');
 
 const { formatMun } = require('./config/formatMun')
 
@@ -33,7 +34,7 @@ app.use(function (req, res, next) { //allow cross origin requests
     next();
 })
 
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 app.use(cookieParser());
 
 const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db');
@@ -373,6 +374,22 @@ app.put('/api/tecnicos', (req, res) => {
 
     tecModel.update(
         { email: req.body.email },
+        req.body,
+        { upsert: true })
+        .then(response => res.send(response))
+})
+
+app.get('/api/prefeituras', (req, res)=> {
+    prefModel.find().exec((err, doc)=>{
+        if (err) return err;
+        res.send(doc)
+    })
+})
+
+app.put('/api/prefeituras', (req, res) => {
+
+    prefModel.update(
+        { _id: req.body._id },
         req.body,
         { upsert: true })
         .then(response => res.send(response))

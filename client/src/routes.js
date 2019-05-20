@@ -14,6 +14,7 @@ import SolicitaAnuencia from './app/solAnuencia/solicitaAnuencia'
 import EditData from './app/buscar/editData'
 import Anuencia from './app/anuencia/anuenciaContainer'
 import Users from './app/auth/users'
+import Admin from './app/admin/admin'
 
 const Routes = () => {
     const userRole = localStorage.getItem('role')
@@ -30,7 +31,8 @@ const Routes = () => {
             <Route path='/showEmpreend' component={BuscaContainer} />
             {agencia && <Route path='/Anuencia' exact component={Anuencia} />}
             {agencia && <Route path='/editData' component={EditData} />}
-            {userRole === 'admin' && <Route path='/users' exact component={Users} />}            
+            {userRole === 'admin' && <Route path='/users' exact component={Users} />}
+            {userRole === 'admin' && <Route path='/admin' exact component={Admin} />}               
         </Switch>
     } else {
         logout()

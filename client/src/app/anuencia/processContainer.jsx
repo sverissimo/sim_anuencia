@@ -17,7 +17,8 @@ class ProcessContainer extends Component {
         logIndex: '',
         notaTecnica: '',
         anuenciaFile: '',
-        form: ''
+        form: '', 
+        prefeituras: []
     }
 
     optionSelect(e) {
@@ -26,6 +27,9 @@ class ProcessContainer extends Component {
 
     componentDidMount() {
         this.setState({ selectedId: this.props.data.selectedId })
+        axios.get('/api/prefeituras')
+            .then(res => this.setState({ prefeituras: res.data }))
+            .catch(err => console.log(err))
     }
     componentWillUnmount() {
         this.props.clear()
@@ -161,6 +165,7 @@ class ProcessContainer extends Component {
                         process={process}
                         empreend={empreend}
                         rt={rt}
+                        prefeituras={this.state.prefeituras}
                         match={this.props.match}
                         optionSelect={this.optionSelect.bind(this)}
                         selectedOption={this.state.selectedOption}

@@ -52,8 +52,7 @@ class ShowEmpContainer extends Component {
         }
         !empCollection[0] ? this.props.loadEmpData() : void 0
         !processCollection[0] ? this.props.loadProcessData() : void 0
-        document.addEventListener("keydown", this.escFunction, false)
-
+        document.addEventListener("keydown", this.escFunction, false)       
     }
 
     componentWillUnmount() {
@@ -194,7 +193,7 @@ class ShowEmpContainer extends Component {
         }
 
         if (archieved) {
-            const selectedProc = processCollection.filter(el => el._id.match(id))[0] 
+            const selectedProc = processCollection.filter(el => el._id.match(id))[0]
             const historyArray = selectedProc.processHistory
 
             let lastLog = historyArray.filter(log => log.label !== 'Processo Arquivado')
