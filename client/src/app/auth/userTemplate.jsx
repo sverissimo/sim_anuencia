@@ -14,17 +14,46 @@ const Role = (props) => {
     )
 }
 
+const format = (field) => {
+    return field
+        .replace('Usuário', 'name')
+        .replace('Permissões', 'role')
+        .replace('E-mail', 'email')
+        .replace('í', 'i')
+        .toLowerCase()
+}
+
 const UserTemplate = (props) => {
 
-    let { users, handleChange, editUsers, deleteUser, editTec } = props
+    let { users, handleChange, editUsers, deleteUser, editTec, showVerified, verified, sort, reverse } = props
 
     return (
         <div>
+            <div className='row right'
+            >
+                <input
+                    id='showVerified'
+                    type="checkbox"
+                    checked={verified === true}
+                    onChange={showVerified}
+                />
+                <label style={{ fontSize: '0.9rem' }} htmlFor="showVerified">Mostrar usuários verificados</label>
+            </div>
+
             <table className="resposive-table highlight" >
                 <thead>
                     <tr>
-                        {['Usuário', 'E-mail', 'Município'].map((th, i) => <th key={i}>{th}</th>)}
-                        {['Permissões', 'Opções', 'Editar'].map((th, i) => <th key={i} className='center'>{th}</th>)}
+                        {
+                            ['Usuário', 'E-mail', 'Município'].map((th, i) =>
+                                <th key={i} name={format(th)}>
+                                    <span> {th} </span>
+                                    <span style={{ cursor: 'pointer' }} onClick={() => sort(format(th))}>
+                                        {reverse ? '▼' : '▲'}
+                                     </span>
+                                </th>
+                            )
+                        }
+                        {['Permissões', 'Opções', 'Editar Técnico'].map((th, i) => <th key={i} name={format(th)} className='center'>{th}</th>)}
                     </tr>
                 </thead>
                 <tbody>

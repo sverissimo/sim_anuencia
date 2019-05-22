@@ -7,6 +7,8 @@ import { reduxToastr, loadTecnicos } from '../cadastro/cadActions'
 import Title from '../common/titleSubtitle'
 import UserTemplate from './userTemplate'
 import Tecnicos from './tecnicos'
+import { sortList } from '../functions/sort'
+
 import axios from 'axios';
 
 class Users extends Component {
@@ -22,7 +24,9 @@ class Users extends Component {
         users: [],
         tecnicos: [],
         editTec: false,
-        userId: ''
+        userId: '',
+        showVerified: false,
+        reverse: false
     }
 
     async componentDidMount() {
@@ -33,6 +37,8 @@ class Users extends Component {
         await loadTecnicos()
         const { auth, redux } = this.props
         this.setState({ users: auth.usersCollection, tecnicos: redux.tecCollection })
+
+
     }
 
     handleChange(e) {
@@ -89,8 +95,24 @@ class Users extends Component {
         reduxToastr('sucess', 'Dados do técnico atualizados')
     }
 
+    showVerified() {
+        this.setState({ showVerified: !this.state.showVerified })
+    }
+
+    sort(criteria) {
+        let { users, reverse } = this.state
+        const orderedList = sortList(users, criteria)
+        users = orderedList
+        if (reverse === true) users = orderedList.reverse()
+
+        this.setState({ ...this.state, users, reverse: !reverse })
+    }
+
     render() {
-        let { users, userId, tecnicos } = this.state
+        let { users, userId, tecnicos, showVerified, reverse } = this.state
+        let usersView = users.filter(u => u.verified === false)
+
+        if (showVerified) usersView = users.filter(u => u.verified === true)
 
         return (
             <div className="container" style={{ width: '95%' }} >
@@ -102,11 +124,15 @@ class Users extends Component {
                     />
                 </div>
                 <UserTemplate
-                    users={users}
+                    users={usersView}
                     handleChange={this.handleChange.bind(this)}
                     deleteUser={this.deleteUser.bind(this)}
                     editUsers={this.editUsers.bind(this)}
                     editTec={this.editTec.bind(this)}
+                    showVerified={this.showVerified.bind(this)}
+                    verified={this.state.showVerified}
+                    sort={this.sort.bind(this)}
+                    reverse={reverse}
                 />
                 {this.state.editTec && <Tecnicos
                     users={users}

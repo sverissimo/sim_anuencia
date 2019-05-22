@@ -62,19 +62,19 @@ class Login extends Component {
         e.preventDefault()
         let newUser
         await this.setState({ municipio: formatMun(this.state.municipio) })
-        axios.post('/api/signup', this.state)
+        await axios.post('/api/signup', this.state)
             .then(res => {
                 if (res.data === 'Senhas não conferem.' || res.data === 'Usuário já cadastrado.' || res.data === 'E-mail inválido.') {
                     reduxToastr('err', res.data, 'Erro!')
                 } else {
                     newUser = res.data
                     reduxToastr('sucess', 'Usuário criado com sucesso', newUser.name)
-                    setTimeout(() => {
-                        window.location.reload()
-                    }, 2000);
                 }
             })
             .catch(err => console.log(err.message))
+        setTimeout(() => {
+            window.location.reload()
+        }, 2000);
     }
 
     render() {
