@@ -163,7 +163,7 @@ class CadastroContainer extends React.Component {
             cep: this.state.cep,
             cidade: this.state.cidade,
             phone: this.state.phone,
-            email: this.state.email,
+            email: this.state.email.toLowerCase(),
             numero: this.state.numero,
             complemento: this.state.complemento,
             uf: this.state.uf,
@@ -171,7 +171,7 @@ class CadastroContainer extends React.Component {
 
         const cadRt = {
             nomeRt: this.state.nomeRt,
-            emailRt: this.state.emailRt,
+            emailRt: this.state.emailRt.toLowerCase(),
             phoneRt: this.state.phoneRt
         }
 

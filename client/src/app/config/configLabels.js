@@ -101,11 +101,11 @@ export const solDirConfig = [
         nameInput: 'kml'
     },
     {
-        label: 'Levantamento Planialtimétrico',
+        label: 'Levantamento Planialtimétrico (em formato DWG)',
         nameInput: 'levPlanFile'
     },
     {
-        label: 'Comprovante de pagamento da DAE',
+        label: 'Cópia do boleto e comprovante de pagamento da DAE',
         nameInput: 'dirDaeFile'
     },
 ]

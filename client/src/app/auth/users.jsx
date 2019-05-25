@@ -26,7 +26,9 @@ class Users extends Component {
         editTec: false,
         userId: '',
         showVerified: false,
-        reverse: false
+        reverse: false,
+        vUsers: [],
+        blockUsers: []
     }
 
     async componentDidMount() {
@@ -36,9 +38,10 @@ class Users extends Component {
         await getUsers()
         await loadTecnicos()
         const { auth, redux } = this.props
-        this.setState({ users: auth.usersCollection, tecnicos: redux.tecCollection })
+        let vUsers = auth.usersCollection.filter(u => u.verified === true)
+        let blockUsers = auth.usersCollection.filter(u => u.verified === false)
 
-
+        this.setState({ users: auth.usersCollection, tecnicos: redux.tecCollection, vUsers, blockUsers })
     }
 
     handleChange(e) {
@@ -47,31 +50,32 @@ class Users extends Component {
         let selectedUser
         let targetName = e.target.name
 
-        let userData = []
-        users.forEach(user => {
-            const { name, surName, email, municipio, password, __v, ...usersFilter } = user
-            userData.push(usersFilter)
-        })
-
         selectedUser = users.filter(user => `${targetName + user._id}`.match(e.target.id))[0]
         let userIndex = users.indexOf(selectedUser)
 
         if (e.target.name !== 'v_') users[userIndex].role = e.target.value
         else users[userIndex].verified = !users[userIndex].verified
-
-        this.setState({
-            users: users
-        })
+        
+        this.setState({ users })
     }
 
     async editUsers(e) {
+        e.preventDefault()
+        const { users } = this.state
+
         await axios.put(('/api/edit'), {
             el: 'user',
-            item: this.state.users
+            item: users
         })
-            .then(res => console.log(res))
+            .then(res => { console.log('ok'); void res })
             .catch(err => alert(err))
-        this.props.getUsers(); reduxToastr('sucess', 'Registro alterado.')
+        reduxToastr('sucess', 'Registro alterado.')
+
+        await this.props.getUsers()
+
+        let vUsers = users.filter(u => u.verified === true)
+        let blockUsers = users.filter(u => u.verified === false)
+        this.setState({ vUsers, blockUsers })
     }
 
     async deleteUser(e) {
@@ -100,19 +104,26 @@ class Users extends Component {
     }
 
     sort(criteria) {
-        let { users, reverse } = this.state
-        const orderedList = sortList(users, criteria)
-        users = orderedList
-        if (reverse === true) users = orderedList.reverse()
+        let { vUsers, blockUsers, showVerified, reverse } = this.state
 
-        this.setState({ ...this.state, users, reverse: !reverse })
+        let orderedList
+
+        if (showVerified) {
+            orderedList = sortList(vUsers, criteria)
+            if (reverse === true) orderedList.reverse()
+            this.setState({ vUsers: orderedList, reverse: !reverse })
+        } else {
+            orderedList = sortList(blockUsers, criteria)
+            if (reverse === true) orderedList.reverse()
+            this.setState({ blockUsers: orderedList, reverse: !reverse })
+        }
     }
 
     render() {
-        let { users, userId, tecnicos, showVerified, reverse } = this.state
-        let usersView = users.filter(u => u.verified === false)
+        let { users, userId, tecnicos, showVerified, reverse, vUsers, blockUsers } = this.state
 
-        if (showVerified) usersView = users.filter(u => u.verified === true)
+        let usersView = blockUsers
+        if (showVerified) usersView = vUsers
 
         return (
             <div className="container" style={{ width: '95%' }} >

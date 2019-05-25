@@ -61,7 +61,7 @@ class Login extends Component {
     async signup(e) {
         e.preventDefault()
         let newUser
-        await this.setState({ municipio: formatMun(this.state.municipio) })
+        await this.setState({ municipio: formatMun(this.state.municipio), email:this.state.email.toLowerCase() })
         await axios.post('/api/signup', this.state)
             .then(res => {
                 if (res.data === 'Senhas não conferem.' || res.data === 'Usuário já cadastrado.' || res.data === 'E-mail inválido.') {

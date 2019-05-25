@@ -12,6 +12,7 @@ const signup = (req, res, next) => {
 
     const { name, surName, email, password, confirmPassword, municipio, role } = req.body || ''
     const verified = false
+    let answer
 
     if (!email.match(emailRegex)) {
         return res.send('E-mail inválido.')
@@ -39,22 +40,19 @@ const signup = (req, res, next) => {
                         res.status(200).send(user)
                     }
                 })
-            }
-            const defRole = new Promise((resolve, reject) => {
-                CadastroRt.findOne({ 'emailRt': email })
-                    .then(res => {
-                        if (res) resolve('rt')
-                        resolve('empreend')
-                    })
-                    .catch(e => reject(e))
-            })
-
-            defRole.then(role => {
-                const newUser = new User({ name, surName, email, municipio, password: passwordHash, role, verified })
-                newUser.save(async (err, user) => {
-                    if (err) {
-                        return err
-                    } else {
+            } else {
+                const defRole = new Promise((resolve, reject) => {
+                    CadastroRt.findOne({ 'emailRt': email })
+                        .then(res => {
+                            if (res) resolve('rt')
+                            resolve('empreend')
+                        })
+                        .catch(e => reject(e))
+                })
+                defRole.then(role => {
+                    const newUser = new User({ name, surName, email, municipio, password: passwordHash, role, verified })
+                    newUser.save(async (err, user) => {
+                        if (err) return err
                         const transporter = nodemailer.createTransport({
                             host: process.env.MAILHOST,
                             port: 465,
@@ -64,27 +62,23 @@ const signup = (req, res, next) => {
                                 pass: process.env.MAILPASS
                             },
                         })
-                    
                         const mailOptions = {
                             from: 'anuencia.digital@agenciarmbh.mg.gov.br',
                             to: user.email,
                             subject: 'Confirmação de Cadastro',
                             html: verifyEmail(user.name, `https://www.anuenciadigital.ml/api/vUser?id=${user._id}`)
-                        }
-                    
-                        await transporter.sendMail(mailOptions, function (err, res) {
+                        }                       
+                        transporter.sendMail(mailOptions, function (err, res) {
                             if (err) {
                                 console.log(err);
                             } else {
                                 answer = res.status
                             }
                         })
-                        
-                        res.send(user)
-                    }
+                        res.send(answer)
+                    })
                 })
-            })
-
+            }
         }
     })
 }
