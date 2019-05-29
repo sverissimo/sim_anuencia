@@ -90,9 +90,9 @@ class solicitaDiretriz extends Component {
         }
 
         if (name === 'levPlanFile' || name === 'dirMunFile') {        
-            if (files[0] && files[0].size > 3145728) {
+            if (files[0] && files[0].size > 5242880) {
                 document.getElementsByName(name)[0].value = ''
-                alert('Arquivo excedeu o limite permitido (3MB)!')
+                alert('Arquivo excedeu o limite permitido (5MB)!')
             }
         }
 

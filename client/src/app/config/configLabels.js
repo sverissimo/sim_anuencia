@@ -250,8 +250,9 @@ export const solAnuenciaConfig1 = [
     },
     {
         nameInput: 'licAmbental',
-        label: 'AAF ou Licença Ambiental de Instalação',
-        tooltip: 'Certidão de Dispensa (classe 1) Autorização Ambiental de Funcionamento (classe 3) ou LI (classe 5). '
+        label: 'Certidão / Licença ambiental',
+        tooltip: 'Insira aqui a certidão de licença ambiental emitida pelo Estado ou pelo município, se for o caso.',
+        tt: true
     },
 
 ]
@@ -276,6 +277,12 @@ export const solAnuenciaConfig2 = [
         nameInput: 'projDren',
         label: 'Projeto de Drenagem',
         tooltip: 'Projeto na mesma escala do Projeto Urbanístico e em sistema de coordenadas UTM'
+    },    
+    {
+        nameInput: 'projPdf',
+        label: 'Projetos em PDF (extensão zip)',
+        tooltip: 'Crie um arqivo extensão ".zip" contendo cada um dos projetos acima em PDF.',
+        tt: 'true'
     },
     {
         nameInput: 'outros',

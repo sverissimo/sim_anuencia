@@ -91,13 +91,22 @@ class SolicitaAnuencia extends Component {
     }
 
     async fileUpload(e) {
-        const projetos = ['levPlan', 'mapaIso', 'projTer', 'projDren', 'outros']
-        let { name, files } = e.target        
+        const projetos = ['levPlan', 'mapaIso', 'outros', 'projPdf']
+        const projetos10Mb = ['projTer', 'projDren']
+        let { name, files } = e.target
 
-        if (projetos.some(p => p === name) && (files[0] && files[0].size > 5242880)) {
+        const p = projetos.some(p => p === name)
+        const p10 = projetos10Mb.some(p => p === name)
+
+        if (p && (files[0] && files[0].size > 6291456)) {
             document.getElementsByName(name)[0].value = ''
-            alert('Arquivo excedeu o limite permitido (5MB)!')
-        } else if (projetos.filter(p => p === name).length < 1 && (files[0] && (files[0].size > 2097152))) {
+            alert('Arquivo excedeu o limite permitido (6MB)!')
+        }
+        if (p10 && (files[0] && (files[0].size > 10485760))) {
+            document.getElementsByName(name)[0].value = ''
+            alert('Arquivo excedeu o limite permitido (10MB)!')
+        }
+        else if(!p && !p10 && (files[0] && (files[0].size > 2097152))) {
             document.getElementsByName(name)[0].value = ''
             alert('Arquivo excedeu o limite permitido (2MB)!')
         }
