@@ -7,7 +7,7 @@ export const sortList = (list, criteria) => {
                 return -1
             } else return 0
         } else {
-            return
+            return null
         }
     })
     return orderedList

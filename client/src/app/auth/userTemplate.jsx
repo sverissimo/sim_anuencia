@@ -1,15 +1,29 @@
 import React from 'react';
+import { municipios } from '../config/formConfig'
 
 const Role = (props) => {
     let { id, presentValue, handleChange, municipio } = props
     return (
-        <select id={id} className='browser-default' onChange={handleChange}>
+        <select id={id} name='role' className='browser-default' onChange={handleChange}>
             <option value={presentValue}>{presentValue}</option>
             <option value="admin">Administrador</option>
             <option value="tecnico">Técnico da Agência</option>
             <option value="prefeitura">{`Prefeitura de ${municipio}`}</option>
             <option value="empreend">Empreendedor</option>
             <option value="rt">Responsável Técnico</option>
+        </select>
+    )
+}
+
+const Mun = (props) => {
+    let { id, handleChange, municipio } = props
+    const cities = municipios.munEmpreendimento.options
+    if (!municipio) municipio = ''
+    return (
+        <select id={id} name='municipio' className='browser-default' onChange={handleChange} value={municipio}>
+            {
+                cities.map((city, i) => <option key={i} value={city}>{city || municipio}</option>)
+            }
         </select>
     )
 }
@@ -49,7 +63,7 @@ const UserTemplate = (props) => {
                                     <span> {th} </span>
                                     <span style={{ cursor: 'pointer' }} onClick={() => sort(format(th))}>
                                         {reverse ? '▼' : '▲'}
-                                     </span>
+                                    </span>
                                 </th>
                             )
                         }
@@ -63,7 +77,16 @@ const UserTemplate = (props) => {
                                 <tr id={user._id} key={i} style={{ borderBottom: '1px solid #eee' }}>
                                     <td>{user.name} {user.surName}</td>
                                     <td>{user.email}</td>
-                                    <td>{user.municipio || ''}</td>
+                                    <td>
+                                        {
+                                            user.role === 'prefeitura' ? <Mun
+                                                id={user._id}
+                                                handleChange={handleChange}
+                                                municipio={user.municipio}
+                                            /> :
+                                                user.municipio
+                                        }
+                                    </td>
                                     <td>
                                         <Role
                                             id={user._id}

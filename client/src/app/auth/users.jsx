@@ -53,9 +53,10 @@ class Users extends Component {
         selectedUser = users.filter(user => `${targetName + user._id}`.match(e.target.id))[0]
         let userIndex = users.indexOf(selectedUser)
 
-        if (e.target.name !== 'v_') users[userIndex].role = e.target.value
-        else users[userIndex].verified = !users[userIndex].verified
-        
+        if (e.target.name === 'v_') users[userIndex].verified = !users[userIndex].verified
+        else if (targetName === 'role') users[userIndex].role = e.target.value
+        else if (targetName === 'municipio') users[userIndex].municipio = e.target.value
+
         this.setState({ users })
     }
 

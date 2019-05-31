@@ -61,20 +61,24 @@ class Login extends Component {
     async signup(e) {
         e.preventDefault()
         let newUser
-        await this.setState({ municipio: formatMun(this.state.municipio), email:this.state.email.toLowerCase() })
-        await axios.post('/api/signup', this.state)
-            .then(res => {
-                if (res.data === 'Senhas não conferem.' || res.data === 'Usuário já cadastrado.' || res.data === 'E-mail inválido.') {
-                    reduxToastr('err', res.data, 'Erro!')
-                } else {
-                    newUser = res.data
-                    reduxToastr('sucess', 'Usuário criado com sucesso', newUser.name)
-                }
-            })
-            .catch(err => console.log(err.message))
-        setTimeout(() => {
-            window.location.reload()
-        }, 2000);
+        const { name, surName, role, municipio } = this.state
+        
+        if (name && surName && role && municipio) {
+            await this.setState({ municipio: formatMun(this.state.municipio), email: this.state.email.toLowerCase() })
+            await axios.post('/api/signup', this.state)
+                .then(res => {
+                    if (res.data === 'Senhas não conferem.' || res.data === 'Usuário já cadastrado.' || res.data === 'E-mail inválido.') {
+                        reduxToastr('err', res.data, 'Erro!')
+                    } else {
+                        newUser = res.data
+                        reduxToastr('sucess', 'Usuário criado com sucesso', newUser.name)
+                    }
+                })
+                .catch(err => console.log(err.message))
+            setTimeout(() => {
+                window.location.reload()
+            }, 2000);
+        } else alert('Favor preencher todos os campos.')
     }
 
     render() {
