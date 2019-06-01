@@ -9,7 +9,7 @@ const HomeTemplate = (props) => {
           <h1 className="display-3"> <strong>
             <span style={{ color: 'white' }} >Anuência Digital</span> </strong> </h1>
           <h6 style={{ color: 'white', fontWeight: '500' }}>
-            Versão 1.3.5
+            Versão 1.3.7
           </h6>
           <br/>
           <h4 style={{ color: 'white', fontWeight: '500' }}>
