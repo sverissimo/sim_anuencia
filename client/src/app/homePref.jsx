@@ -22,14 +22,14 @@ const menu = [
     {
         title: 'Solicitar Anuência',
         text: 'Para solicitar anuência prévia, selecione o processo e faça o upload dos documentos em meio digital. É necessário que o processo tenha diretrizes metropolitanas validas.',
-        link: '/solicitaDiretriz',
+        link: '/solicitaAnuencia',
         img: '/images/solAnuencia2.png  ',
         w:'120px',
         h:'125px'
     },
     {
         title: 'Acompanhar Processos',
-        text: 'Visualize os dados dos processos, interesados e responsáveis técnicos. Acompanhe o andamento dos processos e veja seus documentos, projetos e seu histórico.',
+        text: 'Visualize os dados dos processos, interesados e responsáveis técnicos. Acompanhe o andamento dos processos, seus documentos, projetos e seu histórico.',
         link: '/showEmpreend',
         img: '/images/process_info3.png',
         w:'110px',

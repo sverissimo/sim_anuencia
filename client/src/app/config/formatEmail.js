@@ -22,7 +22,7 @@ const formatEmail = (empreend, modalidade, nomeEmpreendimento, munEmpreendimento
             <p><strong> ${status} </strong></p>
 
             <p>Para maiores informações, visite o site
-        <a href="https://sim-anuencia.herokuapp.com/" target="_blank">Anuência Digital</a>
+        <a href="http://anuenciadigital.ml" target="_blank">Anuência Digital</a>
             </p>            
             <p>Atenciosamente,</p><p><em>Equipe da Agência de Desenvolvimento da RMBH</em></p>
         </div>

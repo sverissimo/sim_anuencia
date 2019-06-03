@@ -2,8 +2,13 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip'
 
 const SolAnuenciaFilesRow = (props) => {
-    const { label, nameInput, tooltip, tt } = props.object
+    const { label, nameInput, tooltip, tt, link } = props.object
 
+    const click = (link) => {
+        if (link) {
+            window.open('http://daeonline1.fazenda.mg.gov.br/daeonline/executeReceitaOrgaosEstaduais.action', '_blank')
+        }
+    }
     return (
         <div
             style={{ padding: "10px", paddingLeft: "20px", paddingRight: "20px", margin: 0 }}
@@ -12,8 +17,9 @@ const SolAnuenciaFilesRow = (props) => {
                 style={{ fontSize: "16px", paddingTop: "15px", fontWeight: 450, color: "black" }}>
                 {label}
             </label>
-           { tt && <i style={{ marginLeft: "9px", color: "#42a5f5", fontSize: "1.2rem", cursor: "default" }}
+            {tt && <i style={{ marginLeft: "9px", color: "#42a5f5", fontSize: "1.2rem", cursor: link ? "pointer" : "default" }}
                 className="material-icons"
+                onClick={() => click(link)}
                 data-tip={tooltip}> help_outline </i>}
             <ReactTooltip />
             <div className="file-field input-field" key={nameInput}>

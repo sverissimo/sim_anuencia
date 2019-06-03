@@ -106,7 +106,10 @@ export const solDirConfig = [
     },
     {
         label: 'Cópia do boleto e comprovante de pagamento da DAE',
-        nameInput: 'dirDaeFile'
+        nameInput: 'dirDaeFile',
+        tooltip: 'Clique para emitir o boleto de Documento de Arrecadação Estadual',
+        tt: true,
+        link: true
     },
 ]
 
@@ -226,7 +229,9 @@ export const solAnuenciaConfig1 = [
     {
         nameInput: 'daeAnuencia',
         label: 'Comprovante de pagamento da DAE',
-        tooltip: 'Comprovante de pagamento da taxa de expediente para emissão de anuência prévia por meio de Documento de Arrecadação Estadual'
+        tooltip: 'Clique para emitir o boleto de Documento de Arrecadação Estadual',
+        tt: true,
+        link: true
     },
     {
         nameInput: 'memDescritivo',
@@ -277,7 +282,7 @@ export const solAnuenciaConfig2 = [
         nameInput: 'projDren',
         label: 'Projeto de Drenagem',
         tooltip: 'Projeto na mesma escala do Projeto Urbanístico e em sistema de coordenadas UTM'
-    },    
+    },
     {
         nameInput: 'projPdf',
         label: 'Projetos em PDF (extensão zip)',
@@ -288,7 +293,7 @@ export const solAnuenciaConfig2 = [
         nameInput: 'outros',
         label: 'Outros documentos (somente se solicitado)',
         tooltip: 'Caso sejam solicitados documentos adicionais, anexe aqui. '
-    }    
+    }
 ]
 
 export const solDesmembConfig1 = [
