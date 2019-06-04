@@ -6,7 +6,7 @@ const SolAnuenciaFilesRow = (props) => {
 
     const click = (link) => {
         if (link) {
-            window.open('http://daeonline1.fazenda.mg.gov.br/daeonline/executeReceitaOrgaosEstaduais.action', '_blank')
+            window.open('http://www.agenciarmbh.mg.gov.br/anuencia-previa-2/#1544200696367-a39f6fa0-7d0c', '_blank')
         }
     }
     return (

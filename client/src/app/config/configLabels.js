@@ -107,7 +107,7 @@ export const solDirConfig = [
     {
         label: 'Cópia do boleto e comprovante de pagamento da DAE',
         nameInput: 'dirDaeFile',
-        tooltip: 'Clique para emitir o boleto de Documento de Arrecadação Estadual',
+        tooltip: 'Clique para obter informações sobre o cálculo e pagamento do Documento de Arrecadação Estadual (DAE)',
         tt: true,
         link: true
     },
@@ -228,8 +228,8 @@ export const solAnuenciaConfig1 = [
     },
     {
         nameInput: 'daeAnuencia',
-        label: 'Comprovante de pagamento da DAE',
-        tooltip: 'Clique para emitir o boleto de Documento de Arrecadação Estadual',
+        label: 'Cópia do boleto e comprovante de pagamento da DAE',
+        tooltip: 'Clique para obter informações sobre o cálculo e pagamento do Documento de Arrecadação Estadual (DAE)',
         tt: true,
         link: true
     },

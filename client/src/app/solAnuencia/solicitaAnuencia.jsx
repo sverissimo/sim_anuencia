@@ -18,7 +18,11 @@ class SolicitaAnuencia extends Component {
     constructor() {
         super()
         this.escFunction = (event) => {
-            if (event.keyCode === 27) this.closeDetails()
+            const { selectedId, showEmpDetails, showRtDetails, showFiles } = this.state
+            if (event.keyCode === 27) {
+                if (showEmpDetails || showRtDetails || showFiles) this.closeDetails();
+                else if (selectedId) this.clearSearch()
+            }
         }
     }
 
@@ -106,7 +110,7 @@ class SolicitaAnuencia extends Component {
             document.getElementsByName(name)[0].value = ''
             alert('Arquivo excedeu o limite permitido (10MB)!')
         }
-        else if(!p && !p10 && (files[0] && (files[0].size > 2097152))) {
+        else if (!p && !p10 && (files[0] && (files[0].size > 2097152))) {
             document.getElementsByName(name)[0].value = ''
             alert('Arquivo excedeu o limite permitido (2MB)!')
         }

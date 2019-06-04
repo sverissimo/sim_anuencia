@@ -17,9 +17,11 @@ class ShowEmpContainer extends Component {
     constructor() {
         super()
         this.escFunction = (e) => {
-            if (e.keyCode === 27)
-                (this.state.showEmpDetails || this.state.showRtDetails) && this.closeDetails()
-            this.state.showInfo && this.hideLog()
+            if (e.keyCode === 27) {
+                if (this.state.logDetails) this.clearLog()
+                else if (this.state.showInfo) this.hideLog()
+                else if (this.state.showEmpDetails || this.state.showRtDetails) this.closeDetails()
+            }
         }
     }
     state = {
@@ -52,7 +54,7 @@ class ShowEmpContainer extends Component {
         }
         !empCollection[0] ? this.props.loadEmpData() : void 0
         !processCollection[0] ? this.props.loadProcessData() : void 0
-        document.addEventListener("keydown", this.escFunction, false)       
+        document.addEventListener("keydown", this.escFunction, false)
     }
 
     componentWillUnmount() {

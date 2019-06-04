@@ -10,6 +10,16 @@ import { logout } from '../auth/logout';
 
 class ProcessContainer extends Component {
 
+    constructor() {
+        super()
+        this.escFunction = (event) => {
+            const { logDetails } = this.state
+            if (event.keyCode === 27) {
+                if (logDetails) this.clearLog()
+            }
+        }
+    }
+
     state = {
         selectedOption: '',
         selectedId: '',
@@ -17,7 +27,7 @@ class ProcessContainer extends Component {
         logIndex: '',
         notaTecnica: '',
         anuenciaFile: '',
-        form: '', 
+        form: '',
         prefeituras: []
     }
 
@@ -30,9 +40,11 @@ class ProcessContainer extends Component {
         axios.get('/api/prefeituras')
             .then(res => this.setState({ prefeituras: res.data }))
             .catch(err => console.log(err))
+        document.addEventListener("keydown", this.escFunction, false);
     }
     componentWillUnmount() {
         this.props.clear()
+        document.removeEventListener("keydown", this.escFunction, false);
     }
 
     divConfig(e) {

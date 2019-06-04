@@ -32,6 +32,9 @@ const CadTemplate = (props) => {
                     <input type={config.type}
                         id={config.name}
                         className="validate"
+                        pattern={config.pattern || null}
+                        required={config.name !== "complemento" && true}
+                        aria-required={config.name !== "complemento" && true}
                         name={config.name}
                         onChange={props.handleChange}
                         value={props.data[item.id]}
@@ -40,9 +43,9 @@ const CadTemplate = (props) => {
                         onBlur={props.handleBlur}
                     />
                     <label className="active"
-                        htmlFor={config.name}>
+                        htmlFor={config.name} data-error="✘" data-success="✓">
                         {config.label}
-                    </label>                    
+                    </label>
                 </div>
             )
         })

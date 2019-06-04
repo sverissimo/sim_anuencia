@@ -55,9 +55,11 @@ class Diretriz extends Component {
     }
 
     escFunction(event) {
+        const { cgtCalendar, vistoriaCalendar, selectedId, showEmpDetails, showRtDetails, showFiles } = this.state
         if (event.keyCode === 27) {
-            (this.state.cgtCalendar || this.state.vistoriaCalendar) && this.hideCalendar()
-            this.closeDetails()
+            if (showEmpDetails || showRtDetails || showFiles) this.closeDetails();
+            else if (cgtCalendar || vistoriaCalendar) this.hideCalendar();
+            else if (selectedId) this.clearSearch()
         }
     }
     componentDidMount() {
@@ -111,13 +113,6 @@ class Diretriz extends Component {
             checked: e.currentTarget.id
         })
         document.getElementById(this.state.checked).checked = 'checked'
-        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
-
-        let dirStatus = { ...this.state.dirStatus }        
-        if (processo.area.replace(/\./g, '').replace(/,/g, '.') <= 300000) {
-            dirStatus.cgtOk = true
-            this.setState({ dirStatus })            
-        }
     }
 
     async fileUpload(e) {
@@ -207,7 +202,7 @@ class Diretriz extends Component {
         dirStatus[field] = !this.state.dirStatus[field]
         let { cgtOk, vistoriaOk, daeOk, dirMunOk } = dirStatus
         cgtOk === true && (vistoriaOk === true && (dirMunOk === true && daeOk === true)) ?
-            this.setState({ anexaDiretriz: true }) : this.setState({ anexaDiretriz: false })        
+            this.setState({ anexaDiretriz: true }) : this.setState({ anexaDiretriz: false })
     }
 
     handleChange(e) {

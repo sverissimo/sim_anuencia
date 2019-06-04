@@ -6,8 +6,7 @@ const DiretrizRow = (props) => {
     let { processCollection, selectedId, checkItem, change, dirStatus, anexaDiretriz,
         enviaPendencias, showCalendar } = props
 
-    let processo = processCollection.filter(el => el._id.match(selectedId))[0]
-    const realArea = processo.area.replace(/\./g, '').replace(/,/g, '.')    
+    let processo = processCollection.filter(el => el._id.match(selectedId))[0]    
 
     let selectedFields = [['CGT', 'cgt', 'cgtOk'], ['Vistoria', 'vistoria', 'vistoriaOk'],
     ['Diretriz Municipal', 'dirMunOk', 'dirMunOk'], ['Pagamento da DAE', 'daeOk', 'daeOk']]
@@ -48,7 +47,7 @@ const DiretrizRow = (props) => {
             <form action="#">
                 {
                     selectedFields.map((i, k) =>
-                        (i[1] !== 'cgt' || (i[1] === 'cgt' && realArea > 300000)) && <div className="row" key={k}>
+                        <div className="row" key={k}>
                             <input type="checkbox"
                                 id={i[2]}
                                 onClick={checkItem} />

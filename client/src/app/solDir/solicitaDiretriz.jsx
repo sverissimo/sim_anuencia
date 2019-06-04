@@ -17,7 +17,11 @@ class solicitaDiretriz extends Component {
     constructor() {
         super()
         this.escFunction = (event) => {
-            if (event.keyCode === 27) this.closeDetails()
+            const { selectedId, showEmpDetails, showRtDetails } = this.state
+            if (event.keyCode === 27) {
+                if (showEmpDetails || showRtDetails) this.closeDetails();
+                else if (selectedId) this.clearSearch()
+            }
         }
     }
 
@@ -32,6 +36,7 @@ class solicitaDiretriz extends Component {
         dirMunFile: '',
         levPlanFile: '',
         dirDaeFile: '',
+        kml: '',
         showEmpDetails: false,
         showRtDetails: false,
         empId: '',
@@ -82,14 +87,14 @@ class solicitaDiretriz extends Component {
     async fileUpload(e) {
 
         let { name, files } = e.target
-        if (name === 'kml' || name === 'dirDaeFile') {            
+        if (name === 'kml' || name === 'dirDaeFile') {
             if (files[0] && files[0].size > 2097152) {
                 document.getElementsByName(name)[0].value = ''
                 alert('Arquivo excedeu o limite permitido (2MB)!')
             }
         }
 
-        if (name === 'levPlanFile' || name === 'dirMunFile') {        
+        if (name === 'levPlanFile' || name === 'dirMunFile') {
             if (files[0] && files[0].size > 5242880) {
                 document.getElementsByName(name)[0].value = ''
                 alert('Arquivo excedeu o limite permitido (5MB)!')
@@ -127,42 +132,48 @@ class solicitaDiretriz extends Component {
         const tecnico = tecCollection.filter(el => el.municipios.some(mun => mun === processo.munEmpreendimento))[0]
 
         const user = { ...localStorage }
-
         let filesArray = []
-        this.props.loading(true)
-        try {
-            await axios.post('/api/fileUpload', this.state.form)
-                .then(res => {
-                    const files = res.data.file
-                    files.forEach(file => filesArray.push(file))
-                })
-            await axios.put('/api/editProcess', {
-                item: {
-                    _id: this.state.selectedId,
-                    status: 'Aguardando Diretrizes Metropolitanas',
-                    tecnico: tecnico.name + ' ' + tecnico.surName
-                },
-                processHistory: {
-                    label: 'Diretrizes metropolitanas solicitadas',
-                    createdAt: new Date(),
-                    files: filesArray,
-                    user: {
-                        nome: user.name + ' ' + user.surName,
-                        email: user.email
+        let countFiles = 0
+        for (let pair of this.state.form.entries()) {
+            if (pair[1]) countFiles = countFiles + 1
+        }
+        if (countFiles > 4) {
+
+            this.props.loading(true)
+            try {
+                await axios.post('/api/fileUpload', this.state.form)
+                    .then(res => {
+                        const files = res.data.file
+                        files.forEach(file => filesArray.push(file))
+                    })
+                await axios.put('/api/editProcess', {
+                    item: {
+                        _id: this.state.selectedId,
+                        status: 'Aguardando Diretrizes Metropolitanas',
+                        tecnico: tecnico.name + ' ' + tecnico.surName
+                    },
+                    processHistory: {
+                        label: 'Diretrizes metropolitanas solicitadas',
+                        createdAt: new Date(),
+                        files: filesArray,
+                        user: {
+                            nome: user.name + ' ' + user.surName,
+                            email: user.email
+                        }
                     }
                 }
-            }
-            )
-            this.props.loading(false)
-            await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')
-            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
-            await this.clearSearch()
-            await this.closeDetails()
-            this.props.loadProcessData() && this.props.loadFilesData()
+                )
+                this.props.loading(false)
+                await reduxToastr('sucess', 'Diretrizes Metropolitanas solicitadas.')
+                await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
+                await this.clearSearch()
+                await this.closeDetails()
+                this.props.loadProcessData() && this.props.loadFilesData()
 
-        } catch (err) {
-            logout(err)
-        }
+            } catch (err) {
+                logout(err)
+            }
+        } else alert('Favor anexar todos os arquivos solicitados.')
     }
 
     empDetails(e) {

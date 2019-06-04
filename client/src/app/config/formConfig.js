@@ -26,7 +26,7 @@ export const rtForm = {
     },
     emailRt: {
         divClassName: 'input-field col s12 m6 l4',
-        type: 'text',
+        type: 'email',
         name: 'emailRt',
         label: 'E-mail',
         onBlur: null
@@ -39,12 +39,14 @@ export const empreendForm = {
         type: 'text',
         name: 'cpf',
         label: 'CPF / CNPJ',
+        pattern: '([0-9]{2}[.]?[0-9]{3}[.]?[0-9]{3}[/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[.]?[0-9]{3}[.]?[0-9]{3}[-]?[0-9]{2})'
     },
     phone: {
         divClassName: 'input-field col s12 m3 l2',
         type: 'text',
         name: 'phone',
-        label: 'Telefone',
+        label: 'Telefone (com DDD)',
+        pattern: '((([+][0-9]{1,3})?[ ]?[-]?[(]?[0-9]{2,3}[)]?[ ]?[-]?[0-9]{4,5}[ ]?[-]?[0-9]{4}))'
     },
     email: {
         divClassName: 'input-field col s12 m6 l3',
@@ -57,6 +59,7 @@ export const empreendForm = {
         type: 'text',
         name: 'cep',
         label: 'CEP',
+        pattern: '([0-9]{2}[.]?[0-9]{3}[-]?[0-9]{3})'
     },
     numero: {
         divClassName: 'input-field col s12 m3 l1',

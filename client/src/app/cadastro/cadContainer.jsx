@@ -62,7 +62,7 @@ class CadastroContainer extends React.Component {
 
         const user = { ...localStorage }
         const municipio = formatMun(user.municipio)
-        
+
         if (user.role === 'prefeitura') await this.setState({ munEmpreendimento: municipio })
         await this.setState({
             ...this.state, enableRt: 'disabled', enableProcess: '', enableEmp: 'disabled'
@@ -251,10 +251,10 @@ class CadastroContainer extends React.Component {
         }
     }
 
-    handleBlurName() {
+    async handleBlurName() {
 
         if (this.state.empMatch && (this.state.empMatch[0] && (this.state.empMatch[0].nome === this.state.nome))) {
-            this.setState({
+            await this.setState({
                 ...this.state,
                 empId: this.state.empMatch[0]._id,
                 phone: this.state.empMatch[0].phone,
@@ -268,8 +268,16 @@ class CadastroContainer extends React.Component {
                 cidade: this.state.empMatch[0].cidade,
                 uf: this.state.empMatch[0].uf
             })
+            Object.entries(this.state).forEach(([k, v]) => {
+                if (v !== '') {
+                    if (document.getElementById(k)) {
+                        document.getElementById(k).className = ''
+                        document.getElementById(k).required = false
+                        document.getElementById(k).setAttribute('aria-required', false)
+                    }
+                }
+            })
             this.enableRtInput()
-
         } else {
             this.setState({
                 ...this.state,
@@ -298,9 +306,9 @@ class CadastroContainer extends React.Component {
                 emailRt: this.state.rtMatch[0].emailRt,
             })
             if (this.state.enableEmp !== '') {
+                document.getElementById('rtInput').className = 'validade valid'
                 this.enableProcessInput()
             }
-
         } else {
             this.setState({
                 rtId: '',
