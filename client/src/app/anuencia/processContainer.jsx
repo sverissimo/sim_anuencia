@@ -43,7 +43,7 @@ class ProcessContainer extends Component {
         document.addEventListener("keydown", this.escFunction, false);
     }
     componentWillUnmount() {
-        this.props.clear()
+        this.props.clear();
         document.removeEventListener("keydown", this.escFunction, false);
     }
 
@@ -142,6 +142,7 @@ class ProcessContainer extends Component {
                 await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Processo Anuído.')
                 setTimeout(() => {
                     this.props.loading(false)
+                    this.setState({ form: null})
                     this.props.loadProcessData(); this.props.loadFilesData()
                 }, 1250);
 

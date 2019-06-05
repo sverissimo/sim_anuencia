@@ -142,14 +142,15 @@ class SolicitaAnuencia extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-        const procCollection = this.props.redux.processCollection
-        const { selectedId } = this.state
-        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
-        const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
-        const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
+        const procCollection = this.props.redux.processCollection,
+            processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0],
+            emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0],
+            rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0],
+            user = { ...localStorage }
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
-        const user = { ...localStorage }
+        const { selectedId, form } = this.state,
+            { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+
 
         const label = () => {
             let entradaCounter = []
@@ -157,8 +158,8 @@ class SolicitaAnuencia extends Component {
                 const process = procCollection.filter(proc => proc._id.match(selectedId))
                 entradaCounter = process[0].processHistory.filter(el => el.label)
             }
-            const analise = entradaCounter.filter(el => el.label.match('Análise'))
-            const count = analise.length
+            const analise = entradaCounter.filter(el => el.label.match('Análise')),
+                count = analise.length
 
             if (count === 0) {
                 const newLabel = 'Anuência prévia solicitada'
@@ -169,41 +170,55 @@ class SolicitaAnuencia extends Component {
             }
         }
 
-        let filesArray = [];
-        this.props.loading(true)
-        try {
-            await axios.post('/api/fileUpload', this.state.form)
-                .then(res => {
-                    const files = res.data.file
-                    files.forEach(file => filesArray.push(file))
-                })
-            const label2 = label()
-            await axios.put('/api/editProcess', {
-                item: {
-                    _id: this.state.selectedId,
-                    status: 'Aguardando Análise',
-                },
-                processHistory: {
-                    label: label2,
-                    createdAt: new Date(),
-                    files: filesArray,
-                    user: {
-                        nome: user.name + ' ' + user.surName,
-                        email: user.email
-                    }
-                }
-            })
-            this.props.loading(false)
-            reduxToastr('sucess', 'Anuência Prévia solicitada.')
-            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Anuência Prévia solicitada.')
-            await this.clearSearch()
-            await this.closeDetails()
-            await this.props.loadProcessData() && this.props.loadFilesData()
-            console.log('')
+        let filesArray = [],
+            reentrada = [],
+            countFiles = 0
 
-        } catch (err) {
-            logout(err)
+        if (form) for (let pair of form.entries()) {
+            if (pair[1] && pair[1] !== 'undefined') {
+                countFiles = countFiles + 1
+            }
+
         }
+        reentrada = processo.processHistory.filter(log => log.label === 'Análise 1')
+
+        if ((countFiles > 8 && processo.modalidade === 'Desmembramento') || (countFiles > 17 && processo.modalidade === 'Loteamento') || reentrada.length > 0) {
+            this.props.loading(true)
+            try {
+                await axios.post('/api/fileUpload', this.state.form)
+                    .then(res => {
+                        const files = res.data.file
+                        files.forEach(file => filesArray.push(file))
+                    })
+                const label2 = label()
+                await axios.put('/api/editProcess', {
+                    item: {
+                        _id: this.state.selectedId,
+                        status: 'Aguardando Análise',
+                    },
+                    processHistory: {
+                        label: label2,
+                        createdAt: new Date(),
+                        files: filesArray,
+                        user: {
+                            nome: user.name + ' ' + user.surName,
+                            email: user.email
+                        }
+                    }
+                })
+                this.props.loading(false)
+                reduxToastr('sucess', 'Anuência Prévia solicitada.')
+                await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Anuência Prévia solicitada.')
+                await this.clearSearch()
+                await this.closeDetails()
+                await this.setState({ form: null})
+                await this.props.loadProcessData() && this.props.loadFilesData()
+                console.log('')
+
+            } catch (err) {
+                logout(err)
+            }
+        } else alert('Favor anexar todos os arquivos solicitados.')
     }
 
     empDetails(e) {

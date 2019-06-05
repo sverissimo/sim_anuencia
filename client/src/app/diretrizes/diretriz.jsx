@@ -139,44 +139,48 @@ class Diretriz extends Component {
         const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
         const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
-
-        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
         const user = { ...localStorage }
 
-        let filesArray = []
-        this.props.loading(true)
-        try {
-            await axios.post('/api/fileUpload', this.state.form)
-                .then(res => {
-                    const files = res.data.file
-                    files.forEach(file => filesArray.push(file))
-                })
-            await axios.put('/api/editProcess', {
-                item: {
-                    _id: this.state.selectedId,
-                    status: newStatus,
-                    tecnico: user.name + ' ' + user.surName
-                },
-                processHistory: {
-                    label: newStatus,
-                    createdAt: new Date(),
-                    files: filesArray,
-                    user: {
-                        nome: user.name + ' ' + user.surName,
-                        email: user.email
-                    }
-                }
-            })
-            this.props.loading(false)
-            await reduxToastr('sucess', newStatus)
-            await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus + '.')
-            await this.clearSearch()
-            await this.closeDetails()
-            this.props.loadProcessData() && this.props.loadFilesData()
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo,
+            { form } = this.state
 
-        } catch (err) {
-            logout(err)
-        }
+        let filesArray = []
+        if (form) {
+            this.props.loading(true)
+            try {
+                await axios.post('/api/fileUpload', this.state.form)
+                    .then(res => {
+                        const files = res.data.file
+                        files.forEach(file => filesArray.push(file))
+                    })
+                await axios.put('/api/editProcess', {
+                    item: {
+                        _id: this.state.selectedId,
+                        status: newStatus,
+                        tecnico: user.name + ' ' + user.surName
+                    },
+                    processHistory: {
+                        label: newStatus,
+                        createdAt: new Date(),
+                        files: filesArray,
+                        user: {
+                            nome: user.name + ' ' + user.surName,
+                            email: user.email
+                        }
+                    }
+                })
+                this.props.loading(false)
+                await reduxToastr('sucess', newStatus)
+                await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, newStatus + '.')
+                await this.clearSearch()
+                await this.closeDetails()
+                await this.setState({ form: null })
+                this.props.loadProcessData() && this.props.loadFilesData()
+
+            } catch (err) {
+                logout(err)
+            }
+        } else alert('Favor inserir a diretriz metropolitana.')
     }
 
     empDetails(e) {
@@ -221,7 +225,6 @@ class Diretriz extends Component {
         const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
 
         const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
-
         const user = { ...localStorage }
 
         const newStatus = 'Pendências para emissão de Diretrizes Metropolitanas.'

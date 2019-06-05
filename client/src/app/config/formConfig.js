@@ -11,7 +11,8 @@ export const processForm = {
         type: 'text',
         name: 'area',
         label: 'Área total da Gleba (m²):',
-        onBlur: null
+        onBlur: null,
+        pattern: '[0-9]*[.]?([0-9]{3}[.]?)?([0-9]{3}[.]?)?([,][0-9]{1,4})?' 
     }
 }
 
@@ -22,7 +23,8 @@ export const rtForm = {
         type: 'text',
         name: 'phoneRt',
         label: 'Telefone',
-        onBlur: null
+        onBlur: null,        
+        pattern: '((([+][0-9]{1,3})?[ ]?[-]?[(]?[0-9]{2,3}[)]?[ ]?[-]?[0-9]{4,5}[ ]?[-]?[0-9]{4}))'
     },
     emailRt: {
         divClassName: 'input-field col s12 m6 l4',
@@ -66,6 +68,7 @@ export const empreendForm = {
         type: 'text',
         name: 'numero',
         label: 'Número',
+        pattern: '[0-9]*'
     },
     complemento: {
         divClassName: 'input-field col s12 m3 l2',

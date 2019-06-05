@@ -122,22 +122,29 @@ class solicitaDiretriz extends Component {
 
     async handleSubmit(e) {
         e.preventDefault()
-        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0]
-        const emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0]
-        const rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0]
+        const processo = this.props.redux.processCollection.filter(el => el._id.match(this.state.selectedId))[0],
+            emp = this.props.redux.empCollection.filter(el => el._id.match(processo.empId))[0],
+            rt = this.props.redux.rtCollection.filter(el => el._id.match(processo.rtId))[0],
+            user = { ...localStorage }
 
-        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo
+        const { modalidade, nomeEmpreendimento, munEmpreendimento } = processo,
+            { tecCollection } = this.props.redux,
+            { form } = this.state,
+            tecnico = tecCollection.filter(el => el.municipios.some(mun => mun === processo.munEmpreendimento))[0]
 
-        const { tecCollection } = this.props.redux
-        const tecnico = tecCollection.filter(el => el.municipios.some(mun => mun === processo.munEmpreendimento))[0]
+        let filesArray = [],
+            reentrada = [],
+            countFiles = 0
 
-        const user = { ...localStorage }
-        let filesArray = []
-        let countFiles = 0
-        for (let pair of this.state.form.entries()) {
-            if (pair[1]) countFiles = countFiles + 1
+        if (form) for (let pair of form.entries()) {            
+            if (pair[1] && pair[1] !== 'undefined') {
+                countFiles = countFiles + 1
+            }
+
         }
-        if (countFiles > 4) {
+        reentrada = processo.processHistory.filter(log => log.label === 'Pendências para emissão de diretrizes')
+
+        if (countFiles > 4 || reentrada.length > 0) {
 
             this.props.loading(true)
             try {
@@ -168,10 +175,12 @@ class solicitaDiretriz extends Component {
                 await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
                 await this.clearSearch()
                 await this.closeDetails()
+                await this.setState({ form: null})
                 this.props.loadProcessData() && this.props.loadFilesData()
 
             } catch (err) {
                 logout(err)
+                console.log(err)
             }
         } else alert('Favor anexar todos os arquivos solicitados.')
     }
