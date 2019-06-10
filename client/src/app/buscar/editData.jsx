@@ -26,8 +26,8 @@ const EditData = (props) => {
                     defaultValue={empreend.nome}
                     onChange={props.change}
                 >
-                    <option key='0' value={empreend._id}>{empreend.nome}, {empreend.cpf || ''}</option>
-                    {empCollection.map((opt, i) => <option key={i} value={opt._id}>{opt.nome}, {opt.cpf || ''}</option>)}
+                    <option key='0' value={empreend._id}>{empreend.nome}</option>
+                    {empCollection.map((opt, i) => <option key={i} value={opt._id}>{opt.nome}</option>)}
                 </Input>
                 <Input
                     name='rtId'
@@ -36,8 +36,8 @@ const EditData = (props) => {
                     defaultValue={rt.nomeRt}
                     onChange={props.change}
                 >
-                    <option key='0' value={rt._id}>{rt.nomeRt}, {rt.emailRt || ''}</option>
-                    {rtCollection.map((opt, i) => <option key={i} value={opt._id}>{opt.nomeRt}, {opt.emailRt || 'email não informado'}</option>)}
+                    <option key='0' value={rt._id}>{rt.nomeRt}</option>
+                    {rtCollection.map((opt, i) => <option key={i} value={opt._id}>{opt.nomeRt}</option>)}
                 </Input>
             </div>
         )

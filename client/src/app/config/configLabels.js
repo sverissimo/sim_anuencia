@@ -324,8 +324,10 @@ export const solDesmembConfig1 = [
     },
     {
         nameInput: 'daeAnuencia',
-        label: 'Comprovante de pagamento da DAE',
-        tooltip: 'Comprovante de pagamento da taxa de expediente para emissão de anuência prévia por meio de Documento de Arrecadação Estadual'
+        label: 'Cópia do boleto e comprovante de pagamento da DAE',
+        tooltip: 'Clique para obter informações sobre o cálculo e pagamento do Documento de Arrecadação Estadual (DAE)',
+        tt: true,
+        link: true
     },
     {
         nameInput: 'memDescritivo',
@@ -340,6 +342,17 @@ export const solDesmembConfig2 = [
         nameInput: 'projDesmemb',
         label: 'Projeto de Desmembramento',
     },
+    {
+        nameInput: 'projPdf',
+        label: 'Projetos em PDF (extensão zip)',
+        tooltip: 'Crie um arqivo extensão ".zip" contendo cada um dos projetos acima em PDF.',
+        tt: 'true'
+    },
+    {
+        nameInput: 'outros',
+        label: 'Outros documentos (somente se solicitado)',
+        tooltip: 'Caso sejam solicitados documentos adicionais, anexe aqui. '
+    }
 ]
 
 export const allFilesLabels = () => {

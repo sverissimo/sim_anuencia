@@ -8,6 +8,7 @@ const Grid = require('gridfs-stream');
 Grid.mongo = mongoose.mongo;
 const path = require('path');
 const methodOverride = require('method-override')
+const bcrypt = require('bcrypt-nodejs');
 const nodemailer = require('nodemailer')
 require('dotenv').config()
 
@@ -379,8 +380,8 @@ app.put('/api/tecnicos', (req, res) => {
         .then(response => res.send(response))
 })
 
-app.get('/api/prefeituras', (req, res)=> {
-    prefModel.find().exec((err, doc)=>{
+app.get('/api/prefeituras', (req, res) => {
+    prefModel.find().exec((err, doc) => {
         if (err) return err;
         res.send(doc)
     })
@@ -513,6 +514,23 @@ app.put('/api/edit', (req, res) => {
         })
     } else {
         res.status(403).send('Este usuário não possui permissões para esta solicitação')
+    }
+})
+
+app.put('/api/editUser', (req, res) => {
+    let { confirmPassword, ...user } = req.body,
+        salt = bcrypt.genSaltSync(),
+        passwordHash = bcrypt.hashSync(user.password, salt)
+    user.password = passwordHash
+
+    if (!bcrypt.compareSync(confirmPassword, passwordHash)) {
+        return res.send('Senhas não conferem.')
+    } else {
+        User.find({ '_id': user._id }).updateOne({ $set: user }).then(() => {
+            delete user.password
+            res.send(user)
+        })
+
     }
 })
 

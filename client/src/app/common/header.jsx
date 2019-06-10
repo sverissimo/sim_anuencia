@@ -66,8 +66,9 @@ class Header extends Component {
                                         </li>
                                     ))
                                 }
-                                {userRole === 'admin' && <li><Link to="/users"><i className="material-icons left" title='Usuários'>person</i></Link></li>}
+                                {userRole === 'admin' && <li><Link to="/users"><i className="material-icons left" title='Usuários'>group</i></Link></li>}
                                 {userRole === 'admin' && <li><Link to="/admin"><i className="material-icons left" title='Prefeituras'>account_balance</i></Link></li>}
+                                <li><Link to="/myAccount"><i className="material-icons left" title='Minha conta'>person</i></Link></li>
                                 <li><Link to="/"><i className="material-icons left" onClick={()=> logout()} title='Sair'>logout</i></Link></li>
                             </ul>
                         ))
