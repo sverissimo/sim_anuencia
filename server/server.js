@@ -526,11 +526,9 @@ app.put('/api/editUser', (req, res) => {
     if (!bcrypt.compareSync(confirmPassword, passwordHash)) {
         return res.send('Senhas não conferem.')
     } else {
-        User.find({ '_id': user._id }).updateOne({ $set: user }).then(() => {
-            delete user.password
-            res.send(user)
+        User.find({ '_id': user._id }).updateOne({ $set: user }).then(() => {            
+            res.send('Ok')
         })
-
     }
 })
 

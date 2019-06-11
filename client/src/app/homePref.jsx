@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-
 const menu = [
     {
         title: 'Cadastrar Processo',
@@ -29,7 +28,7 @@ const menu = [
     },
     {
         title: 'Acompanhar Processos',
-        text: 'Visualize os dados dos processos, interesados e responsáveis técnicos. Acompanhe o andamento dos processos, seus documentos, projetos e seu histórico.',
+        text: 'Visualize os dados dos processos, interesados e RTs. Acompanhe o andamento dos processos, incluindo seus respectivos documentos, projetos, ações e histórico.',
         link: '/showEmpreend',
         img: '/images/process_info3.png',
         w:'110px',

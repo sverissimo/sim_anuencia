@@ -35,7 +35,7 @@ class Login extends Component {
         })
             .then(res => user = res.data)
             .catch(err => {
-                reduxToastr('Erro', 'Usuário/senha invalidos.')
+                reduxToastr('Erro', 'Usuário/senha invalidos.', 'Erro!')
                 return null
             })
 
