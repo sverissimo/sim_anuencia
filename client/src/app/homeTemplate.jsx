@@ -11,25 +11,19 @@ const HomeTemplate = (props) => {
           <h6 style={{ color: 'white', fontWeight: '500' }}>
             Versão 1.4.4 - 11/06/19
           </h6>
-          <br/>
+          <br />
           <h4 style={{ color: 'white', fontWeight: '500' }}>
-          Olá, {user.name} {user.surName}!
+            Olá, {user.name} {user.surName}!
           </h4>
-          
         </div>
       </div>
-
       <div className="container">
         <div className="row">
           {props.children}
         </div>
       </div>
     </div>
-
-
-
   )
-
-};
+}
 
 export default HomeTemplate;

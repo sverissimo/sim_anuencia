@@ -9,21 +9,22 @@ Grid.mongo = mongoose.mongo;
 const path = require('path');
 const methodOverride = require('method-override')
 const bcrypt = require('bcrypt-nodejs');
-const nodemailer = require('nodemailer')
 require('dotenv').config()
 
-const { User } = require('./models/user');
-const { auth } = require('./config/auth');
-const { signup, login } = require('./config/authService');
+const { auth } = require('./auth/auth');
+const { signup, login } = require('./auth/authService');
+const { generatePass, changePass, sendPass } = require('./auth/changePass');
+const { sendMail } = require('./sendMail');
+const { formatMun } = require('./config/formatMun')
 
+const { User } = require('./models/user');
 const { empreendedor } = require('./models/empModel');
 const { CadastroRt } = require('./models/rtModel');
-const { processModel } = require('./models/processModel');
-const { filesModel } = require('./models/filesModel');
-const { tecModel } = require('./models/tecnicos');
-const { prefModel } = require('./models/prefeituras');
+const { processModel } = require('./models/processModel')
+const { filesModel } = require('./models/filesModel')
+const { tecModel } = require('./models/tecnicos')
+const { prefModel } = require('./models/prefeituras')
 
-const { formatMun } = require('./config/formatMun')
 
 const app = express()
 
@@ -39,11 +40,15 @@ app.use(bodyParser.json())
 app.use(cookieParser());
 
 const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db');
+
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
     if (err) {
         console.log(err);
     }
 });
+
 
 app.use(express.static('client/build'))
 
@@ -63,6 +68,8 @@ app.get('/api/vUser', ((req, res) => {
             res.sendFile(path.resolve(__dirname, '../client', 'public', 'userConfirmed.html'))
         }))
 }))
+
+app.post('/api/forgotPassword', generatePass, changePass, sendPass, sendMail)
 
 const conn = mongoose.connection
 
@@ -122,36 +129,7 @@ app.get('/api/download/:id', function (req, res) {
     });
 });
 
-app.post('/api/mail', (req, res) => {
-    const { to, subject, html } = req.body
-    let answer
-
-    const transporter = nodemailer.createTransport({
-        host: process.env.MAILHOST,
-        port: 465,
-        secureConnection: true, // use SSL        
-        auth: {
-            user: process.env.MAILUSER,
-            pass: process.env.MAILPASS
-        },
-    })
-
-    const mailOptions = {
-        from: 'anuencia.digital@agenciarmbh.mg.gov.br',
-        to: to,
-        subject: subject,
-        html: html
-    }
-
-    transporter.sendMail(mailOptions, function (err, res) {
-        if (err) {
-            console.log(err);
-        } else {
-            answer = res.status
-        }
-    })
-    res.json(answer)
-})
+app.post('/api/mail', sendMail)
 
 app.post('/api/fileUpload', upload.any(), (req, res) => {
     let filesArray = []
@@ -526,7 +504,7 @@ app.put('/api/editUser', (req, res) => {
     if (!bcrypt.compareSync(confirmPassword, passwordHash)) {
         return res.send('Senhas não conferem.')
     } else {
-        User.find({ '_id': user._id }).updateOne({ $set: user }).then(() => {            
+        User.find({ '_id': user._id }).updateOne({ $set: user }).then(() => {
             res.send('Ok')
         })
     }
