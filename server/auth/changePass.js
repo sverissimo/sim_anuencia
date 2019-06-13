@@ -20,14 +20,14 @@ const generatePass = (req, res, next) => {
 const changePass = async (req, res, next) => {
     const { recoveryMail, passwordHash } = req.body
 
-// Add a if (user not found)=>send message here to the frontEnd. Maybe try/catch
+    // Add a if (user not found)=>send message here to the frontEnd. Maybe try/catch
 
     await User.findOneAndUpdate(
         { 'email': recoveryMail },
         { $set: { password: passwordHash } },
         { new: true },
         ((err, user) => {
-            if (err) console.log(err)
+            if (err) console.log('err')
             req.body.user = user
         }))
 
@@ -35,16 +35,19 @@ const changePass = async (req, res, next) => {
 }
 
 const sendPass = (req, res, next) => {
-    const { user, password } = req.body,
-        { name, surName, email } = user,
-        to = email,
-        subject = 'Alteração de senha',
-        person = name + ' ' + surName,
-        html = changePassMsg(person, password)
+    if (!req.body.user) res.send('E-mail não cadastrado.')
+    else {
+        const { user, password } = req.body,
+            { name, surName, email } = user,
+            to = email,
+            subject = 'Alteração de senha',
+            person = name + ' ' + surName,
+            html = changePassMsg(person, password)
 
-    req.body = { ...req.body, to, subject, html }
+        req.body = { ...req.body, to, subject, html }
+        next()
+    }
 
-    next()
 }
 
 module.exports = { generatePass, changePass, sendPass }

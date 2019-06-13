@@ -27,7 +27,7 @@ class MyAccount extends Component {
         setTimeout(() => {
             let color = document.getElementById('setcolor').style.backgroundColor
             this.setState({ setColor: color })
-        }, 400)
+        }, 200)
     }
 
     handleChange(e) {
@@ -40,15 +40,16 @@ class MyAccount extends Component {
         let edUser
         const { password, confirmPassword, _id } = this.state
         const pass = { _id, password, confirmPassword }
-        
+
         if (password !== confirmPassword) alert('Senhas não conferem')
 
         else if (pass.password !== '') {
             //await this.setState({ municipio: formatMun(this.state.municipio), email: this.state.email.toLowerCase() })
             await axios.put('/api/editUser', pass)
                 .then(res => {
-                    edUser = res.data                                     
+                    edUser = res.data
                     reduxToastr('sucess', 'Senha alterada com sucesso', edUser)
+                    this.setState({ password: '', confirmPassword: '', })
                 })
                 .catch(err => console.log(err.message))
 

@@ -3,7 +3,12 @@ import React from 'react';
 const titleSubtitle = (props) => {
 
     let { title, subtitle, color } = props
-
+    const hype = (hy) => {
+        if (hy) return <a href={'mailto:' + hy}><span className='link'>
+            {hy}
+        </span></a>
+        else return null
+    }
     return (
         <div className="row col s12" >
             <div style={{
@@ -16,7 +21,7 @@ const titleSubtitle = (props) => {
                 subtitle ?
                     <div className="card-panel valign-wrapper" style={{
                         marginBottom: '10px',
-                        maxHeight: '10px',                                              
+                        maxHeight: '10px',
                         backgroundColor: color,
                         filter: 'brightness(200%)',
                         borderRadius: '10px 10px',
@@ -24,8 +29,8 @@ const titleSubtitle = (props) => {
                         fontWeight: 500,
                         fontFamily: 'Calibri'
                     }}>
-                        <span style={{color: 'black'}}>
-                            {subtitle}
+                        <span style={{ color: 'black' }}>
+                            {subtitle} {hype(props.hyperLink)}
                         </span>
                     </div>
                     :

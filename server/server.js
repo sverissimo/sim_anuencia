@@ -14,12 +14,12 @@ require('dotenv').config()
 const { auth } = require('./auth/auth');
 const { signup, login } = require('./auth/authService');
 const { generatePass, changePass, sendPass } = require('./auth/changePass');
-const { sendMail } = require('./sendMail');
+const { sendMail } = require('./sendMail')
 const { formatMun } = require('./config/formatMun')
 
-const { User } = require('./models/user');
-const { empreendedor } = require('./models/empModel');
-const { CadastroRt } = require('./models/rtModel');
+const { User } = require('./models/user')
+const { empreendedor } = require('./models/empModel')   
+const { CadastroRt } = require('./models/rtModel')
 const { processModel } = require('./models/processModel')
 const { filesModel } = require('./models/filesModel')
 const { tecModel } = require('./models/tecnicos')
@@ -38,9 +38,10 @@ app.use(function (req, res, next) { //allow cross origin requests
 
 app.use(bodyParser.json())
 app.use(cookieParser());
+app.use(express.static('client/build'))
+app.use(methodOverride('_method'))
 
 const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db');
-
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
@@ -48,12 +49,6 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
         console.log(err);
     }
 });
-
-
-app.use(express.static('client/build'))
-
-app.use(methodOverride('_method'))
-
 
 app.post('/api/login', login)
 app.post('/api/signup', signup)
@@ -72,9 +67,7 @@ app.get('/api/vUser', ((req, res) => {
 app.post('/api/forgotPassword', generatePass, changePass, sendPass, sendMail)
 
 const conn = mongoose.connection
-
 let gfs;
-
 conn.once('open', () => {
     // Init stream
     gfs = Grid(conn.db);

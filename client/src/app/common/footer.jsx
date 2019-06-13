@@ -10,7 +10,7 @@ const Footer = () => {
                 borderTop: '0.1px solid #999',
                 maxHeight: '20px'
             }}>
-            <span style={{ fontSize: '0.6rem' }}>
+            <span style={{ fontSize: '0.7rem' }}>
                 © 2019. Desenvolvido por Sandro Veríssimo - NATE / Agência de Desenvolvimento da RMBH.
             </span>
         </footer>

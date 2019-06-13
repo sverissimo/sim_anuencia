@@ -14,7 +14,7 @@ const MyaccountTemp = (props) => {
                             <label htmlFor={el.name}>{el.label}</label>
                             <input name={el.name}
                                 type="password"
-                                defaultValue={values[el.name]}
+                                value={values[el.name]}
                                 onChange={handleChange}
                             />
                         </div>

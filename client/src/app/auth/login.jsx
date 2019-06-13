@@ -87,8 +87,17 @@ class Login extends Component {
 
         const { recoveryMail } = this.state
         axios.post('/api/forgotPassword', { recoveryMail })
-            .then(res => console.log(res.data))
-        console.log('ok')
+            .then(res => {
+                if (res.data === 'E-mail não cadastrado.') reduxToastr('err', res.data, 'Erro')
+                else {
+                    reduxToastr('sucess', 'Uma nova senha foi enviada para o e-mail cadastrado', 'Senha alterada.')
+                setTimeout(() => {
+                    this.setState({registered: true, forgotPassword: false})
+                }, 3000);
+                }
+            })
+            .catch(err=> console.log(err))
+
         e.preventDefault()
     }
 

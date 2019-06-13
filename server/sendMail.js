@@ -2,8 +2,8 @@ const nodemailer = require('nodemailer')
 
 const sendMail = (req, res) => {
     const { to, subject, html } = req.body
-    let answer    
-
+    let answer
+    console.log(to, subject, html)
     const transporter = nodemailer.createTransport({
         host: process.env.MAILHOST,
         port: 465,

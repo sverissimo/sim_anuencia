@@ -16,6 +16,7 @@ import Anuencia from './app/anuencia/anuenciaContainer'
 import Users from './app/auth/users'
 import Admin from './app/admin/admin'
 import MyAccount from './app/auth/myAccount'
+import FaleConosco from './app/admin/faleConosco';
 
 const Routes = () => {
     const userRole = localStorage.getItem('role')
@@ -35,6 +36,7 @@ const Routes = () => {
             {userRole === 'admin' && <Route path='/users' exact component={Users} />}
             {userRole === 'admin' && <Route path='/admin' exact component={Admin} />}
             <Route path='/myAccount' exact component={MyAccount} />
+            <Route path='/faleConosco' exact component={FaleConosco} />
         </Switch>
     } else {
         logout()
