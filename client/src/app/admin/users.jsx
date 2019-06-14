@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getUsers } from './authActions'
+import { getUsers } from '../auth/authActions'
 import { reduxToastr, loadTecnicos } from '../cadastro/cadActions'
 
 import Title from '../common/titleSubtitle'

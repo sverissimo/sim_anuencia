@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Input, Icon, Button } from 'react-materialize'
 import { reduxToastr } from '../cadastro/cadActions'
 import TitleSubtitle from '../common/titleSubtitle'
+import formatFaleConosco from '../config/formatFaleConosco'
 
 class FaleConosco extends Component {
     state = {}
@@ -44,40 +45,36 @@ class FaleConosco extends Component {
             onChange: this.handleChange,
         }]
 
-        handleSubmit = async  e => {
-            let { color, person, email, mensagem, ...msg } = this.state
-            msg.html = `
-            De: ${person} <br />
-            E-mail: ${email} <br />
-            Mensagem:        <br />
-            ${mensagem}
-            `
-            msg.to = 'anuencia.digital@agenciarmbh.mg.gov.br'
-    
-            try {
-    
-                await axios.post('/api/mail', msg)
-                    .then(res => {
-                        console.log(res.data)
-                        this.setState({ mensagem: '', subject: '' })
-                    })
-                reduxToastr('sucess', 'Mensagem enviada', 'Obrigado por nos contatar!')
-                
-            } catch (e) {
-                console.log(e)
-                reduxToastr('err', 'Mensagem não entregue', 'Erro')
-            }
+    handleSubmit = async  e => {
+        let { color, person, email, mensagem, ...msg } = this.state
+        mensagem = mensagem.replace(/\r\n|\r|\n/g, "</br>")
+        msg.html = formatFaleConosco(person, email, msg.subject, mensagem)
+        msg.to = 'anuencia.digital@agenciarmbh.mg.gov.br'
+
+        try {
+
+            await axios.post('/api/mail', msg)
+                .then(res => {
+                    console.log(res.data)
+                    this.setState({ mensagem: '', subject: '' })
+                })
+            reduxToastr('sucess', 'Mensagem enviada', 'Obrigado por nos contatar!')
+
+        } catch (e) {
+            console.log(e)
+            reduxToastr('err', 'Mensagem não entregue', 'Erro')
         }
+    }
     render() {
 
         return (
-            <div style={{backgroundColor: 'rgb(250,250,250)', height:'80vh', paddingTop:'1%'}}>
+            <div style={{ backgroundColor: 'rgb(250,250,250)', height: '80vh', paddingTop: '1%' }}>
 
-                <div className='container z-depth-2' style={{ padding: '0.5% 3% 5% 3%', backgroundColor: '#fff'}}>
+                <div className='container z-depth-2' style={{ padding: '0.5% 3% 5% 3%', backgroundColor: '#fff' }}>
                     <TitleSubtitle
                         title='Fale Conosco'
                         subtitle='Dúvidas, críticas ou sugestões? Escreva-nos uma mensagem ou envie um e-mail para'
-                        hyperLink= 'anuencia.digital@agenciarmbh.mg.gov.br'
+                        hyperLink='anuencia.digital@agenciarmbh.mg.gov.br'
                         color={this.state.color}
                     />
                     <fieldset>
@@ -93,7 +90,7 @@ class FaleConosco extends Component {
                             onChange={this.handleChange}
                         ></textarea>
                     </fieldset>
-                    <div className="right" style={{padding:'1.5% 0 1% 0'}}>
+                    <div className="right" style={{ padding: '1.5% 0 1% 0' }}>
                         <Button type="submit" waves="purple" className="cyan" onClick={this.handleSubmit}>
                             Enviar <Icon right>send</Icon>
                         </Button>

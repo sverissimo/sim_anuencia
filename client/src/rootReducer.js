@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import CadReducer from './app/cadastro/CadReducer';
-import BuscaReducer from './app/buscar/BuscaReducers';
+import BuscaReducer from './app/buscar/buscaReducers';
 import { reducer as toastrReducer } from 'react-redux-toastr'
 import AuthReducer from './app/auth/authReducer';
 

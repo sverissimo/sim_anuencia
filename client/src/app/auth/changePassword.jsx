@@ -5,10 +5,10 @@ import { bindActionCreators } from 'redux'
 
 import { loadProcessData, reduxToastr } from '../cadastro/cadActions'
 
-import MyAccountTemp from './myAccountTemp'
+import ChangePasswordTemp from './changePasswordTemp'
 //import { formatMun } from '../config/formatMun'
 
-class MyAccount extends Component {
+class ChangePassword extends Component {
 
     state = {
         name: '',
@@ -88,7 +88,7 @@ class MyAccount extends Component {
                         </div>
                     </div>
                     <div className="card-panel">
-                        <MyAccountTemp
+                        <ChangePasswordTemp
                             values={this.state}
                             handleChange={this.handleChange.bind(this)}
                             handleSubmit={this.editUser.bind(this)}
@@ -109,4 +109,4 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({ loadProcessData, reduxToastr }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyAccount);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);

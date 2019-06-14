@@ -8,7 +8,7 @@ import Footer from './app/common/footer';
 import Messages from './app/common/messages'
 import Login from './app/auth/login'
 import Loading from './app/common/loading'
-import VerifyUser from './app/auth/verifyUser'
+import VerifyUser from './app/admin/verifyUser'
 
 const AuthOrApp = (props) => {
     let loading = props.render.loading

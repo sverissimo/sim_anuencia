@@ -1,8 +1,8 @@
 import React from 'react';
 
-let fields = [{ name: 'password', label: 'Alterar senha' }, { name: 'confirmPassword', label: 'Confirme a nova senha' }]
+let fields = [{ name: 'password', label: 'Nova senha' }, { name: 'confirmPassword', label: 'Confirme a nova senha' }]
 
-const MyaccountTemp = (props) => {
+const ChangePasswordTemp = (props) => {
     let { handleChange, handleSubmit, values } = props
 
     return (
@@ -32,4 +32,4 @@ const MyaccountTemp = (props) => {
     )
 }
 
-export default MyaccountTemp;
+export default ChangePasswordTemp;

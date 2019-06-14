@@ -68,7 +68,7 @@ class Header extends Component {
                                 }
                                 {userRole === 'admin' && <li><Link to="/users"><i className="material-icons left" title='Usuários'>group</i></Link></li>}
                                 {userRole === 'admin' && <li><Link to="/admin"><i className="material-icons left" title='Prefeituras'>account_balance</i></Link></li>}
-                                <li><Link to="/myAccount"><i className="material-icons left" title='Alterar senha'>vpn_key</i></Link></li>
+                                <li><Link to="/changePassword"><i className="material-icons left" title='Alterar senha'>vpn_key</i></Link></li>
                                 <li><Link to="/faleConosco"><i className="material-icons left" title='Fale conosco'>mail_outline</i></Link></li>
                                 <li><Link to="/"><i className="material-icons left" onClick={()=> logout()} title='Sair'>logout</i></Link></li>
                             </ul>

@@ -13,9 +13,9 @@ import diretriz from './app/diretrizes/diretriz'
 import SolicitaAnuencia from './app/solAnuencia/solicitaAnuencia'
 import EditData from './app/buscar/editData'
 import Anuencia from './app/anuencia/anuenciaContainer'
-import Users from './app/auth/users'
+import Users from './app/admin/users'
 import Admin from './app/admin/admin'
-import MyAccount from './app/auth/myAccount'
+import ChangePassword from './app/auth/changePassword'
 import FaleConosco from './app/admin/faleConosco';
 
 const Routes = () => {
@@ -35,7 +35,7 @@ const Routes = () => {
             {agencia && <Route path='/editData' component={EditData} />}
             {userRole === 'admin' && <Route path='/users' exact component={Users} />}
             {userRole === 'admin' && <Route path='/admin' exact component={Admin} />}
-            <Route path='/myAccount' exact component={MyAccount} />
+            <Route path='/changePassword' exact component={ChangePassword} />
             <Route path='/faleConosco' exact component={FaleConosco} />
         </Switch>
     } else {
