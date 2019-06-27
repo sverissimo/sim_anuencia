@@ -11,6 +11,7 @@ import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
 import { solDirConfig } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
+import Map from '../common/map'
 
 class solicitaDiretriz extends Component {
 
@@ -40,7 +41,8 @@ class solicitaDiretriz extends Component {
         showEmpDetails: false,
         showRtDetails: false,
         empId: '',
-        rtId: ''
+        rtId: '',
+        map: false
     }
 
     componentDidMount() {
@@ -136,7 +138,7 @@ class solicitaDiretriz extends Component {
             reentrada = [],
             countFiles = 0
 
-        if (form) for (let pair of form.entries()) {            
+        if (form) for (let pair of form.entries()) {
             if (pair[1] && pair[1] !== 'undefined') {
                 countFiles = countFiles + 1
             }
@@ -175,7 +177,7 @@ class solicitaDiretriz extends Component {
                 await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Diretrizes Metropolitanas solicitadas.')
                 await this.clearSearch()
                 await this.closeDetails()
-                await this.setState({ form: null})
+                await this.setState({ form: null })
                 this.props.loadProcessData() && this.props.loadFilesData()
 
             } catch (err) {
@@ -197,9 +199,13 @@ class solicitaDiretriz extends Component {
         this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
     }
 
+    showMap = () => {
+        this.setState({ map: !this.state.map })
+    }
+
     render() {
 
-        let { dataMatch } = this.state
+        let { dataMatch, selectedId, map } = this.state
         const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Processo cadastrado')
 
         let input = this.state.searchValue.toLowerCase()
@@ -232,11 +238,16 @@ class solicitaDiretriz extends Component {
                                     object={item}
                                     key={i}
                                     upload={this.fileUpload.bind(this)}
+                                    showMap={this.showMap}
                                 />
                             )
                         })
                     }
                 </SolicitaDiretrizTemplate>
+                {map && <Map map={this.state.map}
+                    close={this.showMap}
+                    processId = {selectedId}
+                    />}
 
                 <ShowDetails
                     empId={this.state.empId}

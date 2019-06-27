@@ -1,4 +1,5 @@
 node_modules/
 ecosystem.config.js
 .env
-#client/package.json
+client/src/clientEnv.js
+mrestore.ps1

@@ -27,7 +27,7 @@ const ShowEmpRow = (props) => {
     } else if ((process && process[0]) && data.edit === false) {
         searchMatch = process
         selectedFields = fields
-        headerLabels = configLabels
+        headerLabels = configLabels        
     }
 
     //****************** HEADER *********************

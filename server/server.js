@@ -41,7 +41,7 @@ app.use(cookieParser());
 app.use(express.static('client/build'))
 app.use(methodOverride('_method'))
 
-const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db');
+const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/aws');
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
@@ -121,6 +121,41 @@ app.get('/api/download/:id', function (req, res) {
         }
     });
 });
+
+app.get('/api/kml/:id', function (req, res) {
+
+    const fileId = new mongoose.mongo.ObjectId(req.params.id)
+    gfs.files.findOne({ _id: fileId }, function (err, file) {
+
+        if (!file) {
+            return res.status(404).json({
+                responseCode: 1,
+                responseMessage: "error"
+            });
+        } else {
+            //return res.json(file)
+            const readstream = gfs.createReadStream({
+                filename: file.filename,
+                root: "uploads"
+            });
+            // set the proper content type
+            res.set({
+                'Content-Type': file.contentType,
+                'Content-Disposition': 'attachment',
+            });
+
+            // Return response
+            
+            return readstream.pipe(res)
+        }
+    });
+});
+
+app.post('/api/kmlParse', (req, res)=> {
+    console.log(req.body.kml)
+    res.send(req.body.kml)
+
+})
 
 app.post('/api/mail', sendMail)
 

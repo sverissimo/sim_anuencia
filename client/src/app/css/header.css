@@ -1,6 +1,14 @@
+#map {
+    position: fixed;    
+    width: 100%;
+    height: 97%;            
+    border-radius: 15px;
+    background-color: #fbfbfb;                
+    
+}
+
 li {
 position: relative;
-
 }
 
 h5 {

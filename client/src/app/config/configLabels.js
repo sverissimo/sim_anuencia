@@ -98,7 +98,9 @@ export const solDirConfig = [
     },
     {
         label: 'Delimitação da área do empreendimento (em formato kml)',
-        nameInput: 'kml'
+        nameInput: 'kml',
+        map: true,
+        tooltip: 'Clique para delimitar a área do empreendimento no mapa',
     },
     {
         label: 'Levantamento Planialtimétrico (em formato DWG)',

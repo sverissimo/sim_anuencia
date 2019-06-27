@@ -258,7 +258,7 @@ class ShowEmpContainer extends Component {
         } else if ((!search || search.length <= 2) && select === 'process') {
             archievedProcess = processCollection.filter(proc => proc.status === 'Processo Anuído' || proc.status === 'Processo Arquivado')
             if (archieved === true) process = archievedProcess
-            else process = processCollection.filter(p => p.status !== 'Processo Arquivado').filter(p => p.status !== 'Processo Anuído').slice(0, 30)
+            else process = processCollection.filter(p => p.status !== 'Processo Arquivado').filter(p => p.status !== 'Processo Anuído').slice(0, 50)
 
             process.sort(function (a, b) {
                 let ca = new Date(a.updatedAt)
@@ -275,6 +275,7 @@ class ShowEmpContainer extends Component {
                 }
             })
         }
+        console.log(process)
         return (
             <div className="container" style={{ width: '90%' }} >
                 <BuscaTemplate
