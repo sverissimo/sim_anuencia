@@ -13,13 +13,14 @@ class Map extends Component {
     //console.log(features[0].geometry.coordinates[0].map(point => ({ lat: point[1], lng: point[0] })));
     //console.log(mun_rmbh.features)
     //{ map, close } = this.props
+    state = { kml: '' }
 
     componentDidMount() {
         this.renderMap()
     }
 
     renderMap = () => {
-        loadScript(`https://maps.googleapis.com/maps/api/js?key=AIzaSyD1DrDBUd6GNL2EIBCxK-K0OjkTny8kbuA&callback=initMap`)
+        loadScript(GMapsApiKey)
         window.initMap = this.initMap
     }
 
@@ -32,56 +33,57 @@ class Map extends Component {
                 mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain']
             }
         })
+        const coords = this.props.polygon
+        //JSON.parse(coords)
+        console.log(Array.isArray(coords))
+        console.log(typeof coords)
+        let coordinates = []
+       // coords.map(p => coordinates.push({ lat: p[1], long: p[0] }))
 
-
-
-        const kmlLayer = new window.google.maps.KmlLayer(this.parseKml('5cf8030a7e08652780d6b9aa'), {
-            suppressInfoWindows: true,
-            preserveViewport: false,
-            map: map
-        })
-
-    }
-
-    parseKml = (id) => {
-        axios({
-            url: `/api/download/${id}`,
-            method: 'GET',
-            responseType: 'blob', // important
-        }).then(response => {
-
-            /*    const reader = new FileReader
-               reader.onloadend = afterRead;
-               reader.readAsDataURL(response.data);               // Use this function instead        
-               function afterRead() {
-                   const x = reader.result;    //result is already a base64 string!
-                   console.log(x)
-               } */
-
-            /*  const url = URL.createObjectURL(new Blob([response.data], { type: 'kml' }));
-             return url */
-            const blb = new Blob(['cgtTst'], { type: 'kml' })
-
-            //let kmlFile
+        console.log(coordinates)
+        /* .then(async response => {                    
+            
             const reader = new FileReader();
-            reader.addEventListener('loadend', e => {
-                axios.post('/api/kmlParse', { kml: e.srcElement.result })
-                    .then(res => console.log(res.data))
-                //console.log(kmlFile)
-
-            })
             reader.readAsText(response.data)
-
-
-
-
-
-
+            let r2 = await reader.addEventListener('loadend', e => r2 = e.srcElement.result)
+            console.log(r2)
         })
-            .catch(err => {
-                console.log(err)
-            })
+        .then(r => {
+
+            axios.post('/api/run', { kml: r })
+                .then(res => {
+
+                    return res.data
+                })
+        }
+        )
+        .catch(err => {
+            console.log(err)
+        })
+*/
+        /* 
+        
+                    list.forEach(p => {
+                        coords.push({ lat: p[1], long: p[0] })
+                    });
+                    return [] */
+
+
+        //console.log(parseCoords('5d1e4aa7d3473720847685ed'))
+
+
+
+        //5d1e4aa7d3473720847685ed
+        //5cfa47db2f1b100c34d6c547
+        /*  const kmlLayer = new window.google.maps.KmlLayer(this.parseKml("5d1e4aa7d3473720847685ed"), {
+             suppressInfoWindows: true,
+             preserveViewport: false,
+             map: map
+         })
+    */
     }
+
+
 
     render() {
 
@@ -91,6 +93,7 @@ class Map extends Component {
                 <div id='map'></div>
             </div>
         )
+
     }
 }
 

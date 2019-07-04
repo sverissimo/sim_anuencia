@@ -84,6 +84,24 @@ class solicitaDiretriz extends Component {
             checked: e.currentTarget.id
         })
         document.getElementById(this.state.checked).checked = 'checked';
+
+        axios({
+            url: `/api/download/5d1e4aa7d3473720847685ed`,
+            method: 'GET',
+            responseType: 'blob', // important
+        })
+            .then(async res => {
+                const reader = new FileReader();
+                reader.readAsText(res.data)
+                reader.addEventListener('loadend', async e => {
+                    axios.post('/api/run', { kml: e.srcElement.result })
+                        .then(res => {
+                            this.setState({ ...this.state, polygon: res.data })
+                        })
+
+                })
+            })
+            .catch(err => console.log(err))           
     }
 
     async fileUpload(e) {
@@ -202,6 +220,10 @@ class solicitaDiretriz extends Component {
     showMap = () => {
         this.setState({ map: !this.state.map })
     }
+    
+    loadKml = () => {
+        
+    }
 
     render() {
 
@@ -246,8 +268,9 @@ class solicitaDiretriz extends Component {
                 </SolicitaDiretrizTemplate>
                 {map && <Map map={this.state.map}
                     close={this.showMap}
-                    processId = {selectedId}
-                    />}
+                    processId={selectedId}
+                    polygon={this.state.polygon}
+                />}
 
                 <ShowDetails
                     empId={this.state.empId}

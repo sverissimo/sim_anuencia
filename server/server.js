@@ -10,21 +10,24 @@ const path = require('path');
 const methodOverride = require('method-override')
 const bcrypt = require('bcrypt-nodejs');
 require('dotenv').config()
+const cp = require('child_process')
+const { spawn } = require('child_process')
+const fs = require('fs')
 
 const { auth } = require('./auth/auth');
 const { signup, login } = require('./auth/authService');
 const { generatePass, changePass, sendPass } = require('./auth/changePass');
 const { sendMail } = require('./sendMail')
 const { formatMun } = require('./config/formatMun')
+const { pyParseKml } = require('./pyParse')
 
 const { User } = require('./models/user')
-const { empreendedor } = require('./models/empModel')   
+const { empreendedor } = require('./models/empModel')
 const { CadastroRt } = require('./models/rtModel')
 const { processModel } = require('./models/processModel')
 const { filesModel } = require('./models/filesModel')
 const { tecModel } = require('./models/tecnicos')
 const { prefModel } = require('./models/prefeituras')
-
 
 const app = express()
 
@@ -41,7 +44,7 @@ app.use(cookieParser());
 app.use(express.static('client/build'))
 app.use(methodOverride('_method'))
 
-const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/aws');
+const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db');
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
@@ -49,6 +52,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
         console.log(err);
     }
 });
+
 
 app.post('/api/login', login)
 app.post('/api/signup', signup)
@@ -63,6 +67,8 @@ app.get('/api/vUser', ((req, res) => {
             res.sendFile(path.resolve(__dirname, '../client', 'public', 'userConfirmed.html'))
         }))
 }))
+
+
 
 app.post('/api/forgotPassword', generatePass, changePass, sendPass, sendMail)
 
@@ -93,6 +99,8 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 app.use(auth)
+
+app.post('/api/run', pyParseKml)
 
 app.get('/api/download/:id', function (req, res) {
 
@@ -145,15 +153,48 @@ app.get('/api/kml/:id', function (req, res) {
             });
 
             // Return response
-            
+
             return readstream.pipe(res)
         }
     });
 });
 
-app.post('/api/kmlParse', (req, res)=> {
-    console.log(req.body.kml)
-    res.send(req.body.kml)
+app.post('/api/kmlParse', (req, res) => {
+
+    //const { kml } = req.body
+    var nwDir = path.dirname('C:\\Users\\m1107819\\AppData\\Local\\Programs\\Python\\Python37-32');
+    const child = cp.spawn(nwDir + '\\python.exe', ['print_name.py'])
+
+    child.stdout.on('data', d => {
+        //console.log(d.toString())
+        res.send('ok'.d.toString())
+    })
+    /* await child.on('exit', function (code) {
+        console.log('Exit code: ' + code)
+    }) */
+
+
+    //res.send(stdout.toString())
+    /*  var stream = require('stream')
+      
+      kml.pipe(child.stdin)
+      var tst = new stream.Readable()
+   
+       tst.push('hi there')
+           .push(null)
+           .pipe(child.stdin)
+    
+     */
+    //cp.stdout.on('data', data => console.log(data))
+
+    //process.stdin.pipe(child.stdin)
+
+    /* child.on('exit', function () {
+        process.exit()
+
+    }) */
+
+    //res.send(kml)
 
 })
 
