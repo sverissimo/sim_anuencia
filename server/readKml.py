@@ -1,22 +1,26 @@
 import sys
+import json
 
 a = sys.stdin
-#print(a)
+# print(a)
 # print(a.readlines())
+coordinates = []
 for line in a:
     count = line.find('<coordinates>')
     if (count >= 0):
         b = a.readline()
-        c=b.split()
+        c = b.split()
         points = []
         polygon = []
         for coords in c:
-                points = coords.split(',')                                                
-                points.pop()
-                polygon.append(points)                
-                points = []
-        print (polygon)
-        
+            points = coords.split(',')
+            points.pop()
+            polygon.append(points)
+            points = []
+        for p in polygon:
+            coordinates.append({'lat': float(p[1]), 'lng': float(p[0])})
+        jCoords = json.dumps(coordinates)
+        print(jCoords)
 
 
 """ with open(sys.stdin) as f:

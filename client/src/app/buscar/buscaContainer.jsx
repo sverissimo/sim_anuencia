@@ -275,7 +275,7 @@ class ShowEmpContainer extends Component {
                 }
             })
         }
-        console.log(process)
+        
         return (
             <div className="container" style={{ width: '90%' }} >
                 <BuscaTemplate

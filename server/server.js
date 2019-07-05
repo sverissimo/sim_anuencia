@@ -39,12 +39,15 @@ app.use(function (req, res, next) { //allow cross origin requests
     next();
 })
 
-app.use(bodyParser.json())
+//app.use(bodyParser.json())
+
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 app.use(cookieParser());
 app.use(express.static('client/build'))
 app.use(methodOverride('_method'))
 
-const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db');
+const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db')
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {

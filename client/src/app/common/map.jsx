@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import { soloStyle } from '../config/soloStyle'
 import { CloseWindow } from '../common/buttons'
 import GMapsApiKey from '../../clientEnv.js'
-import { gjs } from './precon.js'
-
 
 class Map extends Component {
 
-    features = [];
-    features = gjs.features;
-    //console.log(features[0].geometry.coordinates[0].map(point => ({ lat: point[1], lng: point[0] })));
-    //console.log(mun_rmbh.features)
-    //{ map, close } = this.props
     state = { kml: '' }
 
     componentDidMount() {
         this.renderMap()
+    }
+
+    componentWillUnmount() {
+        const mp = window.document.getElementById('map')
+        mp.parentElement.removeChild(mp)
+        const mps = window.document.getElementById('mapScript')
+        mps.parentElement.removeChild(mps)
+        window.google = {}        
     }
 
     renderMap = () => {
@@ -33,57 +33,34 @@ class Map extends Component {
                 mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain']
             }
         })
-        const coords = this.props.polygon
-        //JSON.parse(coords)
-        console.log(Array.isArray(coords))
-        console.log(typeof coords)
-        let coordinates = []
-       // coords.map(p => coordinates.push({ lat: p[1], long: p[0] }))
+        const { polygon } = this.props
 
-        console.log(coordinates)
-        /* .then(async response => {                    
-            
-            const reader = new FileReader();
-            reader.readAsText(response.data)
-            let r2 = await reader.addEventListener('loadend', e => r2 = e.srcElement.result)
-            console.log(r2)
-        })
-        .then(r => {
-
-            axios.post('/api/run', { kml: r })
-                .then(res => {
-
-                    return res.data
-                })
-        }
-        )
-        .catch(err => {
-            console.log(err)
-        })
-*/
-        /* 
-        
-                    list.forEach(p => {
-                        coords.push({ lat: p[1], long: p[0] })
-                    });
-                    return [] */
-
-
-        //console.log(parseCoords('5d1e4aa7d3473720847685ed'))
-
-
-
-        //5d1e4aa7d3473720847685ed
-        //5cfa47db2f1b100c34d6c547
-        /*  const kmlLayer = new window.google.maps.KmlLayer(this.parseKml("5d1e4aa7d3473720847685ed"), {
-             suppressInfoWindows: true,
-             preserveViewport: false,
-             map: map
-         })
-    */
+        // Construct the polygon.
+        var bermudaTriangle = new window.google.maps.Polygon({
+            paths: polygon,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35
+        });
+        bermudaTriangle.setMap(map);
     }
 
 
+    //console.log(parseCoords('5d1e4aa7d3473720847685ed'))
+    //5d1e4aa7d3473720847685ed
+    //5cfa47db2f1b100c34d6c547
+    /*
+    features = [];
+    features = gjs.features;   
+    limBH -> "5d1facb97b66702b945be1b6"
+    const kmlLayer = new window.google.maps.KmlLayer(this.parseKml("5d1e4aa7d3473720847685ed"), {
+         suppressInfoWindows: true,
+         preserveViewport: false,
+         map: map
+     })
+*/
 
     render() {
 
@@ -98,20 +75,19 @@ class Map extends Component {
 }
 
 function loadScript(url) {
-
     var script = window.document.createElement("script")
     var index = window.document.getElementsByTagName("script")[0]
     script.async = true
     script.defer = true
     script.src = url
+    script.id = 'mapScript'
     index.parentNode.insertBefore(script, index)
 }
-
 
 export default Map
 
 
-{/* <GoogleMap
+/* <GoogleMap
 id='gmap'
 zoom={10}
 center={{ lat: -19.917299, lng: -43.934559 }}
@@ -141,4 +117,4 @@ mapTypeId='hybrid'
 />
 
 </GoogleMap>
- */}
+ */

@@ -18,9 +18,10 @@ class solicitaDiretriz extends Component {
     constructor() {
         super()
         this.escFunction = (event) => {
-            const { selectedId, showEmpDetails, showRtDetails } = this.state
+            const { selectedId, showEmpDetails, showRtDetails, map } = this.state
             if (event.keyCode === 27) {
-                if (showEmpDetails || showRtDetails) this.closeDetails();
+                if (map) this.showMap()
+                else if (showEmpDetails || showRtDetails) this.closeDetails();
                 else if (selectedId) this.clearSearch()
             }
         }
@@ -84,9 +85,13 @@ class solicitaDiretriz extends Component {
             checked: e.currentTarget.id
         })
         document.getElementById(this.state.checked).checked = 'checked';
+        //5d1e4aa7d3473720847685ed
+        //5d1facb97b66702b945be1b6
+
+
 
         axios({
-            url: `/api/download/5d1e4aa7d3473720847685ed`,
+            url: `/api/download/5d1facb97b66702b945be1b6`,
             method: 'GET',
             responseType: 'blob', // important
         })
@@ -101,7 +106,7 @@ class solicitaDiretriz extends Component {
 
                 })
             })
-            .catch(err => console.log(err))           
+            .catch(err => console.log(err))
     }
 
     async fileUpload(e) {
@@ -220,9 +225,9 @@ class solicitaDiretriz extends Component {
     showMap = () => {
         this.setState({ map: !this.state.map })
     }
-    
+
     loadKml = () => {
-        
+
     }
 
     render() {
