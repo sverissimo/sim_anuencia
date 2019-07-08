@@ -1,13 +1,14 @@
 import React from 'react';
 import { configLabels, configEmpLabels, configRtLabels } from '../config/configLabels';
-import { ArchieveButton, DeleteButton, EditButton, InfoButton } from './../common/buttons'
+import { ArchieveButton, DeleteButton, EditButton, InfoButton, MapButton } from './../common/buttons'
 import './../css/styles.css';
+import Map from '../common/map';
 
 const ShowEmpRow = (props) => {
 
     let { redux, emps, rts, process, empFields, rtFields, showRt, edit, deleteOne, data, fields,
-        divConfig, color, empDetails, rtDetails, showInfo, clearLog, archieve } = props
-
+        divConfig, color, empDetails, rtDetails, showInfo, clearLog, archieve, showMap, kml, map } = props
+    
     const userRole = localStorage.getItem('role')
 
     let searchMatch = []
@@ -27,7 +28,7 @@ const ShowEmpRow = (props) => {
     } else if ((process && process[0]) && data.edit === false) {
         searchMatch = process
         selectedFields = fields
-        headerLabels = configLabels        
+        headerLabels = configLabels
     }
 
     //****************** HEADER *********************
@@ -109,7 +110,7 @@ const ShowEmpRow = (props) => {
                         selectedFields && selectedFields.length > 0 ? selectedFields.map(i => i2.push(
                             itemArray.filter(el => el.key === i)[0]
                         )) : void 0
-
+                        
                         return (
                             <div className="row" key={k} style={{ borderBottom: '1px dotted #bbb', paddingBottom: '1%' }}>
                                 {
@@ -126,6 +127,11 @@ const ShowEmpRow = (props) => {
                                             : void 0
                                     )
                                 }
+                                {map && <Map close={this.showMap}
+                                    processId={item._id}
+                                    polygon=''
+                                />}
+
                                 {
                                     (data.select === 'process' && (empName && empName.values)) ?
 
@@ -154,10 +160,13 @@ const ShowEmpRow = (props) => {
                                                 verticalAlign: 'middle',
                                                 paddingLeft: `${userRole !== 'admin' && '3%'}`
                                             }}>
+
                                             <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
                                             <EditButton edit={edit} id={item._id} userRole={userRole} />
                                             <ArchieveButton archieve={archieve} id={item._id} userRole={userRole} archieved={data.archieved} />
+                                            {kml && <MapButton id={item._id} showMap={showMap} />}
                                             <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} />
+
                                         </div>
                                         :
                                         <div className="col s2 right"

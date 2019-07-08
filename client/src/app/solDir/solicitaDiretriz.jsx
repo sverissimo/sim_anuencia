@@ -11,7 +11,7 @@ import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
 import { solDirConfig } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
-import Map from '../common/map'
+import MapWrapper from '../functions/mapWrapper'
 
 class solicitaDiretriz extends Component {
 
@@ -85,28 +85,11 @@ class solicitaDiretriz extends Component {
             checked: e.currentTarget.id
         })
         document.getElementById(this.state.checked).checked = 'checked';
+        
+        const selectedProcess = this.props.redux.processCollection.filter(e => e._id === this.state.checked)[0]
+        this.setState({ selectedProcess })     
         //5d1e4aa7d3473720847685ed
         //5d1facb97b66702b945be1b6
-
-
-
-        axios({
-            url: `/api/download/5d1facb97b66702b945be1b6`,
-            method: 'GET',
-            responseType: 'blob', // important
-        })
-            .then(async res => {
-                const reader = new FileReader();
-                reader.readAsText(res.data)
-                reader.addEventListener('loadend', async e => {
-                    axios.post('/api/run', { kml: e.srcElement.result })
-                        .then(res => {
-                            this.setState({ ...this.state, polygon: res.data })
-                        })
-
-                })
-            })
-            .catch(err => console.log(err))
     }
 
     async fileUpload(e) {
@@ -226,10 +209,6 @@ class solicitaDiretriz extends Component {
         this.setState({ map: !this.state.map })
     }
 
-    loadKml = () => {
-
-    }
-
     render() {
 
         let { dataMatch, selectedId, map } = this.state
@@ -271,10 +250,9 @@ class solicitaDiretriz extends Component {
                         })
                     }
                 </SolicitaDiretrizTemplate>
-                {map && <Map map={this.state.map}
+                {map && <MapWrapper
+                    selectedProcess={this.state.selectedProcess}                   
                     close={this.showMap}
-                    processId={selectedId}
-                    polygon={this.state.polygon}
                 />}
 
                 <ShowDetails

@@ -41,8 +41,8 @@ app.use(function (req, res, next) { //allow cross origin requests
 
 //app.use(bodyParser.json())
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 app.use(cookieParser());
 app.use(express.static('client/build'))
 app.use(methodOverride('_method'))
@@ -52,7 +52,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
     if (err) {
-        console.log(err);
+        console.log(err)
     }
 });
 
@@ -82,7 +82,7 @@ conn.once('open', () => {
     gfs = Grid(conn.db);
     gfs.collection('uploads');
 })
-
+//module.exports = { gfs, mongoose }
 const storage = new GridFsStorage({
 
     url: mongoURI,

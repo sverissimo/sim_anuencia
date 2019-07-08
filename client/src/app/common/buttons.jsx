@@ -36,7 +36,7 @@ export const DeleteButton = (props) => {
         return (
             <div>
                 <i className="material-icons"
-                    style={{ fontSize: '24px', color: 'red', cursor: 'pointer' }}
+                    style={{ fontSize: '20px', color: 'red', cursor: 'pointer' }}
                     title='Apagar'
                     onClick={() => props.delete(props.id)}
                 >
@@ -53,7 +53,7 @@ export const EditButton = (props) => {
         return (
             <div>
                 <i className="material-icons"
-                    style={{ fontSize: '24px', color: 'teal', cursor: 'pointer' }}
+                    style={{ fontSize: '20px', color: 'teal', cursor: 'pointer' }}
                     title='Editar'
                     onClick={() => props.edit(props.id)}
                 >edit</i>
@@ -86,22 +86,18 @@ export const CloseWindow = props => (
 
 export const InfoButton = props => {
     const { showInfo, id } = props
-
     return (
         <div>
             <i className="material-icons"
                 id={id}
                 onClick={showInfo}
-                style={{ fontSize: '24px', color: '#1D90EE', cursor: 'pointer' }}
+                style={{ fontSize: '20px', color: '#1D90EE', cursor: 'pointer' }}
                 title='Informações'
             >
                 info
             </i>
         </div>
     )
-
-
-
 }
 
 export const ArchieveButton = (props) => {
@@ -111,13 +107,24 @@ export const ArchieveButton = (props) => {
         return (
             <div>
                 <i className="material-icons"
-                    style={{ fontSize: '24px', color: archieved ? 'blue' : 'darkorange', cursor: 'pointer' }}
+                    style={{ fontSize: '20px', color: archieved ? 'blue' : 'darkorange', cursor: 'pointer' }}
                     title={archieved ? 'Desarquivar' : 'Arquivar'}
                     onClick={() => archieve(id, archieved)}
                 >
                     {archieved ? 'unarchive' : 'archive'}
-            </i>
+                </i>
             </div>
         )
     } else return <span></span>
 }
+
+
+export const MapButton = () => (
+    <div>
+        <i className="material-icons"
+            style={{ fontSize: '20px', color: 'brown', cursor: 'pointer' }}
+            title='Ver no mapa'>
+            map
+        </i>
+    </div>
+)

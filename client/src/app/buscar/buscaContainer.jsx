@@ -11,6 +11,7 @@ import EditData from './editData';
 import BuscaTemplate from './buscaTemplate';
 import BuscaRow from './buscaRow';
 import ProcessInfo from '../common/processInfo';
+import MapWrapper from '../functions/mapWrapper';
 
 class ShowEmpContainer extends Component {
 
@@ -42,7 +43,9 @@ class ShowEmpContainer extends Component {
         process: '',
         logIndex: '',
         logDetails: false,
-        archieved: false
+        archieved: false,
+        kml: true,
+        map: false
     }
 
     componentDidMount() {
@@ -224,13 +227,17 @@ class ShowEmpContainer extends Component {
 
     }
 
+    showMap = () => {
+        this.setState({ map: !this.state.map })
+    }
+
     render() {
 
         let emps = []
         let rts = []
         let process = []
         let archievedProcess = []
-        let { search, select, archieved } = this.state
+        let { search, select, archieved, kml, map } = this.state
         let searchString = search.trim().toLowerCase();
         const { empCollection, rtCollection, processCollection } = this.props.cadastro
 
@@ -275,7 +282,7 @@ class ShowEmpContainer extends Component {
                 }
             })
         }
-        
+
         return (
             <div className="container" style={{ width: '90%' }} >
                 <BuscaTemplate
@@ -323,7 +330,15 @@ class ShowEmpContainer extends Component {
                         showInfo={this.showInfo.bind(this)}
                         clearLog={this.clearLog.bind(this)}
                         archieve={this.archieve.bind(this)}
+                        kml={kml}
+                        showMap={this.showMap}
+                        map={this.state.map}
                     />
+                    {map && <MapWrapper 
+                        close={this.showMap}
+                        processId=''
+                        polygon=''
+                    />}
 
                     <EditData
                         redux={this.props.cadastro}
