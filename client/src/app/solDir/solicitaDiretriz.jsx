@@ -211,7 +211,7 @@ class solicitaDiretriz extends Component {
 
     render() {
 
-        let { dataMatch, selectedId, map } = this.state
+        let { dataMatch, map } = this.state
         const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Processo cadastrado')
 
         let input = this.state.searchValue.toLowerCase()

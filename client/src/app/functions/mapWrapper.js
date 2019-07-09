@@ -23,6 +23,7 @@ class MapWrapper extends Component {
                 reader.addEventListener('loadend', async e => {
                     axios.post('/api/run', { kml: e.srcElement.result })
                         .then(res => {
+                            console.log(res.data)
                             this.setState({ ...this.state, polygon: res.data })
                         })
                 })
@@ -33,12 +34,15 @@ class MapWrapper extends Component {
     render() {
         const { polygon } = this.state
         const { close } = this.props
+        console.log(typeof(polygon))
         return (
-            polygon ? <Map
+            polygon && (typeof(polygon) === 'object') ? <Map
                 polygon={polygon}
                 close={close}
-            /> : <span />
+            />
+                : <span />
         )
     }
 }
 export default MapWrapper
+

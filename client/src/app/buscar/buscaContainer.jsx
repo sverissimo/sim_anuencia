@@ -20,6 +20,7 @@ class ShowEmpContainer extends Component {
         this.escFunction = (e) => {
             if (e.keyCode === 27) {
                 if (this.state.logDetails) this.clearLog()
+                if (this.state.map) this.showMap()
                 else if (this.state.showInfo) this.hideLog()
                 else if (this.state.showEmpDetails || this.state.showRtDetails) this.closeDetails()
             }
@@ -227,17 +228,20 @@ class ShowEmpContainer extends Component {
 
     }
 
-    showMap = () => {
+    showMap = async id => {
+        const { processCollection } = this.props.cadastro
+        const selectedProcess = processCollection.filter(e => e._id === id)[0]
+        await this.setState({ selectedProcess })
         this.setState({ map: !this.state.map })
     }
 
     render() {
-
+console.log(this.state.map)
         let emps = []
         let rts = []
         let process = []
         let archievedProcess = []
-        let { search, select, archieved, kml, map } = this.state
+        let { search, select, archieved, selectedProcess, kml, map } = this.state
         let searchString = search.trim().toLowerCase();
         const { empCollection, rtCollection, processCollection } = this.props.cadastro
 
@@ -334,9 +338,9 @@ class ShowEmpContainer extends Component {
                         showMap={this.showMap}
                         map={this.state.map}
                     />
-                    {map && <MapWrapper 
+                    {map && <MapWrapper
                         close={this.showMap}
-                        processId=''
+                        selectedProcess={selectedProcess}
                         polygon=''
                     />}
 

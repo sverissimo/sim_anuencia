@@ -2,12 +2,11 @@ import React from 'react';
 import { configLabels, configEmpLabels, configRtLabels } from '../config/configLabels';
 import { ArchieveButton, DeleteButton, EditButton, InfoButton, MapButton } from './../common/buttons'
 import './../css/styles.css';
-import Map from '../common/map';
 
 const ShowEmpRow = (props) => {
 
     let { redux, emps, rts, process, empFields, rtFields, showRt, edit, deleteOne, data, fields,
-        divConfig, color, empDetails, rtDetails, showInfo, clearLog, archieve, showMap, kml, map } = props
+        divConfig, color, empDetails, rtDetails, showInfo, clearLog, archieve, showMap, kml } = props
     
     const userRole = localStorage.getItem('role')
 
@@ -126,11 +125,7 @@ const ShowEmpRow = (props) => {
                                                 </div>
                                             : void 0
                                     )
-                                }
-                                {map && <Map close={this.showMap}
-                                    processId={item._id}
-                                    polygon=''
-                                />}
+                                }                              
 
                                 {
                                     (data.select === 'process' && (empName && empName.values)) ?
