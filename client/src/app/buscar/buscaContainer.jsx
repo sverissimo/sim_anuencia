@@ -44,8 +44,7 @@ class ShowEmpContainer extends Component {
         process: '',
         logIndex: '',
         logDetails: false,
-        archieved: false,
-        kml: true,
+        archieved: false,        
         map: false
     }
 
@@ -236,7 +235,7 @@ class ShowEmpContainer extends Component {
     }
 
     render() {
-console.log(this.state.map)
+
         let emps = []
         let rts = []
         let process = []
@@ -340,8 +339,7 @@ console.log(this.state.map)
                     />
                     {map && <MapWrapper
                         close={this.showMap}
-                        selectedProcess={selectedProcess}
-                        polygon=''
+                        selectedProcess={selectedProcess}                        
                     />}
 
                     <EditData

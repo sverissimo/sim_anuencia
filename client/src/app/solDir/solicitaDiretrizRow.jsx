@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip'
 
 const solicitaDiretrizRow = (props) => {
-    const { tooltip, tt, link, map  } = props.object
+    const { tooltip, tt, link  } = props.object
     const click = (link) => {
         if (link) {
             window.open('http://www.agenciarmbh.mg.gov.br/anuencia-previa-2/#1544200696367-a39f6fa0-7d0c', '_blank')
@@ -21,10 +21,10 @@ const solicitaDiretrizRow = (props) => {
                 className="material-icons"
                 onClick={() => click(link)}
                 data-tip={tooltip}> help_outline </i>}
-            {map && <i style={{ marginLeft: "9px", color: "orange", fontSize: "1.2rem", cursor: "pointer" }}
+            {/* map && <i style={{ marginLeft: "9px", color: "orange", fontSize: "1.2rem", cursor: "pointer" }}
                 className="material-icons"
                 onClick={props.showMap}
-                data-tip={tooltip}> map_outline </i>}
+                data-tip={tooltip}> map_outline </i> */}
            
             <ReactTooltip />
             <div className="row file-field input-field" key={props.object.nameInput}>

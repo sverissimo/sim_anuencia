@@ -11,7 +11,6 @@ import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
 import { solDirConfig } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
-import MapWrapper from '../functions/mapWrapper'
 
 class solicitaDiretriz extends Component {
 
@@ -85,9 +84,9 @@ class solicitaDiretriz extends Component {
             checked: e.currentTarget.id
         })
         document.getElementById(this.state.checked).checked = 'checked';
-        
+
         const selectedProcess = this.props.redux.processCollection.filter(e => e._id === this.state.checked)[0]
-        this.setState({ selectedProcess })     
+        this.setState({ selectedProcess })
         //5d1e4aa7d3473720847685ed
         //5d1facb97b66702b945be1b6
     }
@@ -95,6 +94,13 @@ class solicitaDiretriz extends Component {
     async fileUpload(e) {
 
         let { name, files } = e.target
+        if (name === 'kml') {
+            if (files[0] && files[0].type !== "application/vnd.google-earth.kml+xml") {
+                document.getElementsByName(name)[0].value = ''
+                alert('Favor inserir a delimitação da gleba em formato kml.') 
+            }
+        }
+        
         if (name === 'kml' || name === 'dirDaeFile') {
             if (files[0] && files[0].size > 2097152) {
                 document.getElementsByName(name)[0].value = ''
@@ -205,13 +211,9 @@ class solicitaDiretriz extends Component {
         this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
     }
 
-    showMap = () => {
-        this.setState({ map: !this.state.map })
-    }
-
     render() {
 
-        let { dataMatch, map } = this.state
+        let { dataMatch } = this.state
         const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Processo cadastrado')
 
         let input = this.state.searchValue.toLowerCase()
@@ -250,10 +252,6 @@ class solicitaDiretriz extends Component {
                         })
                     }
                 </SolicitaDiretrizTemplate>
-                {map && <MapWrapper
-                    selectedProcess={this.state.selectedProcess}                   
-                    close={this.showMap}
-                />}
 
                 <ShowDetails
                     empId={this.state.empId}

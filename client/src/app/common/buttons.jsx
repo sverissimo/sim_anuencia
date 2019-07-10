@@ -122,7 +122,7 @@ export const ArchieveButton = (props) => {
 export const MapButton = props => (
     <div>
         <i className="material-icons"
-            style={{ fontSize: '20px', color: 'brown', cursor: 'pointer' }}
+            style={{ fontSize: '20px', color: 'grey', cursor: 'pointer' }}
             title='Ver no mapa'
             onClick={() => props.showMap(props.id)}
         >

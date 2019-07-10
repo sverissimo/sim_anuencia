@@ -6,7 +6,7 @@ import './../css/styles.css';
 const ShowEmpRow = (props) => {
 
     let { redux, emps, rts, process, empFields, rtFields, showRt, edit, deleteOne, data, fields,
-        divConfig, color, empDetails, rtDetails, showInfo, clearLog, archieve, showMap, kml } = props
+        divConfig, color, empDetails, rtDetails, showInfo, clearLog, archieve, showMap  } = props
     
     const userRole = localStorage.getItem('role')
 
@@ -114,8 +114,7 @@ const ShowEmpRow = (props) => {
                             <div className="row" key={k} style={{ borderBottom: '1px dotted #bbb', paddingBottom: '1%' }}>
                                 {
                                     i2.map((field, i) =>
-                                        field.key !== '_id' ?
-
+                                        field ?
                                             !isNaN(Date.parse(field.values)) && String(field.values).length > 15 ?
                                                 <div key={i} className="col s1">
                                                     {new Date(field.values).getDate()}/{new Date(field.values).getMonth() + 1}/{new Date(field.values).getFullYear()}
@@ -123,7 +122,7 @@ const ShowEmpRow = (props) => {
                                                 <div key={i} className={divConfig[i]} style={{ wordBreak: 'break-word' }}>
                                                     {field.values}
                                                 </div>
-                                            : void 0
+                                            : <div key={i} className='col s2'> </div>
                                     )
                                 }                              
 
@@ -159,7 +158,7 @@ const ShowEmpRow = (props) => {
                                             <InfoButton showInfo={showInfo} clearLog={clearLog} id={item._id} />
                                             <EditButton edit={edit} id={item._id} userRole={userRole} />
                                             <ArchieveButton archieve={archieve} id={item._id} userRole={userRole} archieved={data.archieved} />
-                                            {kml && <MapButton id={item._id} showMap={showMap} />}
+                                            <MapButton id={item._id} showMap={showMap} />
                                             <DeleteButton delete={deleteOne} id={item._id} userRole={userRole} />
 
                                         </div>

@@ -9,7 +9,6 @@ def format_line(lin):
 a = sys.stdin
 coordinates = []
 
-
 for line in a:
     count = line.find('<coordinates>')
     if (count >= 0):
@@ -21,8 +20,7 @@ for line in a:
         single_line = d.find('</coordinates>')
         if (single_line >= 0):
             for coords in c:
-                points = coords.split(',')
-                points.pop()
+                points = format_line(coords)
                 polygon.append(points)
                 points = []
             for p in polygon:

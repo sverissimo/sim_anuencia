@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { soloStyle } from '../config/soloStyle'
 import { CloseWindow } from '../common/buttons'
 import GMapsApiKey from '../../clientEnv.js'
-import { mapWrapper } from '../functions/mapWrapper.js'
 
 class Map extends Component {
 
@@ -44,7 +43,18 @@ class Map extends Component {
             fillOpacity: 0.35
         });
         renderPolygon.setMap(map);
+        const bounds = new window.google.maps.LatLngBounds();
+
+
+        renderPolygon.getPaths().forEach(function (path) {
+            path.forEach(function (latlng) {
+                bounds.extend(latlng);
+                map.fitBounds(bounds);
+            });
+        });
     }
+
+
 
     //console.log(parseCoords('5d1e4aa7d3473720847685ed'))
     //5d1e4aa7d3473720847685ed
