@@ -45,6 +45,7 @@ class SolicitaAnuencia extends Component {
         decConform: '',
         daeAnuencia: '',
         memDescritivo: '',
+        kml: '',
         memDescTp: '',
         cemig: '',
         dtbCopasa: '',
@@ -114,6 +115,18 @@ class SolicitaAnuencia extends Component {
             document.getElementsByName(name)[0].value = ''
             alert('Arquivo excedeu o limite permitido (2MB)!')
         }
+        if (name === 'kml') {
+            if (files[0] && files[0].type !== "application/vnd.google-earth.kml+xml") {
+                document.getElementsByName(name)[0].value = ''
+                alert('Favor inserir a delimitação da gleba em formato kml.')
+            }
+        }
+        if (name === 'kml' || name === 'dirDaeFile') {
+            if (files[0] && files[0].size > 2097152) {
+                document.getElementsByName(name)[0].value = ''
+                alert('Arquivo excedeu o limite permitido (2MB)!')
+            }
+        }
 
         let formData = new FormData()
         formData.append('processId', this.state.selectedId)
@@ -123,11 +136,19 @@ class SolicitaAnuencia extends Component {
 
         let k = []
         let allFields = solAnuenciaConfig1.concat(solAnuenciaConfig2)
-        allFields.push({
-            nameInput: 'projDesmemb',
-            label: 'Projeto de Desmembramento',
-            tooltip: 'Planta de localização com delimitação da área em análise e indicação do perímetro urbano, em escala de 1:10000'
-        })
+        allFields.push(
+            {
+                nameInput: 'projDesmemb',
+                label: 'Projeto de Desmembramento',
+                tooltip: 'Planta de localização com delimitação da área em análise e indicação do perímetro urbano, em escala de 1:10000'
+            },
+            {
+                label: 'Delimitação da área do empreendimento (em formato kml)',
+                nameInput: 'kml',
+                tooltip: 'O arquivo anexado não deverá conter linhas e/ou pontos, apenas um polígono, em extensão kml',
+                tt: true
+            }
+        )
 
         await allFields.map(item => k.push(item.nameInput))
         await k.forEach(inputName => {
@@ -211,7 +232,7 @@ class SolicitaAnuencia extends Component {
                 await sendMail(emp.email, rt.emailRt, emp.nome, modalidade, nomeEmpreendimento, munEmpreendimento, 'Anuência Prévia solicitada.')
                 await this.clearSearch()
                 await this.closeDetails()
-                await this.setState({ form: null})
+                await this.setState({ form: null })
                 await this.props.loadProcessData() && this.props.loadFilesData()
                 console.log('')
 

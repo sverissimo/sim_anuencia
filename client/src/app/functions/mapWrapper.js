@@ -7,16 +7,27 @@ class MapWrapper extends Component {
 
     state = { polygon: false }
 
-    async componentDidMount() {
+    componentDidMount() {
         const { selectedProcess } = this.props
-        const solDirMun = selectedProcess.processHistory
+        
+        let solDirMun
+
+        if (selectedProcess.modalidade === 'Desmembramento') {
+            solDirMun = selectedProcess.processHistory
+                .filter(e => e.label.match('Entrada'))
+                .filter(el => el.files.find(fs => fs.fieldName === 'kml'))
+        } else solDirMun = selectedProcess.processHistory
             .filter(e => e.label === 'Diretrizes metropolitanas solicitadas')
             .filter(el => el.files.find(fs => fs.fieldName === 'kml'))
+
         let file = null
         const last = solDirMun.length
         if (solDirMun && last > 0) {
             file = solDirMun[last - 1].files.filter(f => f.fieldName === 'kml')[0]
         }
+
+        
+
         console.log(file)
         if (file && file.contentType.match('kml')) {
             axios({
@@ -31,55 +42,39 @@ class MapWrapper extends Component {
                     reader.addEventListener('loadend', async e => {
                         axios.post('/api/run', { kml: e.srcElement.result })
                             .then(res => {
-                                console.log(res.data)
+                                //console.log(res.data)
                                 this.setState({ ...this.state, polygon: res.data })
                             })
                     })
                 })
                 .catch(err => console.log(err))
-        } else { this.setState({ polygon: 'null' }) }
+        } else { this.setState({ polygon: 'Formato inválido' }) }
     }
-    closeMap = (polygon) => {
 
-        if (typeof polygon === 'boolean') {
-            return 
-        } else if (typeof polygon !== 'object') {
-
-            return (
-                <Modal header="Geometria inválida." open={true} onCloseStart={this.props.close}>
-                    <p>
-                        Favor verificar se o arquivo foi anexado e seu formato/geometria são válidos.
-                        Na opção "Solicitar Diretrizes Metropolitanas", no item "Delimitação da gleba",
-                        deve ser anexado um arquivo de extensão ".kml".
-                        O arquivo não deverá conter linhas e/ou pontos, apenas um polígono.
-                        Para maiores informações, entre em contato com q equipe da Agência RMBH.
-                    </p>
-                </Modal>
-            )
-
-        }
-
+    componentWillUnmount() {
+        this.setState({ polygon: false })
     }
+
     render() {
         const { polygon } = this.state
         const { close } = this.props
-        console.log(typeof (polygon))
+        console.log(polygon, typeof polygon)
         return (
             polygon && (typeof (polygon) === 'object') ? <Map
                 polygon={polygon}
                 close={close}
             />
                 :
-                typeof (polygon) === 'boolean' ? null
+                typeof (polygon) === 'boolean' ? <span> </span>
                     :
-                    <Modal header="Geometria inválida." open={true} onCloseEnd={this.props.close}>
-                        <p>
+                    <Modal header="Formato de arquivo inválido." open={true} onClick={close} >
+                        <p style={{ textAlign: 'justify', textJustify: 'inter-word', marginTop: '1%' }}>
                             Favor verificar se o arquivo foi anexado e seu formato/geometria são válidos.
                             Na opção "Solicitar Diretrizes Metropolitanas", no item "Delimitação da gleba",
-                            deve ser anexado um arquivo de extensão ".kml".
-                            O arquivo não deverá conter linhas e/ou pontos, apenas um polígono.
-                            Para maiores informações, entre em contato com q equipe da Agência RMBH.
-                </p>
+                            deve ser anexado um arquivo de  extensão <strong><i>kml</i></strong>.
+                           <br /> <br />O arquivo deve conter <strong>um polígono</strong>.
+                              Para maiores informações, entre em contato com a equipe da Agência RMBH.
+                        </p>
                     </Modal>
         )
     }

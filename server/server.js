@@ -11,8 +11,6 @@ const methodOverride = require('method-override')
 const bcrypt = require('bcrypt-nodejs');
 require('dotenv').config()
 const cp = require('child_process')
-const { spawn } = require('child_process')
-const fs = require('fs')
 
 const { auth } = require('./auth/auth');
 const { signup, login } = require('./auth/authService');
@@ -47,8 +45,8 @@ app.use(cookieParser());
 app.use(express.static('client/build'))
 app.use(methodOverride('_method'))
 
-const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/sim_anuencia_db')
-mongoose.set('useFindAndModify', false);
+const mongoURI = (process.env.MONGODB_URI || 'mongodb://localhost:27017/aws')
+mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true);
 mongoose.connect(mongoURI, { useNewUrlParser: true }, (err) => {
     if (err) {
@@ -70,8 +68,6 @@ app.get('/api/vUser', ((req, res) => {
             res.sendFile(path.resolve(__dirname, '../client', 'public', 'userConfirmed.html'))
         }))
 }))
-
-
 
 app.post('/api/forgotPassword', generatePass, changePass, sendPass, sendMail)
 

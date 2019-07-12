@@ -100,7 +100,8 @@ export const solDirConfig = [
         label: 'Delimitação da área do empreendimento (em formato kml)',
         nameInput: 'kml',
         map: true,
-        tooltip: 'Clique para delimitar a área do empreendimento no mapa',
+        tooltip: 'O arquivo anexado não deverá conter linhas e/ou pontos, apenas um polígono, em extensão kml',
+        tt: true
     },
     {
         label: 'Levantamento Planialtimétrico (em formato DWG)',
@@ -335,7 +336,13 @@ export const solDesmembConfig1 = [
         nameInput: 'memDescritivo',
         label: 'Memorial descritivo',
         tooltip: 'Descrição sucinta do loteamento com suas características, áreas públicas, equipamentos etc. '
-    }
+    },
+    {
+        label: 'Delimitação da área do empreendimento (em formato kml)',
+        nameInput: 'kml',        
+        tooltip: 'O arquivo anexado não deverá conter linhas e/ou pontos, apenas um polígono, em extensão kml',
+        tt: true
+    },
 ]
 
 export const solDesmembConfig2 = [
