@@ -11,6 +11,11 @@ const Diretriz = (props) => {
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
     
+    const filterArray = [['nomeEmpreendimento', 'Empreendimento'], ['munEmpreendimento', 'Município'], 
+    ['tecnico', 'Técnico'], ['nProcess', 'Número do Processo']]
+
+    const filtros = filterArray.map((f, i)=> <option key = {i} value={f[0]}>{f[1]}</option> )
+
     return (
         <div className="container" style={{width: '90%'}} >
             <Title
@@ -20,18 +25,38 @@ const Diretriz = (props) => {
                 color={ setColor}
             />
             <div className="row">
-                <div className="col s11">
-                    <label>Filtrar</label>
-                    <input
+                <div className="col s9">
+                    <label>Pesquisar</label>
+                    
+                    <input                        
                         className="input"
                         type="text"
                         name="search"
                         onChange={search}
-                    />
+                    />                
+
                 </div>
-                <div className="col s1 right" style={{ paddingTop: '35px' }}>
-                    <i className="material-icons">search</i>
+                <div className="col s3" style={{ paddingTop: '3px' }}>
+                    
+                    <div className="col s11">
+                    <label htmlFor="select">Filtrar por</label>
+                    <select
+                        className='browser-default'
+                        name='select'                        
+                        icon='filter_list'
+                        label='Filtrar busca'
+                        onChange={search}
+                    >
+                        {filtros}
+                    </select>
+                    </div>
+                    <div className='col s1' style={{ paddingTop: '30px' }}>
+                        <i className="material-icons">search</i>
+                    </div>
+
                 </div>
+
+
             </div>
             <div className='z-depth-3' style={{width: '100%', padding: '0px 10px 1px', borderRadius: '10px'}}>
                 

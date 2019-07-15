@@ -50,7 +50,9 @@ class Diretriz extends Component {
             daeOk: false,
             dirMunOk: false,
             pendencias: ''
-        }
+        },
+        filter:'nomeEmpreendimento'
+        
 
     }
 
@@ -80,15 +82,23 @@ class Diretriz extends Component {
     }
 
     handleSearch(e) {
-        let dirStatus = this.state.dirStatus
-        dirStatus.cgtOk = false
-        dirStatus.vistoriaOk = false
-        dirStatus.dirMunOk = false
-        dirStatus.daeOk = false
-
-        this.setState({ ...this.state, searchValue: e.target.value, checked: false, anexaDiretriz: false, dirStatus: dirStatus });
-        let clearRadio = document.getElementsByName('group1')
-        clearRadio.forEach(radio => radio.checked = false)
+        const { name, value } = e.target
+        
+        if (name === 'select' ) {
+            this.setState({ filter: value})
+            
+        } else {
+            let dirStatus = this.state.dirStatus
+            dirStatus.cgtOk = false
+            dirStatus.vistoriaOk = false
+            dirStatus.dirMunOk = false
+            dirStatus.daeOk = false
+    
+            this.setState({ ...this.state, searchValue: e.target.value, checked: false, anexaDiretriz: false, dirStatus: dirStatus });
+            let clearRadio = document.getElementsByName('group1')
+            clearRadio.forEach(radio => radio.checked = false)
+            
+        }
     }
 
     clearSearch(e) {
@@ -305,12 +315,13 @@ class Diretriz extends Component {
 
     render() {
 
-        let { dataMatch } = this.state
+        let { dataMatch, filter } = this.state
         let input = this.state.searchValue.toLowerCase()
         const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
 
-        if (input && !this.state.checked) {
-            dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
+        if (input && !this.state.checked) {            
+            
+            dataMatch = filteredList.filter(el => el[filter].toLowerCase().match(input))
         } else if (this.state.checked || (this.state.checked && input)) {
             dataMatch = filteredList.filter(el => el._id.toLowerCase().match(this.state.selectedId))
         } else {
