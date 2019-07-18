@@ -1,12 +1,13 @@
 import React from 'react';
-import RenderSearch from '../common/renderSearch';
+import RenderSearch from '../common/renderSearch'
 import Title from '../common/titleSubtitle';
-import {BackButton} from '../common/buttons'
+import { BackButton } from '../common/buttons'
+import Filtros from '../common/filtros'
 
 const SolicitaDiretriz = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails} = props
+        children, empDetails, rtDetails, sort, reverse} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
@@ -20,7 +21,7 @@ const SolicitaDiretriz = (props) => {
                 color={ setColor}
             />
             <div className="row">
-                <div className="col s11">
+                <div className="col s9">
                     <label>Filtrar</label>
                     <input
                         className="input"
@@ -29,9 +30,7 @@ const SolicitaDiretriz = (props) => {
                         onChange={search}
                     />
                 </div>
-                <div className="col s1 right" style={{ paddingTop: '35px' }}>
-                    <i className="material-icons">search</i>
-                </div>
+                <Filtros search={search}/>
             </div>
             <div className='z-depth-3' style={{padding: '0px 10px 1px', borderRadius: '10px'}}>
                 
@@ -48,6 +47,8 @@ const SolicitaDiretriz = (props) => {
                 empDetails={empDetails}
                 rtDetails={rtDetails}
                 ocultarArquivos={true}
+                sort={sort}
+                reverse = {reverse}
                 />
                 
             </div>

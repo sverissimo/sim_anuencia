@@ -6,7 +6,7 @@ const DiretrizRow = (props) => {
     let { processCollection, selectedId, checkItem, change, dirStatus, anexaDiretriz,
         enviaPendencias, showCalendar } = props
 
-    let processo = processCollection.filter(el => el._id.match(selectedId))[0]    
+    let processo = processCollection.filter(el => el._id.match(selectedId))[0]
 
     let selectedFields = [['CGT', 'cgt', 'cgtOk'], ['Vistoria', 'vistoria', 'vistoriaOk'],
     ['Diretriz Municipal', 'dirMunOk', 'dirMunOk'], ['Pagamento da DAE', 'daeOk', 'daeOk']]
@@ -38,7 +38,12 @@ const DiretrizRow = (props) => {
                 )
             }
         } else {
-            return processo[i[1]]
+            
+            return (
+                <span>
+                    {processo[i[1]]}
+                </span>
+            )
         }
     }
 

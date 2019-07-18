@@ -2,20 +2,16 @@ import React from 'react';
 import RenderSearch from '../common/renderSearch';
 import Title from '../common/titleSubtitle';
 import { BackButton } from '../common/buttons'
+import Filtros from '../common/filtros'
 
 const Diretriz = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails, showFiles} = props
+        children, empDetails, rtDetails, showFiles, reverse, sort} = props
    
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
-    
-    const filterArray = [['nomeEmpreendimento', 'Empreendimento'], ['munEmpreendimento', 'Município'], 
-    ['tecnico', 'Técnico'], ['nProcess', 'Número do Processo']]
-
-    const filtros = filterArray.map((f, i)=> <option key = {i} value={f[0]}>{f[1]}</option> )
-
+   
     return (
         <div className="container" style={{width: '90%'}} >
             <Title
@@ -26,37 +22,15 @@ const Diretriz = (props) => {
             />
             <div className="row">
                 <div className="col s9">
-                    <label>Pesquisar</label>
-                    
+                    <label>Pesquisar</label>                    
                     <input                        
                         className="input"
                         type="text"
                         name="search"
                         onChange={search}
                     />                
-
                 </div>
-                <div className="col s3" style={{ paddingTop: '3px' }}>
-                    
-                    <div className="col s11">
-                    <label htmlFor="select">Filtrar por</label>
-                    <select
-                        className='browser-default'
-                        name='select'                        
-                        icon='filter_list'
-                        label='Filtrar busca'
-                        onChange={search}
-                    >
-                        {filtros}
-                    </select>
-                    </div>
-                    <div className='col s1' style={{ paddingTop: '30px' }}>
-                        <i className="material-icons">search</i>
-                    </div>
-
-                </div>
-
-
+               <Filtros search={search}/>
             </div>
             <div className='z-depth-3' style={{width: '100%', padding: '0px 10px 1px', borderRadius: '10px'}}>
                 
@@ -74,6 +48,8 @@ const Diretriz = (props) => {
                 empDetails={empDetails}
                 rtDetails={rtDetails}                
                 showFiles={showFiles}
+                sort={sort}
+                reverse = {reverse}
                 />
                 
             </div>
@@ -97,9 +73,7 @@ const Diretriz = (props) => {
                                     {nameParc[0].nomeEmpreendimento} - Diretrizes Metropolitanas
                                 </legend>
                                 {children}
-                            </fieldset>
-
-                            
+                            </fieldset>                            
                         </div>)
                         : null
                 }
@@ -114,7 +88,7 @@ const Diretriz = (props) => {
                 }
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default Diretriz;

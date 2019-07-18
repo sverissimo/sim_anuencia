@@ -11,6 +11,7 @@ const methodOverride = require('method-override')
 const bcrypt = require('bcrypt-nodejs');
 require('dotenv').config()
 const cp = require('child_process')
+var archiver = require('archiver');
 
 const { auth } = require('./auth/auth');
 const { signup, login } = require('./auth/authService');
@@ -100,6 +101,42 @@ const upload = multer({ storage });
 app.use(auth)
 
 app.post('/api/run', pyParseKml)
+
+app.get('/api/zip', (req, res) => {
+    const ids = ["5d125bedc7201044055203e4", "5d125bedc7201044055203da"]
+    //let zip
+    const archive = archiver('zip', {
+        zlib: { level: 9 } // Sets the compression level.
+    });
+    ids.forEach(i => {
+
+        let fileId = new mongoose.mongo.ObjectId(i)
+        gfs.files.findOne({ _id: fileId }, function (err, file) {
+
+            if (!file) {
+                return res.status(404).json({
+                    responseCode: 1,
+                    responseMessage: "error"
+                });
+            } else {
+                console.log('yeah')
+                const readstream = gfs.createReadStream({
+                    filename: file.filename,
+                    root: "uploads"
+                });
+                archive.append(readstream, { name: file.filename });
+            }
+        })
+    })
+    res.set({
+        'Content-Type': 'application/zip',
+        'Content-Disposition': 'attachment',
+    });
+    archive.pipe(res)    
+    archive.finalize()
+
+
+})
 
 app.get('/api/download/:id', function (req, res) {
 

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, setColor, loading, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
+import { sortList } from '../functions/sort'
 
 import SolicitaDiretrizTemplate from './solicitaDiretrizTemplate';
 import SolicitaDiretrizRow from './solicitaDiretrizRow';
@@ -42,18 +43,22 @@ class solicitaDiretriz extends Component {
         showRtDetails: false,
         empId: '',
         rtId: '',
-        map: false
+        map: false,
+        filter: 'nomeEmpreendimento'
     }
 
-    componentDidMount() {
+    async componentDidMount() {
 
         let { empCollection, rtCollection, processCollection, tecCollection } = this.props.redux
         !empCollection[0] ? this.props.loadEmpData() : void 0
-        !processCollection[0] ? this.props.loadProcessData() : void 0
+        !processCollection[0] ? await this.props.loadProcessData() : void 0
         !rtCollection[0] ? this.props.loadRtData() : void 0
         !tecCollection[0] ? this.props.loadTecnicos() : void 0
 
         this.props.loadFilesData()
+
+        let processes = this.props.redux.processCollection.filter(el => el.status === 'Processo cadastrado')
+        this.setState({ processes })
 
         document.addEventListener("keydown", this.escFunction, false);
     }
@@ -63,9 +68,15 @@ class solicitaDiretriz extends Component {
     }
 
     handleSearch(e) {
-        this.setState({ ...this.state, searchValue: e.target.value, checked: false });
-        let clearRadio = document.getElementsByName('group1')
-        clearRadio.forEach(radio => radio.checked = false)
+        const { name, value } = e.target
+
+        if (name === 'select') {
+            this.setState({ filter: value })
+        } else {
+            this.setState({ ...this.state, searchValue: e.target.value, checked: false });
+            let clearRadio = document.getElementsByName('group1')
+            clearRadio.forEach(radio => radio.checked = false)
+        }
     }
 
     clearSearch(e) {
@@ -97,10 +108,10 @@ class solicitaDiretriz extends Component {
         if (name === 'kml') {
             if (files[0] && files[0].type !== "application/vnd.google-earth.kml+xml") {
                 document.getElementsByName(name)[0].value = ''
-                alert('Favor inserir a delimitação da gleba em formato kml.') 
+                alert('Favor inserir a delimitação da gleba em formato kml.')
             }
         }
-        
+
         if (name === 'kml' || name === 'dirDaeFile') {
             if (files[0] && files[0].size > 2097152) {
                 document.getElementsByName(name)[0].value = ''
@@ -211,14 +222,25 @@ class solicitaDiretriz extends Component {
         this.setState({ showEmpDetails: false, showRtDetails: false, empId: '', rtId: '' })
     }
 
+    sort = (criteria) => {
+        let { reverse, processes } = this.state
+        let orderedList
+
+        orderedList = sortList(processes, criteria)
+        if (reverse === true) orderedList.reverse()
+        this.setState({ processes: orderedList, reverse: !reverse })        
+    }
+
     render() {
 
-        let { dataMatch } = this.state
-        const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Processo cadastrado')
+        let { dataMatch, reverse, processes, filter } = this.state
+
+        let filteredList = []
+        if (processes) filteredList = processes
 
         let input = this.state.searchValue.toLowerCase()
         if (filteredList && (input && !this.state.checked)) {
-            dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
+            dataMatch = filteredList.filter(el => el[filter].toLowerCase().match(input))
         } else if (filteredList && (this.state.checked || (this.state.checked && input))) {
             dataMatch = filteredList.filter(el => el._id.toLowerCase().match(this.state.selectedId))
         } else {
@@ -238,6 +260,8 @@ class solicitaDiretriz extends Component {
                     clear={this.clearSearch.bind(this)}
                     empDetails={this.empDetails.bind(this)}
                     rtDetails={this.rtDetails.bind(this)}
+                    reverse={reverse}
+                    sort={this.sort}
                 >
                     {
                         solDirConfig.map((item, i) => {
@@ -252,7 +276,6 @@ class solicitaDiretriz extends Component {
                         })
                     }
                 </SolicitaDiretrizTemplate>
-
                 <ShowDetails
                     empId={this.state.empId}
                     rtId={this.state.rtId}

@@ -2,12 +2,13 @@ import React from 'react';
 import RenderSearch from '../common/renderSearch';
 import Title from '../common/titleSubtitle';
 import { BackButton } from '../common/buttons'
+import Filtros from '../common/filtros'
 
 
 const AnuenciaTemplate = (props) => {
 
     let { setColor, search, searchArray, selectProcess, data, redux,
-        empDetails, rtDetails, showFiles } = props
+        empDetails, rtDetails, showFiles, sort } = props
 
     let selectedProcess
     void selectedProcess
@@ -21,7 +22,7 @@ const AnuenciaTemplate = (props) => {
                 color={setColor}
             />
             <div className="row">
-                <div className="col s11">
+                <div className="col s9">
                     <label>Filtrar</label>
                     <input
                         className="input"
@@ -31,9 +32,7 @@ const AnuenciaTemplate = (props) => {
                         value={data.searchValue}
                     />
                 </div>
-                <div className="col s1 right" style={{ paddingTop: '35px' }}>
-                    <i className="material-icons">search</i>
-                </div>
+                <Filtros search={search}/>
             </div>
             <div className='z-depth-3' style={{ width: '100%', padding: '0px 10px 1px', borderRadius: '10px' }}>
 
@@ -51,6 +50,7 @@ const AnuenciaTemplate = (props) => {
                     empDetails={empDetails}
                     rtDetails={rtDetails}                    
                     showFiles={showFiles}
+                    sort={sort}
                 />
 
             </div>

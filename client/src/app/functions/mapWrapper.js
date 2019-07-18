@@ -25,10 +25,7 @@ class MapWrapper extends Component {
         if (solDirMun && last > 0) {
             file = solDirMun[last - 1].files.filter(f => f.fieldName === 'kml')[0]
         }
-
         
-
-        console.log(file)
         if (file && file.contentType.match('kml')) {
             axios({
                 url: `/api/download/${file.id}`,
@@ -57,8 +54,7 @@ class MapWrapper extends Component {
 
     render() {
         const { polygon } = this.state
-        const { close } = this.props
-        console.log(polygon, typeof polygon)
+        const { close } = this.props        
         return (
             polygon && (typeof (polygon) === 'object') ? <Map
                 polygon={polygon}

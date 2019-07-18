@@ -1,6 +1,7 @@
 import React from 'react';
 import Title from '../common/titleSubtitle'
-import './../css/styles.css';
+import './../css/styles.css'
+import Filtros from '../common/filtros'
 
 const ShowEmpTemplate = (props) => {
 
@@ -43,9 +44,10 @@ const ShowEmpTemplate = (props) => {
                                         onChange={props.change}
                                         type="search"
                                         placeholder="digite pelo menos 3 dígitos para procurar"
-                                    />
+                                    />                                    
                                 </form>
                             </div>
+                            {select === 'process' && <Filtros search={props.change} lupa={true} />}
                             {select === 'process' && <div className='col s3'
                                 style={{
                                     position: 'relative',

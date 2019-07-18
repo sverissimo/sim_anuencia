@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadTecnicos, loadFilesData, reduxToastr } from '../cadastro/cadActions'
+import { sortList } from '../functions/sort'
 
 import AnuenciaTemplate from './anuenciaTemplate';
 import ProcessContainer from './processContainer'
@@ -34,16 +35,20 @@ class AnuenciaContainer extends Component {
         analiseProc: {
             createdAt: '',
             pendencias: ''
-        }
+        },
+        filter: 'nomeEmpreendimento'
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         let { empCollection, rtCollection, processCollection, filesCollection, tecCollection } = this.props.redux
         !empCollection[0] ? this.props.loadEmpData() : void 0
-        !processCollection[0] ? this.props.loadProcessData() : void 0
+        !processCollection[0] ? await this.props.loadProcessData() : void 0
         !rtCollection[0] ? this.props.loadRtData() : void 0
         !filesCollection[0] ? this.props.loadFilesData() : void 0
         !tecCollection[0] ? this.props.loadTecnicos() : void 0
+
+        let processes = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Análise')
+        this.setState({ processes })
 
         document.addEventListener("keydown", this.escFunction, false);
     }
@@ -53,22 +58,34 @@ class AnuenciaContainer extends Component {
     }
 
     handleSearch(e) {
-        this.setState({ ...this.state, searchValue: e.target.value, checked: false });
+        const { name, value } = e.target
+
+        if (name === 'select') {
+            this.setState({ filter: value })
+        } else {
+            this.setState({ ...this.state, searchValue: e.target.value, checked: false });
+        }
     }
 
     clearSearch(e) {
         this.setState({
             ...this.state, checked: null,
             selectedId: null, searchValue: '', showFiles: null
-        })       
+        })
     }
 
     handleSelect(e) {
-        this.setState({
-            ...this.state,
-            selectedId: e.target.value.replace(/,/g, ''),
-            checked: e.currentTarget.id
-        })
+        const { name, value } = e.target
+
+        if (name === 'select') {
+            this.setState({ filter: value })
+        } else {
+            this.setState({
+                ...this.state,
+                selectedId: e.target.value.replace(/,/g, ''),
+                checked: e.currentTarget.id
+            })
+        }
     }
 
     empDetails(e) {
@@ -97,29 +114,26 @@ class AnuenciaContainer extends Component {
         })
     }
 
+    sort = criteria => {
+        let { reverse, processes } = this.state
+        let orderedList
+
+        orderedList = sortList(processes, criteria)
+        if (reverse === true) orderedList.reverse()
+        this.setState({ processes: orderedList, reverse: !reverse })
+    }
+
     render() {
 
-        let { dataMatch } = this.state
+        let { dataMatch, processes, filter } = this.state
         let input = this.state.searchValue.toLowerCase()
-        const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Análise')
+        let filteredList = []
+        if (processes) filteredList = processes
 
-        filteredList.sort(function (a, b) {
-            let ca = new Date(a.updatedAt)
-            let cb = new Date(b.updatedAt)
-            if (ca && cb) {
-
-                if (cb.getTime() > ca.getTime()) {
-                    return 1
-                } else if (ca.getTime() > cb.getTime()) {
-                    return -1
-                } else return 0
-            } else {
-                return null
-            }
-        })
+        
 
         if (input && !this.state.checked) {
-            dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
+            dataMatch = filteredList.filter(el => el[filter].toLowerCase().match(input))
         } else if (this.state.checked || (this.state.checked && input)) {
             dataMatch = filteredList.filter(el => el._id.toLowerCase().match(this.state.selectedId))
         } else {
@@ -142,6 +156,7 @@ class AnuenciaContainer extends Component {
                                 empDetails={this.empDetails.bind(this)}
                                 rtDetails={this.rtDetails.bind(this)}
                                 showFiles={this.showFiles.bind(this)}
+                                sort={this.sort}
                             /> : !this.state.showFiles ?
                                 <div>
                                     <ProcessContainer
@@ -186,7 +201,7 @@ class AnuenciaContainer extends Component {
                         processCollection={this.props.redux.processCollection}
                         filesCollection={this.props.redux.filesCollection}
                     />
-                </div>                
+                </div>
             </div>
         );
     }

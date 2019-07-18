@@ -6,12 +6,14 @@ import { connect } from 'react-redux';
 import { loadEmpData, loadRtData, loadProcessData, loadFilesData, setColor, loading, reduxToastr } from './../cadastro/cadActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
+import { sortList } from '../functions/sort'
 
 import SolicitaAnuenciaTemplate from './solicitaAnuenciaTemplate';
 import SolAnuenciaFilesRow from './solAnuenciaFilesRow';
 import { solAnuenciaConfig1, solAnuenciaConfig2, solDesmembConfig1, solDesmembConfig2, } from '../config/configLabels'
 import ShowDetails from '../common/showDetails'
 import ShowFiles from '../common/showFiles'
+//import downloadZip from '../common/downloadZip'
 
 class SolicitaAnuencia extends Component {
 
@@ -55,15 +57,20 @@ class SolicitaAnuencia extends Component {
         mapaIso: '',
         projTer: '',
         projDren: '',
-        projDesmemb: ''
+        projDesmemb: '',
+        filter: 'nomeEmpreendimento'
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         !this.props.redux.empCollection[0] ? this.props.loadEmpData() : void 0
-        !this.props.redux.processCollection[0] ? this.props.loadProcessData() : void 0
+        !this.props.redux.processCollection[0] ? await this.props.loadProcessData() : void 0
         !this.props.redux.rtCollection[0] ? this.props.loadRtData() : void 0
         !this.props.redux.filesCollection[0] ? this.props.loadFilesData() : void 0
-        document.addEventListener("keydown", this.escFunction, false);
+       
+        let processes = this.props.redux.processCollection.filter(el => (el.status === 'Diretrizes Metropolitanas emitidas' || el.status.match('Pendências')) || el.status === 'Aguardando documentação')
+        this.setState({ processes })
+        
+        document.addEventListener("keydown", this.escFunction, false)
     }
 
     componentWillUnmount() {
@@ -71,10 +78,16 @@ class SolicitaAnuencia extends Component {
     }
 
     handleSearch(e) {
+        const { name, value } = e.target
 
-        this.setState({ ...this.state, searchValue: e.target.value, checked: false });
-        let clearRadio = document.getElementsByName('group1')
-        clearRadio.forEach(radio => radio.checked = false)
+        if (name === 'select') {
+            this.setState({ filter: value })
+
+        } else {
+            this.setState({ ...this.state, searchValue: e.target.value, checked: false });
+            let clearRadio = document.getElementsByName('group1')
+            clearRadio.forEach(radio => radio.checked = false)
+        }
     }
 
     clearSearch(e) {
@@ -258,14 +271,25 @@ class SolicitaAnuencia extends Component {
         this.setState({ showFiles: true, selectedId: e.target.id.replace(/z/g, '') })
     }
 
+    sort = criteria => {
+        let { reverse, processes } = this.state
+        let orderedList
+
+        orderedList = sortList(processes, criteria)
+        if (reverse === true) orderedList.reverse()
+        this.setState({ processes: orderedList, reverse: !reverse })
+    }
+
     render() {
 
-        let { dataMatch, selectedId, checked } = this.state
+        let { dataMatch, selectedId, checked, processes, filter } = this.state
         let { processCollection } = this.props.redux
         let input = this.state.searchValue.toLowerCase()
-        const filteredList = processCollection.filter(el => (el.status === 'Diretrizes Metropolitanas emitidas' || el.status.match('Pendências')) || el.status === 'Aguardando documentação')
+        let filteredList = []
+        if (processes) filteredList = processes
+
         if (input && !checked) {
-            dataMatch = filteredList.filter(el => el.nomeEmpreendimento.toLowerCase().match(input))
+            dataMatch = filteredList.filter(el => el[filter].toLowerCase().match(input))
         } else if (checked || (checked && input)) {
             dataMatch = filteredList.filter(el => el._id.toLowerCase().match(selectedId))
         } else {
@@ -303,6 +327,7 @@ class SolicitaAnuencia extends Component {
                         array={solAnuenciaConfig1}
                         array2={solAnuenciaConfig2}
                         showFiles={this.showFiles.bind(this)}
+                        sort={this.sort}
                     >
                         {
                             fileInput1.map((item, i) => {
@@ -352,7 +377,7 @@ class SolicitaAnuencia extends Component {
                     />
                 </div>
             </div >
-        );
+        )
     }
 }
 

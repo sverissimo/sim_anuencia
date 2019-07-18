@@ -11,6 +11,7 @@ import { loadEmpData, loadRtData, loadProcessData, loadFilesData, loadTecnicos, 
 import { setDate } from './diretrizActions'
 import { sendMail } from '../common/sendMail'
 import { logout } from '../auth/logout'
+import { sortList } from '../functions/sort'
 
 import DiretrizTemplate from './diretrizTemplate';
 import DiretrizRow from './diretrizRow';
@@ -51,8 +52,8 @@ class Diretriz extends Component {
             dirMunOk: false,
             pendencias: ''
         },
-        filter:'nomeEmpreendimento'
-        
+        filter: 'nomeEmpreendimento'
+
 
     }
 
@@ -64,15 +65,20 @@ class Diretriz extends Component {
             else if (selectedId) this.clearSearch()
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
 
         let { empCollection, rtCollection, processCollection, tecCollection } = this.props.redux
         !empCollection[0] ? this.props.loadEmpData() : void 0
-        !processCollection[0] ? this.props.loadProcessData() : void 0
+        !processCollection[0] ? await this.props.loadProcessData() : void 0
         !rtCollection[0] ? this.props.loadRtData() : void 0
         !tecCollection[0] ? this.props.loadTecnicos() : void 0
-
         this.props.loadFilesData()
+
+        const user = { ...localStorage }
+
+        let processes = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
+        if (user.role === 'tecnico') processes = processes.filter(p => p.tecnico === user.name + ' ' + user.surName)
+        await this.setState({ processes })
 
         document.addEventListener("keydown", this.escFunction, false);
     }
@@ -83,21 +89,21 @@ class Diretriz extends Component {
 
     handleSearch(e) {
         const { name, value } = e.target
-        
-        if (name === 'select' ) {
-            this.setState({ filter: value})
-            
+
+        if (name === 'select') {
+            this.setState({ filter: value })
+
         } else {
             let dirStatus = this.state.dirStatus
             dirStatus.cgtOk = false
             dirStatus.vistoriaOk = false
             dirStatus.dirMunOk = false
             dirStatus.daeOk = false
-    
+
             this.setState({ ...this.state, searchValue: e.target.value, checked: false, anexaDiretriz: false, dirStatus: dirStatus });
             let clearRadio = document.getElementsByName('group1')
             clearRadio.forEach(radio => radio.checked = false)
-            
+
         }
     }
 
@@ -313,14 +319,26 @@ class Diretriz extends Component {
         )
     }
 
+    sort = (criteria) => {
+        let { reverse, processes } = this.state
+        let orderedList
+
+        orderedList = sortList(processes, criteria)
+        if (reverse === true) orderedList.reverse()
+        this.setState({ processes: orderedList, reverse: !reverse })
+        //console.log(this.props.redux.processCollection)
+    }
+
     render() {
 
-        let { dataMatch, filter } = this.state
+        let { dataMatch, filter, reverse, processes } = this.state
         let input = this.state.searchValue.toLowerCase()
-        const filteredList = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
+       
+        let filteredList = []
+        if (processes) filteredList = processes
+        
+        if (input && !this.state.checked) {
 
-        if (input && !this.state.checked) {            
-            
             dataMatch = filteredList.filter(el => el[filter].toLowerCase().match(input))
         } else if (this.state.checked || (this.state.checked && input)) {
             dataMatch = filteredList.filter(el => el._id.toLowerCase().match(this.state.selectedId))
@@ -343,6 +361,8 @@ class Diretriz extends Component {
                         empDetails={this.empDetails.bind(this)}
                         rtDetails={this.rtDetails.bind(this)}
                         showFiles={this.showFiles.bind(this)}
+                        reverse={reverse}
+                        sort={this.sort}
                     >
                         <DiretrizRow
                             selectedId={this.state.selectedId}

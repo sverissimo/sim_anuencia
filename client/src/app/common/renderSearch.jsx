@@ -5,7 +5,7 @@ import IF from './conditionalRender'
 
 const RenderSearch = (props) => {
     let { search, collection, rtCollection, processCollection, onSelect, checked, fields, color, renderEmp,
-        renderRt, empDetails, rtDetails, showFiles, ocultarArquivos } = props
+        renderRt, empDetails, rtDetails, showFiles, ocultarArquivos, sort } = props
 
     let solDirObjFiles = []
     let sdFilesArray = []
@@ -25,20 +25,25 @@ const RenderSearch = (props) => {
     fields.forEach(el => {
         fieldsConfig.push(configLabels.filter(item => item.name === el)[0])
     })
-
-
-    /*  fields.map(i => fieldsConfig.push({
-         name: configLabels[i].name,
-         label: configLabels[i].label,
-         div: configLabels[i].div
-     })) */
-
+    
     return (
         <div>
             {
                 search.length > 0 ?
                     <div className="row tableHeader" style={{ backgroundColor: color }}>
-                        {fieldsConfig.map((field, i) => <IF cond={field.name !== '_id'} value={field.label} div={field.div} key={i} />)}
+                        {
+                            fieldsConfig.map((field, i) => (
+
+                                <IF cond={field.name !== '_id'} 
+                                value={field.label} 
+                                div={field.div} 
+                                key={i} 
+                                stylez= {{ cursor: 'pointer' }} 
+                                onClick={() => sort(field.name)} />
+                                   
+
+                            )
+                            )}
                         <IF cond={renderEmp} value='Interessado' div='col s2' />
                         <IF cond={renderRt} value='RT' />
                         <IF cond={!ocultarArquivos} value='Arquivos' />
@@ -67,7 +72,7 @@ const RenderSearch = (props) => {
                         fields && fields.length > 0 ?
                             fields.map(i => i2.push(itemArray.filter(el => el.key === i)[0]))
                             : void 0
-                        
+
                         return (
                             <div className="row" key={k} >
                                 {
