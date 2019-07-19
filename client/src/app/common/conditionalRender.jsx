@@ -11,8 +11,7 @@ const conditionalRender = (props) => {
     } else {
         return (
             <div className={div} style={stylez} onClick={onClick}>
-                {props.value || props.children}
-                {props.children || null}
+                {props.value || props.children}                
             </div>
         )
     }

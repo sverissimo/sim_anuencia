@@ -36,7 +36,8 @@ class AnuenciaContainer extends Component {
             createdAt: '',
             pendencias: ''
         },
-        filter: 'nomeEmpreendimento'
+        filter: 'nomeEmpreendimento',
+        tecFilter: true
     }
 
     async componentDidMount() {
@@ -48,6 +49,7 @@ class AnuenciaContainer extends Component {
         !tecCollection[0] ? this.props.loadTecnicos() : void 0
 
         let processes = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Análise')
+        if (localStorage.role === 'tecnico') processes = processes.filter(p => p.tecnico === localStorage.name + ' ' + localStorage.surName)
         this.setState({ processes })
 
         document.addEventListener("keydown", this.escFunction, false);
@@ -123,14 +125,28 @@ class AnuenciaContainer extends Component {
         this.setState({ processes: orderedList, reverse: !reverse })
     }
 
+    filterTecs = async () => {
+        let { processes } = this.state
+        const user = { ...localStorage }
+        await this.setState({ tecFilter: !this.state.tecFilter })
+
+        if (this.state.tecFilter) {
+            processes = processes.filter(p => p.tecnico === user.name + ' ' + user.surName)
+            this.setState({ processes })
+        } else {
+            processes = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Análise')
+            this.setState({ processes })
+        }
+    }
+
     render() {
 
-        let { dataMatch, processes, filter } = this.state
+        let { dataMatch, processes, filter, tecFilter } = this.state
         let input = this.state.searchValue.toLowerCase()
         let filteredList = []
         if (processes) filteredList = processes
 
-        
+
 
         if (input && !this.state.checked) {
             dataMatch = filteredList.filter(el => el[filter].toLowerCase().match(input))
@@ -157,6 +173,8 @@ class AnuenciaContainer extends Component {
                                 rtDetails={this.rtDetails.bind(this)}
                                 showFiles={this.showFiles.bind(this)}
                                 sort={this.sort}
+                                tecFilter={tecFilter}
+                                filterTecs={this.filterTecs}
                             /> : !this.state.showFiles ?
                                 <div>
                                     <ProcessContainer

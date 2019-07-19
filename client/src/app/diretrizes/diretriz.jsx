@@ -52,7 +52,8 @@ class Diretriz extends Component {
             dirMunOk: false,
             pendencias: ''
         },
-        filter: 'nomeEmpreendimento'
+        filter: 'nomeEmpreendimento',
+        tecFilter: true
 
 
     }
@@ -75,9 +76,9 @@ class Diretriz extends Component {
         this.props.loadFilesData()
 
         const user = { ...localStorage }
-
+        
         let processes = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
-        if (user.role === 'tecnico') processes = processes.filter(p => p.tecnico === user.name + ' ' + user.surName)
+        if (localStorage.role === 'tecnico') processes = processes.filter(p => p.tecnico === user.name + ' ' + user.surName)
         await this.setState({ processes })
 
         document.addEventListener("keydown", this.escFunction, false);
@@ -103,7 +104,6 @@ class Diretriz extends Component {
             this.setState({ ...this.state, searchValue: e.target.value, checked: false, anexaDiretriz: false, dirStatus: dirStatus });
             let clearRadio = document.getElementsByName('group1')
             clearRadio.forEach(radio => radio.checked = false)
-
         }
     }
 
@@ -326,17 +326,30 @@ class Diretriz extends Component {
         orderedList = sortList(processes, criteria)
         if (reverse === true) orderedList.reverse()
         this.setState({ processes: orderedList, reverse: !reverse })
-        //console.log(this.props.redux.processCollection)
+    }
+
+    filterTecs = async () => {
+        let { processes } = this.state
+        const user = { ...localStorage }
+        await this.setState({ tecFilter: !this.state.tecFilter })
+
+        if (this.state.tecFilter) {
+            processes = processes.filter(p => p.tecnico === user.name + ' ' + user.surName)
+            this.setState({ processes })
+        } else {
+            processes = this.props.redux.processCollection.filter(el => el.status === 'Aguardando Diretrizes Metropolitanas')
+            this.setState({ processes })
+        }
     }
 
     render() {
 
-        let { dataMatch, filter, reverse, processes } = this.state
+        let { dataMatch, filter, reverse, processes, tecFilter } = this.state
         let input = this.state.searchValue.toLowerCase()
-       
+
         let filteredList = []
         if (processes) filteredList = processes
-        
+
         if (input && !this.state.checked) {
 
             dataMatch = filteredList.filter(el => el[filter].toLowerCase().match(input))
@@ -363,6 +376,8 @@ class Diretriz extends Component {
                         showFiles={this.showFiles.bind(this)}
                         reverse={reverse}
                         sort={this.sort}
+                        tecFilter={tecFilter}
+                        filterTecs={this.filterTecs}
                     >
                         <DiretrizRow
                             selectedId={this.state.selectedId}
@@ -390,8 +405,7 @@ class Diretriz extends Component {
                                 right: '43%',
                                 width: '253px',
                                 border: '2px solid #ddd',
-                                backgroundColor: 'white',
-
+                                backgroundColor: 'white'
                             }}
                             >
                                 <DateTime

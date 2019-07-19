@@ -4,11 +4,11 @@ import Title from '../common/titleSubtitle';
 import { BackButton } from '../common/buttons'
 import Filtros from '../common/filtros'
 
-
 const AnuenciaTemplate = (props) => {
 
     let { setColor, search, searchArray, selectProcess, data, redux,
-        empDetails, rtDetails, showFiles, sort } = props
+        empDetails, rtDetails, showFiles, sort, tecFilter, filterTecs } = props
+    const {role} = localStorage
 
     let selectedProcess
     void selectedProcess
@@ -23,7 +23,7 @@ const AnuenciaTemplate = (props) => {
             />
             <div className="row">
                 <div className="col s9">
-                    <label>Filtrar</label>
+                    <label>Pesquisar</label>
                     <input
                         className="input"
                         type="text"
@@ -33,6 +33,21 @@ const AnuenciaTemplate = (props) => {
                     />
                 </div>
                 <Filtros search={search}/>
+                {role === 'tecnico' && <div className='col s3 '
+                    style={{
+                        position: 'relative',
+                        left: '5%',
+                        float: 'right',
+                        paddingTop: '2%'
+                    }}>
+                    <input
+                        id='showArchieved'
+                        type="checkbox"
+                        checked={tecFilter === true}
+                        onChange={filterTecs}
+                    />
+                    <label style={{ fontSize: '0.9rem' }} htmlFor="showArchieved">Mostrar apenas meus processos</label>
+                </div>}
             </div>
             <div className='z-depth-3' style={{ width: '100%', padding: '0px 10px 1px', borderRadius: '10px' }}>
 
@@ -65,7 +80,6 @@ const AnuenciaTemplate = (props) => {
                             />
                         </div> : null
                 }
-
             </div>
         </div>
     );

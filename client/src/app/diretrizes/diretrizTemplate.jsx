@@ -7,8 +7,9 @@ import Filtros from '../common/filtros'
 const Diretriz = (props) => {
 
     let {setColor, search, searchArray, selectProcess, submitFiles, data, redux,
-        children, empDetails, rtDetails, showFiles, reverse, sort} = props
-   
+        children, empDetails, rtDetails, showFiles, reverse, sort, tecFilter, filterTecs} = props  
+    const {role} = localStorage
+
     let nameParc
     data.selectedId ? nameParc = redux.processCollection.filter(el => el._id.match(data.selectedId)) : void 0
    
@@ -31,6 +32,22 @@ const Diretriz = (props) => {
                     />                
                 </div>
                <Filtros search={search}/>
+            
+               {role === 'tecnico' && <div className='col s3 '
+                    style={{
+                        position: 'relative',
+                        left: '5%',
+                        float: 'right',
+                        paddingTop: '2%'
+                    }}>
+                    <input
+                        id='showArchieved'
+                        type="checkbox"
+                        checked={tecFilter === true}
+                        onChange={filterTecs}
+                    />
+                    <label style={{ fontSize: '0.9rem' }} htmlFor="showArchieved">Mostrar apenas meus processos</label>
+                </div>}
             </div>
             <div className='z-depth-3' style={{width: '100%', padding: '0px 10px 1px', borderRadius: '10px'}}>
                 

@@ -40,8 +40,6 @@ const RenderSearch = (props) => {
                                 key={i} 
                                 stylez= {{ cursor: 'pointer' }} 
                                 onClick={() => sort(field.name)} />
-                                   
-
                             )
                             )}
                         <IF cond={renderEmp} value='Interessado' div='col s2' />

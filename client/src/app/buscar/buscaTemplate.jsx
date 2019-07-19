@@ -12,7 +12,6 @@ const ShowEmpTemplate = (props) => {
 
     return (
         <div>
-
             <Title
                 title='Acompanhar Processos'
                 subtitle={subtitle}
@@ -43,7 +42,7 @@ const ShowEmpTemplate = (props) => {
                                         value={props.search}
                                         onChange={props.change}
                                         type="search"
-                                        placeholder="digite pelo menos 3 dígitos para procurar"
+                                        placeholder="digite pelo menos 2 dígitos para procurar"
                                     />                                    
                                 </form>
                             </div>

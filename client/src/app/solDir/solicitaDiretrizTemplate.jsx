@@ -22,7 +22,7 @@ const SolicitaDiretriz = (props) => {
             />
             <div className="row">
                 <div className="col s9">
-                    <label>Filtrar</label>
+                    <label>Pesquisar</label>
                     <input
                         className="input"
                         type="text"

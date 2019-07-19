@@ -256,19 +256,19 @@ class ShowEmpContainer extends Component {
         let searchString = search.trim().toLowerCase();
         const { empCollection, rtCollection } = this.props.cadastro
 
-        if (search && (search.length > 2 && (select === 'emp' && empCollection))) {
+        if (search && (search.length > 1 && (select === 'emp' && empCollection))) {
             emps = empCollection.filter((el) => el.nome.toLowerCase().match(searchString)).slice(0, 20)
         } else if ((!search || search.length <= 2) && select === 'emp') {
             emps = empCollection.slice(0, 30)
         }
 
-        if (search && (search.length > 2 && (select === 'rt' && rtCollection))) {
+        if (search && (search.length > 1 && (select === 'rt' && rtCollection))) {
             rts = rtCollection.filter((el) => el.nomeRt.toLowerCase().match(searchString)).slice(0, 20)
         } else if ((!search || search.length <= 2) && select === 'rt') {
             rts = rtCollection.slice(0, 30)
         }
 
-        if (search && (search.length > 2 && (select === 'process' && processes))) {
+        if (search && (search.length > 1 && (select === 'process' && processes))) {
             archievedProcess = processes.filter(proc => proc.status === 'Processo Anuído' || proc.status === 'Processo Arquivado')
             if (archieved === true) process = archievedProcess.filter((el) => el[filter].toLowerCase().match(searchString)).slice(0, 20)
             else process = processes
@@ -277,7 +277,7 @@ class ShowEmpContainer extends Component {
                 .filter((el) => el[filter].toLowerCase().match(searchString))
                 .slice(0, 20)
 
-        } else if ((!search || search.length <= 2) && select === 'process') {
+        } else if ((!search || search.length <= 1) && select === 'process') {
             archievedProcess = processes.filter(proc => proc.status === 'Processo Anuído' || proc.status === 'Processo Arquivado')
             if (archieved === true) process = archievedProcess
             else process = processes.filter(p => p.status !== 'Processo Arquivado').filter(p => p.status !== 'Processo Anuído').slice(0, 50)
