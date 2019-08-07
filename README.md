@@ -10,7 +10,7 @@ na mesma pasta em que salvar o docker-compose.yml deve funcionar o sistema em qu
 
 ## Restauração do Banco de Dados
 
-1. Baixar a última pasta de Backup no Google Drive do usuário REGULACAO.RMBH para a pasta /Temp/ do servidor
+1. Baixar a última pasta de Backup (sempre realizados na Terça e Sexta às 18:01) no Google Drive do usuário REGULACAO.RMBH para a pasta /Temp/ do servidor
 
 2. Entrar na pasta /Temp/XXmêsYY/sim_anuencia_db
 
