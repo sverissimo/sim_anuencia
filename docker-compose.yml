@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  sim_anuencia: 
+    image: sverissimo/sim_anuencia:06ago19
+    ports:
+      - "3001:3001"
+    links:
+      - mongodb    
+    depends_on:
+      - mongodb
+    networks:
+      - webnet
+      
+  mongodb: 
+    container_name: mongo
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - /var/lib/mongodb:/data/db
+    networks:
+      - webnet
+
+networks:
+  webnet:

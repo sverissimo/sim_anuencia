@@ -2,10 +2,13 @@
 
 ## Inicialização do app no servidor
 
+1. Copie o arquivo 'docker-compose.yml' para a pasta /anuencia/ no servidor
+
+2. Execute o seguinte comando na respectiva pasta
 ```
 sudo docker-compose pull && sudo docker-compose up
 ```
-na mesma pasta em que salvar o docker-compose.yml deve funcionar o sistema em qualquer máquina com docker.
+
 
 
 ## Restauração do Banco de Dados
