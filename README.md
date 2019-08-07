@@ -3,7 +3,7 @@
 ## Inicialização do app no servidor
 
 ```
-docker-compose pull && docker-compose up
+sudo docker-compose pull && sudo docker-compose up
 ```
 na mesma pasta em que salvar o docker-compose.yml deve funcionar o sistema em qualquer máquina com docker.
 
