@@ -1,5 +1,13 @@
 # ARMBH: Anuência Digital 
 
+## Inicialização do app no servidor
+
+```
+docker-compose pull && docker-compose up
+```
+na mesma pasta em que salvar o docker-compose.yml deve funcionar o sistema em qualquer máquina com docker.
+
+
 ## Restauração do Banco de Dados
 
 1. Baixar a última pasta de Backup no Google Drive do usuário REGULACAO.RMBH para a pasta /Temp/ do servidor
