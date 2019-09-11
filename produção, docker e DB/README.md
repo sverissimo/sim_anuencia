@@ -14,7 +14,7 @@ Nota: Abaixo, seguem algumas sugestões de configuração do ambiente em produç
 
   
 
-2. Se for utilizar o PM2, ver arquivo ecosystemExemplo nesta pasta, fazer as alterações e salvar no diretorio raiz do aplicativo, com o nome de "ecosystem.config.js".
+2. Se for utilizar a imagem Dockerfile existente ou o PM2, ver arquivo ecosystemExemplo nesta pasta, fazer as alterações e salvar no diretorio raiz do aplicativo, com o nome de "ecosystem.config.js".
 
   
 
@@ -36,7 +36,7 @@ Nota: Abaixo, seguem algumas sugestões de configuração do ambiente em produç
 
   
 
-2. Para criar uma nova imagem, após fazer as alterações desejadas no código do sistema, rodar o build do client e depois rodar o arquivo Dockerfile salvo na pasta raiz deste repositório gitHub utilizando o seguinte comando:
+2. Para criar uma nova imagem, após fazer as alterações desejadas no código do sistema, verificar o ecosystem(ver abaixo), rodar o build do client e somente depois disso rodar o arquivo Dockerfile salvo na pasta raiz deste repositório gitHub utilizando o seguinte comando:
 
 ```
 docker build --tag=minhaTag .
@@ -46,9 +46,11 @@ docker build --tag=minhaTag .
 
 **Lembre-se de verificar se o .dockerignore inclui a pasta "node_modules"
   
-*** Sempre rodar o build do client ANTES de rodar o comando acima
+*** para utilizar o arquivo Dockerfile disponível, salve as variáveis de ambiente no arquivo ecosystem.config.js (instruções acima, no item anterior). 
 
-****a tag é opcional e pode-se dar a ela o nome de sua preferência.
+**** Sempre rodar o build do client ANTES de rodar o comando acima
+
+*****a tag é opcional e pode-se dar a ela o nome de sua preferência.
 
   
   
