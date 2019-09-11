@@ -20,6 +20,8 @@ Nota: Abaixo, seguem algumas sugestões de configuração do ambiente em produç
 
 3. Lembrar de adicionar o .env ou o ecosystem.config.js no .gitignore antes de sincronizar de push com o github
 
+4. O clientEnv.js é um arquivo que foi incluído e deve ficar na pasta /client/src. Contém a chave do google caso se opte pelo Google maps para utilizar a parte de mapas do sistema, que se encotnra atualmente em estágio experimental. Lembrar de conferir se ele está no gitignore da pasta client.
+
   
 
 ## Docker
@@ -34,7 +36,7 @@ Nota: Abaixo, seguem algumas sugestões de configuração do ambiente em produç
 
   
 
-2. Para criar uma nova imagem, após fazer as alterações desejadas no código do sistema, rodar o arquivo Dockerfile salvo na pasta raiz deste repositório gitHub utilizando o seguinte comando:
+2. Para criar uma nova imagem, após fazer as alterações desejadas no código do sistema, rodar o build do client e depois rodar o arquivo Dockerfile salvo na pasta raiz deste repositório gitHub utilizando o seguinte comando:
 
 ```
 docker build --tag=minhaTag .
@@ -44,8 +46,9 @@ docker build --tag=minhaTag .
 
 **Lembre-se de verificar se o .dockerignore inclui a pasta "node_modules"
   
+*** Sempre rodar o build do client ANTES de rodar o comando acima
 
-***a tag é opcional e pode-se dar a ela o nome de sua preferência.
+****a tag é opcional e pode-se dar a ela o nome de sua preferência.
 
   
   
