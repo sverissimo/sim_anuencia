@@ -1,0 +1,14 @@
+module.exports = {
+    apps: [{
+        name: "sim_anuencia",
+        script: "./server/server.js",
+        watch: true,
+        env: {
+            "NODE_ENV": "production",
+            "MAILHOST": meuMailHost,
+            "MAILUSER": meuMailUser,
+            "MAILPASS": minhaMailPassword,
+            "AUTHSECRET": segredoDeAutenticacaoDoSistema
+        }
+    }]
+}

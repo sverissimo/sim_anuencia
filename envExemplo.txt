@@ -1,0 +1,4 @@
+ MAILHOST=meuMailHost
+ MAILUSER=meuMailUser
+ MAILPASS=minhaMailPassword
+ AUTHSECRET=segredoDeAutenticaçãoDoSistema
