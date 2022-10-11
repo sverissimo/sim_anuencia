@@ -5,9 +5,9 @@
   "dependencies": {
     "axios": "^0.18.1",
     "express": "^4.17.1",
-    "html2pdf.js": "^0.9.1",
+    "html2pdf.js": "^0.10.1",
     "http-proxy-middleware": "^0.19.1",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.5.1",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-datetime": "^2.16.3",
